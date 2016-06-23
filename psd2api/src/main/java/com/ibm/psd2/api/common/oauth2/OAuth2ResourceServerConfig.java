@@ -10,8 +10,12 @@ import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.oauth2.config.annotation.web.configuration.EnableResourceServer;
 import org.springframework.security.oauth2.config.annotation.web.configuration.ResourceServerConfigurerAdapter;
 import org.springframework.security.oauth2.config.annotation.web.configurers.ResourceServerSecurityConfigurer;
+import org.springframework.security.oauth2.provider.token.DefaultTokenServices;
 import org.springframework.security.oauth2.provider.token.RemoteTokenServices;
 import org.springframework.security.oauth2.provider.token.ResourceServerTokenServices;
+import org.springframework.security.oauth2.provider.token.TokenStore;
+import org.springframework.security.oauth2.provider.token.store.JwtAccessTokenConverter;
+import org.springframework.security.oauth2.provider.token.store.JwtTokenStore;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
@@ -31,7 +35,19 @@ public class OAuth2ResourceServerConfig extends ResourceServerConfigurerAdapter
 
 	@Value("${oauth.client.secret}")
 	private String clientSecret;
+	
+    @Bean
+    public JwtAccessTokenConverter accessTokenConverter() {
+        JwtAccessTokenConverter converter = new JwtAccessTokenConverter();
+        converter.setSigningKey("tambre");
+        return converter;
+    }	
 
+    @Bean
+    public TokenStore tokenStore() {
+        return new JwtTokenStore(accessTokenConverter());
+    }
+    
 	@Bean
 	public FilterRegistrationBean corsFilter() {
 	    UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
@@ -56,12 +72,15 @@ public class OAuth2ResourceServerConfig extends ResourceServerConfigurerAdapter
 	@Bean
 	public ResourceServerTokenServices resourceServerTokenServices()
 	{
-		RemoteTokenServices rts = new RemoteTokenServices();
-		rts.setClientId(clientId);
-		rts.setClientSecret(clientSecret);
-//		rts.setRestTemplate(new RestTemplate(new MySimpleClientHttpRequestFactory()));
-		rts.setCheckTokenEndpointUrl(checkTokenEndpoint);
-		return rts;
+        DefaultTokenServices defaultTokenServices = new DefaultTokenServices();
+        defaultTokenServices.setTokenStore(tokenStore());
+        return defaultTokenServices;
+        
+//		RemoteTokenServices rts = new RemoteTokenServices();
+//		rts.setClientId(clientId);
+//		rts.setClientSecret(clientSecret);
+//		rts.setCheckTokenEndpointUrl(checkTokenEndpoint);
+//		return rts;
 	}
 
 	@Override

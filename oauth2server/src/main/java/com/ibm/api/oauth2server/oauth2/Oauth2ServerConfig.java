@@ -18,6 +18,8 @@ import org.springframework.security.oauth2.provider.request.DefaultOAuth2Request
 import org.springframework.security.oauth2.provider.token.DefaultTokenServices;
 import org.springframework.security.oauth2.provider.token.TokenStore;
 import org.springframework.security.oauth2.provider.token.store.InMemoryTokenStore;
+import org.springframework.security.oauth2.provider.token.store.JwtAccessTokenConverter;
+import org.springframework.security.oauth2.provider.token.store.JwtTokenStore;
 
 import com.ibm.api.oauth2server.db.ClientDetailsServiceImpl;
 import com.ibm.api.oauth2server.db.UserDetailsServiceImpl;
@@ -35,11 +37,19 @@ public class Oauth2ServerConfig extends AuthorizationServerConfigurerAdapter
 
 	@Autowired
 	UserDetailsServiceImpl uds;
+	
+    @Bean
+    public JwtAccessTokenConverter accessTokenConverter() {
+        JwtAccessTokenConverter converter = new JwtAccessTokenConverter();
+        converter.setSigningKey("tambre");
+        return converter;
+    }	
 
 	@Bean
 	public TokenStore tokenStore()
 	{
-		return new InMemoryTokenStore();
+//		return new InMemoryTokenStore();
+		return new JwtTokenStore(accessTokenConverter());
 	}
 
 	@Bean
@@ -92,7 +102,7 @@ public class Oauth2ServerConfig extends AuthorizationServerConfigurerAdapter
 	@Override
 	public void configure(AuthorizationServerEndpointsConfigurer endpoints) throws Exception
 	{
-		endpoints.tokenStore(tokenStore()).authenticationManager(authenticationManager)
+		endpoints.tokenStore(tokenStore()).accessTokenConverter(accessTokenConverter()).authenticationManager(authenticationManager)
 				.userDetailsService(uds).userApprovalHandler(userApprovalHandler())
 				.authorizationCodeServices(authorizationCodeServices());
 	}
