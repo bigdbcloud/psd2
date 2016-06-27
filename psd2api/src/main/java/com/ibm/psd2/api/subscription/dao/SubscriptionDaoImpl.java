@@ -50,9 +50,7 @@ public class SubscriptionDaoImpl implements SubscriptionDao
 			logger.info("message = " + document.toJson());
 			s = mdp.parse(document, new SubscriptionInfoBean());
 		}
-
 		return s;
-
 	}
 
 	@Override
@@ -85,8 +83,43 @@ public class SubscriptionDaoImpl implements SubscriptionDao
 	}
 
 	@Override
+	public List<SubscriptionInfoBean> getSubscriptionInfo(String username, String clientId) throws Exception
+	{
+		logger.info("username = " + username);
+		MongoCollection<Document> coll = conn.getDB().getCollection(subscriptions);
+		FindIterable<Document> iterable = coll.find(and(eq("username", username), eq("clientId", clientId)))
+				.projection(excludeId());
+
+		ArrayList<SubscriptionInfoBean> lst = null;
+		SubscriptionInfoBean s = null;
+
+		for (Document document : iterable)
+		{
+			if (document != null)
+			{
+				if (lst == null)
+				{
+					lst = new ArrayList<>();
+				}
+				logger.info("message = " + document.toJson());
+				s = mdp.parse(document, new SubscriptionInfoBean());
+				lst.add(s);
+			}
+		}
+		return lst;
+	}
+
+	@Override
 	public void createSubscriptionInfo(SubscriptionInfoBean s) throws Exception
 	{
+		SubscriptionInfoBean existingSI = getSubscriptionInfo(s.getUsername(), s.getClientId(), s.getAccountId(),
+				s.getBank_id());
+		
+		if (existingSI != null)
+		{
+			throw new IllegalArgumentException("Subscription Already Exists");
+		}
+
 		s.setStatus(SubscriptionInfoBean.STATUS_ACTIVE);
 		MongoCollection<Document> coll = conn.getDB().getCollection(subscriptions);
 		coll.insertOne(mdp.format(s));
