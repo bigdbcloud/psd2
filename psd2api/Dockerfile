@@ -13,4 +13,4 @@ RUN ls -altr /etc/ssl/certs/java/cacerts
 EXPOSE 8082
 VOLUME /logs
 WORKDIR /usr/local/psd2api
-ENTRYPOINT java -jar psd2api-0.0.1-SNAPSHOT.jar
+ENTRYPOINT java -jar psd2api-0.0.1-SNAPSHOT.jar > /logs/psd2api.system.out.log
