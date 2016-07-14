@@ -19,11 +19,11 @@
 	<distributionManagement>
 		<snapshotRepository>
 			<id>nexus-snapshots</id>
-			<url>http://nexus.vagrant.f8/content/repositories/snapshots</url>
+			<url>http://inmbz2239.in.dst.ibm.com:9091/content/repositories/api-snapshots</url>
 		</snapshotRepository>
 		<repository>
 			<id>nexus-releases</id>
-			<url>http://nexus.vagrant.f8/content/repositories/releases</url>
+			<url>http://inmbz2239.in.dst.ibm.com:9091/content/repositories/API-Releases/</url>
 		</repository>
 	</distributionManagement>
 
