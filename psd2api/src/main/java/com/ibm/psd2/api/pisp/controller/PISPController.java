@@ -8,11 +8,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.oauth2.provider.OAuth2Authentication;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -53,23 +51,20 @@ public class PISPController extends APIController
 	@Value("${psd2api.integration.useKafka}")
 	private boolean useKafka;
 
-	@PreAuthorize("#oauth2.hasScope('write')")
 	@RequestMapping(method = RequestMethod.POST, value = "banks/{bankId}/accounts/{accountId}/{viewId}/transaction-request-types/{txnType}/transaction-requests", produces = MediaType.APPLICATION_JSON_VALUE)
 	public @ResponseBody ResponseEntity<TxnRequestDetailsBean> createTransactionRequest(
 			@PathVariable("bankId") String bankId, @PathVariable("accountId") String accountId,
 			@PathVariable("viewId") String viewId, @PathVariable("txnType") String txnType,
-			@RequestBody(required = true) TxnRequestBean trb, Authentication auth)
+			@RequestBody(required = true) TxnRequestBean trb, @RequestHeader(value = "user", required = true) String user,
+			@RequestHeader(value = "client", required = true) String client)
 	{
 		ResponseEntity<TxnRequestDetailsBean> response;
 		try
 		{
-			OAuth2Authentication oauth2 = (OAuth2Authentication) auth;
-			String user = (String) auth.getPrincipal();
-
 			ViewIdBean specifiedView = new ViewIdBean();
 			specifiedView.setId(viewId);
 
-			SubscriptionInfoBean sib = sdao.getSubscriptionInfo(user, oauth2.getOAuth2Request().getClientId(),
+			SubscriptionInfoBean sib = sdao.getSubscriptionInfo(user, client,
 					accountId, bankId);
 			if (!validateSubscription(sib, specifiedView))
 			{
@@ -99,22 +94,20 @@ public class PISPController extends APIController
 		return response;
 	}
 
-	@PreAuthorize("#oauth2.hasScope('write')")
 	@RequestMapping(method = RequestMethod.POST, value = "banks/{bankId}/accounts/{accountId}/{viewId}/transaction-request-types/{txnType}/transaction-requests/{txnReqId}/challenge", produces = MediaType.APPLICATION_JSON_VALUE)
 	public @ResponseBody ResponseEntity<TxnRequestDetailsBean> answerTransactionChallenge(
 			@PathVariable("bankId") String bankId, @PathVariable("accountId") String accountId,
 			@PathVariable("viewId") String viewId, @PathVariable("txnType") String txnType,
-			@PathVariable("txnReqId") String txnReqId, @RequestBody ChallengeAnswerBean t, Authentication auth)
+			@PathVariable("txnReqId") String txnReqId, @RequestBody ChallengeAnswerBean t, @RequestHeader(value = "user", required = true) String user,
+			@RequestHeader(value = "client", required = true) String client)
 	{
 		ResponseEntity<TxnRequestDetailsBean> response;
 		try
 		{
-			OAuth2Authentication oauth2 = (OAuth2Authentication) auth;
-			String user = (String) auth.getPrincipal();
 			ViewIdBean specifiedView = new ViewIdBean();
 			specifiedView.setId(viewId);
 
-			SubscriptionInfoBean sib = sdao.getSubscriptionInfo(user, oauth2.getOAuth2Request().getClientId(),
+			SubscriptionInfoBean sib = sdao.getSubscriptionInfo(user, client,
 					accountId, bankId);
 			if (!validateSubscription(sib, specifiedView))
 			{
@@ -138,21 +131,19 @@ public class PISPController extends APIController
 		return response;
 	}
 
-	@PreAuthorize("#oauth2.hasScope('write')")
 	@RequestMapping(method = RequestMethod.GET, value = "banks/{bankId}/accounts/{accountId}/{viewId}/transaction-request-types", produces = MediaType.APPLICATION_JSON_VALUE)
 	public @ResponseBody ResponseEntity<List<TransactionRequestTypeBean>> getTransactionRequestTypes(
 			@PathVariable("bankId") String bankId, @PathVariable("accountId") String accountId,
-			@PathVariable("viewId") String viewId, Authentication auth)
+			@PathVariable("viewId") String viewId, @RequestHeader(value = "user", required = true) String user,
+			@RequestHeader(value = "client", required = true) String client)
 	{
 		ResponseEntity<List<TransactionRequestTypeBean>> response;
 		try
 		{
-			OAuth2Authentication oauth2 = (OAuth2Authentication) auth;
-			String user = (String) auth.getPrincipal();
 			ViewIdBean specifiedView = new ViewIdBean();
 			specifiedView.setId(viewId);
 
-			SubscriptionInfoBean sib = sdao.getSubscriptionInfo(user, oauth2.getOAuth2Request().getClientId(),
+			SubscriptionInfoBean sib = sdao.getSubscriptionInfo(user, client,
 					accountId, bankId);
 
 			if (!validateSubscription(sib, specifiedView))
@@ -169,21 +160,19 @@ public class PISPController extends APIController
 		return response;
 	}
 
-	@PreAuthorize("#oauth2.hasScope('write')")
 	@RequestMapping(method = RequestMethod.GET, value = "banks/{bankId}/accounts/{accountId}/{viewId}/transaction-requests", produces = MediaType.APPLICATION_JSON_VALUE)
 	public @ResponseBody ResponseEntity<List<TxnRequestDetailsBean>> getTransactionRequests(
 			@PathVariable("bankId") String bankId, @PathVariable("accountId") String accountId,
-			@PathVariable("viewId") String viewId, Authentication auth)
+			@PathVariable("viewId") String viewId, @RequestHeader(value = "user", required = true) String user,
+			@RequestHeader(value = "client", required = true) String client)
 	{
 		ResponseEntity<List<TxnRequestDetailsBean>> response;
 		try
 		{
-			OAuth2Authentication oauth2 = (OAuth2Authentication) auth;
-			String user = (String) auth.getPrincipal();
 			ViewIdBean specifiedView = new ViewIdBean();
 			specifiedView.setId(viewId);
 
-			SubscriptionInfoBean sib = sdao.getSubscriptionInfo(user, oauth2.getOAuth2Request().getClientId(),
+			SubscriptionInfoBean sib = sdao.getSubscriptionInfo(user, client,
 					accountId, bankId);
 			if (!validateSubscription(sib, specifiedView))
 			{
