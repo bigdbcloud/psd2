@@ -17,7 +17,7 @@ import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 import org.springframework.web.filter.CorsFilter;
 
-public class OAuth2ResourceServerConfig extends ResourceServerConfigurerAdapter 
+public class OAuth2ResourceServerConfig //extends ResourceServerConfigurerAdapter 
 {
 	
 	//http://localhost:8081/oauth2server/oauth/check_token
@@ -77,13 +77,13 @@ public class OAuth2ResourceServerConfig extends ResourceServerConfigurerAdapter
 //		return rts;
 	}
 
-	@Override
+//	@Override
 	public void configure(ResourceServerSecurityConfigurer resources) throws Exception
 	{
 		resources.tokenServices(resourceServerTokenServices());
 	}
 
-	@Override
+//	@Override
 	public void configure(HttpSecurity http) throws Exception
 	{
 		http.authorizeRequests().antMatchers("/**").permitAll();
