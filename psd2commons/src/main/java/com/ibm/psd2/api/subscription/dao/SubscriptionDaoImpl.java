@@ -16,7 +16,7 @@ import org.springframework.stereotype.Component;
 
 import com.ibm.psd2.api.commons.db.MongoConnection;
 import com.ibm.psd2.api.commons.db.MongoDocumentParser;
-import com.ibm.psd2.commons.beans.subscription.SubscriptionInfoBean;
+import com.ibm.psd2.commons.beans.subscription.SubscriptionInfo;
 import com.mongodb.client.FindIterable;
 import com.mongodb.client.MongoCollection;
 
@@ -35,26 +35,26 @@ public class SubscriptionDaoImpl implements SubscriptionDao
 	private String subscriptions;
 
 	@Override
-	public SubscriptionInfoBean getSubscriptionInfo(String username, String clientId, String accountId, String bankId)
+	public SubscriptionInfo getSubscriptionInfo(String username, String clientId, String accountId, String bankId)
 			throws Exception
 	{
 		logger.info("bankId = " + bankId + ", accountId = " + accountId + ", username = " + username);
 		MongoCollection<Document> coll = conn.getDB().getCollection(subscriptions);
 		FindIterable<Document> iterable = coll.find(and(eq("accountId", accountId), eq("bank_id", bankId),
 				eq("username", username), eq("clientId", clientId))).projection(excludeId());
-		SubscriptionInfoBean s = null;
+		SubscriptionInfo s = null;
 
 		Document document = iterable.first();
 		if (document != null)
 		{
 			logger.info("message = " + document.toJson());
-			s = mdp.parse(document, new SubscriptionInfoBean());
+			s = mdp.parse(document, new SubscriptionInfo());
 		}
 		return s;
 	}
 
 	@Override
-	public List<SubscriptionInfoBean> getSubscriptionInfo(String username, String clientId, String bankId)
+	public List<SubscriptionInfo> getSubscriptionInfo(String username, String clientId, String bankId)
 			throws Exception
 	{
 		logger.info("bankId = " + bankId + ", username = " + username);
@@ -63,8 +63,8 @@ public class SubscriptionDaoImpl implements SubscriptionDao
 				.find(and(eq("bank_id", bankId), eq("username", username), eq("clientId", clientId)))
 				.projection(excludeId());
 
-		ArrayList<SubscriptionInfoBean> lst = null;
-		SubscriptionInfoBean s = null;
+		ArrayList<SubscriptionInfo> lst = null;
+		SubscriptionInfo s = null;
 
 		for (Document document : iterable)
 		{
@@ -75,7 +75,7 @@ public class SubscriptionDaoImpl implements SubscriptionDao
 					lst = new ArrayList<>();
 				}
 				logger.info("message = " + document.toJson());
-				s = mdp.parse(document, new SubscriptionInfoBean());
+				s = mdp.parse(document, new SubscriptionInfo());
 				lst.add(s);
 			}
 		}
@@ -83,15 +83,15 @@ public class SubscriptionDaoImpl implements SubscriptionDao
 	}
 
 	@Override
-	public List<SubscriptionInfoBean> getSubscriptionInfo(String username, String clientId) throws Exception
+	public List<SubscriptionInfo> getSubscriptionInfo(String username, String clientId) throws Exception
 	{
 		logger.info("username = " + username);
 		MongoCollection<Document> coll = conn.getDB().getCollection(subscriptions);
 		FindIterable<Document> iterable = coll.find(and(eq("username", username), eq("clientId", clientId)))
 				.projection(excludeId());
 
-		ArrayList<SubscriptionInfoBean> lst = null;
-		SubscriptionInfoBean s = null;
+		ArrayList<SubscriptionInfo> lst = null;
+		SubscriptionInfo s = null;
 
 		for (Document document : iterable)
 		{
@@ -102,7 +102,7 @@ public class SubscriptionDaoImpl implements SubscriptionDao
 					lst = new ArrayList<>();
 				}
 				logger.info("message = " + document.toJson());
-				s = mdp.parse(document, new SubscriptionInfoBean());
+				s = mdp.parse(document, new SubscriptionInfo());
 				lst.add(s);
 			}
 		}
@@ -110,9 +110,9 @@ public class SubscriptionDaoImpl implements SubscriptionDao
 	}
 
 	@Override
-	public void createSubscriptionInfo(SubscriptionInfoBean s) throws Exception
+	public void createSubscriptionInfo(SubscriptionInfo s) throws Exception
 	{
-		SubscriptionInfoBean existingSI = getSubscriptionInfo(s.getUsername(), s.getClientId(), s.getAccountId(),
+		SubscriptionInfo existingSI = getSubscriptionInfo(s.getUsername(), s.getClientId(), s.getAccountId(),
 				s.getBank_id());
 		
 		if (existingSI != null)
@@ -120,7 +120,7 @@ public class SubscriptionDaoImpl implements SubscriptionDao
 			throw new IllegalArgumentException("Subscription Already Exists");
 		}
 
-		s.setStatus(SubscriptionInfoBean.STATUS_ACTIVE);
+		s.setStatus(SubscriptionInfo.STATUS_ACTIVE);
 		MongoCollection<Document> coll = conn.getDB().getCollection(subscriptions);
 		coll.insertOne(mdp.format(s));
 	}

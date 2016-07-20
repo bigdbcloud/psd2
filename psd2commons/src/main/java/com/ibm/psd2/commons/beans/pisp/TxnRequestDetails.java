@@ -7,10 +7,10 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonInclude.Include;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.ibm.psd2.commons.beans.ChallengeBean;
+import com.ibm.psd2.commons.beans.Challenge;
 
 @JsonInclude(value = Include.NON_EMPTY)
-public class TxnRequestDetailsBean implements Serializable
+public class TxnRequestDetails implements Serializable
 {
 	public static final String TXN_STATUS_INITIATED="INITIATED";
 	public static final String TXN_STATUS_COMPLETED="COMPLETED";
@@ -19,14 +19,14 @@ public class TxnRequestDetailsBean implements Serializable
 	
 	private String id;
 	private String type;
-	private TxnPartyBean from;
-	private TxnRequestBean body;
+	private TxnParty from;
+	private TxnRequest body;
 	String transaction_ids;
 	String status;
 	Date start_date;
 	Date end_date;
-	private ChallengeBean challenge;
-	private TxnChargeBean charge;
+	private Challenge challenge;
+	private TxnCharge charge;
 	
 	public String getId()
 	{
@@ -44,19 +44,19 @@ public class TxnRequestDetailsBean implements Serializable
 	{
 		this.type = type;
 	}
-	public TxnPartyBean getFrom()
+	public TxnParty getFrom()
 	{
 		return from;
 	}
-	public void setFrom(TxnPartyBean from)
+	public void setFrom(TxnParty from)
 	{
 		this.from = from;
 	}
-	public TxnRequestBean getBody()
+	public TxnRequest getBody()
 	{
 		return body;
 	}
-	public void setBody(TxnRequestBean body)
+	public void setBody(TxnRequest body)
 	{
 		this.body = body;
 	}
@@ -92,19 +92,19 @@ public class TxnRequestDetailsBean implements Serializable
 	{
 		this.end_date = end_date;
 	}
-	public ChallengeBean getChallenge()
+	public Challenge getChallenge()
 	{
 		return challenge;
 	}
-	public void setChallenge(ChallengeBean challenge)
+	public void setChallenge(Challenge challenge)
 	{
 		this.challenge = challenge;
 	}
-	public TxnChargeBean getCharge()
+	public TxnCharge getCharge()
 	{
 		return charge;
 	}
-	public void setCharge(TxnChargeBean charge)
+	public void setCharge(TxnCharge charge)
 	{
 		this.charge = charge;
 	}

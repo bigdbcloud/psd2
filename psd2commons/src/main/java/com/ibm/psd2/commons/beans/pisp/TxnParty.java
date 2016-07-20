@@ -6,24 +6,17 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonInclude.Include;
 
 @JsonInclude(value = Include.NON_EMPTY)
-public class TxnPartyBean implements Serializable
+public class TxnParty implements Serializable
 {
-	/*
-		"to":{
-				"bank_id":"psd201-bank-x--uk",
-	    		"account_id":"007007007007007007007"
-			},  
-	 */
-	
 	private String bank_id;
 	private String account_id;
 	
-	public TxnPartyBean()
+	public TxnParty()
 	{
 		
 	}
 	
-	public TxnPartyBean(String bank_id, String account_id)
+	public TxnParty(String bank_id, String account_id)
 	{
 		this.bank_id = bank_id;
 		this.account_id = account_id;

@@ -6,7 +6,7 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonInclude.Include;
 
 @JsonInclude(value = Include.NON_EMPTY)
-public class SimpleResponseBean implements Serializable
+public class SimpleResponse implements Serializable
 {
 	public static final String CODE_SUCCESS = "success";
 	public static final String CODE_ERROR = "error";

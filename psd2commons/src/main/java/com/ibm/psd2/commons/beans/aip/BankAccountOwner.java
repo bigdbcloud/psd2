@@ -8,7 +8,7 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 @JsonInclude(value = Include.NON_EMPTY)
-public class BankAccountOwnerBean implements Serializable
+public class BankAccountOwner implements Serializable
 {
 	private String id;
 	private String provider;

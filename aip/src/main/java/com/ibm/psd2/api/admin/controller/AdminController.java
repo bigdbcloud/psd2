@@ -15,9 +15,9 @@ import org.springframework.web.bind.annotation.RestController;
 import com.ibm.psd2.api.aip.dao.BankAccountDao;
 import com.ibm.psd2.api.aip.dao.BankDao;
 import com.ibm.psd2.api.aip.dao.TransactionDao;
-import com.ibm.psd2.commons.beans.BankBean;
-import com.ibm.psd2.commons.beans.SimpleResponseBean;
-import com.ibm.psd2.commons.beans.aip.BankAccountDetailsBean;
+import com.ibm.psd2.commons.beans.Bank;
+import com.ibm.psd2.commons.beans.SimpleResponse;
+import com.ibm.psd2.commons.beans.aip.BankAccountDetails;
 
 @RestController
 public class AdminController
@@ -39,10 +39,10 @@ public class AdminController
 
 	
 	@RequestMapping(method = RequestMethod.POST, value = "/admin/bank", produces = MediaType.APPLICATION_JSON_VALUE)
-	public @ResponseBody ResponseEntity<SimpleResponseBean> createBank(@RequestBody BankBean b)
+	public @ResponseBody ResponseEntity<SimpleResponse> createBank(@RequestBody Bank b)
 	{
-		ResponseEntity<SimpleResponseBean> response;
-		SimpleResponseBean srb = new SimpleResponseBean();
+		ResponseEntity<SimpleResponse> response;
+		SimpleResponse srb = new SimpleResponse();
 		try
 		{
 			if (b == null)
@@ -54,12 +54,12 @@ public class AdminController
 
 			bdao.createBank(b);
 			
-			srb.setResponseCode(SimpleResponseBean.CODE_SUCCESS);
+			srb.setResponseCode(SimpleResponse.CODE_SUCCESS);
 			response = ResponseEntity.ok(srb);
 		} catch (Exception e)
 		{
 			logger.error(e);
-			srb.setResponseCode(SimpleResponseBean.CODE_ERROR);
+			srb.setResponseCode(SimpleResponse.CODE_ERROR);
 			srb.setResponseMessage(e.getMessage());
 			response = ResponseEntity.badRequest().body(srb);
 		}
@@ -68,10 +68,10 @@ public class AdminController
 
 	
 	@RequestMapping(method = RequestMethod.POST, value = "/admin/account", produces = MediaType.APPLICATION_JSON_VALUE)
-	public @ResponseBody ResponseEntity<SimpleResponseBean> createAccount(@RequestBody BankAccountDetailsBean b)
+	public @ResponseBody ResponseEntity<SimpleResponse> createAccount(@RequestBody BankAccountDetails b)
 	{
-		ResponseEntity<SimpleResponseBean> response;
-		SimpleResponseBean srb = new SimpleResponseBean();
+		ResponseEntity<SimpleResponse> response;
+		SimpleResponse srb = new SimpleResponse();
 		try
 		{
 			if (b == null)
@@ -83,12 +83,12 @@ public class AdminController
 
 			badao.createBankAccountDetails(b);
 			
-			srb.setResponseCode(SimpleResponseBean.CODE_SUCCESS);
+			srb.setResponseCode(SimpleResponse.CODE_SUCCESS);
 			response = ResponseEntity.ok(srb);
 		} catch (Exception e)
 		{
 			logger.error(e);
-			srb.setResponseCode(SimpleResponseBean.CODE_ERROR);
+			srb.setResponseCode(SimpleResponse.CODE_ERROR);
 			srb.setResponseMessage(e.getMessage());
 			response = ResponseEntity.badRequest().body(srb);
 		}

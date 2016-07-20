@@ -16,8 +16,8 @@ import org.apache.storm.tuple.Tuple;
 import org.apache.storm.tuple.Values;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.ibm.psd2.commons.beans.aip.BankAccountDetailsBean;
-import com.ibm.psd2.commons.beans.pisp.TxnRequestDetailsBean;
+import com.ibm.psd2.commons.beans.aip.BankAccountDetails;
+import com.ibm.psd2.commons.beans.pisp.TxnRequestDetails;
 import com.ibm.psd2.commons.utils.UUIDGenerator;
 import com.ibm.psd2.integration.ArgumentsContainer;
 import com.ibm.psd2.integration.dao.MongoDao;
@@ -64,12 +64,12 @@ public class TxnRequestProcessor extends BaseRichBolt
 			String transaction = input.getString(0);
 			logger.warn("Parsing Transaction: " + transaction);
 
-			TxnRequestDetailsBean tdb = mapper.readValue(transaction, TxnRequestDetailsBean.class);
+			TxnRequestDetails tdb = mapper.readValue(transaction, TxnRequestDetails.class);
 
 			logger.warn("Processing Transaction Request:" + tdb.getId());
 
-			BankAccountDetailsBean from = new BankAccountDetailsBean();
-			BankAccountDetailsBean to = new BankAccountDetailsBean();
+			BankAccountDetails from = new BankAccountDetails();
+			BankAccountDetails to = new BankAccountDetails();
 
 			Map<String, Object> criteriaFrom = new HashMap<>();
 			Map<String, Object> criteriaTo = new HashMap<>();
@@ -99,7 +99,7 @@ public class TxnRequestProcessor extends BaseRichBolt
 				bankAccDao.update("id", to.getId(), "balance.amount", balance);
 			}
 
-			tdb.setStatus(TxnRequestDetailsBean.TXN_STATUS_COMPLETED);
+			tdb.setStatus(TxnRequestDetails.TXN_STATUS_COMPLETED);
 			tdb.setEnd_date(new Date());
 			tdb.setTransaction_ids(UUIDGenerator.generateUUID());
 

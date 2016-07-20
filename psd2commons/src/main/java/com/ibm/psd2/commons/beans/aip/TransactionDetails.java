@@ -7,17 +7,17 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonInclude.Include;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.ibm.psd2.commons.beans.AmountBean;
+import com.ibm.psd2.commons.beans.Amount;
 
 @JsonInclude(value = Include.NON_EMPTY)
-public class TransactionDetailsBean implements Serializable
+public class TransactionDetails implements Serializable
 {
 	private String type;
 	private String description;
 	private Date posted;
 	private Date completed;
-	private AmountBean new_balance;
-	private AmountBean value;
+	private Amount new_balance;
+	private Amount value;
 	
 	public String getType()
 	{
@@ -51,19 +51,19 @@ public class TransactionDetailsBean implements Serializable
 	{
 		this.completed = completed;
 	}
-	public AmountBean getNew_balance()
+	public Amount getNew_balance()
 	{
 		return new_balance;
 	}
-	public void setNew_balance(AmountBean new_balance)
+	public void setNew_balance(Amount new_balance)
 	{
 		this.new_balance = new_balance;
 	}
-	public AmountBean getValue()
+	public Amount getValue()
 	{
 		return value;
 	}
-	public void setValue(AmountBean value)
+	public void setValue(Amount value)
 	{
 		this.value = value;
 	}

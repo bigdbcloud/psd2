@@ -6,7 +6,7 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonInclude.Include;
 
 @JsonInclude(value = Include.NON_EMPTY)
-public class ChallengeBean implements Serializable
+public class Challenge implements Serializable
 {
 	private String id;
 	private int allowed_attempts;

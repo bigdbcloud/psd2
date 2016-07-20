@@ -6,7 +6,7 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonInclude.Include;
 
 @JsonInclude(value = Include.NON_EMPTY)
-public class ChallengeAnswerBean implements Serializable
+public class ChallengeAnswer implements Serializable
 {
 	private String id;
 	private String answer;

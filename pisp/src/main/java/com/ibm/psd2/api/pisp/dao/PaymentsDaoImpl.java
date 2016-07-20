@@ -20,12 +20,12 @@ import com.ibm.psd2.api.commons.Constants;
 import com.ibm.psd2.api.commons.db.MongoConnection;
 import com.ibm.psd2.api.commons.db.MongoDocumentParser;
 import com.ibm.psd2.api.pisp.rules.PaymentRules;
-import com.ibm.psd2.commons.beans.ChallengeAnswerBean;
-import com.ibm.psd2.commons.beans.ChallengeBean;
-import com.ibm.psd2.commons.beans.pisp.TxnPartyBean;
-import com.ibm.psd2.commons.beans.pisp.TxnRequestBean;
-import com.ibm.psd2.commons.beans.pisp.TxnRequestDetailsBean;
-import com.ibm.psd2.commons.beans.subscription.SubscriptionInfoBean;
+import com.ibm.psd2.commons.beans.ChallengeAnswer;
+import com.ibm.psd2.commons.beans.Challenge;
+import com.ibm.psd2.commons.beans.pisp.TxnParty;
+import com.ibm.psd2.commons.beans.pisp.TxnRequest;
+import com.ibm.psd2.commons.beans.pisp.TxnRequestDetails;
+import com.ibm.psd2.commons.beans.subscription.SubscriptionInfo;
 import com.ibm.psd2.commons.utils.UUIDGenerator;
 import com.mongodb.client.FindIterable;
 import com.mongodb.client.MongoCollection;
@@ -49,8 +49,8 @@ public class PaymentsDaoImpl implements PaymentsDao
 	private String payments;
 
 	@Override
-	public TxnRequestDetailsBean createTransactionRequest(SubscriptionInfoBean sib, TxnRequestBean trb,
-			TxnPartyBean payee, String txnType) throws Exception
+	public TxnRequestDetails createTransactionRequest(SubscriptionInfo sib, TxnRequest trb,
+			TxnParty payee, String txnType) throws Exception
 	{
 		if (!pr.isTransactionTypeAllowed(sib, txnType))
 		{
@@ -58,7 +58,7 @@ public class PaymentsDaoImpl implements PaymentsDao
 					+ StringUtils.collectionToCommaDelimitedString(sib.getTransaction_request_types()));
 		}
 
-		TxnRequestDetailsBean t = new TxnRequestDetailsBean();
+		TxnRequestDetails t = new TxnRequestDetails();
 		t.setBody(trb);
 		t.setType(txnType);
 
@@ -66,16 +66,16 @@ public class PaymentsDaoImpl implements PaymentsDao
 		{
 			logger.info("Within Specified Limit. Hence Not Challenging the Request");
 			t.setChallenge(null);
-			t.setStatus(TxnRequestDetailsBean.TXN_STATUS_PENDING);
+			t.setStatus(TxnRequestDetails.TXN_STATUS_PENDING);
 		} else
 		{
 			logger.info("Amount Greater than specified limit. Hence creating a challenge");
-			ChallengeBean challenge = new ChallengeBean();
+			Challenge challenge = new Challenge();
 			challenge.setId(UUIDGenerator.generateUUID());
 			challenge.setChallenge_type(t.getType());
 			challenge.setAllowed_attempts(Constants.CHALLENGE_MAX_ATTEMPTS);
 			t.setChallenge(challenge);
-			t.setStatus(TxnRequestDetailsBean.TXN_STATUS_INITIATED);
+			t.setStatus(TxnRequestDetails.TXN_STATUS_INITIATED);
 		}
 
 		t.setTransaction_ids(UUIDGenerator.generateUUID());
@@ -90,18 +90,18 @@ public class PaymentsDaoImpl implements PaymentsDao
 	}
 
 	@Override
-	public TxnRequestDetailsBean answerTransactionRequestChallenge(String username, String viewId, String bankId,
-			String accountId, String txnType, String txnReqId, ChallengeAnswerBean t) throws Exception
+	public TxnRequestDetails answerTransactionRequestChallenge(String username, String viewId, String bankId,
+			String accountId, String txnType, String txnReqId, ChallengeAnswer t) throws Exception
 	{
 		MongoCollection<Document> coll = conn.getDB().getCollection(payments);
 		FindIterable<Document> iterable = coll.find(and(eq("from.account_id", accountId), eq("from.bank_id", bankId),
 				eq("type", txnType), eq("id", txnReqId), eq("challenge.id", t.getId()))).projection(excludeId());
 
-		TxnRequestDetailsBean tdb = null;
+		TxnRequestDetails tdb = null;
 		Document document = iterable.first();
 		if (document != null)
 		{
-			tdb = mdp.parse(document, new TxnRequestDetailsBean());
+			tdb = mdp.parse(document, new TxnRequestDetails());
 		}
 
 		if (tdb == null)
@@ -115,11 +115,11 @@ public class PaymentsDaoImpl implements PaymentsDao
 		}
 
 		UpdateResult update = coll.updateOne(new Document("id", txnReqId),
-				new Document("$set", new Document("status", TxnRequestDetailsBean.TXN_STATUS_PENDING)));
+				new Document("$set", new Document("status", TxnRequestDetails.TXN_STATUS_PENDING)));
 
 		if (update.getModifiedCount() != 0)
 		{
-			tdb.setStatus(TxnRequestDetailsBean.TXN_STATUS_PENDING);
+			tdb.setStatus(TxnRequestDetails.TXN_STATUS_PENDING);
 		}
 
 		return tdb;
@@ -127,7 +127,7 @@ public class PaymentsDaoImpl implements PaymentsDao
 	}
 
 	@Override
-	public List<TxnRequestDetailsBean> getTransactionRequests(String username, String viewId, String accountId,
+	public List<TxnRequestDetails> getTransactionRequests(String username, String viewId, String accountId,
 			String bankId) throws Exception
 	{
 		MongoCollection<Document> coll = conn.getDB().getCollection(payments);
@@ -135,7 +135,7 @@ public class PaymentsDaoImpl implements PaymentsDao
 				.projection(excludeId());
 		;
 
-		List<TxnRequestDetailsBean> txns = null;
+		List<TxnRequestDetails> txns = null;
 
 		for (Document document : iterable)
 		{
@@ -145,7 +145,7 @@ public class PaymentsDaoImpl implements PaymentsDao
 				{
 					txns = new ArrayList<>();
 				}
-				TxnRequestDetailsBean tdb = mdp.parse(document, new TxnRequestDetailsBean());
+				TxnRequestDetails tdb = mdp.parse(document, new TxnRequestDetails());
 				txns.add(tdb);
 			}
 		}

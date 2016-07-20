@@ -24,13 +24,13 @@ import com.ibm.psd2.api.aip.utils.BankAccountOverviewVisitor;
 import com.ibm.psd2.api.aip.utils.BankAccountOwnerViewVisitor;
 import com.ibm.psd2.api.commons.Constants;
 import com.ibm.psd2.api.subscription.dao.SubscriptionDao;
-import com.ibm.psd2.commons.beans.BankBean;
-import com.ibm.psd2.commons.beans.aip.BankAccountDetailsBean;
-import com.ibm.psd2.commons.beans.aip.BankAccountDetailsViewBean;
-import com.ibm.psd2.commons.beans.aip.BankAccountOverviewBean;
-import com.ibm.psd2.commons.beans.aip.TransactionBean;
-import com.ibm.psd2.commons.beans.subscription.SubscriptionInfoBean;
-import com.ibm.psd2.commons.beans.subscription.ViewIdBean;
+import com.ibm.psd2.commons.beans.Bank;
+import com.ibm.psd2.commons.beans.aip.BankAccountDetails;
+import com.ibm.psd2.commons.beans.aip.BankAccountDetailsView;
+import com.ibm.psd2.commons.beans.aip.BankAccountOverview;
+import com.ibm.psd2.commons.beans.aip.Transaction;
+import com.ibm.psd2.commons.beans.subscription.SubscriptionInfo;
+import com.ibm.psd2.commons.beans.subscription.ViewId;
 import com.ibm.psd2.commons.controller.APIController;
 
 @RestController
@@ -53,16 +53,16 @@ public class AIPController extends APIController {
 	private String version;
 
 	@RequestMapping(method = RequestMethod.GET, value = "/my/banks/{bankId}/accounts", produces = MediaType.APPLICATION_JSON_VALUE)
-	public @ResponseBody ResponseEntity<List<BankAccountOverviewBean>> getBankAccounts(
+	public @ResponseBody ResponseEntity<List<BankAccountOverview>> getBankAccounts(
 			@PathVariable("bankId") String bankId, @RequestHeader(value = "user", required = true) String user,
 			@RequestHeader(value = "client", required = true) String client) {
 
-		ResponseEntity<List<BankAccountOverviewBean>> response;
+		ResponseEntity<List<BankAccountOverview>> response;
 		try {
-			ViewIdBean ownerView = new ViewIdBean();
+			ViewId ownerView = new ViewId();
 			ownerView.setId(Constants.OWNER_VIEW);
 
-			List<SubscriptionInfoBean> lstSib = sdao.getSubscriptionInfo(user, client,
+			List<SubscriptionInfo> lstSib = sdao.getSubscriptionInfo(user, client,
 					bankId);
 
 			if (lstSib == null) {
@@ -70,23 +70,23 @@ public class AIPController extends APIController {
 			}
 
 			List<String> accountIds = new ArrayList<>();
-			for (Iterator<SubscriptionInfoBean> iterator = lstSib.iterator(); iterator.hasNext();) {
-				SubscriptionInfoBean s = iterator.next();
+			for (Iterator<SubscriptionInfo> iterator = lstSib.iterator(); iterator.hasNext();) {
+				SubscriptionInfo s = iterator.next();
 				if (validateSubscription(s, ownerView)) {
 					accountIds.add(s.getAccountId());
 				}
 			}
 
-			List<BankAccountDetailsBean> ba = bad.getBankAccounts(user, bankId);
+			List<BankAccountDetails> ba = bad.getBankAccounts(user, bankId);
 
-			List<BankAccountOverviewBean> accountList = null;
+			List<BankAccountOverview> accountList = null;
 			BankAccountOverviewVisitor baoVisitor = new BankAccountOverviewVisitor();
-			for (Iterator<BankAccountDetailsBean> iterator = ba.iterator(); iterator.hasNext();) {
+			for (Iterator<BankAccountDetails> iterator = ba.iterator(); iterator.hasNext();) {
 
-				BankAccountDetailsBean b = iterator.next();
+				BankAccountDetails b = iterator.next();
 
 				if (!accountIds.isEmpty() && accountIds.contains(b.getId())) {
-					b.registerVisitor(BankAccountOverviewBean.class.getName() + ":" + Constants.OWNER_VIEW, baoVisitor);
+					b.registerVisitor(BankAccountOverview.class.getName() + ":" + Constants.OWNER_VIEW, baoVisitor);
 
 					if (accountList == null) {
 						accountList = new ArrayList<>();
@@ -104,23 +104,23 @@ public class AIPController extends APIController {
 	}
 
 	@RequestMapping(method = RequestMethod.GET, value = "/banks/{bankId}/accounts/{accountId}/{viewId}/account", produces = MediaType.APPLICATION_JSON_VALUE)
-	public @ResponseBody ResponseEntity<BankAccountDetailsViewBean> getAccountById(
+	public @ResponseBody ResponseEntity<BankAccountDetailsView> getAccountById(
 			@PathVariable("bankId") String bankId, @PathVariable("accountId") String accountId,
 			@PathVariable("viewId") String viewId, @RequestHeader(value = "user", required = true) String user,
 			@RequestHeader(value = "client", required = true) String client) {
-		ResponseEntity<BankAccountDetailsViewBean> response;
+		ResponseEntity<BankAccountDetailsView> response;
 		try {
-			ViewIdBean specifiedView = new ViewIdBean();
+			ViewId specifiedView = new ViewId();
 			specifiedView.setId(viewId);
 
-			SubscriptionInfoBean sib = sdao.getSubscriptionInfo(user, client,
+			SubscriptionInfo sib = sdao.getSubscriptionInfo(user, client,
 					accountId, bankId);
 			if (!validateSubscription(sib, specifiedView)) {
 				throw new IllegalAccessException(Constants.ERRMSG_NOT_SUBSCRIBED);
 			}
 
-			BankAccountDetailsBean b = bad.getBankAccountDetails(bankId, accountId, user);
-			BankAccountDetailsViewBean bo = null;
+			BankAccountDetails b = bad.getBankAccountDetails(bankId, accountId, user);
+			BankAccountDetailsView bo = null;
 
 			if (b == null) {
 				throw new IllegalArgumentException("Account Not Found");
@@ -128,7 +128,7 @@ public class AIPController extends APIController {
 
 			BankAccountOwnerViewVisitor bv = new BankAccountOwnerViewVisitor();
 			if (Constants.OWNER_VIEW.equals(viewId)) {
-				b.registerVisitor(BankAccountDetailsViewBean.class.getName() + ":" + viewId, bv);
+				b.registerVisitor(BankAccountDetailsView.class.getName() + ":" + viewId, bv);
 				bo = b.getBankAccountDetails(viewId);
 				response = ResponseEntity.ok(bo);
 			} else {
@@ -143,30 +143,30 @@ public class AIPController extends APIController {
 	}
 
 	@RequestMapping(method = RequestMethod.GET, value = "/my/banks/{bankId}/accounts/{accountId}/account", produces = MediaType.APPLICATION_JSON_VALUE)
-	public @ResponseBody ResponseEntity<BankAccountDetailsViewBean> getAccountById(
+	public @ResponseBody ResponseEntity<BankAccountDetailsView> getAccountById(
 			@PathVariable("bankId") String bankId, @PathVariable("accountId") String accountId, @RequestHeader(value = "user", required = true) String user,
 			@RequestHeader(value = "client", required = true) String client) {
-		ResponseEntity<BankAccountDetailsViewBean> response;
+		ResponseEntity<BankAccountDetailsView> response;
 		try {
-			ViewIdBean ownerView = new ViewIdBean();
+			ViewId ownerView = new ViewId();
 			ownerView.setId(Constants.OWNER_VIEW);
 
-			SubscriptionInfoBean sib = sdao.getSubscriptionInfo(user, client,
+			SubscriptionInfo sib = sdao.getSubscriptionInfo(user, client,
 					accountId, bankId);
 
 			if (!validateSubscription(sib, ownerView)) {
 				throw new IllegalAccessException(Constants.ERRMSG_NOT_SUBSCRIBED);
 			}
 
-			BankAccountDetailsBean b = bad.getBankAccountDetails(bankId, accountId, user);
+			BankAccountDetails b = bad.getBankAccountDetails(bankId, accountId, user);
 
 			if (b == null) {
 				throw new IllegalArgumentException("Account Not Found");
 			}
 
 			BankAccountOwnerViewVisitor bv = new BankAccountOwnerViewVisitor();
-			b.registerVisitor(BankAccountDetailsViewBean.class.getName() + ":" + Constants.OWNER_VIEW, bv);
-			BankAccountDetailsViewBean bo = b.getBankAccountDetails(Constants.OWNER_VIEW);
+			b.registerVisitor(BankAccountDetailsView.class.getName() + ":" + Constants.OWNER_VIEW, bv);
+			BankAccountDetailsView bo = b.getBankAccountDetails(Constants.OWNER_VIEW);
 			response = ResponseEntity.ok(bo);
 
 		} catch (Exception ex) {
@@ -177,22 +177,22 @@ public class AIPController extends APIController {
 	}
 
 	@RequestMapping(method = RequestMethod.GET, value = "/banks/{bankId}/accounts/{accountId}/{viewId}/transactions/{txnId}/transaction", produces = MediaType.APPLICATION_JSON_VALUE)
-	public @ResponseBody ResponseEntity<TransactionBean> getTransactionById(@PathVariable("bankId") String bankId,
+	public @ResponseBody ResponseEntity<Transaction> getTransactionById(@PathVariable("bankId") String bankId,
 			@PathVariable("accountId") String accountId, @PathVariable("viewId") String viewId,
 			@PathVariable("txnId") String txnId, @RequestHeader(value = "user", required = true) String user,
 			@RequestHeader(value = "client", required = true) String client) {
-		ResponseEntity<TransactionBean> response;
+		ResponseEntity<Transaction> response;
 		try {
-			ViewIdBean specifiedView = new ViewIdBean();
+			ViewId specifiedView = new ViewId();
 			specifiedView.setId(viewId);
 
-			SubscriptionInfoBean sib = sdao.getSubscriptionInfo(user, client,
+			SubscriptionInfo sib = sdao.getSubscriptionInfo(user, client,
 					accountId, bankId);
 			if (!validateSubscription(sib, specifiedView)) {
 				throw new IllegalAccessException(Constants.ERRMSG_NOT_SUBSCRIBED);
 			}
 
-			TransactionBean t = tdao.getTransactionById(bankId, accountId, txnId);
+			Transaction t = tdao.getTransactionById(bankId, accountId, txnId);
 
 			response = ResponseEntity.ok(t);
 
@@ -204,7 +204,7 @@ public class AIPController extends APIController {
 	}
 
 	@RequestMapping(method = RequestMethod.GET, value = "/banks/{bankId}/accounts/{accountId}/{viewId}/transactions", produces = MediaType.APPLICATION_JSON_VALUE)
-	public @ResponseBody ResponseEntity<List<TransactionBean>> getTransactions(@PathVariable("bankId") String bankId,
+	public @ResponseBody ResponseEntity<List<Transaction>> getTransactions(@PathVariable("bankId") String bankId,
 			@PathVariable("accountId") String accountId, @PathVariable("viewId") String viewId,
 			@RequestHeader(value = "obp_sort_direction", required = false) String sortDirection,
 			@RequestHeader(value = "obp_limit", required = false) Integer limit,
@@ -213,18 +213,18 @@ public class AIPController extends APIController {
 			@RequestHeader(value = "obp_sort_by", required = false) String sortBy,
 			@RequestHeader(value = "obp_offset", required = false) Integer number, @RequestHeader(value = "user", required = true) String user,
 			@RequestHeader(value = "client", required = true) String client) {
-		ResponseEntity<List<TransactionBean>> response;
+		ResponseEntity<List<Transaction>> response;
 		try {
-			ViewIdBean specifiedView = new ViewIdBean();
+			ViewId specifiedView = new ViewId();
 			specifiedView.setId(viewId);
 
-			SubscriptionInfoBean sib = sdao.getSubscriptionInfo(user, client,
+			SubscriptionInfo sib = sdao.getSubscriptionInfo(user, client,
 					accountId, bankId);
 			if (!validateSubscription(sib, specifiedView)) {
 				throw new IllegalAccessException(Constants.ERRMSG_NOT_SUBSCRIBED);
 			}
 
-			List<TransactionBean> t = tdao.getTransactions(bankId, accountId, sortDirection, limit, fromDate, toDate,
+			List<Transaction> t = tdao.getTransactions(bankId, accountId, sortDirection, limit, fromDate, toDate,
 					sortBy, number);
 
 			response = ResponseEntity.ok(t);
@@ -237,10 +237,10 @@ public class AIPController extends APIController {
 	}
 
 	@RequestMapping(method = RequestMethod.GET, value = "/banks", produces = MediaType.APPLICATION_JSON_VALUE)
-	public @ResponseBody ResponseEntity<List<BankBean>> getBanks() {
-		ResponseEntity<List<BankBean>> response;
+	public @ResponseBody ResponseEntity<List<Bank>> getBanks() {
+		ResponseEntity<List<Bank>> response;
 		try {
-			List<BankBean> b = bdao.getBanks();
+			List<Bank> b = bdao.getBanks();
 			response = ResponseEntity.ok(b);
 		} catch (Exception ex) {
 			logger.error(ex);
@@ -250,10 +250,10 @@ public class AIPController extends APIController {
 	}
 
 	@RequestMapping(method = RequestMethod.GET, value = "/banks/{bankId}", produces = MediaType.APPLICATION_JSON_VALUE)
-	public @ResponseBody ResponseEntity<BankBean> getBankById(@PathVariable("bankId") String bankId) {
-		ResponseEntity<BankBean> response;
+	public @ResponseBody ResponseEntity<Bank> getBankById(@PathVariable("bankId") String bankId) {
+		ResponseEntity<Bank> response;
 		try {
-			BankBean b = bdao.getBankDetails(bankId);
+			Bank b = bdao.getBankDetails(bankId);
 			response = ResponseEntity.ok(b);
 		} catch (Exception ex) {
 			logger.error(ex);

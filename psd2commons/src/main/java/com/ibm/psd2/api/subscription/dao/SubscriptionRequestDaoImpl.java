@@ -18,11 +18,11 @@ import org.springframework.stereotype.Component;
 import com.ibm.psd2.api.commons.Constants;
 import com.ibm.psd2.api.commons.db.MongoConnection;
 import com.ibm.psd2.api.commons.db.MongoDocumentParser;
-import com.ibm.psd2.commons.beans.ChallengeAnswerBean;
-import com.ibm.psd2.commons.beans.ChallengeBean;
-import com.ibm.psd2.commons.beans.pisp.TxnRequestDetailsBean;
-import com.ibm.psd2.commons.beans.subscription.SubscriptionInfoBean;
-import com.ibm.psd2.commons.beans.subscription.SubscriptionRequestBean;
+import com.ibm.psd2.commons.beans.ChallengeAnswer;
+import com.ibm.psd2.commons.beans.Challenge;
+import com.ibm.psd2.commons.beans.pisp.TxnRequestDetails;
+import com.ibm.psd2.commons.beans.subscription.SubscriptionInfo;
+import com.ibm.psd2.commons.beans.subscription.SubscriptionRequest;
 import com.ibm.psd2.commons.utils.UUIDGenerator;
 import com.mongodb.client.FindIterable;
 import com.mongodb.client.MongoCollection;
@@ -43,7 +43,7 @@ public class SubscriptionRequestDaoImpl implements SubscriptionRequestDao
 	private String subscriptionRequests;
 
 	@Override
-	public SubscriptionRequestBean getSubscriptionRequestByIdAndChallenge(String id, ChallengeAnswerBean cab) throws Exception
+	public SubscriptionRequest getSubscriptionRequestByIdAndChallenge(String id, ChallengeAnswer cab) throws Exception
 	{
 		logger.info("id = " + id);
 		MongoCollection<Document> coll = conn.getDB().getCollection(subscriptionRequests);
@@ -51,27 +51,27 @@ public class SubscriptionRequestDaoImpl implements SubscriptionRequestDao
 				and(eq("id", id), eq("challenge.id", cab.getId())))
 				.projection(excludeId());
 		
-		SubscriptionRequestBean s = null;
+		SubscriptionRequest s = null;
 
 		Document document = iterable.first();
 		if (document != null)
 		{
 			logger.info("message = " + document.toJson());
-			s = mdp.parse(document, new SubscriptionRequestBean());
+			s = mdp.parse(document, new SubscriptionRequest());
 		}
 		return s;
 	}
 	
 	@Override
-	public SubscriptionRequestBean createSubscriptionRequest(SubscriptionRequestBean s) throws Exception
+	public SubscriptionRequest createSubscriptionRequest(SubscriptionRequest s) throws Exception
 	{
 		logger.info("Subscription Request = " + s);
 		
 		s.setId(UUIDGenerator.generateUUID());
 		s.setCreationDate(new Date());
-		s.setStatus(SubscriptionRequestBean.STATUS_INITIATED);
+		s.setStatus(SubscriptionRequest.STATUS_INITIATED);
 		
-		ChallengeBean c = new ChallengeBean();
+		Challenge c = new Challenge();
 		c.setId(UUIDGenerator.generateUUID());
 		c.setChallenge_type("NEW_SUBSCRIPTION");
 		c.setAllowed_attempts(Constants.CHALLENGE_MAX_ATTEMPTS);

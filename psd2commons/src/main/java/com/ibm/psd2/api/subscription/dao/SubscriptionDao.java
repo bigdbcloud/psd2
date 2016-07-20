@@ -2,18 +2,18 @@ package com.ibm.psd2.api.subscription.dao;
 
 import java.util.List;
 
-import com.ibm.psd2.commons.beans.subscription.SubscriptionInfoBean;
+import com.ibm.psd2.commons.beans.subscription.SubscriptionInfo;
 
 public interface SubscriptionDao
 {
-	public SubscriptionInfoBean getSubscriptionInfo(String username, String clientId, String accountId, String bankId)
+	public SubscriptionInfo getSubscriptionInfo(String username, String clientId, String accountId, String bankId)
 			throws Exception;
 
-	public List<SubscriptionInfoBean> getSubscriptionInfo(String username, String clientId, String bankId)
+	public List<SubscriptionInfo> getSubscriptionInfo(String username, String clientId, String bankId)
 			throws Exception;
 
-	public List<SubscriptionInfoBean> getSubscriptionInfo(String username, String clientId) throws Exception;
+	public List<SubscriptionInfo> getSubscriptionInfo(String username, String clientId) throws Exception;
 
-	public void createSubscriptionInfo(SubscriptionInfoBean s) throws Exception;
+	public void createSubscriptionInfo(SubscriptionInfo s) throws Exception;
 
 }

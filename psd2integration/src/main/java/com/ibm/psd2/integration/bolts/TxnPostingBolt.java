@@ -11,12 +11,12 @@ import org.apache.storm.topology.base.BaseRichBolt;
 import org.apache.storm.tuple.Tuple;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.ibm.psd2.commons.beans.aip.BankAccountDetailsBean;
-import com.ibm.psd2.commons.beans.aip.TransactionAccountBean;
-import com.ibm.psd2.commons.beans.aip.TransactionBankBean;
-import com.ibm.psd2.commons.beans.aip.TransactionBean;
-import com.ibm.psd2.commons.beans.aip.TransactionDetailsBean;
-import com.ibm.psd2.commons.beans.pisp.TxnRequestDetailsBean;
+import com.ibm.psd2.commons.beans.aip.BankAccountDetails;
+import com.ibm.psd2.commons.beans.aip.TransactionAccount;
+import com.ibm.psd2.commons.beans.aip.TransactionBank;
+import com.ibm.psd2.commons.beans.aip.Transaction;
+import com.ibm.psd2.commons.beans.aip.TransactionDetails;
+import com.ibm.psd2.commons.beans.pisp.TxnRequestDetails;
 import com.ibm.psd2.integration.ArgumentsContainer;
 import com.ibm.psd2.integration.dao.MongoDao;
 import com.ibm.psd2.integration.dao.MongoDaoImpl;
@@ -60,14 +60,14 @@ public class TxnPostingBolt extends BaseRichBolt
 			String txnRequest = (String)input.getValueByField("txn");
 			logger.warn("Processing Txn Request = " + txnRequest);
 			
-			BankAccountDetailsBean from = mapper.readValue(sourceAccount, BankAccountDetailsBean.class);
-			TxnRequestDetailsBean tdb = mapper.readValue(txnRequest, TxnRequestDetailsBean.class);
+			BankAccountDetails from = mapper.readValue(sourceAccount, BankAccountDetails.class);
+			TxnRequestDetails tdb = mapper.readValue(txnRequest, TxnRequestDetails.class);
 
-			TransactionBean tb = new TransactionBean();
+			Transaction tb = new Transaction();
 			
 			tb.setId(tdb.getTransaction_ids());
 			
-			TransactionDetailsBean td = new TransactionDetailsBean();
+			TransactionDetails td = new TransactionDetails();
 			td.setCompleted(tdb.getEnd_date());
 			td.setDescription(tdb.getBody().getDescription());
 			td.setNew_balance(from.getBalance());
@@ -77,10 +77,10 @@ public class TxnPostingBolt extends BaseRichBolt
 			
 			tb.setDetails(td);
 			
-			TransactionAccountBean thisAcc = new TransactionAccountBean();
+			TransactionAccount thisAcc = new TransactionAccount();
 			thisAcc.setId(from.getId());
 			
-			TransactionBankBean tbb = new TransactionBankBean();
+			TransactionBank tbb = new TransactionBank();
 			tbb.setName(from.getBank_id());
 			tbb.setNational_identifier(from.getBank_id());
 			thisAcc.setBank(tbb);
@@ -92,10 +92,10 @@ public class TxnPostingBolt extends BaseRichBolt
 			
 			tb.setThis_account(thisAcc);
 			
-			TransactionAccountBean toAcc = new TransactionAccountBean();
+			TransactionAccount toAcc = new TransactionAccount();
 			toAcc.setId(tdb.getBody().getTo().getAccount_id());
 			
-			TransactionBankBean tbb1 = new TransactionBankBean();
+			TransactionBank tbb1 = new TransactionBank();
 			tbb1.setNational_identifier(tdb.getBody().getTo().getBank_id());
 			tbb1.setName(tdb.getBody().getTo().getBank_id());
 			toAcc.setBank(tbb1);

@@ -15,7 +15,7 @@ import org.springframework.stereotype.Component;
 
 import com.ibm.psd2.api.commons.db.MongoConnection;
 import com.ibm.psd2.api.commons.db.MongoDocumentParser;
-import com.ibm.psd2.commons.beans.BankBean;
+import com.ibm.psd2.commons.beans.Bank;
 import com.mongodb.client.FindIterable;
 import com.mongodb.client.MongoCollection;
 
@@ -35,30 +35,30 @@ public class BankDaoImpl implements BankDao
 	private String banks;
 
 	@Override
-	public BankBean getBankDetails(String bankId) throws Exception
+	public Bank getBankDetails(String bankId) throws Exception
 	{
 		logger.info("bankId = " + bankId);
 		MongoCollection<Document> coll = conn.getDB().getCollection(banks);
 		FindIterable<Document> iterable = coll.find(eq("id", bankId)).projection(excludeId());
-		BankBean b = null;
+		Bank b = null;
 
 		for (Document document : iterable)
 		{
 			if (document != null)
 			{
 				logger.info("message = " + document.toJson());
-				b = mdp.parse(document, new BankBean());
+				b = mdp.parse(document, new Bank());
 			}
 		}
 		return b;
 	}
 
 	@Override
-	public List<BankBean> getBanks() throws Exception
+	public List<Bank> getBanks() throws Exception
 	{
 		MongoCollection<Document> coll = conn.getDB().getCollection(banks);
 		FindIterable<Document> iterable = coll.find().projection(excludeId());
-		ArrayList<BankBean> b = null;
+		ArrayList<Bank> b = null;
 
 		for (Document document : iterable)
 		{
@@ -69,14 +69,14 @@ public class BankDaoImpl implements BankDao
 					b = new ArrayList<>();
 				}
 				logger.info("message = " + document.toJson());
-				b.add(mdp.parse(document, new BankBean()));
+				b.add(mdp.parse(document, new Bank()));
 			}
 		}
 		return b;
 	}
 
 	@Override
-	public BankBean createBank(BankBean b) throws Exception
+	public Bank createBank(Bank b) throws Exception
 	{
 		MongoCollection<Document> coll = conn.getDB().getCollection(banks);
 		coll.insertOne(mdp.format(b));

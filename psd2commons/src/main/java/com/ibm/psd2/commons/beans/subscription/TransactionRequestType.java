@@ -6,7 +6,7 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonInclude.Include;
 
 @JsonInclude(value = Include.NON_EMPTY)
-public class TransactionRequestTypeBean implements Serializable
+public class TransactionRequestType implements Serializable
 {
 	public static enum TYPES 
 	{

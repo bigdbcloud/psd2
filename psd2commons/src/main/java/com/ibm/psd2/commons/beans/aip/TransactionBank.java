@@ -8,37 +8,27 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 @JsonInclude(value = Include.NON_EMPTY)
-public class BankAccountOverviewBean implements Serializable
+public class TransactionBank implements Serializable
 {
-	private String id;
-	private String label;
-	private String bank_id;
+	String national_identifier;
+	String name;
+	public String getNational_identifier()
+	{
+		return national_identifier;
+	}
+	public void setNational_identifier(String national_identifier)
+	{
+		this.national_identifier = national_identifier;
+	}
+	public String getName()
+	{
+		return name;
+	}
+	public void setName(String name)
+	{
+		this.name = name;
+	}
 	
-	public String getId()
-	{
-		return id;
-	}
-	public void setId(String id)
-	{
-		this.id = id;
-	}
-	public String getLabel()
-	{
-		return label;
-	}
-	public void setLabel(String label)
-	{
-		this.label = label;
-	}
-	public String getBank_id()
-	{
-		return bank_id;
-	}
-	public void setBank_id(String bank_id)
-	{
-		this.bank_id = bank_id;
-	}
-
 	public String toString()
 	{
 		ObjectMapper mapper = new ObjectMapper();
@@ -52,5 +42,4 @@ public class BankAccountOverviewBean implements Serializable
 		return "";
 	}
 
-	
 }

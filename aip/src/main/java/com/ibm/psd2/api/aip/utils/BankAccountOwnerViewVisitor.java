@@ -9,8 +9,8 @@ public class BankAccountOwnerViewVisitor implements Visitor
 	public <T, U> T visit(U u)
 	{
 		
-		BankAccountDetailsViewBean badv = new BankAccountDetailsViewBean();
-		BankAccountDetailsBean bad = (BankAccountDetailsBean) u;
+		BankAccountDetailsView badv = new BankAccountDetailsView();
+		BankAccountDetails bad = (BankAccountDetails) u;
 		
 		badv.setId(bad.getId());
 		badv.setBank_id(bad.getBank_id());

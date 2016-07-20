@@ -4,45 +4,33 @@ import java.io.Serializable;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonInclude.Include;
-import com.ibm.psd2.commons.beans.AmountBean;
+import com.ibm.psd2.commons.beans.Amount;
 
 @JsonInclude(value = Include.NON_EMPTY)
-public class TxnRequestBean implements Serializable
+public class TxnRequest implements Serializable
 {
-	/*
-		"to":{
-				"bank_id":"psd201-bank-x--uk",
-    			"account_id":"007007007007007007007"
-			},  
-		"value":{
-    		"currency":"EUR",
-    		"amount":"100.53"
-			},
-		"description":"A description for the transaction to be created"
-	*/
-	
-	private TxnPartyBean to;
-	private AmountBean value;
+	private TxnParty to;
+	private Amount value;
 	private String description;
 	
 	private String transaction_request_type;
 	
-	public TxnPartyBean getTo()
+	public TxnParty getTo()
 	{
 		return to;
 	}
 	
-	public void setTo(TxnPartyBean to)
+	public void setTo(TxnParty to)
 	{
 		this.to = to;
 	}
 	
-	public AmountBean getValue()
+	public Amount getValue()
 	{
 		return value;
 	}
 	
-	public void setValue(AmountBean value)
+	public void setValue(Amount value)
 	{
 		this.value = value;
 	}

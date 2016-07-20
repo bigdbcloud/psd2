@@ -20,7 +20,7 @@ import org.springframework.stereotype.Component;
 import com.ibm.psd2.api.commons.Constants;
 import com.ibm.psd2.api.commons.db.MongoConnection;
 import com.ibm.psd2.api.commons.db.MongoDocumentParser;
-import com.ibm.psd2.commons.beans.aip.TransactionBean;
+import com.ibm.psd2.commons.beans.aip.Transaction;
 import com.mongodb.client.FindIterable;
 import com.mongodb.client.MongoCollection;
 
@@ -39,14 +39,14 @@ public class TransactionDaoImpl implements TransactionDao
 	private String transactions;
 
 
-	public TransactionBean getTransactionById(String bankId, String accountId, String txnId) throws Exception
+	public Transaction getTransactionById(String bankId, String accountId, String txnId) throws Exception
 	{
 		logger.info("bankId = " + bankId + ", accountId = " + accountId + ", txnId = " + txnId);
 		MongoCollection<Document> coll = conn.getDB().getCollection(transactions);
 		
 		FindIterable<Document> iterable = coll.find(and(eq("id", txnId), eq("this_account.id", accountId), eq("this_account.bank.national_identifier", bankId)))
 				.projection(excludeId());
-		TransactionBean t = null;
+		Transaction t = null;
 
 		if (iterable != null)
 		{
@@ -54,14 +54,14 @@ public class TransactionDaoImpl implements TransactionDao
 			if (document != null)
 			{
 				logger.info("Transaction = " + document.toJson());
-				t = mdp.parse(document, new TransactionBean());
+				t = mdp.parse(document, new Transaction());
 			}
 		}
 
 		return t;
 	}
 
-	public List<TransactionBean> getTransactions(String bankId, String accountId, String sortDirection,Integer limit, String fromDate, String toDate, String sortBy, Integer number) throws Exception
+	public List<Transaction> getTransactions(String bankId, String accountId, String sortDirection,Integer limit, String fromDate, String toDate, String sortBy, Integer number) throws Exception
 	{
 		logger.info("bankId = " + bankId + ", accountId = " + accountId);
 		MongoCollection<Document> coll = conn.getDB().getCollection(transactions);
@@ -108,7 +108,7 @@ public class TransactionDaoImpl implements TransactionDao
 		
 		FindIterable<Document> iterable = coll.find(and(criteria)).sort(sortDirect).limit(docLimit).projection(excludeId());
 		
-		List<TransactionBean> lst = null;
+		List<Transaction> lst = null;
 		for (Document document : iterable)
 		{
 			if (document != null)
@@ -118,7 +118,7 @@ public class TransactionDaoImpl implements TransactionDao
 					lst = new ArrayList<>();
 				}
 				logger.info("Transaction = " + document.toJson());
-				TransactionBean t = mdp.parse(document, new TransactionBean());
+				Transaction t = mdp.parse(document, new Transaction());
 				lst.add(t);
 			}
 		}

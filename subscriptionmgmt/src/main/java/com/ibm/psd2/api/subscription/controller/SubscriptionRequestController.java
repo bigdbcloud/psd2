@@ -17,8 +17,8 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.ibm.psd2.api.subscription.dao.SubscriptionDao;
 import com.ibm.psd2.api.subscription.dao.SubscriptionRequestDao;
-import com.ibm.psd2.commons.beans.subscription.SubscriptionInfoBean;
-import com.ibm.psd2.commons.beans.subscription.SubscriptionRequestBean;
+import com.ibm.psd2.commons.beans.subscription.SubscriptionInfo;
+import com.ibm.psd2.commons.beans.subscription.SubscriptionRequest;
 
 @RestController
 public class SubscriptionRequestController
@@ -36,13 +36,13 @@ public class SubscriptionRequestController
 	private String version;
 
 	@RequestMapping(method = RequestMethod.POST, value = "/subscription/request", produces = MediaType.APPLICATION_JSON_VALUE)
-	public @ResponseBody ResponseEntity<SubscriptionRequestBean> createSubscription(
-			@RequestBody(required=true) SubscriptionRequestBean s)
+	public @ResponseBody ResponseEntity<SubscriptionRequest> createSubscription(
+			@RequestBody(required=true) SubscriptionRequest s)
 	{
-		ResponseEntity<SubscriptionRequestBean> response;
+		ResponseEntity<SubscriptionRequest> response;
 		try
 		{
-			SubscriptionRequestBean sreturn = srdao.createSubscriptionRequest(s);
+			SubscriptionRequest sreturn = srdao.createSubscriptionRequest(s);
 			response = ResponseEntity.ok(sreturn);
 		} catch (Exception e)
 		{
@@ -53,13 +53,13 @@ public class SubscriptionRequestController
 	}
 
 	@RequestMapping(method = RequestMethod.GET, value = "/subscription", produces = MediaType.APPLICATION_JSON_VALUE)
-	public @ResponseBody ResponseEntity<List<SubscriptionInfoBean>> getSubscriptionInfo(@RequestHeader(value = "user", required = true) String user,
+	public @ResponseBody ResponseEntity<List<SubscriptionInfo>> getSubscriptionInfo(@RequestHeader(value = "user", required = true) String user,
 			@RequestHeader(value = "client", required = true) String client)
 	{
-		ResponseEntity<List<SubscriptionInfoBean>> response;
+		ResponseEntity<List<SubscriptionInfo>> response;
 		try
 		{
-			List<SubscriptionInfoBean> sreturn = sdao.getSubscriptionInfo(user, client);
+			List<SubscriptionInfo> sreturn = sdao.getSubscriptionInfo(user, client);
 			response = ResponseEntity.ok(sreturn);
 		} catch (Exception e)
 		{

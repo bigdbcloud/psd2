@@ -7,10 +7,10 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonInclude.Include;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.ibm.psd2.commons.beans.ChallengeBean;
+import com.ibm.psd2.commons.beans.Challenge;
 
 @JsonInclude(value = Include.NON_EMPTY)
-public class SubscriptionRequestBean implements Serializable
+public class SubscriptionRequest implements Serializable
 {
 	
 	public static final String STATUS_INITIATED = "INITIATED";
@@ -18,11 +18,11 @@ public class SubscriptionRequestBean implements Serializable
 	public static final String STATUS_REJECTED = "REJECTED";
 	
 	private String id;
-	private SubscriptionInfoBean subscriptionInfo;
+	private SubscriptionInfo subscriptionInfo;
 	private Date creationDate;
 	private Date updatedDate;
 	private String status;
-	private ChallengeBean challenge;
+	private Challenge challenge;
 
 	public String getId()
 	{
@@ -34,12 +34,12 @@ public class SubscriptionRequestBean implements Serializable
 		this.id = id;
 	}
 
-	public SubscriptionInfoBean getSubscriptionInfo()
+	public SubscriptionInfo getSubscriptionInfo()
 	{
 		return subscriptionInfo;
 	}
 
-	public void setSubscriptionInfo(SubscriptionInfoBean subscriptionInfo)
+	public void setSubscriptionInfo(SubscriptionInfo subscriptionInfo)
 	{
 		this.subscriptionInfo = subscriptionInfo;
 	}
@@ -64,12 +64,12 @@ public class SubscriptionRequestBean implements Serializable
 		this.status = status;
 	}
 
-	public ChallengeBean getChallenge()
+	public Challenge getChallenge()
 	{
 		return challenge;
 	}
 
-	public void setChallenge(ChallengeBean challenge)
+	public void setChallenge(Challenge challenge)
 	{
 		this.challenge = challenge;
 	}
@@ -92,7 +92,7 @@ public class SubscriptionRequestBean implements Serializable
 			return false;
 		if (getClass() != obj.getClass())
 			return false;
-		SubscriptionRequestBean other = (SubscriptionRequestBean) obj;
+		SubscriptionRequest other = (SubscriptionRequest) obj;
 		if (id == null)
 		{
 			if (other.id != null)

@@ -6,7 +6,7 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonInclude.Include;
 
 @JsonInclude(value = Include.NON_EMPTY)
-public class ViewIdBean implements Serializable
+public class ViewId implements Serializable
 {
 	String id;
 
@@ -38,7 +38,7 @@ public class ViewIdBean implements Serializable
 			return false;
 		if (getClass() != obj.getClass())
 			return false;
-		ViewIdBean other = (ViewIdBean) obj;
+		ViewId other = (ViewId) obj;
 		if (id == null)
 		{
 			if (other.id != null)

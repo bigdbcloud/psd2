@@ -8,12 +8,12 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 @JsonInclude(value = Include.NON_EMPTY)
-public class TransactionBean implements Serializable
+public class Transaction implements Serializable
 {
 	private String id;
-	private TransactionAccountBean this_account;
-	private TransactionAccountBean other_account;
-	private TransactionDetailsBean details;
+	private TransactionAccount this_account;
+	private TransactionAccount other_account;
+	private TransactionDetails details;
 	
 	public String getId()
 	{
@@ -23,27 +23,27 @@ public class TransactionBean implements Serializable
 	{
 		this.id = id;
 	}
-	public TransactionAccountBean getThis_account()
+	public TransactionAccount getThis_account()
 	{
 		return this_account;
 	}
-	public void setThis_account(TransactionAccountBean this_account)
+	public void setThis_account(TransactionAccount this_account)
 	{
 		this.this_account = this_account;
 	}
-	public TransactionAccountBean getOther_account()
+	public TransactionAccount getOther_account()
 	{
 		return other_account;
 	}
-	public void setOther_account(TransactionAccountBean other_account)
+	public void setOther_account(TransactionAccount other_account)
 	{
 		this.other_account = other_account;
 	}
-	public TransactionDetailsBean getDetails()
+	public TransactionDetails getDetails()
 	{
 		return details;
 	}
-	public void setDetails(TransactionDetailsBean details)
+	public void setDetails(TransactionDetails details)
 	{
 		this.details = details;
 	}

@@ -4,24 +4,14 @@ import java.io.Serializable;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonInclude.Include;
-import com.ibm.psd2.commons.beans.AmountBean;
+import com.ibm.psd2.commons.beans.Amount;
 
 @JsonInclude(value = Include.NON_EMPTY)
-public class TxnChargeBean implements Serializable
+public class TxnCharge implements Serializable
 {
 
-	/*
-		  "charge":{
-		    "summary":"Total charges for completed transaction",
-		    "value":{
-		      "currency":"EUR",
-		      "amount":"0.010053"
-		    }
-		  }
-	*/
-	
 	private String summary;
-	private AmountBean value;
+	private Amount value;
 	
 	public String getSummary()
 	{
@@ -31,11 +21,11 @@ public class TxnChargeBean implements Serializable
 	{
 		this.summary = summary;
 	}
-	public AmountBean getValue()
+	public Amount getValue()
 	{
 		return value;
 	}
-	public void setValue(AmountBean value)
+	public void setValue(Amount value)
 	{
 		this.value = value;
 	}

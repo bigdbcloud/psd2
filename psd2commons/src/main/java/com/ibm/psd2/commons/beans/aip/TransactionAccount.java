@@ -9,17 +9,17 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 @JsonInclude(value = Include.NON_EMPTY)
-public class TransactionAccountBean implements Serializable
+public class TransactionAccount implements Serializable
 {
 	String id;
-	private ArrayList<BankAccountOwnerBean> holders;
+	private ArrayList<BankAccountOwner> holders;
 	String number;
 	String kind;
 	String iban;
 	String swift_bic;
-	TransactionBankBean bank;
+	TransactionBank bank;
 	
-	public void addHolders(BankAccountOwnerBean b)
+	public void addHolders(BankAccountOwner b)
 	{
 		if (holders == null)
 		{
@@ -38,12 +38,12 @@ public class TransactionAccountBean implements Serializable
 		this.id = id;
 	}
 
-	public ArrayList<BankAccountOwnerBean> getHolders()
+	public ArrayList<BankAccountOwner> getHolders()
 	{
 		return holders;
 	}
 
-	public void setHolders(ArrayList<BankAccountOwnerBean> holders)
+	public void setHolders(ArrayList<BankAccountOwner> holders)
 	{
 		this.holders = holders;
 	}
@@ -104,14 +104,14 @@ public class TransactionAccountBean implements Serializable
 
 
 
-	public TransactionBankBean getBank()
+	public TransactionBank getBank()
 	{
 		return bank;
 	}
 
 
 
-	public void setBank(TransactionBankBean bank)
+	public void setBank(TransactionBank bank)
 	{
 		this.bank = bank;
 	}

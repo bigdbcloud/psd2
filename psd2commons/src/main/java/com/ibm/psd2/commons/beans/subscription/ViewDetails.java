@@ -6,7 +6,7 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonInclude.Include;
 
 @JsonInclude(value = Include.NON_EMPTY)
-public class ViewDetailsBean implements Serializable
+public class ViewDetails implements Serializable
 {
 	private String id;
 	private String short_name;

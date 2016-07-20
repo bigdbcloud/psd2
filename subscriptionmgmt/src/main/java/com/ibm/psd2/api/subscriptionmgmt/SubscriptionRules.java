@@ -2,12 +2,12 @@ package com.ibm.psd2.api.subscriptionmgmt;
 
 import org.springframework.stereotype.Component;
 
-import com.ibm.psd2.commons.beans.ChallengeAnswerBean;
+import com.ibm.psd2.commons.beans.ChallengeAnswer;
 
 @Component
 public class SubscriptionRules
 {
-	public boolean validateTxnChallengeAnswer(ChallengeAnswerBean t)
+	public boolean validateTxnChallengeAnswer(ChallengeAnswer t)
 	{
 		if (t.getAnswer() != null)
 		{

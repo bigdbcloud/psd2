@@ -9,26 +9,26 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonInclude.Include;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.ibm.psd2.commons.beans.AmountBean;
+import com.ibm.psd2.commons.beans.Amount;
 import com.ibm.psd2.commons.utils.Visitor;
 
 @JsonInclude(value = Include.NON_EMPTY)
-public class BankAccountDetailsBean implements Serializable
+public class BankAccountDetails implements Serializable
 {
 
 	private Map<String, Visitor> visitors;
 	private String id;
 	private String label;
 	private String number;
-	private ArrayList<BankAccountOwnerBean> owners;
+	private ArrayList<BankAccountOwner> owners;
 	private String type;
-	private AmountBean balance;
+	private Amount balance;
 	private String iban;
 	private String swift_bic;
 	private String bank_id;
 	private String username;
 
-	public void addOwners(BankAccountOwnerBean b)
+	public void addOwners(BankAccountOwner b)
 	{
 		if (owners == null)
 		{
@@ -76,12 +76,12 @@ public class BankAccountDetailsBean implements Serializable
 		this.number = number;
 	}
 
-	public ArrayList<BankAccountOwnerBean> getOwners()
+	public ArrayList<BankAccountOwner> getOwners()
 	{
 		return owners;
 	}
 
-	public void setOwners(ArrayList<BankAccountOwnerBean> owners)
+	public void setOwners(ArrayList<BankAccountOwner> owners)
 	{
 		this.owners = owners;
 	}
@@ -96,12 +96,12 @@ public class BankAccountDetailsBean implements Serializable
 		this.type = type;
 	}
 
-	public AmountBean getBalance()
+	public Amount getBalance()
 	{
 		return balance;
 	}
 
-	public void setBalance(AmountBean balance)
+	public void setBalance(Amount balance)
 	{
 		this.balance = balance;
 	}
@@ -146,27 +146,27 @@ public class BankAccountDetailsBean implements Serializable
 		this.username = username;
 	}
 
-	public BankAccountOverviewBean getBankAccountOverview(String viewId)
+	public BankAccountOverview getBankAccountOverview(String viewId)
 	{
-		Visitor v = visitors.get(BankAccountOverviewBean.class.getName() + ":" + viewId);
+		Visitor v = visitors.get(BankAccountOverview.class.getName() + ":" + viewId);
 
 		if (v == null)
 		{
 			throw new IllegalStateException("No visitor set for BankAccountOverview Bean");
 		}
-		return (BankAccountOverviewBean) v.visit(this);
+		return (BankAccountOverview) v.visit(this);
 	}
 	
-	public BankAccountDetailsViewBean getBankAccountDetails(String viewId)
+	public BankAccountDetailsView getBankAccountDetails(String viewId)
 	{
-		Visitor v = visitors.get(BankAccountDetailsViewBean.class.getName() + ":" + viewId);
+		Visitor v = visitors.get(BankAccountDetailsView.class.getName() + ":" + viewId);
 
 		if (v == null)
 		{
 			throw new IllegalStateException("No visitor set for BankAccountDetailsBean");
 		}
 
-		return (BankAccountDetailsViewBean) v.visit(this);
+		return (BankAccountDetailsView) v.visit(this);
 	}
 
 	public String toString()

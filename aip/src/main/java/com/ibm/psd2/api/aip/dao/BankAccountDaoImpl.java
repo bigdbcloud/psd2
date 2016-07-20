@@ -15,7 +15,7 @@ import org.springframework.stereotype.Component;
 
 import com.ibm.psd2.api.commons.db.MongoConnection;
 import com.ibm.psd2.api.commons.db.MongoDocumentParser;
-import com.ibm.psd2.commons.beans.aip.BankAccountDetailsBean;
+import com.ibm.psd2.commons.beans.aip.BankAccountDetails;
 import com.mongodb.client.FindIterable;
 import com.mongodb.client.MongoCollection;
 
@@ -37,13 +37,13 @@ public class BankAccountDaoImpl implements BankAccountDao
 	private static final String LOG_PREFIX = "document = ";
 
 	@Override
-	public BankAccountDetailsBean getBankAccountDetails(String bankId, String accountId) throws Exception
+	public BankAccountDetails getBankAccountDetails(String bankId, String accountId) throws Exception
 	{
 		logger.info("bankId = " + bankId + ", accountId = " + accountId);
 		MongoCollection<Document> coll = conn.getDB().getCollection(bankAccounts);
 		FindIterable<Document> iterable = coll.find(and(eq("id", accountId), eq("bank_id", bankId)))
 				.projection(excludeId());
-		BankAccountDetailsBean b = null;
+		BankAccountDetails b = null;
 
 		if (iterable != null)
 		{
@@ -51,7 +51,7 @@ public class BankAccountDaoImpl implements BankAccountDao
 			if (document != null)
 			{
 				logger.info(LOG_PREFIX + document.toJson());
-				b = mdp.parse(document, new BankAccountDetailsBean());
+				b = mdp.parse(document, new BankAccountDetails());
 			}
 		}
 
@@ -59,20 +59,20 @@ public class BankAccountDaoImpl implements BankAccountDao
 	}
 
 	@Override
-	public List<BankAccountDetailsBean> getBankAccounts(String username, String bank_id) throws Exception
+	public List<BankAccountDetails> getBankAccounts(String username, String bank_id) throws Exception
 	{
 		logger.info("bankId = " + bank_id + ", username = " + username);
 		MongoCollection<Document> coll = conn.getDB().getCollection(bankAccounts);
 		FindIterable<Document> iterable = coll.find(and(eq("username", username), eq("bank_id", bank_id)))
 				.projection(excludeId());
-		ArrayList<BankAccountDetailsBean> accList = null;
+		ArrayList<BankAccountDetails> accList = null;
 
 		for (Document document : iterable)
 		{
 			if (document != null)
 			{
 				logger.info(LOG_PREFIX + document.toJson());
-				BankAccountDetailsBean b = mdp.parse(document, new BankAccountDetailsBean());
+				BankAccountDetails b = mdp.parse(document, new BankAccountDetails());
 				if (accList == null)
 				{
 					accList = new ArrayList<>();
@@ -85,7 +85,7 @@ public class BankAccountDaoImpl implements BankAccountDao
 	}
 
 	@Override
-	public BankAccountDetailsBean getBankAccountDetails(String bankId, String accountId, String username)
+	public BankAccountDetails getBankAccountDetails(String bankId, String accountId, String username)
 			throws Exception
 	{
 		logger.info("bankId = " + bankId + ", accountId = " + accountId);
@@ -93,7 +93,7 @@ public class BankAccountDaoImpl implements BankAccountDao
 		FindIterable<Document> iterable = coll
 				.find(and(eq("id", accountId), eq("bank_id", bankId), eq("username", username)))
 				.projection(excludeId());
-		BankAccountDetailsBean b = null;
+		BankAccountDetails b = null;
 
 		if (iterable != null)
 		{
@@ -102,14 +102,14 @@ public class BankAccountDaoImpl implements BankAccountDao
 			{
 				logger.info(LOG_PREFIX + document.toJson());
 			}
-			b = mdp.parse(document, new BankAccountDetailsBean());
+			b = mdp.parse(document, new BankAccountDetails());
 		}
 
 		return b;
 	}
 
 	@Override
-	public void createBankAccountDetails(BankAccountDetailsBean b) throws Exception
+	public void createBankAccountDetails(BankAccountDetails b) throws Exception
 	{
 		MongoCollection<Document> coll = conn.getDB().getCollection(bankAccounts);
 		coll.insertOne(mdp.format(b));

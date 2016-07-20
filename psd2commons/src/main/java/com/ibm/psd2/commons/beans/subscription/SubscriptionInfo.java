@@ -9,7 +9,7 @@ import com.fasterxml.jackson.annotation.JsonInclude.Include;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 @JsonInclude(value = Include.NON_EMPTY)
-public class SubscriptionInfoBean implements Serializable
+public class SubscriptionInfo implements Serializable
 {
 	public static final String STATUS_ACTIVE = "ACTIVE";
 	public static final String STATUS_LOCKED = "LOCKED";
@@ -18,11 +18,11 @@ public class SubscriptionInfoBean implements Serializable
 	private String accountId;
 	private String bank_id;
 	private String clientId;
-	private ArrayList<ViewIdBean> viewIds;
+	private ArrayList<ViewId> viewIds;
 	private String status;
 
-	private List<TransactionRequestTypeBean> transaction_request_types;
-	private List<TransactionLimitBean> limits;
+	private List<TransactionRequestType> transaction_request_types;
+	private List<TransactionLimit> limits;
 
 	public String getUsername()
 	{
@@ -34,22 +34,22 @@ public class SubscriptionInfoBean implements Serializable
 		this.username = username;
 	}
 
-	public List<TransactionRequestTypeBean> getTransaction_request_types()
+	public List<TransactionRequestType> getTransaction_request_types()
 	{
 		return transaction_request_types;
 	}
 
-	public void setTransaction_request_types(List<TransactionRequestTypeBean> transaction_request_types)
+	public void setTransaction_request_types(List<TransactionRequestType> transaction_request_types)
 	{
 		this.transaction_request_types = transaction_request_types;
 	}
 
-	public List<TransactionLimitBean> getLimits()
+	public List<TransactionLimit> getLimits()
 	{
 		return limits;
 	}
 
-	public void setLimits(List<TransactionLimitBean> limits)
+	public void setLimits(List<TransactionLimit> limits)
 	{
 		this.limits = limits;
 	}
@@ -74,17 +74,17 @@ public class SubscriptionInfoBean implements Serializable
 		this.bank_id = bank_id;
 	}
 
-	public ArrayList<ViewIdBean> getViewIds()
+	public ArrayList<ViewId> getViewIds()
 	{
 		return viewIds;
 	}
 
-	public void setViewIds(ArrayList<ViewIdBean> viewIds)
+	public void setViewIds(ArrayList<ViewId> viewIds)
 	{
 		this.viewIds = viewIds;
 	}
 
-	public void addViewIds(ViewIdBean viewId)
+	public void addViewIds(ViewId viewId)
 	{
 		if (this.viewIds == null)
 		{
@@ -94,7 +94,7 @@ public class SubscriptionInfoBean implements Serializable
 		this.viewIds.add(viewId);
 	}
 
-	public void addTransaction_request_types(TransactionRequestTypeBean b)
+	public void addTransaction_request_types(TransactionRequestType b)
 	{
 		if (transaction_request_types == null)
 		{
@@ -103,7 +103,7 @@ public class SubscriptionInfoBean implements Serializable
 		transaction_request_types.add(b);
 	}
 
-	public void addLimits(TransactionLimitBean ab)
+	public void addLimits(TransactionLimit ab)
 	{
 		if (limits == null)
 		{
