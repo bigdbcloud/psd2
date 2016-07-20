@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 @SpringBootApplication
 @ComponentScan(basePackages = { "com.ibm.psd2.api.commons.db", "com.ibm.psd2.api.commons.integration",
 		"com.ibm.psd2.api.subscription.dao", "com.ibm.psd2.api.pisp.controller", "com.ibm.psd2.api.pisp.dao",
-		"com.ibm.psd2.api.swagger", "com.ibm.psd2.api.pisp.controller" })
+		"com.ibm.psd2.api.swagger", "com.ibm.psd2.api.pisp.rules" })
 public class Psd2PispApiApp {
 	@RequestMapping("/user")
 	public Principal user(Principal user) {
