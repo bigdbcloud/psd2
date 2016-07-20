@@ -11,6 +11,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -25,6 +26,7 @@ import com.ibm.psd2.api.aip.utils.BankAccountOwnerViewVisitor;
 import com.ibm.psd2.api.commons.Constants;
 import com.ibm.psd2.api.subscription.dao.SubscriptionDao;
 import com.ibm.psd2.commons.beans.Bank;
+import com.ibm.psd2.commons.beans.SimpleResponse;
 import com.ibm.psd2.commons.beans.aip.BankAccountDetails;
 import com.ibm.psd2.commons.beans.aip.BankAccountDetailsView;
 import com.ibm.psd2.commons.beans.aip.BankAccountOverview;
@@ -258,6 +260,63 @@ public class AIPController extends APIController {
 		} catch (Exception ex) {
 			logger.error(ex);
 			response = ResponseEntity.badRequest().body(null);
+		}
+		return response;
+	}
+
+	@RequestMapping(method = RequestMethod.POST, value = "/admin/bank", produces = MediaType.APPLICATION_JSON_VALUE)
+	public @ResponseBody ResponseEntity<SimpleResponse> createBank(@RequestBody Bank b)
+	{
+		ResponseEntity<SimpleResponse> response;
+		SimpleResponse srb = new SimpleResponse();
+		try
+		{
+			if (b == null)
+			{
+				throw new IllegalArgumentException("No Bank Specified");
+			}
+
+			logger.info("BankBean = " + b.toString());
+
+			bdao.createBank(b);
+			
+			srb.setResponseCode(SimpleResponse.CODE_SUCCESS);
+			response = ResponseEntity.ok(srb);
+		} catch (Exception e)
+		{
+			logger.error(e);
+			srb.setResponseCode(SimpleResponse.CODE_ERROR);
+			srb.setResponseMessage(e.getMessage());
+			response = ResponseEntity.badRequest().body(srb);
+		}
+		return response;
+	}
+
+	
+	@RequestMapping(method = RequestMethod.POST, value = "/admin/account", produces = MediaType.APPLICATION_JSON_VALUE)
+	public @ResponseBody ResponseEntity<SimpleResponse> createAccount(@RequestBody BankAccountDetails b)
+	{
+		ResponseEntity<SimpleResponse> response;
+		SimpleResponse srb = new SimpleResponse();
+		try
+		{
+			if (b == null)
+			{
+				throw new IllegalArgumentException("No Account Specified");
+			}
+
+			logger.info("BankAccountDetailsBean = " + b.toString());
+
+			bad.createBankAccountDetails(b);
+			
+			srb.setResponseCode(SimpleResponse.CODE_SUCCESS);
+			response = ResponseEntity.ok(srb);
+		} catch (Exception e)
+		{
+			logger.error(e);
+			srb.setResponseCode(SimpleResponse.CODE_ERROR);
+			srb.setResponseMessage(e.getMessage());
+			response = ResponseEntity.badRequest().body(srb);
 		}
 		return response;
 	}

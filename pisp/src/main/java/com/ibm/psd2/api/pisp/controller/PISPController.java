@@ -55,7 +55,7 @@ public class PISPController extends APIController
 	public @ResponseBody ResponseEntity<TxnRequestDetails> createTransactionRequest(
 			@PathVariable("bankId") String bankId, @PathVariable("accountId") String accountId,
 			@PathVariable("viewId") String viewId, @PathVariable("txnType") String txnType,
-			@RequestBody(required = true) TxnRequest trb, @RequestHeader(value = "user", required = true) String user,
+			@RequestBody(required = true) TxnRequest txnRequest, @RequestHeader(value = "user", required = true) String user,
 			@RequestHeader(value = "client", required = true) String client)
 	{
 		ResponseEntity<TxnRequestDetails> response;
@@ -71,14 +71,14 @@ public class PISPController extends APIController
 				throw new IllegalAccessException("Not Subscribed");
 			}
 
-			if (trb == null || trb.getTo() == null
-					|| (accountId.equals(trb.getTo().getAccount_id()) && bankId.equals(trb.getTo().getBank_id())))
+			if (txnRequest == null || txnRequest.getTo() == null
+					|| (accountId.equals(txnRequest.getTo().getAccount_id()) && bankId.equals(txnRequest.getTo().getBank_id())))
 			{
 				throw new IllegalArgumentException("Invalid Transaction Request");
 			}
 
 			TxnParty payee = new TxnParty(bankId, accountId);
-			TxnRequestDetails t = pdao.createTransactionRequest(sib, trb, payee, txnType);
+			TxnRequestDetails t = pdao.createTransactionRequest(sib, txnRequest, payee, txnType);
 
 			if (useKafka && t != null && TxnRequestDetails.TXN_STATUS_PENDING.equalsIgnoreCase(t.getStatus()))
 			{
@@ -98,7 +98,7 @@ public class PISPController extends APIController
 	public @ResponseBody ResponseEntity<TxnRequestDetails> answerTransactionChallenge(
 			@PathVariable("bankId") String bankId, @PathVariable("accountId") String accountId,
 			@PathVariable("viewId") String viewId, @PathVariable("txnType") String txnType,
-			@PathVariable("txnReqId") String txnReqId, @RequestBody ChallengeAnswer t, @RequestHeader(value = "user", required = true) String user,
+			@PathVariable("txnReqId") String txnReqId, @RequestBody ChallengeAnswer challengeAnswer, @RequestHeader(value = "user", required = true) String user,
 			@RequestHeader(value = "client", required = true) String client)
 	{
 		ResponseEntity<TxnRequestDetails> response;
@@ -115,7 +115,7 @@ public class PISPController extends APIController
 			}
 
 			TxnRequestDetails tdb = pdao.answerTransactionRequestChallenge(user, viewId, bankId, accountId, txnType,
-					txnReqId, t);
+					txnReqId, challengeAnswer);
 
 			if (useKafka && tdb != null && TxnRequestDetails.TXN_STATUS_PENDING.equalsIgnoreCase(tdb.getStatus()))
 			{

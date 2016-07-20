@@ -37,12 +37,12 @@ public class SubscriptionRequestController
 
 	@RequestMapping(method = RequestMethod.POST, value = "/subscription/request", produces = MediaType.APPLICATION_JSON_VALUE)
 	public @ResponseBody ResponseEntity<SubscriptionRequest> createSubscription(
-			@RequestBody(required=true) SubscriptionRequest s)
+			@RequestBody(required=true) SubscriptionRequest subscriptionRequest)
 	{
 		ResponseEntity<SubscriptionRequest> response;
 		try
 		{
-			SubscriptionRequest sreturn = srdao.createSubscriptionRequest(s);
+			SubscriptionRequest sreturn = srdao.createSubscriptionRequest(subscriptionRequest);
 			response = ResponseEntity.ok(sreturn);
 		} catch (Exception e)
 		{
