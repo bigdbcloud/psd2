@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Configuration status="debug" strict="true" name="UserAPI"
+	packages="com.ibm.api.psd2.api">
+
+	<Appenders>
+		<Appender type="Console" name="STDOUT">
+			<!-- <Layout type="PatternLayout" pattern="%C{1}.%M %m %ex%n" /> -->
+
+			<PatternLayout>
+				<pattern>[%d] [%t] [%p] [%C{3.}::%M] - %m%n</pattern>
+			</PatternLayout>
+		</Appender>
+
+		<RollingFile name="RollingFile" fileName="/logs/PSD2API.log"
+			filePattern="logs/$${date:yyyy-MM}/app-%d{MM-dd-yyyy}-%i.log.gz">
+			<PatternLayout>
+				<pattern>[%d] [%t] [%p] [%C{3.}::%M] - %m%n</pattern>
+			</PatternLayout>
+
+			<Policies>
+				<TimeBasedTriggeringPolicy />
+				<SizeBasedTriggeringPolicy size="5 MB" />
+			</Policies>
+
+		</RollingFile>
+	</Appenders>
+
+	<Loggers>
+		<Logger name="com.ibm.api.psd2.api"
+			level="debug" additivity="false">
+			<AppenderRef ref="STDOUT" />
+			<AppenderRef ref="RollingFile" />
+		</Logger>
+
+		<Root level="debug">
+			<AppenderRef ref="RollingFile" />
+		</Root>
+	</Loggers>
+
+</Configuration>

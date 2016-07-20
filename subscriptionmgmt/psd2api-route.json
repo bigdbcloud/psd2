@@ -1,0 +1,22 @@
+{
+		"kind": "Route",
+		"apiVersion": "v1",
+		"metadata": {
+			"name": "psd2api",
+			"creationTimestamp": null,
+			"labels": {
+				"app": "psd2"
+			}
+		},
+		"spec": {
+			"host": "psd2api.vagrant.f8",
+			"to": {
+				"kind": "Service",
+				"name": "psd2api"
+			},
+			"tls": {
+				"termination": "passthrough"
+			}
+		}
+	}
+

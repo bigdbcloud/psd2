@@ -1,0 +1,15 @@
+apiVersion: extensions/v1beta1
+kind: HorizontalPodAutoscaler
+metadata:
+  name: psd2api 
+spec:
+  scaleRef:
+    kind: DeploymentConfig 
+    name: psd2api 
+    apiVersion: v1 
+    subresource: scale
+  minReplicas: 1 
+  maxReplicas: 2 
+  cpuUtilization:
+    targetPercentage: 10 
+
