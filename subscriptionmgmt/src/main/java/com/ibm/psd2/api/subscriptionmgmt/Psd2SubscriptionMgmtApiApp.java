@@ -9,8 +9,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 
 @SpringBootApplication
 @ComponentScan(basePackages = { "com.ibm.psd2.api.commons.db", "com.ibm.psd2.api.commons.integration",
-		"com.ibm.psd2.api.subscription.dao", "com.ibm.psd2.api.subscription.controller",
-		"com.ibm.psd2.api.subscriptionmgmt.controller", "com.ibm.psd2.api.swagger" })
+		"com.ibm.psd2.api.subscription.dao", "com.ibm.psd2.api.subscriptionmgmt", "com.ibm.psd2.api.swagger" })
 public class Psd2SubscriptionMgmtApiApp {
 	@RequestMapping("/user")
 	public Principal user(Principal user) {

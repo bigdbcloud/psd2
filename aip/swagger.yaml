@@ -1,0 +1,699 @@
+swagger: '2.0'
+info:
+  description: Api Documentation
+  version: '1.0'
+  title: Api Documentation
+  termsOfService: 'urn:tos'
+  contact:
+    name: Contact Email
+  license:
+    name: Apache 2.0
+    url: 'http://www.apache.org/licenses/LICENSE-2.0'
+host: 'inmbz2239.in.dst.ibm.com:8082'
+basePath: /psd2aip
+tags:
+  - name: aip-controller
+    description: AIP Controller
+  - name: basic-error-controller
+    description: Basic Error Controller
+paths:
+  /admin/account:
+    post:
+      tags:
+        - aip-controller
+      summary: createAccount
+      operationId: createAccountUsingPOST
+      consumes:
+        - application/json
+      produces:
+        - application/json
+      parameters:
+        - in: body
+          name: b
+          description: b
+          required: true
+          schema:
+            $ref: '#/definitions/BankAccountDetails'
+      responses:
+        '200':
+          description: OK
+          schema:
+            $ref: '#/definitions/SimpleResponse'
+        '201':
+          description: Created
+        '401':
+          description: Unauthorized
+        '403':
+          description: Forbidden
+        '404':
+          description: Not Found
+  /admin/bank:
+    post:
+      tags:
+        - aip-controller
+      summary: createBank
+      operationId: createBankUsingPOST
+      consumes:
+        - application/json
+      produces:
+        - application/json
+      parameters:
+        - in: body
+          name: b
+          description: b
+          required: true
+          schema:
+            $ref: '#/definitions/Bank'
+      responses:
+        '200':
+          description: OK
+          schema:
+            $ref: '#/definitions/SimpleResponse'
+        '201':
+          description: Created
+        '401':
+          description: Unauthorized
+        '403':
+          description: Forbidden
+        '404':
+          description: Not Found
+  /banks:
+    get:
+      tags:
+        - aip-controller
+      summary: getBanks
+      operationId: getBanksUsingGET
+      consumes:
+        - application/json
+      produces:
+        - application/json
+      responses:
+        '200':
+          description: OK
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/Bank'
+        '401':
+          description: Unauthorized
+        '403':
+          description: Forbidden
+        '404':
+          description: Not Found
+  '/banks/{bankId}':
+    get:
+      tags:
+        - aip-controller
+      summary: getBankById
+      operationId: getBankByIdUsingGET
+      consumes:
+        - application/json
+      produces:
+        - application/json
+      parameters:
+        - name: bankId
+          in: path
+          description: bankId
+          required: true
+          type: string
+      responses:
+        '200':
+          description: OK
+          schema:
+            $ref: '#/definitions/Bank'
+        '401':
+          description: Unauthorized
+        '403':
+          description: Forbidden
+        '404':
+          description: Not Found
+  '/banks/{bankId}/accounts/{accountId}/{viewId}/account':
+    get:
+      tags:
+        - aip-controller
+      summary: getAccountById
+      operationId: getAccountByIdUsingGET
+      consumes:
+        - application/json
+      produces:
+        - application/json
+      parameters:
+        - name: bankId
+          in: path
+          description: bankId
+          required: true
+          type: string
+        - name: accountId
+          in: path
+          description: accountId
+          required: true
+          type: string
+        - name: viewId
+          in: path
+          description: viewId
+          required: true
+          type: string
+        - name: user
+          in: header
+          description: user
+          required: true
+          type: string
+        - name: client
+          in: header
+          description: client
+          required: true
+          type: string
+      responses:
+        '200':
+          description: OK
+          schema:
+            $ref: '#/definitions/BankAccountDetailsView'
+        '401':
+          description: Unauthorized
+        '403':
+          description: Forbidden
+        '404':
+          description: Not Found
+  '/banks/{bankId}/accounts/{accountId}/{viewId}/transactions':
+    get:
+      tags:
+        - aip-controller
+      summary: getTransactions
+      operationId: getTransactionsUsingGET
+      consumes:
+        - application/json
+      produces:
+        - application/json
+      parameters:
+        - name: bankId
+          in: path
+          description: bankId
+          required: true
+          type: string
+        - name: accountId
+          in: path
+          description: accountId
+          required: true
+          type: string
+        - name: viewId
+          in: path
+          description: viewId
+          required: true
+          type: string
+        - name: obp_sort_direction
+          in: header
+          description: sortDirection
+          required: false
+          type: string
+        - name: obp_limit
+          in: header
+          description: limit
+          required: false
+          type: integer
+          format: int32
+        - name: obp_from_date
+          in: header
+          description: fromDate
+          required: false
+          type: string
+        - name: obp_to_date
+          in: header
+          description: toDate
+          required: false
+          type: string
+        - name: obp_sort_by
+          in: header
+          description: sortBy
+          required: false
+          type: string
+        - name: obp_offset
+          in: header
+          description: number
+          required: false
+          type: integer
+          format: int32
+        - name: user
+          in: header
+          description: user
+          required: true
+          type: string
+        - name: client
+          in: header
+          description: client
+          required: true
+          type: string
+      responses:
+        '200':
+          description: OK
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/Transaction'
+        '401':
+          description: Unauthorized
+        '403':
+          description: Forbidden
+        '404':
+          description: Not Found
+  '/banks/{bankId}/accounts/{accountId}/{viewId}/transactions/{txnId}/transaction':
+    get:
+      tags:
+        - aip-controller
+      summary: getTransactionById
+      operationId: getTransactionByIdUsingGET
+      consumes:
+        - application/json
+      produces:
+        - application/json
+      parameters:
+        - name: bankId
+          in: path
+          description: bankId
+          required: true
+          type: string
+        - name: accountId
+          in: path
+          description: accountId
+          required: true
+          type: string
+        - name: viewId
+          in: path
+          description: viewId
+          required: true
+          type: string
+        - name: txnId
+          in: path
+          description: txnId
+          required: true
+          type: string
+        - name: user
+          in: header
+          description: user
+          required: true
+          type: string
+        - name: client
+          in: header
+          description: client
+          required: true
+          type: string
+      responses:
+        '200':
+          description: OK
+          schema:
+            $ref: '#/definitions/Transaction'
+        '401':
+          description: Unauthorized
+        '403':
+          description: Forbidden
+        '404':
+          description: Not Found
+  /error:
+    get:
+      tags:
+        - basic-error-controller
+      summary: errorHtml
+      operationId: errorHtmlUsingGET
+      consumes:
+        - application/json
+      produces:
+        - text/html
+      responses:
+        '200':
+          description: OK
+          schema:
+            $ref: '#/definitions/ModelAndView'
+        '401':
+          description: Unauthorized
+        '403':
+          description: Forbidden
+        '404':
+          description: Not Found
+    head:
+      tags:
+        - basic-error-controller
+      summary: errorHtml
+      operationId: errorHtmlUsingHEAD
+      consumes:
+        - application/json
+      produces:
+        - text/html
+      responses:
+        '200':
+          description: OK
+          schema:
+            $ref: '#/definitions/ModelAndView'
+        '204':
+          description: No Content
+        '401':
+          description: Unauthorized
+        '403':
+          description: Forbidden
+    post:
+      tags:
+        - basic-error-controller
+      summary: errorHtml
+      operationId: errorHtmlUsingPOST
+      consumes:
+        - application/json
+      produces:
+        - text/html
+      responses:
+        '200':
+          description: OK
+          schema:
+            $ref: '#/definitions/ModelAndView'
+        '201':
+          description: Created
+        '401':
+          description: Unauthorized
+        '403':
+          description: Forbidden
+        '404':
+          description: Not Found
+    put:
+      tags:
+        - basic-error-controller
+      summary: errorHtml
+      operationId: errorHtmlUsingPUT
+      consumes:
+        - application/json
+      produces:
+        - text/html
+      responses:
+        '200':
+          description: OK
+          schema:
+            $ref: '#/definitions/ModelAndView'
+        '201':
+          description: Created
+        '401':
+          description: Unauthorized
+        '403':
+          description: Forbidden
+        '404':
+          description: Not Found
+    delete:
+      tags:
+        - basic-error-controller
+      summary: errorHtml
+      operationId: errorHtmlUsingDELETE
+      consumes:
+        - application/json
+      produces:
+        - text/html
+      responses:
+        '200':
+          description: OK
+          schema:
+            $ref: '#/definitions/ModelAndView'
+        '204':
+          description: No Content
+        '401':
+          description: Unauthorized
+        '403':
+          description: Forbidden
+    options:
+      tags:
+        - basic-error-controller
+      summary: errorHtml
+      operationId: errorHtmlUsingOPTIONS
+      consumes:
+        - application/json
+      produces:
+        - text/html
+      responses:
+        '200':
+          description: OK
+          schema:
+            $ref: '#/definitions/ModelAndView'
+        '204':
+          description: No Content
+        '401':
+          description: Unauthorized
+        '403':
+          description: Forbidden
+    patch:
+      tags:
+        - basic-error-controller
+      summary: errorHtml
+      operationId: errorHtmlUsingPATCH
+      consumes:
+        - application/json
+      produces:
+        - text/html
+      responses:
+        '200':
+          description: OK
+          schema:
+            $ref: '#/definitions/ModelAndView'
+        '204':
+          description: No Content
+        '401':
+          description: Unauthorized
+        '403':
+          description: Forbidden
+  '/my/banks/{bankId}/accounts':
+    get:
+      tags:
+        - aip-controller
+      summary: getBankAccounts
+      operationId: getBankAccountsUsingGET
+      consumes:
+        - application/json
+      produces:
+        - application/json
+      parameters:
+        - name: bankId
+          in: path
+          description: bankId
+          required: true
+          type: string
+        - name: user
+          in: header
+          description: user
+          required: true
+          type: string
+        - name: client
+          in: header
+          description: client
+          required: true
+          type: string
+      responses:
+        '200':
+          description: OK
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/BankAccountOverview'
+        '401':
+          description: Unauthorized
+        '403':
+          description: Forbidden
+        '404':
+          description: Not Found
+  '/my/banks/{bankId}/accounts/{accountId}/account':
+    get:
+      tags:
+        - aip-controller
+      summary: getAccountById
+      operationId: getAccountByIdUsingGET_1
+      consumes:
+        - application/json
+      produces:
+        - application/json
+      parameters:
+        - name: bankId
+          in: path
+          description: bankId
+          required: true
+          type: string
+        - name: accountId
+          in: path
+          description: accountId
+          required: true
+          type: string
+        - name: user
+          in: header
+          description: user
+          required: true
+          type: string
+        - name: client
+          in: header
+          description: client
+          required: true
+          type: string
+      responses:
+        '200':
+          description: OK
+          schema:
+            $ref: '#/definitions/BankAccountDetailsView'
+        '401':
+          description: Unauthorized
+        '403':
+          description: Forbidden
+        '404':
+          description: Not Found
+definitions:
+  Bank:
+    properties:
+      full_name:
+        type: string
+      id:
+        type: string
+      logo:
+        type: string
+      short_name:
+        type: string
+      website:
+        type: string
+  BankAccountOwner:
+    properties:
+      display_name:
+        type: string
+      id:
+        type: string
+      provider:
+        type: string
+  Amount:
+    properties:
+      amount:
+        type: number
+        format: double
+      currency:
+        type: string
+  ModelMap:
+    type: object
+    additionalProperties:
+      type: object
+  TransactionBank:
+    properties:
+      name:
+        type: string
+      national_identifier:
+        type: string
+  ModelAndView:
+    properties:
+      empty:
+        type: boolean
+      model:
+        type: object
+      modelMap:
+        type: object
+        additionalProperties:
+          type: object
+      reference:
+        type: boolean
+      view:
+        $ref: '#/definitions/View'
+      viewName:
+        type: string
+  BankAccountOverview:
+    properties:
+      bank_id:
+        type: string
+      id:
+        type: string
+      label:
+        type: string
+  TransactionAccount:
+    properties:
+      bank:
+        $ref: '#/definitions/TransactionBank'
+      holders:
+        type: array
+        items:
+          $ref: '#/definitions/BankAccountOwner'
+      iban:
+        type: string
+      id:
+        type: string
+      kind:
+        type: string
+      number:
+        type: string
+      swift_bic:
+        type: string
+  TransactionDetails:
+    properties:
+      completed:
+        type: string
+        format: date-time
+      description:
+        type: string
+      new_balance:
+        $ref: '#/definitions/Amount'
+      posted:
+        type: string
+        format: date-time
+      type:
+        type: string
+      value:
+        $ref: '#/definitions/Amount'
+  View:
+    properties:
+      contentType:
+        type: string
+  BankAccountDetailsView:
+    properties:
+      balance:
+        $ref: '#/definitions/Amount'
+      bank_id:
+        type: string
+      iban:
+        type: string
+      id:
+        type: string
+      label:
+        type: string
+      number:
+        type: string
+      owners:
+        type: array
+        items:
+          $ref: '#/definitions/BankAccountOwner'
+      swift_bic:
+        type: string
+      type:
+        type: string
+      username:
+        type: string
+  Transaction:
+    properties:
+      details:
+        $ref: '#/definitions/TransactionDetails'
+      id:
+        type: string
+      other_account:
+        $ref: '#/definitions/TransactionAccount'
+      this_account:
+        $ref: '#/definitions/TransactionAccount'
+  SimpleResponse:
+    properties:
+      responseCode:
+        type: string
+      responseMessage:
+        type: string
+  BankAccountDetails:
+    properties:
+      balance:
+        $ref: '#/definitions/Amount'
+      bank_id:
+        type: string
+      iban:
+        type: string
+      id:
+        type: string
+      label:
+        type: string
+      number:
+        type: string
+      owners:
+        type: array
+        items:
+          $ref: '#/definitions/BankAccountOwner'
+      swift_bic:
+        type: string
+      type:
+        type: string
+      username:
+        type: string

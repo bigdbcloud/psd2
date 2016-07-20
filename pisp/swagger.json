@@ -1,0 +1,750 @@
+{
+    "swagger": "2.0",
+    "info": {
+        "description": "Api Documentation",
+        "version": "1.0",
+        "title": "Api Documentation",
+        "termsOfService": "urn:tos",
+        "contact": {
+            "name": "Contact Email"
+        },
+        "license": {
+            "name": "Apache 2.0",
+            "url": "http://www.apache.org/licenses/LICENSE-2.0"
+        }
+    },
+    "host": "inmbz2239.in.dst.ibm.com:8083",
+    "basePath": "/psd2pisp",
+    "tags": [
+        {
+            "name": "pisp-controller",
+            "description": "PISP Controller"
+        },
+        {
+            "name": "basic-error-controller",
+            "description": "Basic Error Controller"
+        }
+    ],
+    "paths": {
+        "/banks/{bankId}/accounts/{accountId}/{viewId}/transaction-request-types": {
+            "get": {
+                "tags": [
+                    "pisp-controller"
+                ],
+                "summary": "getTransactionRequestTypes",
+                "operationId": "getTransactionRequestTypesUsingGET",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "parameters": [
+                    {
+                        "name": "bankId",
+                        "in": "path",
+                        "description": "bankId",
+                        "required": true,
+                        "type": "string"
+                    },
+                    {
+                        "name": "accountId",
+                        "in": "path",
+                        "description": "accountId",
+                        "required": true,
+                        "type": "string"
+                    },
+                    {
+                        "name": "viewId",
+                        "in": "path",
+                        "description": "viewId",
+                        "required": true,
+                        "type": "string"
+                    },
+                    {
+                        "name": "user",
+                        "in": "header",
+                        "description": "user",
+                        "required": true,
+                        "type": "string"
+                    },
+                    {
+                        "name": "client",
+                        "in": "header",
+                        "description": "client",
+                        "required": true,
+                        "type": "string"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/TransactionRequestType"
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthorized"
+                    },
+                    "403": {
+                        "description": "Forbidden"
+                    },
+                    "404": {
+                        "description": "Not Found"
+                    }
+                }
+            }
+        },
+        "/banks/{bankId}/accounts/{accountId}/{viewId}/transaction-request-types/{txnType}/transaction-requests": {
+            "post": {
+                "tags": [
+                    "pisp-controller"
+                ],
+                "summary": "createTransactionRequest",
+                "operationId": "createTransactionRequestUsingPOST",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "parameters": [
+                    {
+                        "name": "bankId",
+                        "in": "path",
+                        "description": "bankId",
+                        "required": true,
+                        "type": "string"
+                    },
+                    {
+                        "name": "accountId",
+                        "in": "path",
+                        "description": "accountId",
+                        "required": true,
+                        "type": "string"
+                    },
+                    {
+                        "name": "viewId",
+                        "in": "path",
+                        "description": "viewId",
+                        "required": true,
+                        "type": "string"
+                    },
+                    {
+                        "name": "txnType",
+                        "in": "path",
+                        "description": "txnType",
+                        "required": true,
+                        "type": "string"
+                    },
+                    {
+                        "in": "body",
+                        "name": "txnRequest",
+                        "description": "txnRequest",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/TxnRequest"
+                        }
+                    },
+                    {
+                        "name": "user",
+                        "in": "header",
+                        "description": "user",
+                        "required": true,
+                        "type": "string"
+                    },
+                    {
+                        "name": "client",
+                        "in": "header",
+                        "description": "client",
+                        "required": true,
+                        "type": "string"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/TxnRequestDetails"
+                        }
+                    },
+                    "201": {
+                        "description": "Created"
+                    },
+                    "401": {
+                        "description": "Unauthorized"
+                    },
+                    "403": {
+                        "description": "Forbidden"
+                    },
+                    "404": {
+                        "description": "Not Found"
+                    }
+                }
+            }
+        },
+        "/banks/{bankId}/accounts/{accountId}/{viewId}/transaction-request-types/{txnType}/transaction-requests/{txnReqId}/challenge": {
+            "post": {
+                "tags": [
+                    "pisp-controller"
+                ],
+                "summary": "answerTransactionChallenge",
+                "operationId": "answerTransactionChallengeUsingPOST",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "parameters": [
+                    {
+                        "name": "bankId",
+                        "in": "path",
+                        "description": "bankId",
+                        "required": true,
+                        "type": "string"
+                    },
+                    {
+                        "name": "accountId",
+                        "in": "path",
+                        "description": "accountId",
+                        "required": true,
+                        "type": "string"
+                    },
+                    {
+                        "name": "viewId",
+                        "in": "path",
+                        "description": "viewId",
+                        "required": true,
+                        "type": "string"
+                    },
+                    {
+                        "name": "txnType",
+                        "in": "path",
+                        "description": "txnType",
+                        "required": true,
+                        "type": "string"
+                    },
+                    {
+                        "name": "txnReqId",
+                        "in": "path",
+                        "description": "txnReqId",
+                        "required": true,
+                        "type": "string"
+                    },
+                    {
+                        "in": "body",
+                        "name": "challengeAnswer",
+                        "description": "challengeAnswer",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/ChallengeAnswer"
+                        }
+                    },
+                    {
+                        "name": "user",
+                        "in": "header",
+                        "description": "user",
+                        "required": true,
+                        "type": "string"
+                    },
+                    {
+                        "name": "client",
+                        "in": "header",
+                        "description": "client",
+                        "required": true,
+                        "type": "string"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/TxnRequestDetails"
+                        }
+                    },
+                    "201": {
+                        "description": "Created"
+                    },
+                    "401": {
+                        "description": "Unauthorized"
+                    },
+                    "403": {
+                        "description": "Forbidden"
+                    },
+                    "404": {
+                        "description": "Not Found"
+                    }
+                }
+            }
+        },
+        "/banks/{bankId}/accounts/{accountId}/{viewId}/transaction-requests": {
+            "get": {
+                "tags": [
+                    "pisp-controller"
+                ],
+                "summary": "getTransactionRequests",
+                "operationId": "getTransactionRequestsUsingGET",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "parameters": [
+                    {
+                        "name": "bankId",
+                        "in": "path",
+                        "description": "bankId",
+                        "required": true,
+                        "type": "string"
+                    },
+                    {
+                        "name": "accountId",
+                        "in": "path",
+                        "description": "accountId",
+                        "required": true,
+                        "type": "string"
+                    },
+                    {
+                        "name": "viewId",
+                        "in": "path",
+                        "description": "viewId",
+                        "required": true,
+                        "type": "string"
+                    },
+                    {
+                        "name": "user",
+                        "in": "header",
+                        "description": "user",
+                        "required": true,
+                        "type": "string"
+                    },
+                    {
+                        "name": "client",
+                        "in": "header",
+                        "description": "client",
+                        "required": true,
+                        "type": "string"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/TxnRequestDetails"
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthorized"
+                    },
+                    "403": {
+                        "description": "Forbidden"
+                    },
+                    "404": {
+                        "description": "Not Found"
+                    }
+                }
+            }
+        },
+        "/error": {
+            "get": {
+                "tags": [
+                    "basic-error-controller"
+                ],
+                "summary": "error",
+                "operationId": "errorUsingGET",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "*/*"
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "type": "object",
+                            "additionalProperties": {
+                                "type": "object"
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthorized"
+                    },
+                    "403": {
+                        "description": "Forbidden"
+                    },
+                    "404": {
+                        "description": "Not Found"
+                    }
+                }
+            },
+            "head": {
+                "tags": [
+                    "basic-error-controller"
+                ],
+                "summary": "error",
+                "operationId": "errorUsingHEAD",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "*/*"
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "type": "object",
+                            "additionalProperties": {
+                                "type": "object"
+                            }
+                        }
+                    },
+                    "204": {
+                        "description": "No Content"
+                    },
+                    "401": {
+                        "description": "Unauthorized"
+                    },
+                    "403": {
+                        "description": "Forbidden"
+                    }
+                }
+            },
+            "post": {
+                "tags": [
+                    "basic-error-controller"
+                ],
+                "summary": "error",
+                "operationId": "errorUsingPOST",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "*/*"
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "type": "object",
+                            "additionalProperties": {
+                                "type": "object"
+                            }
+                        }
+                    },
+                    "201": {
+                        "description": "Created"
+                    },
+                    "401": {
+                        "description": "Unauthorized"
+                    },
+                    "403": {
+                        "description": "Forbidden"
+                    },
+                    "404": {
+                        "description": "Not Found"
+                    }
+                }
+            },
+            "put": {
+                "tags": [
+                    "basic-error-controller"
+                ],
+                "summary": "error",
+                "operationId": "errorUsingPUT",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "*/*"
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "type": "object",
+                            "additionalProperties": {
+                                "type": "object"
+                            }
+                        }
+                    },
+                    "201": {
+                        "description": "Created"
+                    },
+                    "401": {
+                        "description": "Unauthorized"
+                    },
+                    "403": {
+                        "description": "Forbidden"
+                    },
+                    "404": {
+                        "description": "Not Found"
+                    }
+                }
+            },
+            "delete": {
+                "tags": [
+                    "basic-error-controller"
+                ],
+                "summary": "error",
+                "operationId": "errorUsingDELETE",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "*/*"
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "type": "object",
+                            "additionalProperties": {
+                                "type": "object"
+                            }
+                        }
+                    },
+                    "204": {
+                        "description": "No Content"
+                    },
+                    "401": {
+                        "description": "Unauthorized"
+                    },
+                    "403": {
+                        "description": "Forbidden"
+                    }
+                }
+            },
+            "options": {
+                "tags": [
+                    "basic-error-controller"
+                ],
+                "summary": "error",
+                "operationId": "errorUsingOPTIONS",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "*/*"
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "type": "object",
+                            "additionalProperties": {
+                                "type": "object"
+                            }
+                        }
+                    },
+                    "204": {
+                        "description": "No Content"
+                    },
+                    "401": {
+                        "description": "Unauthorized"
+                    },
+                    "403": {
+                        "description": "Forbidden"
+                    }
+                }
+            },
+            "patch": {
+                "tags": [
+                    "basic-error-controller"
+                ],
+                "summary": "error",
+                "operationId": "errorUsingPATCH",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "*/*"
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "type": "object",
+                            "additionalProperties": {
+                                "type": "object"
+                            }
+                        }
+                    },
+                    "204": {
+                        "description": "No Content"
+                    },
+                    "401": {
+                        "description": "Unauthorized"
+                    },
+                    "403": {
+                        "description": "Forbidden"
+                    }
+                }
+            }
+        }
+    },
+    "definitions": {
+        "TxnRequest": {
+            "properties": {
+                "description": {
+                    "type": "string"
+                },
+                "to": {
+                    "$ref": "#/definitions/TxnParty"
+                },
+                "transaction_request_type": {
+                    "type": "string"
+                },
+                "value": {
+                    "$ref": "#/definitions/Amount"
+                }
+            }
+        },
+        "TxnParty": {
+            "properties": {
+                "account_id": {
+                    "type": "string"
+                },
+                "bank_id": {
+                    "type": "string"
+                }
+            }
+        },
+        "TxnCharge": {
+            "properties": {
+                "summary": {
+                    "type": "string"
+                },
+                "value": {
+                    "$ref": "#/definitions/Amount"
+                }
+            }
+        },
+        "ModelMap": {
+            "type": "object",
+            "additionalProperties": {
+                "type": "object"
+            }
+        },
+        "Amount": {
+            "properties": {
+                "amount": {
+                    "type": "number",
+                    "format": "double"
+                },
+                "currency": {
+                    "type": "string"
+                }
+            }
+        },
+        "ModelAndView": {
+            "properties": {
+                "empty": {
+                    "type": "boolean"
+                },
+                "model": {
+                    "type": "object"
+                },
+                "modelMap": {
+                    "type": "object",
+                    "additionalProperties": {
+                        "type": "object"
+                    }
+                },
+                "reference": {
+                    "type": "boolean"
+                },
+                "view": {
+                    "$ref": "#/definitions/View"
+                },
+                "viewName": {
+                    "type": "string"
+                }
+            }
+        },
+        "ChallengeAnswer": {
+            "properties": {
+                "answer": {
+                    "type": "string"
+                },
+                "id": {
+                    "type": "string"
+                }
+            }
+        },
+        "TxnRequestDetails": {
+            "properties": {
+                "body": {
+                    "$ref": "#/definitions/TxnRequest"
+                },
+                "challenge": {
+                    "$ref": "#/definitions/Challenge"
+                },
+                "charge": {
+                    "$ref": "#/definitions/TxnCharge"
+                },
+                "end_date": {
+                    "type": "string",
+                    "format": "date-time"
+                },
+                "from": {
+                    "$ref": "#/definitions/TxnParty"
+                },
+                "id": {
+                    "type": "string"
+                },
+                "start_date": {
+                    "type": "string",
+                    "format": "date-time"
+                },
+                "status": {
+                    "type": "string"
+                },
+                "transaction_ids": {
+                    "type": "string"
+                },
+                "type": {
+                    "type": "string"
+                }
+            }
+        },
+        "View": {
+            "properties": {
+                "contentType": {
+                    "type": "string"
+                }
+            }
+        },
+        "Challenge": {
+            "properties": {
+                "allowed_attempts": {
+                    "type": "integer",
+                    "format": "int32"
+                },
+                "challenge_type": {
+                    "type": "string"
+                },
+                "id": {
+                    "type": "string"
+                }
+            }
+        },
+        "TransactionRequestType": {
+            "properties": {
+                "value": {
+                    "type": "string"
+                }
+            }
+        }
+    }
+}
