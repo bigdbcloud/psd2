@@ -1,20 +1,30 @@
 version: '2'
 services:
- oauth2server:
-  image: psd2/oauth2server
+  subscriptionmgmt:
+  image: psd2/subscriptionmgmt
   ports:
-   - "8081:8081"
+   - "8084:8084"
   volumes:
    - /logs:/logs
   env_file: .env
- 
- psd2api:
-  image: psd2/psd2api
+
+aip:
+  image: psd2/aip
   ports:
    - "8082:8082"
   volumes:
    - /logs:/logs
   env_file: .env
   depends_on:
-  - oauth2server
+  - subscriptionmgmt
+ 
+ pisp:
+  image: psd2/pisp
+  ports:
+  - "8083:8083"
+  volumes:
+  - /logs:/logs
+  env_file: .env 
+  depends_on:
+  - subscriptionmgmt
 
