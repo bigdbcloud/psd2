@@ -1,0 +1,370 @@
+swagger: '2.0'
+info:
+  description: Api Documentation
+  version: '1.0'
+  title: Api Documentation
+  termsOfService: 'urn:tos'
+  contact:
+    name: Contact Email
+  license:
+    name: Apache 2.0
+    url: 'http://www.apache.org/licenses/LICENSE-2.0'
+host: 'inmbz2239.in.dst.ibm.com:8084'
+basePath: /psd2subscriptionmgmt
+tags:
+  - name: subscription-management-controller
+    description: Subscription Management Controller
+  - name: basic-error-controller
+    description: Basic Error Controller
+paths:
+  '/admin/subscription/{id}':
+    post:
+      tags:
+        - subscription-management-controller
+      summary: createSubscription
+      operationId: createSubscriptionUsingPOST
+      consumes:
+        - application/json
+      produces:
+        - application/json
+      parameters:
+        - name: id
+          in: path
+          description: id
+          required: true
+          type: string
+        - in: body
+          name: cab
+          description: cab
+          required: true
+          schema:
+            $ref: '#/definitions/ChallengeAnswer'
+      responses:
+        '200':
+          description: OK
+          schema:
+            $ref: '#/definitions/SimpleResponse'
+        '201':
+          description: Created
+        '401':
+          description: Unauthorized
+        '403':
+          description: Forbidden
+        '404':
+          description: Not Found
+  /error:
+    get:
+      tags:
+        - basic-error-controller
+      summary: errorHtml
+      operationId: errorHtmlUsingGET
+      consumes:
+        - application/json
+      produces:
+        - text/html
+      responses:
+        '200':
+          description: OK
+          schema:
+            $ref: '#/definitions/ModelAndView'
+        '401':
+          description: Unauthorized
+        '403':
+          description: Forbidden
+        '404':
+          description: Not Found
+    head:
+      tags:
+        - basic-error-controller
+      summary: errorHtml
+      operationId: errorHtmlUsingHEAD
+      consumes:
+        - application/json
+      produces:
+        - text/html
+      responses:
+        '200':
+          description: OK
+          schema:
+            $ref: '#/definitions/ModelAndView'
+        '204':
+          description: No Content
+        '401':
+          description: Unauthorized
+        '403':
+          description: Forbidden
+    post:
+      tags:
+        - basic-error-controller
+      summary: errorHtml
+      operationId: errorHtmlUsingPOST
+      consumes:
+        - application/json
+      produces:
+        - text/html
+      responses:
+        '200':
+          description: OK
+          schema:
+            $ref: '#/definitions/ModelAndView'
+        '201':
+          description: Created
+        '401':
+          description: Unauthorized
+        '403':
+          description: Forbidden
+        '404':
+          description: Not Found
+    put:
+      tags:
+        - basic-error-controller
+      summary: errorHtml
+      operationId: errorHtmlUsingPUT
+      consumes:
+        - application/json
+      produces:
+        - text/html
+      responses:
+        '200':
+          description: OK
+          schema:
+            $ref: '#/definitions/ModelAndView'
+        '201':
+          description: Created
+        '401':
+          description: Unauthorized
+        '403':
+          description: Forbidden
+        '404':
+          description: Not Found
+    delete:
+      tags:
+        - basic-error-controller
+      summary: errorHtml
+      operationId: errorHtmlUsingDELETE
+      consumes:
+        - application/json
+      produces:
+        - text/html
+      responses:
+        '200':
+          description: OK
+          schema:
+            $ref: '#/definitions/ModelAndView'
+        '204':
+          description: No Content
+        '401':
+          description: Unauthorized
+        '403':
+          description: Forbidden
+    options:
+      tags:
+        - basic-error-controller
+      summary: errorHtml
+      operationId: errorHtmlUsingOPTIONS
+      consumes:
+        - application/json
+      produces:
+        - text/html
+      responses:
+        '200':
+          description: OK
+          schema:
+            $ref: '#/definitions/ModelAndView'
+        '204':
+          description: No Content
+        '401':
+          description: Unauthorized
+        '403':
+          description: Forbidden
+    patch:
+      tags:
+        - basic-error-controller
+      summary: errorHtml
+      operationId: errorHtmlUsingPATCH
+      consumes:
+        - application/json
+      produces:
+        - text/html
+      responses:
+        '200':
+          description: OK
+          schema:
+            $ref: '#/definitions/ModelAndView'
+        '204':
+          description: No Content
+        '401':
+          description: Unauthorized
+        '403':
+          description: Forbidden
+  /subscription:
+    get:
+      tags:
+        - subscription-management-controller
+      summary: getSubscriptionInfo
+      operationId: getSubscriptionInfoUsingGET
+      consumes:
+        - application/json
+      produces:
+        - application/json
+      parameters:
+        - name: user
+          in: header
+          description: user
+          required: true
+          type: string
+        - name: client
+          in: header
+          description: client
+          required: true
+          type: string
+      responses:
+        '200':
+          description: OK
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/SubscriptionInfo'
+        '401':
+          description: Unauthorized
+        '403':
+          description: Forbidden
+        '404':
+          description: Not Found
+  /subscription/request:
+    post:
+      tags:
+        - subscription-management-controller
+      summary: createSubscription
+      operationId: createSubscriptionUsingPOST_1
+      consumes:
+        - application/json
+      produces:
+        - application/json
+      parameters:
+        - in: body
+          name: subscriptionRequest
+          description: subscriptionRequest
+          required: true
+          schema:
+            $ref: '#/definitions/SubscriptionRequest'
+      responses:
+        '200':
+          description: OK
+          schema:
+            $ref: '#/definitions/SubscriptionRequest'
+        '201':
+          description: Created
+        '401':
+          description: Unauthorized
+        '403':
+          description: Forbidden
+        '404':
+          description: Not Found
+definitions:
+  SubscriptionRequest:
+    properties:
+      challenge:
+        $ref: '#/definitions/Challenge'
+      creationDate:
+        type: string
+        format: date-time
+      id:
+        type: string
+      status:
+        type: string
+      subscriptionInfo:
+        $ref: '#/definitions/SubscriptionInfo'
+      updatedDate:
+        type: string
+        format: date-time
+  ModelMap:
+    type: object
+    additionalProperties:
+      type: object
+  SimpleResponse:
+    properties:
+      responseCode:
+        type: string
+      responseMessage:
+        type: string
+  TransactionLimit:
+    properties:
+      amount:
+        $ref: '#/definitions/Amount'
+      transaction_request_type:
+        $ref: '#/definitions/TransactionRequestType'
+  Amount:
+    properties:
+      amount:
+        type: number
+        format: double
+      currency:
+        type: string
+  ModelAndView:
+    properties:
+      empty:
+        type: boolean
+      model:
+        type: object
+      modelMap:
+        type: object
+        additionalProperties:
+          type: object
+      reference:
+        type: boolean
+      view:
+        $ref: '#/definitions/View'
+      viewName:
+        type: string
+  ViewId:
+    properties:
+      id:
+        type: string
+  ChallengeAnswer:
+    properties:
+      answer:
+        type: string
+      id:
+        type: string
+  SubscriptionInfo:
+    properties:
+      accountId:
+        type: string
+      bank_id:
+        type: string
+      clientId:
+        type: string
+      limits:
+        type: array
+        items:
+          $ref: '#/definitions/TransactionLimit'
+      status:
+        type: string
+      transaction_request_types:
+        type: array
+        items:
+          $ref: '#/definitions/TransactionRequestType'
+      username:
+        type: string
+      viewIds:
+        type: array
+        items:
+          $ref: '#/definitions/ViewId'
+  View:
+    properties:
+      contentType:
+        type: string
+  TransactionRequestType:
+    properties:
+      value:
+        type: string
+  Challenge:
+    properties:
+      allowed_attempts:
+        type: integer
+        format: int32
+      challenge_type:
+        type: string
+      id:
+        type: string
