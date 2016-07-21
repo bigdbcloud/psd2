@@ -8,3 +8,4 @@ EXPOSE 8082
 VOLUME /logs
 WORKDIR /usr/local/aip
 ENTRYPOINT java -jar aip-0.0.1-SNAPSHOT.jar > /logs/aip.system.out.log
+

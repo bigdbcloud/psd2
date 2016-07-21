@@ -1,6 +1,6 @@
 version: '2'
 services:
-  subscriptionmgmt:
+ subscriptionmgmt:
   image: psd2/subscriptionmgmt
   ports:
    - "8084:8084"
@@ -8,7 +8,7 @@ services:
    - /logs:/logs
   env_file: .env
 
-aip:
+ aip:
   image: psd2/aip
   ports:
    - "8082:8082"
