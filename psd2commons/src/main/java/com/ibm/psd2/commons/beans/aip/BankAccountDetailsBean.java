@@ -4,7 +4,9 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
+import org.springframework.data.mongodb.core.mapping.Document;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonInclude.Include;
 import com.fasterxml.jackson.core.JsonProcessingException;
@@ -12,12 +14,12 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.ibm.psd2.commons.beans.AmountBean;
 import com.ibm.psd2.commons.utils.Visitor;
 
+@Document(collection = "BankAccountDetails")
 @JsonInclude(value = Include.NON_EMPTY)
 public class BankAccountDetailsBean implements Serializable
 {
-
-	private Map<String, Visitor> visitors;
 	private String id;
+
 	private String label;
 	private String number;
 	private ArrayList<BankAccountOwnerBean> owners;
@@ -27,6 +29,9 @@ public class BankAccountDetailsBean implements Serializable
 	private String swift_bic;
 	private String bank_id;
 	private String username;
+
+	@JsonIgnore
+	private Map<String, Visitor> visitors;
 
 	public void addOwners(BankAccountOwnerBean b)
 	{
@@ -156,7 +161,7 @@ public class BankAccountDetailsBean implements Serializable
 		}
 		return (BankAccountOverviewBean) v.visit(this);
 	}
-	
+
 	public BankAccountDetailsViewBean getBankAccountDetails(String viewId)
 	{
 		Visitor v = visitors.get(BankAccountDetailsViewBean.class.getName() + ":" + viewId);

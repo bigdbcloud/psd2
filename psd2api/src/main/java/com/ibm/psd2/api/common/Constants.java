@@ -1,5 +1,7 @@
 package com.ibm.psd2.api.common;
 
+import java.text.SimpleDateFormat;
+
 public class Constants
 {
 	public static final String OWNER_VIEW = "owner";
@@ -9,6 +11,8 @@ public class Constants
 	public static final String SORT_ASCENDING = "ASC";
 	public static final String TXN_DATE_FORMAT="yyyy-MM-dd'T'HH:mm:ss.SSSZ";
 	public static final String ERRMSG_NOT_SUBSCRIBED = "Not Subscribed";
+	public static final SimpleDateFormat DATE_FORMAT = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSZ");
+
 	
 	private Constants()
 	{

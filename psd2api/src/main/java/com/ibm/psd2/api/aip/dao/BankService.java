@@ -4,7 +4,7 @@ import java.util.List;
 
 import com.ibm.psd2.commons.beans.BankBean;
 
-public interface BankDao
+public interface BankService
 {
 	public BankBean getBankDetails(String bankId) throws Exception;
 	public List<BankBean> getBanks() throws Exception;

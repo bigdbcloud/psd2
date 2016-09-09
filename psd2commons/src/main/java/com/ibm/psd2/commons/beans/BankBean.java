@@ -2,12 +2,17 @@ package com.ibm.psd2.commons.beans;
 
 import java.io.Serializable;
 
+import org.springframework.data.annotation.Id;
+import org.springframework.data.mongodb.core.mapping.Document;
+
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonInclude.Include;
 
+@Document(collection = "Banks")
 @JsonInclude(value = Include.NON_EMPTY)
 public class BankBean implements Serializable
 {
+	@Id
 	String id;
 	String short_name;
 	String full_name;

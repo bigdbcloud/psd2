@@ -2,14 +2,19 @@ package com.ibm.psd2.commons.beans.aip;
 
 import java.io.Serializable;
 
+import org.springframework.data.annotation.Id;
+import org.springframework.data.mongodb.core.mapping.Document;
+
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonInclude.Include;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
+@Document(collection = "Transactions")
 @JsonInclude(value = Include.NON_EMPTY)
 public class TransactionBean implements Serializable
 {
+	@Id
 	private String id;
 	private TransactionAccountBean this_account;
 	private TransactionAccountBean other_account;

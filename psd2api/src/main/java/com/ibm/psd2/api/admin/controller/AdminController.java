@@ -12,9 +12,9 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.ibm.psd2.api.aip.dao.BankAccountDao;
-import com.ibm.psd2.api.aip.dao.BankDao;
-import com.ibm.psd2.api.aip.dao.TransactionDao;
+import com.ibm.psd2.api.aip.dao.BankAccountDetailsService;
+import com.ibm.psd2.api.aip.dao.BankService;
+import com.ibm.psd2.api.aip.dao.TransactionStatementService;
 import com.ibm.psd2.commons.beans.BankBean;
 import com.ibm.psd2.commons.beans.SimpleResponseBean;
 import com.ibm.psd2.commons.beans.aip.BankAccountDetailsBean;
@@ -26,13 +26,13 @@ public class AdminController
 	private static final Logger logger = LogManager.getLogger(AdminController.class);
 
 	@Autowired
-	BankAccountDao badao;
+	BankAccountDetailsService badao;
 	
 	@Autowired
-	BankDao bdao;
+	BankService bdao;
 
 	@Autowired
-	TransactionDao tdao;
+	TransactionStatementService tdao;
 
 	@Value("${version}")
 	private String version;

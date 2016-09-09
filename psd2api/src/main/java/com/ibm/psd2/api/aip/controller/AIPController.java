@@ -20,9 +20,9 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.ibm.psd2.api.aip.dao.BankAccountDao;
-import com.ibm.psd2.api.aip.dao.BankDao;
-import com.ibm.psd2.api.aip.dao.TransactionDao;
+import com.ibm.psd2.api.aip.dao.BankAccountDetailsService;
+import com.ibm.psd2.api.aip.dao.BankService;
+import com.ibm.psd2.api.aip.dao.TransactionStatementService;
 import com.ibm.psd2.api.aip.utils.BankAccountOverviewVisitor;
 import com.ibm.psd2.api.aip.utils.BankAccountOwnerViewVisitor;
 import com.ibm.psd2.api.common.Constants;
@@ -42,16 +42,16 @@ public class AIPController extends APIController
 	private static final Logger logger = LogManager.getLogger(AIPController.class);
 
 	@Autowired
-	BankAccountDao bad;
+	BankAccountDetailsService bad;
 
 	@Autowired
-	BankDao bdao;
+	BankService bdao;
 
 	@Autowired
 	SubscriptionDao sdao;
 
 	@Autowired
-	TransactionDao tdao;
+	TransactionStatementService tdao;
 
 	@Value("${version}")
 	private String version;
@@ -110,7 +110,8 @@ public class AIPController extends APIController
 			}
 
 			response = ResponseEntity.ok(accountList);
-		} catch (Exception ex)
+		}
+		catch (Exception ex)
 		{
 			logger.error(ex);
 			response = ResponseEntity.badRequest().body(null);
@@ -153,12 +154,14 @@ public class AIPController extends APIController
 				b.registerVisitor(BankAccountDetailsViewBean.class.getName() + ":" + viewId, bv);
 				bo = b.getBankAccountDetails(viewId);
 				response = ResponseEntity.ok(bo);
-			} else
+			}
+			else
 			{
 				throw new IllegalArgumentException(
 						"View ID is incorrect. Currently supported ones are: " + Constants.OWNER_VIEW);
 			}
-		} catch (Exception ex)
+		}
+		catch (Exception ex)
 		{
 			logger.error(ex);
 			response = ResponseEntity.badRequest().body(null);
@@ -199,7 +202,8 @@ public class AIPController extends APIController
 			BankAccountDetailsViewBean bo = b.getBankAccountDetails(Constants.OWNER_VIEW);
 			response = ResponseEntity.ok(bo);
 
-		} catch (Exception ex)
+		}
+		catch (Exception ex)
 		{
 			logger.error(ex);
 			response = ResponseEntity.badRequest().body(null);
@@ -232,7 +236,8 @@ public class AIPController extends APIController
 
 			response = ResponseEntity.ok(t);
 
-		} catch (Exception ex)
+		}
+		catch (Exception ex)
 		{
 			logger.error(ex);
 			response = ResponseEntity.badRequest().body(null);
@@ -249,7 +254,7 @@ public class AIPController extends APIController
 			@RequestHeader(value = "obp_from_date", required = false) String fromDate,
 			@RequestHeader(value = "obp_to_date", required = false) String toDate,
 			@RequestHeader(value = "obp_sort_by", required = false) String sortBy,
-			@RequestHeader(value = "obp_offset", required = false) Integer number, Authentication auth)
+			@RequestHeader(value = "obp_offset", required = false) Integer offset, Authentication auth)
 	{
 		ResponseEntity<List<TransactionBean>> response;
 		try
@@ -266,12 +271,22 @@ public class AIPController extends APIController
 				throw new IllegalAccessException(Constants.ERRMSG_NOT_SUBSCRIBED);
 			}
 
-			List<TransactionBean> t = tdao.getTransactions(bankId, accountId, sortDirection, limit, fromDate, toDate,
-					sortBy, number);
+			if (offset == null)
+			{
+				offset = 0;
+			}
+
+			if (limit == null || limit == 0)
+			{
+				limit = 10;
+			}
+			
+			List<TransactionBean> t = tdao.getTransactions(bankId, accountId, sortDirection, fromDate, toDate, sortBy,
+					offset / limit, limit);
 
 			response = ResponseEntity.ok(t);
-
-		} catch (Exception ex)
+		}
+		catch (Exception ex)
 		{
 			logger.error(ex);
 			response = ResponseEntity.badRequest().body(null);
@@ -288,7 +303,8 @@ public class AIPController extends APIController
 		{
 			List<BankBean> b = bdao.getBanks();
 			response = ResponseEntity.ok(b);
-		} catch (Exception ex)
+		}
+		catch (Exception ex)
 		{
 			logger.error(ex);
 			response = ResponseEntity.badRequest().body(null);
@@ -305,7 +321,8 @@ public class AIPController extends APIController
 		{
 			BankBean b = bdao.getBankDetails(bankId);
 			response = ResponseEntity.ok(b);
-		} catch (Exception ex)
+		}
+		catch (Exception ex)
 		{
 			logger.error(ex);
 			response = ResponseEntity.badRequest().body(null);

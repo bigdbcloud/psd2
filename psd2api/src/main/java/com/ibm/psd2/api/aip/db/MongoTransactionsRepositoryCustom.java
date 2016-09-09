@@ -1,0 +1,12 @@
+package com.ibm.psd2.api.aip.db;
+
+import java.util.Date;
+import java.util.List;
+
+import com.ibm.psd2.commons.beans.aip.TransactionBean;
+
+public interface MongoTransactionsRepositoryCustom
+{
+	public List<TransactionBean> getTransactions(String bankId, String accountId, String sortDirection,
+			Date fromDate, Date toDate, String sortBy, Integer page, Integer limit);
+}
