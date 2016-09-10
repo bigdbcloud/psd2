@@ -6,7 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.ibm.psd2.api.utils.Constants;
-import com.ibm.psd2.commons.datamodel.KafkaProperties;
+import com.ibm.psd2.api.utils.KafkaProperties;
 
 @Service
 public class AppConfigServiceImpl implements AppConfigService
@@ -20,7 +20,7 @@ public class AppConfigServiceImpl implements AppConfigService
 	public KafkaProperties getKafkaProperties() throws Exception
 	{
 		logger.debug("getKafkaProperties invoked");
-		return macr.findOne(Constants.APP_CONFIG_KAFKA_PROPERTIES);
+		return macr.findByUuid(Constants.APP_CONFIG_KAFKA_PROPERTIES);
 	}
 
 }

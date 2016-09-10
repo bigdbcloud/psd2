@@ -113,7 +113,7 @@ public class AIPController extends APIController
 		}
 		catch (Exception ex)
 		{
-			logger.error(ex);
+			logger.error(ex.getMessage(), ex);
 			response = ResponseEntity.badRequest().body(null);
 		}
 		return response;
@@ -163,7 +163,7 @@ public class AIPController extends APIController
 		}
 		catch (Exception ex)
 		{
-			logger.error(ex);
+			logger.error(ex.getMessage(), ex);
 			response = ResponseEntity.badRequest().body(null);
 		}
 		return response;
@@ -205,7 +205,7 @@ public class AIPController extends APIController
 		}
 		catch (Exception ex)
 		{
-			logger.error(ex);
+			logger.error(ex.getMessage(), ex);
 			response = ResponseEntity.badRequest().body(null);
 		}
 		return response;
@@ -239,7 +239,7 @@ public class AIPController extends APIController
 		}
 		catch (Exception ex)
 		{
-			logger.error(ex);
+			logger.error(ex.getMessage(), ex);
 			response = ResponseEntity.badRequest().body(null);
 		}
 		return response;
@@ -288,7 +288,7 @@ public class AIPController extends APIController
 		}
 		catch (Exception ex)
 		{
-			logger.error(ex);
+			logger.error(ex.getMessage(), ex);
 			response = ResponseEntity.badRequest().body(null);
 		}
 		return response;
@@ -306,7 +306,7 @@ public class AIPController extends APIController
 		}
 		catch (Exception ex)
 		{
-			logger.error(ex);
+			logger.error(ex.getMessage(), ex);
 			response = ResponseEntity.badRequest().body(null);
 		}
 		return response;
@@ -324,7 +324,7 @@ public class AIPController extends APIController
 		}
 		catch (Exception ex)
 		{
-			logger.error(ex);
+			logger.error(ex.getMessage(), ex);
 			response = ResponseEntity.badRequest().body(null);
 		}
 		return response;

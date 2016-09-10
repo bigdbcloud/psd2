@@ -93,7 +93,7 @@ public class PISPController extends APIController
 			response = ResponseEntity.ok(t);
 		} catch (Exception ex)
 		{
-			logger.error(ex);
+			logger.error(ex.getMessage(), ex);
 			response = ResponseEntity.badRequest().body(null);
 		}
 		return response;
@@ -132,7 +132,7 @@ public class PISPController extends APIController
 			response = ResponseEntity.ok(tdb);
 		} catch (Exception ex)
 		{
-			logger.error(ex);
+			logger.error(ex.getMessage(), ex);
 			response = ResponseEntity.badRequest().body(null);
 		}
 		return response;
@@ -163,7 +163,7 @@ public class PISPController extends APIController
 			response = ResponseEntity.ok(sib.getTransactionRequestTypes());
 		} catch (Exception e)
 		{
-			logger.error(e);
+			logger.error(e.getMessage(), e);
 			response = ResponseEntity.badRequest().body(null);
 		}
 		return response;
@@ -194,7 +194,7 @@ public class PISPController extends APIController
 			response = ResponseEntity.ok(txns);
 		} catch (Exception e)
 		{
-			logger.error(e);
+			logger.error(e.getMessage(), e);
 			response = ResponseEntity.badRequest().body(null);
 		}
 		return response;

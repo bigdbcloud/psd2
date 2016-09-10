@@ -1,10 +1,13 @@
-package com.ibm.psd2.commons.datamodel;
+package com.ibm.psd2.api.utils;
 
 import java.util.Properties;
+
+import org.springframework.data.mongodb.core.mapping.Document;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonInclude.Include;
 
+@Document(collection = "kafkaproperties")
 @JsonInclude(value = Include.NON_EMPTY)
 public class KafkaProperties
 {
@@ -17,6 +20,7 @@ public class KafkaProperties
 	private static final String kafka_key_serializer_key = "key.serializer";
 	private static final String kafka_value_serializer_key = "value.serializer";
 
+	private String uuid;
 
 	private String bootstrapServers;
 
@@ -33,6 +37,17 @@ public class KafkaProperties
 	private String keySerializer;
 	
 	private String valueSerializer;
+
+	
+	public String getUuid()
+	{
+		return uuid;
+	}
+
+	public void setUuid(String uuid)
+	{
+		this.uuid = uuid;
+	}
 
 	public String getBootstrapServers()
 	{

@@ -51,7 +51,7 @@ public class SubscriptionRequestController
 			response = ResponseEntity.ok(sreturn);
 		} catch (Exception e)
 		{
-			logger.error(e);
+			logger.error(e.getMessage(), e);
 			response = ResponseEntity.badRequest().body(null);
 		}
 		return response;
@@ -70,7 +70,7 @@ public class SubscriptionRequestController
 			response = ResponseEntity.ok(sreturn);
 		} catch (Exception e)
 		{
-			logger.error(e);
+			logger.error(e.getMessage(), e);
 			response = ResponseEntity.badRequest().body(null);
 		}
 		return response;

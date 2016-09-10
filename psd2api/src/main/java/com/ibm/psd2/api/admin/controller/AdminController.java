@@ -58,7 +58,7 @@ public class AdminController
 			response = ResponseEntity.ok(srb);
 		} catch (Exception e)
 		{
-			logger.error(e);
+			logger.error(e.getMessage(), e);
 			srb.setResponseCode(SimpleResponse.CODE_ERROR);
 			srb.setResponseMessage(e.getMessage());
 			response = ResponseEntity.badRequest().body(srb);
@@ -87,7 +87,7 @@ public class AdminController
 			response = ResponseEntity.ok(srb);
 		} catch (Exception e)
 		{
-			logger.error(e);
+			logger.error(e.getMessage(), e);
 			srb.setResponseCode(SimpleResponse.CODE_ERROR);
 			srb.setResponseMessage(e.getMessage());
 			response = ResponseEntity.badRequest().body(srb);

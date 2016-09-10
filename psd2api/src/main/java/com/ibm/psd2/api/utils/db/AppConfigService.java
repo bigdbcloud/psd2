@@ -1,6 +1,6 @@
 package com.ibm.psd2.api.utils.db;
 
-import com.ibm.psd2.commons.datamodel.KafkaProperties;
+import com.ibm.psd2.api.utils.KafkaProperties;
 
 public interface AppConfigService
 {
