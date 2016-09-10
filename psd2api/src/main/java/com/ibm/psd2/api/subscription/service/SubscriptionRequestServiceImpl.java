@@ -19,15 +19,6 @@ public class SubscriptionRequestServiceImpl implements SubscriptionRequestServic
 {
 	private static final Logger logger = LogManager.getLogger(SubscriptionRequestServiceImpl.class);
 
-//	@Autowired
-//	private MongoConnection conn;
-//
-//	@Autowired
-//	private MongoDocumentParser mdp;
-//
-//	@Value("${mongodb.collection.subscriptionrequests}")
-//	private String subscriptionRequests;
-	
 	@Autowired
 	private MongoSubscriptionRequestRepository msrr;
 
@@ -42,22 +33,6 @@ public class SubscriptionRequestServiceImpl implements SubscriptionRequestServic
 		}
 		
 		return msrr.findByIdAndChallengeId(id, cab.getId());
-		
-		
-//		MongoCollection<Document> coll = conn.getDB().getCollection(subscriptionRequests);
-//		FindIterable<Document> iterable = coll.find(
-//				and(eq("id", id), eq("challenge.id", cab.getId())))
-//				.projection(excludeId());
-//		
-//		SubscriptionRequest s = null;
-//
-//		Document document = iterable.first();
-//		if (document != null)
-//		{
-//			logger.info("message = " + document.toJson());
-//			s = mdp.parse(document, new SubscriptionRequest());
-//		}
-//		return s;
 	}
 	
 	@Override
@@ -77,21 +52,12 @@ public class SubscriptionRequestServiceImpl implements SubscriptionRequestServic
 		s.setChallenge(c);
 		
 		return msrr.save(s);
-//		MongoCollection<Document> coll = conn.getDB().getCollection(subscriptionRequests);
-//		coll.insertOne(mdp.format(s));
-//		return s;
 	}
 
 	@Override
 	public int updateSubscriptionRequestStatus(String id, String status)
 	{
 		return msrr.updateStatus(id, status);
-		
-//		MongoCollection<Document> coll = conn.getDB().getCollection(subscriptionRequests);
-//
-//		UpdateResult update = coll.updateOne(new Document("id", id),
-//				new Document("$set", new Document("status", status)).append("$currentDate", new Document("updatedDate", true)));
-//		return update.getModifiedCount();
 	}
 
 	

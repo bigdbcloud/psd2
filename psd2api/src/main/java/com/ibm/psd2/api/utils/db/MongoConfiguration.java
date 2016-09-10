@@ -16,7 +16,7 @@ import com.mongodb.MongoClient;
 import com.mongodb.MongoClientURI;
 
 @Configuration
-@EnableMongoRepositories(basePackages = "com/ibm/psd2/api/aip/db")
+@EnableMongoRepositories(basePackages = "{com/ibm/psd2/api/aip/db, com/ibm/psd2/api/utils/db, com/ibm/psd2/api/pisp/db, com/ibm/psd2/api/subscription/db}")
 public class MongoConfiguration extends AbstractMongoConfiguration
 {
 	private final Logger logger = LogManager.getLogger(MongoConfiguration.class);

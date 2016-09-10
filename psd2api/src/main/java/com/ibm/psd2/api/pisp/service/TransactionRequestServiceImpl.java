@@ -25,24 +25,15 @@ public class TransactionRequestServiceImpl implements TransactionRequestService
 {
 	private final Logger logger = LogManager.getLogger(TransactionRequestServiceImpl.class);
 
-//	@Autowired
-//	private MongoConnection conn;
-//
-//	@Autowired
-//	private MongoDocumentParser mdp;
-
 	@Autowired
 	private PaymentRules pr;
 
-//	@Value("${mongodb.collection.payments}")
-//	private String payments;
-	
 	@Autowired
 	private MongoTxnRequestDetailsRepository mtrdr;
 
 	@Override
-	public TxnRequestDetails createTransactionRequest(SubscriptionInfo sib, TxnRequest trb,
-			TxnParty payee, String txnType) throws Exception
+	public TxnRequestDetails createTransactionRequest(SubscriptionInfo sib, TxnRequest trb, TxnParty payee,
+			String txnType) throws Exception
 	{
 		if (!pr.isTransactionTypeAllowed(sib, txnType))
 		{
@@ -59,7 +50,8 @@ public class TransactionRequestServiceImpl implements TransactionRequestService
 			logger.info("Within Specified Limit. Hence Not Challenging the Request");
 			txnRequest.setChallenge(null);
 			txnRequest.setStatus(TxnRequestDetails.TXN_STATUS_PENDING);
-		} else
+		}
+		else
 		{
 			logger.info("Amount Greater than specified limit. Hence creating a challenge");
 			Challenge challenge = new Challenge();
@@ -75,7 +67,7 @@ public class TransactionRequestServiceImpl implements TransactionRequestService
 		txnRequest.setStartDate(new Date());
 		txnRequest.setId(UUIDGenerator.generateUUID());
 		txnRequest.setCharge(pr.getTransactionCharge(trb, payee));
-		
+
 		return mtrdr.save(txnRequest);
 	}
 
@@ -83,17 +75,8 @@ public class TransactionRequestServiceImpl implements TransactionRequestService
 	public TxnRequestDetails answerTransactionRequestChallenge(String username, String viewId, String bankId,
 			String accountId, String txnType, String txnReqId, ChallengeAnswer t) throws Exception
 	{
-//		MongoCollection<Document> coll = conn.getDB().getCollection(payments);
-//		FindIterable<Document> iterable = coll.find(and(eq("from.account_id", accountId), eq("from.bank_id", bankId),
-//				eq("type", txnType), eq("id", txnReqId), eq("challenge.id", t.getId()))).projection(excludeId());
-//
-		TxnRequestDetails tdb = mtrdr.findByFromAccountIdAndFromBankIdAndTypeAndIdAndChallengeId(accountId, bankId, txnType, txnReqId, t.getId());
-//		Document document = iterable.first();
-//		if (document != null)
-//		{
-//			tdb = mdp.parse(document, new TxnRequestDetails());
-//		}
-
+		TxnRequestDetails tdb = mtrdr.findByFromAccountIdAndFromBankIdAndTypeAndIdAndChallengeId(accountId, bankId,
+				txnType, txnReqId, t.getId());
 		if (tdb == null)
 		{
 			throw new IllegalArgumentException("Specified Transaction Not Found");
@@ -106,14 +89,6 @@ public class TransactionRequestServiceImpl implements TransactionRequestService
 
 		tdb.setStatus(TxnRequestDetails.TXN_STATUS_PENDING);
 		return mtrdr.save(tdb);
-
-//		UpdateResult update = coll.updateOne(new Document("id", txnReqId),
-//				new Document("$set", new Document("status", TxnRequestDetails.TXN_STATUS_PENDING)));
-//
-//		if (update.getModifiedCount() != 0)
-//		{
-//			tdb.setStatus(TxnRequestDetails.TXN_STATUS_PENDING);
-//		}
 	}
 
 	@Override
@@ -121,26 +96,5 @@ public class TransactionRequestServiceImpl implements TransactionRequestService
 			String bankId) throws Exception
 	{
 		return mtrdr.findByFromAccountIdAndFromBankId(accountId, bankId);
-//		MongoCollection<Document> coll = conn.getDB().getCollection(payments);
-//		FindIterable<Document> iterable = coll.find(and(eq("from.account_id", accountId), eq("from.bank_id", bankId)))
-//				.projection(excludeId());
-//		;
-//
-//		List<TxnRequestDetails> txns = null;
-//
-//		for (Document document : iterable)
-//		{
-//			if (document != null)
-//			{
-//				if (txns == null)
-//				{
-//					txns = new ArrayList<>();
-//				}
-//				TxnRequestDetails tdb = mdp.parse(document, new TxnRequestDetails());
-//				txns.add(tdb);
-//			}
-//		}
-//		return txns;
-
 	}
 }
