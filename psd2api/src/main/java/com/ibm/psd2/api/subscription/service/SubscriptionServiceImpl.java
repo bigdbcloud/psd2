@@ -48,7 +48,7 @@ public class SubscriptionServiceImpl implements SubscriptionService
 		SubscriptionInfo existingSI = msir.findByUsernameAndClientIdAndAccountIdAndBankId(s.getUsername(), s.getClientId(), s.getAccountId(), s.getBankId());
 		if (existingSI != null)
 		{
-			throw new IllegalArgumentException("Subscription Already Exists");
+			throw new IllegalArgumentException("Subscription Already Exists for account: " + s.getAccountId());
 		}
 		
 		s.setStatus(SubscriptionInfo.STATUS_ACTIVE);
