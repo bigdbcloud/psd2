@@ -14,7 +14,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.ibm.psd2.commons.datamodel.aip.BankAccountDetails;
 import com.ibm.psd2.commons.datamodel.aip.TransactionAccount;
 import com.ibm.psd2.commons.datamodel.aip.TransactionBank;
-import com.ibm.psd2.commons.datamodel.aip.TransactionBean;
+import com.ibm.psd2.commons.datamodel.aip.Transaction;
 import com.ibm.psd2.commons.datamodel.aip.TransactionDetails;
 import com.ibm.psd2.commons.datamodel.pisp.TxnRequestDetails;
 import com.ibm.psd2.integration.ArgumentsContainer;
@@ -63,7 +63,7 @@ public class TxnPostingBolt extends BaseRichBolt
 			BankAccountDetails from = mapper.readValue(sourceAccount, BankAccountDetails.class);
 			TxnRequestDetails tdb = mapper.readValue(txnRequest, TxnRequestDetails.class);
 
-			TransactionBean tb = new TransactionBean();
+			Transaction tb = new Transaction();
 			
 			tb.setId(tdb.getTransactionIds());
 			

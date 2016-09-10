@@ -12,7 +12,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 
 @Document(collection = "Transactions")
 @JsonInclude(value = Include.NON_EMPTY)
-public class TransactionBean implements Serializable
+public class Transaction implements Serializable
 {
 	@Id
 	private String id;

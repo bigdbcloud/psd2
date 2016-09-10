@@ -10,7 +10,7 @@ import org.springframework.stereotype.Service;
 
 import com.ibm.psd2.api.aip.db.MongoTransactionsRepository;
 import com.ibm.psd2.api.utils.Constants;
-import com.ibm.psd2.commons.datamodel.aip.TransactionBean;
+import com.ibm.psd2.commons.datamodel.aip.Transaction;
 
 @Service
 public class TransactionStatementServiceImpl implements TransactionStatementService
@@ -29,7 +29,7 @@ public class TransactionStatementServiceImpl implements TransactionStatementServ
 	@Autowired
 	MongoTransactionsRepository mtr;
 
-	public TransactionBean getTransactionById(String bankId, String accountId, String txnId) throws Exception
+	public Transaction getTransactionById(String bankId, String accountId, String txnId) throws Exception
 	{
 		logger.info("bankId = " + bankId + ", accountId = " + accountId + ", txnId = " + txnId);
 
@@ -42,7 +42,7 @@ public class TransactionStatementServiceImpl implements TransactionStatementServ
 		// eq("this_account.id", accountId),
 		// eq("this_account.bank.national_identifier",
 		// bankId))).projection(excludeId());
-		// TransactionBean t = null;
+		// Transaction t = null;
 		//
 		// if (iterable != null)
 		// {
@@ -50,14 +50,14 @@ public class TransactionStatementServiceImpl implements TransactionStatementServ
 		// if (document != null)
 		// {
 		// logger.info("Transaction = " + document.toJson());
-		// t = mdp.parse(document, new TransactionBean());
+		// t = mdp.parse(document, new Transaction());
 		// }
 		// }
 		//
 		// return t;
 	}
 
-	public List<TransactionBean> getTransactions(String bankId, String accountId, String sortDirection, String fromDate,
+	public List<Transaction> getTransactions(String bankId, String accountId, String sortDirection, String fromDate,
 			String toDate, String sortBy, Integer page, Integer limit) throws Exception
 	{
 		logger.info("bankId = " + bankId + ", accountId = " + accountId);
@@ -119,7 +119,7 @@ public class TransactionStatementServiceImpl implements TransactionStatementServ
 //		FindIterable<Document> iterable = coll.find(and(criteria)).sort(sortDirect).limit(docLimit)
 //				.projection(excludeId());
 //
-//		List<TransactionBean> lst = null;
+//		List<Transaction> lst = null;
 //		for (Document document : iterable)
 //		{
 //			if (document != null)
@@ -129,7 +129,7 @@ public class TransactionStatementServiceImpl implements TransactionStatementServ
 //					lst = new ArrayList<>();
 //				}
 //				logger.info("Transaction = " + document.toJson());
-//				TransactionBean t = mdp.parse(document, new TransactionBean());
+//				Transaction t = mdp.parse(document, new Transaction());
 //				lst.add(t);
 //			}
 //		}

@@ -14,7 +14,7 @@ import org.springframework.data.mongodb.core.query.CriteriaDefinition;
 import org.springframework.data.mongodb.core.query.Query;
 
 import com.ibm.psd2.api.utils.Constants;
-import com.ibm.psd2.commons.datamodel.aip.TransactionBean;
+import com.ibm.psd2.commons.datamodel.aip.Transaction;
 
 public class MongoTransactionsRepositoryImpl implements MongoTransactionsRepositoryCustom
 {
@@ -22,7 +22,7 @@ public class MongoTransactionsRepositoryImpl implements MongoTransactionsReposit
 	private MongoTemplate mongoTemplate;
 
 	@Override
-	public List<TransactionBean> getTransactions(String bankId, String accountId, String sortDirection,
+	public List<Transaction> getTransactions(String bankId, String accountId, String sortDirection,
 			Date fromDate, Date toDate, String sortBy, Integer page, Integer limit)
 	{
 
@@ -70,7 +70,7 @@ public class MongoTransactionsRepositoryImpl implements MongoTransactionsReposit
 		{
 			query = query(cd).with(sort);
 		}
-		return mongoTemplate.find(query, TransactionBean.class);
+		return mongoTemplate.find(query, Transaction.class);
 	}
 
 }

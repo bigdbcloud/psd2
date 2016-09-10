@@ -32,7 +32,7 @@ import com.ibm.psd2.commons.datamodel.Bank;
 import com.ibm.psd2.commons.datamodel.aip.BankAccountDetails;
 import com.ibm.psd2.commons.datamodel.aip.BankAccountDetailsView;
 import com.ibm.psd2.commons.datamodel.aip.BankAccountOverview;
-import com.ibm.psd2.commons.datamodel.aip.TransactionBean;
+import com.ibm.psd2.commons.datamodel.aip.Transaction;
 import com.ibm.psd2.commons.datamodel.subscription.SubscriptionInfo;
 import com.ibm.psd2.commons.datamodel.subscription.ViewId;
 
@@ -213,11 +213,11 @@ public class AIPController extends APIController
 
 	@PreAuthorize("#oauth2.hasScope('write')")
 	@RequestMapping(method = RequestMethod.GET, value = "/banks/{bankId}/accounts/{accountId}/{viewId}/transactions/{txnId}/transaction", produces = MediaType.APPLICATION_JSON_VALUE)
-	public @ResponseBody ResponseEntity<TransactionBean> getTransactionById(@PathVariable("bankId") String bankId,
+	public @ResponseBody ResponseEntity<Transaction> getTransactionById(@PathVariable("bankId") String bankId,
 			@PathVariable("accountId") String accountId, @PathVariable("viewId") String viewId,
 			@PathVariable("txnId") String txnId, Authentication auth)
 	{
-		ResponseEntity<TransactionBean> response;
+		ResponseEntity<Transaction> response;
 		try
 		{
 			OAuth2Authentication oauth2 = (OAuth2Authentication) auth;
@@ -232,7 +232,7 @@ public class AIPController extends APIController
 				throw new IllegalAccessException(Constants.ERRMSG_NOT_SUBSCRIBED);
 			}
 
-			TransactionBean t = tdao.getTransactionById(bankId, accountId, txnId);
+			Transaction t = tdao.getTransactionById(bankId, accountId, txnId);
 
 			response = ResponseEntity.ok(t);
 
@@ -247,7 +247,7 @@ public class AIPController extends APIController
 
 	@PreAuthorize("#oauth2.hasScope('write')")
 	@RequestMapping(method = RequestMethod.GET, value = "/banks/{bankId}/accounts/{accountId}/{viewId}/transactions", produces = MediaType.APPLICATION_JSON_VALUE)
-	public @ResponseBody ResponseEntity<List<TransactionBean>> getTransactions(@PathVariable("bankId") String bankId,
+	public @ResponseBody ResponseEntity<List<Transaction>> getTransactions(@PathVariable("bankId") String bankId,
 			@PathVariable("accountId") String accountId, @PathVariable("viewId") String viewId,
 			@RequestHeader(value = "obp_sort_direction", required = false) String sortDirection,
 			@RequestHeader(value = "obp_limit", required = false) Integer limit,
@@ -256,7 +256,7 @@ public class AIPController extends APIController
 			@RequestHeader(value = "obp_sort_by", required = false) String sortBy,
 			@RequestHeader(value = "obp_offset", required = false) Integer offset, Authentication auth)
 	{
-		ResponseEntity<List<TransactionBean>> response;
+		ResponseEntity<List<Transaction>> response;
 		try
 		{
 			OAuth2Authentication oauth2 = (OAuth2Authentication) auth;
@@ -281,7 +281,7 @@ public class AIPController extends APIController
 				limit = 10;
 			}
 			
-			List<TransactionBean> t = tdao.getTransactions(bankId, accountId, sortDirection, fromDate, toDate, sortBy,
+			List<Transaction> t = tdao.getTransactions(bankId, accountId, sortDirection, fromDate, toDate, sortBy,
 					offset / limit, limit);
 
 			response = ResponseEntity.ok(t);

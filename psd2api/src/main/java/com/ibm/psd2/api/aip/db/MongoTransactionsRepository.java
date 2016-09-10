@@ -4,9 +4,9 @@ import java.io.Serializable;
 
 import org.springframework.data.mongodb.repository.MongoRepository;
 
-import com.ibm.psd2.commons.datamodel.aip.TransactionBean;
+import com.ibm.psd2.commons.datamodel.aip.Transaction;
 
-public interface MongoTransactionsRepository extends MongoRepository<TransactionBean, Serializable>, MongoTransactionsRepositoryCustom
+public interface MongoTransactionsRepository extends MongoRepository<Transaction, Serializable>, MongoTransactionsRepositoryCustom
 {
-	public TransactionBean findByIdAndThisAccountIdAndThisAccountBankNationalIdentifier(String id, String accountId, String nationalIdentifier);
+	public Transaction findByIdAndThisAccountIdAndThisAccountBankNationalIdentifier(String id, String accountId, String nationalIdentifier);
 }
