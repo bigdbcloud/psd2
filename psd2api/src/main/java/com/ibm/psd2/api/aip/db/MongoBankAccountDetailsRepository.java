@@ -5,12 +5,12 @@ import java.util.List;
 
 import org.springframework.data.mongodb.repository.MongoRepository;
 
-import com.ibm.psd2.commons.beans.aip.BankAccountDetailsBean;
+import com.ibm.psd2.commons.datamodel.aip.BankAccountDetails;
 
-public interface MongoBankAccountDetailsRepository extends MongoRepository<BankAccountDetailsBean, Serializable>
+public interface MongoBankAccountDetailsRepository extends MongoRepository<BankAccountDetails, Serializable>
 {
-	public BankAccountDetailsBean findByIdAndBank_id(String id, String bank_id);
-	public List<BankAccountDetailsBean> findByUsernameAndBank_id(String username, String bank_id);
-	public BankAccountDetailsBean findByIdAndBank_idAndUsername(String id, String bank_id, String username);
+	public BankAccountDetails findByIdAndBankId(String id, String bank_id);
+	public List<BankAccountDetails> findByUsernameAndBankId(String username, String bank_id);
+	public BankAccountDetails findByIdAndBankIdAndUsername(String id, String bank_id, String username);
 	
 }

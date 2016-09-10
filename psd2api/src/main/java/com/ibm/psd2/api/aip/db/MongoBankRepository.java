@@ -4,8 +4,8 @@ import java.io.Serializable;
 
 import org.springframework.data.mongodb.repository.MongoRepository;
 
-import com.ibm.psd2.commons.beans.BankBean;
+import com.ibm.psd2.commons.datamodel.Bank;
 
-public interface MongoBankRepository extends MongoRepository<BankBean, Serializable>
+public interface MongoBankRepository extends MongoRepository<Bank, Serializable>
 {
 }

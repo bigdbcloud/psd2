@@ -91,6 +91,10 @@
                                         "value": "mongodb://172.30.46.38:27017"
                                     },
                                     {
+                                        "name": "MONGO_SVC_URI",
+                                        "value": "mongodb://172.30.46.38:27017/psd2api"
+                                    },
+                                    {
                                         "name": "OAUTH_CHECKTOKEN_URL",
                                         "value": "https://172.30.83.66:8081/oauth2server/oauth/check_token"
                                     },

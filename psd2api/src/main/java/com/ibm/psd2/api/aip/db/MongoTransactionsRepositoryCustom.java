@@ -3,7 +3,7 @@ package com.ibm.psd2.api.aip.db;
 import java.util.Date;
 import java.util.List;
 
-import com.ibm.psd2.commons.beans.aip.TransactionBean;
+import com.ibm.psd2.commons.datamodel.aip.TransactionBean;
 
 public interface MongoTransactionsRepositoryCustom
 {

@@ -5,21 +5,21 @@ import java.util.List;
 
 import org.springframework.stereotype.Component;
 
-import com.ibm.psd2.api.common.Constants;
-import com.ibm.psd2.commons.beans.AmountBean;
-import com.ibm.psd2.commons.beans.ChallengeAnswerBean;
-import com.ibm.psd2.commons.beans.pisp.TxnChargeBean;
-import com.ibm.psd2.commons.beans.pisp.TxnPartyBean;
-import com.ibm.psd2.commons.beans.pisp.TxnRequestBean;
-import com.ibm.psd2.commons.beans.subscription.SubscriptionInfoBean;
-import com.ibm.psd2.commons.beans.subscription.TransactionLimitBean;
-import com.ibm.psd2.commons.beans.subscription.TransactionRequestTypeBean;
+import com.ibm.psd2.api.utils.Constants;
+import com.ibm.psd2.commons.datamodel.Amount;
+import com.ibm.psd2.commons.datamodel.ChallengeAnswer;
+import com.ibm.psd2.commons.datamodel.pisp.TxnCharge;
+import com.ibm.psd2.commons.datamodel.pisp.TxnParty;
+import com.ibm.psd2.commons.datamodel.pisp.TxnRequest;
+import com.ibm.psd2.commons.datamodel.subscription.SubscriptionInfo;
+import com.ibm.psd2.commons.datamodel.subscription.TransactionLimit;
+import com.ibm.psd2.commons.datamodel.subscription.TransactionRequestType;
 
 @Component
 public class PaymentRules
 {
 
-	public boolean isSubscribed(SubscriptionInfoBean sib)
+	public boolean isSubscribed(SubscriptionInfo sib)
 	{
 		if (sib == null)
 		{
@@ -28,12 +28,12 @@ public class PaymentRules
 		return true;
 	}
 
-	public boolean isTransactionTypeAllowed(SubscriptionInfoBean sib, String txnType)
+	public boolean isTransactionTypeAllowed(SubscriptionInfo sib, String txnType)
 	{
-		for (Iterator<TransactionRequestTypeBean> iterator = sib.getTransaction_request_types()
+		for (Iterator<TransactionRequestType> iterator = sib.getTransactionRequestTypes()
 				.iterator(); iterator.hasNext();)
 		{
-			TransactionRequestTypeBean type = (TransactionRequestTypeBean) iterator.next();
+			TransactionRequestType type = (TransactionRequestType) iterator.next();
 			if (type.getValue().equals(txnType))
 			{
 				return true;
@@ -42,16 +42,16 @@ public class PaymentRules
 		return false;
 	}
 
-	public boolean checkLimit(TxnRequestBean trb, SubscriptionInfoBean sib, String txnType)
+	public boolean checkLimit(TxnRequest trb, SubscriptionInfo sib, String txnType)
 	{
 
-		List<TransactionLimitBean> limits = sib.getLimits();
+		List<TransactionLimit> limits = sib.getLimits();
 
-		for (Iterator<TransactionLimitBean> iterator = limits.iterator(); iterator.hasNext();)
+		for (Iterator<TransactionLimit> iterator = limits.iterator(); iterator.hasNext();)
 		{
-			TransactionLimitBean limit = iterator.next();
+			TransactionLimit limit = iterator.next();
 
-			if (limit.getTransaction_request_type().getValue().equals(txnType)
+			if (limit.getTransactionRequestType().getValue().equals(txnType)
 					&& limit.getAmount().getCurrency().equals(trb.getValue().getCurrency())
 					&& limit.getAmount().getAmount() > trb.getValue().getAmount())
 			{
@@ -63,30 +63,30 @@ public class PaymentRules
 
 	public boolean checkTxnType(String txnType)
 	{
-		if (TransactionRequestTypeBean.TYPES.WITHIN_BANK.type().equals(txnType)
-				|| TransactionRequestTypeBean.TYPES.INTER_BANK.type().equals(txnType)
-				|| TransactionRequestTypeBean.TYPES.INTERNATIONAL.type().equals(txnType))
+		if (TransactionRequestType.TYPES.WITHIN_BANK.type().equals(txnType)
+				|| TransactionRequestType.TYPES.INTER_BANK.type().equals(txnType)
+				|| TransactionRequestType.TYPES.INTERNATIONAL.type().equals(txnType))
 		{
 			return true;
 		}
 		return false;
 	}
 
-	public TxnChargeBean getTransactionCharge(TxnRequestBean trb,
-			TxnPartyBean payee)
+	public TxnCharge getTransactionCharge(TxnRequest trb,
+			TxnParty payee)
 	{
-		AmountBean ab = new AmountBean();
+		Amount ab = new Amount();
 		// Currently hardcoded charge
 		ab.setAmount(1.00);
 		ab.setCurrency(Constants.CURRENCY_GBP);
 
-		TxnChargeBean tcb = new TxnChargeBean();
+		TxnCharge tcb = new TxnCharge();
 		tcb.setSummary("Transaction Charge Summary");
 		tcb.setValue(ab);
 		return tcb;
 	}
 	
-	public boolean validateTxnChallengeAnswer(ChallengeAnswerBean t, String user, String accountId, String bankId)
+	public boolean validateTxnChallengeAnswer(ChallengeAnswer t, String user, String accountId, String bankId)
 	{
 		if (t.getAnswer() != null)
 		{

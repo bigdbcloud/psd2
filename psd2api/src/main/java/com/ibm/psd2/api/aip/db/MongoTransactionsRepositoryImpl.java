@@ -13,8 +13,8 @@ import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.data.mongodb.core.query.CriteriaDefinition;
 import org.springframework.data.mongodb.core.query.Query;
 
-import com.ibm.psd2.api.common.Constants;
-import com.ibm.psd2.commons.beans.aip.TransactionBean;
+import com.ibm.psd2.api.utils.Constants;
+import com.ibm.psd2.commons.datamodel.aip.TransactionBean;
 
 public class MongoTransactionsRepositoryImpl implements MongoTransactionsRepositoryCustom
 {
@@ -52,12 +52,12 @@ public class MongoTransactionsRepositoryImpl implements MongoTransactionsReposit
 			{
 				toDate = new Date();
 			}
-			cd = where("this_account.id").is(accountId).and("this_account.bank.national_identifier").is(bankId)
+			cd = where("thisAccount.id").is(accountId).and("thisAccount.bank.nationalIdentifier").is(bankId)
 					.and("details.posted").lte(toDate).gte(fromDate);
 		}
 		else
 		{
-			cd = where("this_account.id").is(accountId).and("this_account.bank.national_identifier").is(bankId);
+			cd = where("thisAccount.id").is(accountId).and("thisAccount.bank.nationalIdentifier").is(bankId);
 		}
 
 		Query query = null;

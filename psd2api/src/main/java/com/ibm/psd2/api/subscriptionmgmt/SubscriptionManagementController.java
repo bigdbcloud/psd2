@@ -13,11 +13,11 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.ibm.psd2.api.subscription.dao.SubscriptionDao;
-import com.ibm.psd2.api.subscription.dao.SubscriptionRequestDao;
-import com.ibm.psd2.commons.beans.ChallengeAnswerBean;
-import com.ibm.psd2.commons.beans.SimpleResponseBean;
-import com.ibm.psd2.commons.beans.subscription.SubscriptionRequestBean;
+import com.ibm.psd2.api.subscription.service.SubscriptionRequestService;
+import com.ibm.psd2.api.subscription.service.SubscriptionService;
+import com.ibm.psd2.commons.datamodel.ChallengeAnswer;
+import com.ibm.psd2.commons.datamodel.SimpleResponse;
+import com.ibm.psd2.commons.datamodel.subscription.SubscriptionRequest;
 
 @RestController
 public class SubscriptionManagementController
@@ -25,10 +25,10 @@ public class SubscriptionManagementController
 	private static final Logger logger = LogManager.getLogger(SubscriptionManagementController.class);
 
 	@Autowired
-	SubscriptionDao sdao;
+	SubscriptionService sdao;
 
 	@Autowired
-	SubscriptionRequestDao srdao;
+	SubscriptionRequestService srdao;
 	
 	@Autowired
 	SubscriptionRules srules;
@@ -37,14 +37,14 @@ public class SubscriptionManagementController
 	private String version;
 
 	@RequestMapping(method = RequestMethod.POST, value = "/admin/subscription/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
-	public @ResponseBody ResponseEntity<SimpleResponseBean> createSubscription(@PathVariable("id") String id,
-			@RequestBody(required = true) ChallengeAnswerBean cab)
+	public @ResponseBody ResponseEntity<SimpleResponse> createSubscription(@PathVariable("id") String id,
+			@RequestBody(required = true) ChallengeAnswer cab)
 	{
-		ResponseEntity<SimpleResponseBean> response;
-		SimpleResponseBean srb = new SimpleResponseBean();
+		ResponseEntity<SimpleResponse> response;
+		SimpleResponse srb = new SimpleResponse();
 		try
 		{
-			SubscriptionRequestBean sr = srdao.getSubscriptionRequestByIdAndChallenge(id, cab);
+			SubscriptionRequest sr = srdao.getSubscriptionRequestByIdAndChallenge(id, cab);
 			if (sr == null)
 			{
 				throw new IllegalArgumentException("Subscription Request Not Found for id = " + id + " , challenge.id = " + cab.getId());
@@ -56,14 +56,14 @@ public class SubscriptionManagementController
 			}
 			
 			sdao.createSubscriptionInfo(sr.getSubscriptionInfo());
-			srdao.updateSubscriptionRequestStatus(id, SubscriptionRequestBean.STATUS_SUBSCRIBED);
-			srb.setResponseCode(SimpleResponseBean.CODE_SUCCESS);
+			srdao.updateSubscriptionRequestStatus(id, SubscriptionRequest.STATUS_SUBSCRIBED);
+			srb.setResponseCode(SimpleResponse.CODE_SUCCESS);
 			response = ResponseEntity.ok(srb);
 			
 		} catch (Exception e)
 		{
 			logger.error(e);
-			srb.setResponseCode(SimpleResponseBean.CODE_ERROR);
+			srb.setResponseCode(SimpleResponse.CODE_ERROR);
 			srb.setResponseMessage(e.getMessage());
 			response = ResponseEntity.badRequest().body(srb);
 		}
