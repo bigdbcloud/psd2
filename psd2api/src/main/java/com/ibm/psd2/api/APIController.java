@@ -1,4 +1,4 @@
-package com.ibm.psd2.commons.controller;
+package com.ibm.psd2.api;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;

@@ -15,6 +15,7 @@ public class MessageLoggingBolt extends BaseBasicBolt
 	public void execute(Tuple input, BasicOutputCollector collector)
 	{
 		logger.warn("Received Message from Kafka = " + input);
+		
 	}
 
 	public void declareOutputFields(OutputFieldsDeclarer declarer)

@@ -9,17 +9,19 @@ import org.apache.storm.task.TopologyContext;
 import org.apache.storm.topology.OutputFieldsDeclarer;
 import org.apache.storm.topology.base.BaseRichBolt;
 import org.apache.storm.tuple.Tuple;
+import org.springframework.context.ApplicationContext;
+import org.springframework.context.annotation.AnnotationConfigApplicationContext;
+import org.springframework.data.mongodb.core.MongoOperations;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.ibm.psd2.commons.datamodel.aip.BankAccountDetails;
+import com.ibm.psd2.commons.datamodel.aip.Transaction;
 import com.ibm.psd2.commons.datamodel.aip.TransactionAccount;
 import com.ibm.psd2.commons.datamodel.aip.TransactionBank;
-import com.ibm.psd2.commons.datamodel.aip.Transaction;
 import com.ibm.psd2.commons.datamodel.aip.TransactionDetails;
 import com.ibm.psd2.commons.datamodel.pisp.TxnRequestDetails;
 import com.ibm.psd2.integration.ArgumentsContainer;
-import com.ibm.psd2.integration.dao.MongoDao;
-import com.ibm.psd2.integration.dao.MongoDaoImpl;
+import com.ibm.psd2.integration.dao.MongoConfig;
 
 public class TxnPostingBolt extends BaseRichBolt
 {
@@ -30,8 +32,9 @@ public class TxnPostingBolt extends BaseRichBolt
 	private ArgumentsContainer ac;
 
 	private OutputCollector _collector = null;
-	private MongoDao txnDao;
-//	private MongoDao bankAccDao;
+//	private MongoDao txnDao;
+	
+	MongoOperations mongoOperation = null;
 
 	public TxnPostingBolt(ArgumentsContainer ac)
 	{
@@ -44,9 +47,8 @@ public class TxnPostingBolt extends BaseRichBolt
 	{
 		_collector = collector;
 
-		this.txnDao = new MongoDaoImpl(ac,
-				ac.getValue(ArgumentsContainer.KEYS.MONGODB_PSD2_TRANSACTION_COLLECTION.key()),
-				ac.getValue(ArgumentsContainer.KEYS.MONGODB_DB.key()));
+		ApplicationContext ctx = new AnnotationConfigApplicationContext(MongoConfig.class);
+		mongoOperation = (MongoOperations)ctx.getBean("mongoTemplate");
 	}
 
 	@Override
@@ -61,21 +63,21 @@ public class TxnPostingBolt extends BaseRichBolt
 			logger.warn("Processing Txn Request = " + txnRequest);
 			
 			BankAccountDetails from = mapper.readValue(sourceAccount, BankAccountDetails.class);
-			TxnRequestDetails tdb = mapper.readValue(txnRequest, TxnRequestDetails.class);
+			TxnRequestDetails txnRequestDetails = mapper.readValue(txnRequest, TxnRequestDetails.class);
 
-			Transaction tb = new Transaction();
+			Transaction txn = new Transaction();
 			
-			tb.setId(tdb.getTransactionIds());
+			txn.setId(txnRequestDetails.getTransactionIds());
 			
-			TransactionDetails td = new TransactionDetails();
-			td.setCompleted(tdb.getEndDate());
-			td.setDescription(tdb.getBody().getDescription());
-			td.setNewBalance(from.getBalance());
-			td.setPosted(tdb.getEndDate());
-			td.setType(tdb.getType());
-			td.setValue(tdb.getBody().getValue());
+			TransactionDetails txnDetails = new TransactionDetails();
+			txnDetails.setCompleted(txnRequestDetails.getEndDate());
+			txnDetails.setDescription(txnRequestDetails.getBody().getDescription());
+			txnDetails.setNewBalance(from.getBalance());
+			txnDetails.setPosted(txnRequestDetails.getEndDate());
+			txnDetails.setType(txnRequestDetails.getType());
+			txnDetails.setValue(txnRequestDetails.getBody().getValue());
 			
-			tb.setDetails(td);
+			txn.setDetails(txnDetails);
 			
 			TransactionAccount thisAcc = new TransactionAccount();
 			thisAcc.setId(from.getId());
@@ -90,19 +92,21 @@ public class TxnPostingBolt extends BaseRichBolt
 			thisAcc.setNumber(from.getNumber());
 			thisAcc.setSwiftBic(from.getSwiftBic());
 			
-			tb.setThisAccount(thisAcc);
+			txn.setThisAccount(thisAcc);
 			
 			TransactionAccount toAcc = new TransactionAccount();
-			toAcc.setId(tdb.getBody().getTo().getAccountId());
+			toAcc.setId(txnRequestDetails.getBody().getTo().getAccountId());
 			
 			TransactionBank tbb1 = new TransactionBank();
-			tbb1.setNationalIdentifier(tdb.getBody().getTo().getBankId());
-			tbb1.setName(tdb.getBody().getTo().getBankId());
+			tbb1.setNationalIdentifier(txnRequestDetails.getBody().getTo().getBankId());
+			tbb1.setName(txnRequestDetails.getBody().getTo().getBankId());
 			toAcc.setBank(tbb1);
 			
-			tb.setOtherAccount(toAcc);
-
-			txnDao.persist(tb);
+			txn.setOtherAccount(toAcc);
+			
+			logger.warn("Saving Transaction = " + txn);
+			
+			mongoOperation.save(txn);
 			
 			_collector.ack(input);
 		}

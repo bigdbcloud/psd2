@@ -1,7 +1,10 @@
 package com.ibm.psd2.integration.bolts;
 
+import static org.springframework.data.mongodb.core.query.Criteria.where;
+import static org.springframework.data.mongodb.core.query.Query.query;
+import static org.springframework.data.mongodb.core.query.Update.update;
+
 import java.util.Date;
-import java.util.HashMap;
 import java.util.Map;
 
 import org.apache.logging.log4j.LogManager;
@@ -13,14 +16,16 @@ import org.apache.storm.topology.base.BaseRichBolt;
 import org.apache.storm.tuple.Fields;
 import org.apache.storm.tuple.Tuple;
 import org.apache.storm.tuple.Values;
+import org.springframework.context.ApplicationContext;
+import org.springframework.context.annotation.AnnotationConfigApplicationContext;
+import org.springframework.data.mongodb.core.MongoOperations;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.ibm.psd2.commons.datamodel.aip.BankAccountDetails;
 import com.ibm.psd2.commons.datamodel.pisp.TxnRequestDetails;
 import com.ibm.psd2.commons.utils.UUIDGenerator;
 import com.ibm.psd2.integration.ArgumentsContainer;
-import com.ibm.psd2.integration.dao.MongoDao;
-import com.ibm.psd2.integration.dao.MongoDaoImpl;
+import com.ibm.psd2.integration.dao.MongoConfig;
 
 public class TxnRequestProcessor extends BaseRichBolt
 {
@@ -31,8 +36,8 @@ public class TxnRequestProcessor extends BaseRichBolt
 	private ArgumentsContainer ac;
 
 	private OutputCollector _collector = null;
-	private MongoDao paymentDao;
-	private MongoDao bankAccDao;
+
+	MongoOperations mongoOperation;
 
 	public TxnRequestProcessor(ArgumentsContainer ac)
 	{
@@ -45,12 +50,8 @@ public class TxnRequestProcessor extends BaseRichBolt
 	{
 		_collector = collector;
 
-		this.paymentDao = new MongoDaoImpl(ac,
-				ac.getValue(ArgumentsContainer.KEYS.MONGODB_PSD2_PAYMENTS_COLLECTION.key()),
-				ac.getValue(ArgumentsContainer.KEYS.MONGODB_DB.key()));
-		this.bankAccDao = new MongoDaoImpl(ac,
-				ac.getValue(ArgumentsContainer.KEYS.MONGODB_PSD2_BANKACCOUNTS_COLLECTION.key()),
-				ac.getValue(ArgumentsContainer.KEYS.MONGODB_DB.key()));
+		ApplicationContext ctx = new AnnotationConfigApplicationContext(MongoConfig.class);
+		mongoOperation = (MongoOperations) ctx.getBean("mongoTemplate");
 	}
 
 	@Override
@@ -70,14 +71,10 @@ public class TxnRequestProcessor extends BaseRichBolt
 			BankAccountDetails from = new BankAccountDetails();
 			BankAccountDetails to = new BankAccountDetails();
 
-			Map<String, Object> criteriaFrom = new HashMap<>();
-			Map<String, Object> criteriaTo = new HashMap<>();
-
-			criteriaFrom.put("id", tdb.getFrom().getAccountId());
-			criteriaTo.put("id", tdb.getBody().getTo().getAccountId());
-
-			from = bankAccDao.findOneByAll(criteriaFrom, from);
-			to = bankAccDao.findOneByAll(criteriaTo, to);
+			from = mongoOperation.findOne(query(where("id").is(tdb.getFrom().getAccountId())),
+					BankAccountDetails.class);
+			to = mongoOperation.findOne(query(where("id").is(tdb.getBody().getTo().getAccountId())),
+					BankAccountDetails.class);
 
 			if (from != null)
 			{
@@ -86,7 +83,8 @@ public class TxnRequestProcessor extends BaseRichBolt
 				double charge = tdb.getCharge().getValue().getAmount();
 				balance = balance - amount - charge;
 				from.getBalance().setAmount(balance);
-				bankAccDao.update("id", from.getId(), "balance.amount", balance);
+				mongoOperation.updateFirst(query(where("id").is(from.getId())), update("balance.amount", balance),
+						BankAccountDetails.class);
 			}
 
 			if (to != null)
@@ -95,22 +93,20 @@ public class TxnRequestProcessor extends BaseRichBolt
 				double amount = tdb.getBody().getValue().getAmount();
 				balance = balance + amount;
 				to.getBalance().setAmount(balance);
-				bankAccDao.update("id", to.getId(), "balance.amount", balance);
+				mongoOperation.updateFirst(query(where("id").is(to.getId())), update("balance.amount", balance),
+						BankAccountDetails.class);
 			}
 
 			tdb.setStatus(TxnRequestDetails.TXN_STATUS_COMPLETED);
 			tdb.setEndDate(new Date());
 			tdb.setTransactionIds(UUIDGenerator.generateUUID());
 
-			paymentDao.update("id", tdb.getId(), "status", tdb.getStatus());
-			paymentDao.update("id", tdb.getId(), "endDate", tdb.getEndDate());
-			paymentDao.update("id", tdb.getId(), "transactionIds", UUIDGenerator.generateUUID());
-
+			mongoOperation.save(tdb);
 			_collector.emit(input, new Values(tdb.getId(), mapper.writeValueAsString(from),
 					mapper.writeValueAsString(to), mapper.writeValueAsString(tdb)));
 			_collector.ack(input);
-
-		} catch (Exception e)
+		}
+		catch (Exception e)
 		{
 			logger.error(e.getMessage(), e);
 		}

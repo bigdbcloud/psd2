@@ -21,6 +21,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.ibm.psd2.api.APIController;
 import com.ibm.psd2.api.aip.services.BankAccountDetailsService;
 import com.ibm.psd2.api.aip.services.BankAccountOverviewVisitor;
 import com.ibm.psd2.api.aip.services.BankAccountOwnerViewVisitor;
@@ -28,7 +29,6 @@ import com.ibm.psd2.api.aip.services.BankService;
 import com.ibm.psd2.api.aip.services.TransactionStatementService;
 import com.ibm.psd2.api.subscription.service.SubscriptionService;
 import com.ibm.psd2.api.utils.Constants;
-import com.ibm.psd2.commons.controller.APIController;
 import com.ibm.psd2.commons.datamodel.Bank;
 import com.ibm.psd2.commons.datamodel.aip.BankAccountDetails;
 import com.ibm.psd2.commons.datamodel.aip.BankAccountDetailsView;
