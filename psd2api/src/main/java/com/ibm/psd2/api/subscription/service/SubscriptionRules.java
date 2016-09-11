@@ -1,4 +1,4 @@
-package com.ibm.psd2.api.subscriptionmgmt;
+package com.ibm.psd2.api.subscription.service;
 
 import org.springframework.stereotype.Component;
 

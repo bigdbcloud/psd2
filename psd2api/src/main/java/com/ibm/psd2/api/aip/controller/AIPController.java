@@ -12,6 +12,7 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.oauth2.provider.OAuth2Authentication;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestHeader;
@@ -39,7 +40,7 @@ import com.ibm.psd2.commons.datamodel.subscription.ViewId;
 @RestController
 public class AIPController extends APIController
 {
-	private static final Logger logger = LogManager.getLogger(AIPController.class);
+	private final Logger logger = LogManager.getLogger(AIPController.class);
 
 	@Autowired
 	BankAccountDetailsService bad;
@@ -56,27 +57,21 @@ public class AIPController extends APIController
 	@Value("${version}")
 	private String version;
 
-	@PreAuthorize("#oauth2.hasScope('write')")
+	@PreAuthorize("#oauth2.hasScope('write') && hasPermission(#bankId, 'owner')")
 	@RequestMapping(method = RequestMethod.GET, value = "/my/banks/{bankId}/accounts", produces = MediaType.APPLICATION_JSON_VALUE)
 	public @ResponseBody ResponseEntity<List<BankAccountOverview>> getBankAccounts(
-			@PathVariable("bankId") String bankId, Authentication auth)
+			@PathVariable("bankId") String bankId)
 	{
-
 		ResponseEntity<List<BankAccountOverview>> response;
 		try
 		{
-			OAuth2Authentication oauth2 = (OAuth2Authentication) auth;
+			OAuth2Authentication auth = (OAuth2Authentication) SecurityContextHolder.getContext().getAuthentication();
 			String user = (String) auth.getPrincipal();
 			ViewId ownerView = new ViewId();
 			ownerView.setId(Constants.OWNER_VIEW);
 
-			List<SubscriptionInfo> lstSib = sdao.getSubscriptionInfo(user, oauth2.getOAuth2Request().getClientId(),
+			List<SubscriptionInfo> lstSib = sdao.getSubscriptionInfo(user, auth.getOAuth2Request().getClientId(),
 					bankId);
-
-			if (lstSib == null)
-			{
-				throw new IllegalAccessException(Constants.ERRMSG_NOT_SUBSCRIBED);
-			}
 
 			List<String> accountIds = new ArrayList<>();
 			for (Iterator<SubscriptionInfo> iterator = lstSib.iterator(); iterator.hasNext();)
@@ -94,13 +89,10 @@ public class AIPController extends APIController
 			BankAccountOverviewVisitor baoVisitor = new BankAccountOverviewVisitor();
 			for (Iterator<BankAccountDetails> iterator = ba.iterator(); iterator.hasNext();)
 			{
-
 				BankAccountDetails b = iterator.next();
-
 				if (!accountIds.isEmpty() && accountIds.contains(b.getId()))
 				{
 					b.registerVisitor(BankAccountOverview.class.getName() + ":" + Constants.OWNER_VIEW, baoVisitor);
-
 					if (accountList == null)
 					{
 						accountList = new ArrayList<>();
@@ -108,7 +100,6 @@ public class AIPController extends APIController
 					accountList.add(b.getBankAccountOverview(Constants.OWNER_VIEW));
 				}
 			}
-
 			response = ResponseEntity.ok(accountList);
 		}
 		catch (Exception ex)
@@ -119,28 +110,17 @@ public class AIPController extends APIController
 		return response;
 	}
 
-	@PreAuthorize("#oauth2.hasScope('write')")
+	@PreAuthorize("#oauth2.hasScope('write') && hasPermission(#bankId + '.' + #accountId, #viewId)")
 	@RequestMapping(method = RequestMethod.GET, value = "/banks/{bankId}/accounts/{accountId}/{viewId}/account", produces = MediaType.APPLICATION_JSON_VALUE)
-	public @ResponseBody ResponseEntity<BankAccountDetailsView> getAccountById(
-			@PathVariable("bankId") String bankId, @PathVariable("accountId") String accountId,
-			@PathVariable("viewId") String viewId, Authentication auth)
+	public @ResponseBody ResponseEntity<BankAccountDetailsView> getAccountById(@PathVariable("bankId") String bankId,
+			@PathVariable("accountId") String accountId, @PathVariable("viewId") String viewId)
 	{
 		ResponseEntity<BankAccountDetailsView> response;
 		try
 		{
-			OAuth2Authentication oauth2 = (OAuth2Authentication) auth;
-			String user = (String) auth.getPrincipal();
-			ViewId specifiedView = new ViewId();
-			specifiedView.setId(viewId);
 
-			SubscriptionInfo sib = sdao.getSubscriptionInfo(user, oauth2.getOAuth2Request().getClientId(),
-					accountId, bankId);
-			if (!validateSubscription(sib, specifiedView))
-			{
-				throw new IllegalAccessException(Constants.ERRMSG_NOT_SUBSCRIBED);
-			}
-
-			BankAccountDetails b = bad.getBankAccountDetails(bankId, accountId, user);
+			Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+			BankAccountDetails b = bad.getBankAccountDetails(bankId, accountId, (String) auth.getPrincipal());
 			BankAccountDetailsView bo = null;
 
 			if (b == null)
@@ -169,27 +149,16 @@ public class AIPController extends APIController
 		return response;
 	}
 
-	@PreAuthorize("#oauth2.hasScope('write')")
+	@PreAuthorize("#oauth2.hasScope('write') && hasPermission(#bankId + '.' + #accountId, 'owner')")
 	@RequestMapping(method = RequestMethod.GET, value = "/my/banks/{bankId}/accounts/{accountId}/account", produces = MediaType.APPLICATION_JSON_VALUE)
-	public @ResponseBody ResponseEntity<BankAccountDetailsView> getAccountById(
-			@PathVariable("bankId") String bankId, @PathVariable("accountId") String accountId, Authentication auth)
+	public @ResponseBody ResponseEntity<BankAccountDetailsView> getAccountById(@PathVariable("bankId") String bankId,
+			@PathVariable("accountId") String accountId)
 	{
 		ResponseEntity<BankAccountDetailsView> response;
 		try
 		{
-			OAuth2Authentication oauth2 = (OAuth2Authentication) auth;
+			Authentication auth = SecurityContextHolder.getContext().getAuthentication();
 			String user = (String) auth.getPrincipal();
-			ViewId ownerView = new ViewId();
-			ownerView.setId(Constants.OWNER_VIEW);
-
-			SubscriptionInfo sib = sdao.getSubscriptionInfo(user, oauth2.getOAuth2Request().getClientId(),
-					accountId, bankId);
-
-			if (!validateSubscription(sib, ownerView))
-			{
-				throw new IllegalAccessException(Constants.ERRMSG_NOT_SUBSCRIBED);
-			}
-
 			BankAccountDetails b = bad.getBankAccountDetails(bankId, accountId, user);
 
 			if (b == null)
@@ -211,31 +180,20 @@ public class AIPController extends APIController
 		return response;
 	}
 
-	@PreAuthorize("#oauth2.hasScope('write')")
+	@PreAuthorize("#oauth2.hasScope('write') && hasPermission(#bankId + '.' + #accountId, #viewId)")
 	@RequestMapping(method = RequestMethod.GET, value = "/banks/{bankId}/accounts/{accountId}/{viewId}/transactions/{txnId}/transaction", produces = MediaType.APPLICATION_JSON_VALUE)
 	public @ResponseBody ResponseEntity<Transaction> getTransactionById(@PathVariable("bankId") String bankId,
 			@PathVariable("accountId") String accountId, @PathVariable("viewId") String viewId,
-			@PathVariable("txnId") String txnId, Authentication auth)
+			@PathVariable("txnId") String txnId)
 	{
 		ResponseEntity<Transaction> response;
 		try
 		{
-			OAuth2Authentication oauth2 = (OAuth2Authentication) auth;
-			String user = (String) auth.getPrincipal();
-			ViewId specifiedView = new ViewId();
-			specifiedView.setId(viewId);
-
-			SubscriptionInfo sib = sdao.getSubscriptionInfo(user, oauth2.getOAuth2Request().getClientId(),
-					accountId, bankId);
-			if (!validateSubscription(sib, specifiedView))
-			{
-				throw new IllegalAccessException(Constants.ERRMSG_NOT_SUBSCRIBED);
-			}
-
+			// Authentication auth =
+			// SecurityContextHolder.getContext().getAuthentication();
+			// String user = (String) auth.getPrincipal();
 			Transaction t = tdao.getTransactionById(bankId, accountId, txnId);
-
 			response = ResponseEntity.ok(t);
-
 		}
 		catch (Exception ex)
 		{
@@ -245,7 +203,7 @@ public class AIPController extends APIController
 		return response;
 	}
 
-	@PreAuthorize("#oauth2.hasScope('write')")
+	@PreAuthorize("#oauth2.hasScope('write') && hasPermission(#bankId + '.' + #accountId, #viewId)")
 	@RequestMapping(method = RequestMethod.GET, value = "/banks/{bankId}/accounts/{accountId}/{viewId}/transactions", produces = MediaType.APPLICATION_JSON_VALUE)
 	public @ResponseBody ResponseEntity<List<Transaction>> getTransactions(@PathVariable("bankId") String bankId,
 			@PathVariable("accountId") String accountId, @PathVariable("viewId") String viewId,
@@ -254,23 +212,11 @@ public class AIPController extends APIController
 			@RequestHeader(value = "obp_from_date", required = false) String fromDate,
 			@RequestHeader(value = "obp_to_date", required = false) String toDate,
 			@RequestHeader(value = "obp_sort_by", required = false) String sortBy,
-			@RequestHeader(value = "obp_offset", required = false) Integer offset, Authentication auth)
+			@RequestHeader(value = "obp_offset", required = false) Integer offset)
 	{
 		ResponseEntity<List<Transaction>> response;
 		try
 		{
-			OAuth2Authentication oauth2 = (OAuth2Authentication) auth;
-			String user = (String) auth.getPrincipal();
-			ViewId specifiedView = new ViewId();
-			specifiedView.setId(viewId);
-
-			SubscriptionInfo sib = sdao.getSubscriptionInfo(user, oauth2.getOAuth2Request().getClientId(),
-					accountId, bankId);
-			if (!validateSubscription(sib, specifiedView))
-			{
-				throw new IllegalAccessException(Constants.ERRMSG_NOT_SUBSCRIBED);
-			}
-
 			if (offset == null)
 			{
 				offset = 0;
@@ -280,7 +226,7 @@ public class AIPController extends APIController
 			{
 				limit = 10;
 			}
-			
+
 			List<Transaction> t = tdao.getTransactions(bankId, accountId, sortDirection, fromDate, toDate, sortBy,
 					offset / limit, limit);
 
@@ -329,5 +275,4 @@ public class AIPController extends APIController
 		}
 		return response;
 	}
-
 }

@@ -20,7 +20,6 @@ public class SubscriptionServiceImpl implements SubscriptionService
 
 	@Override
 	public SubscriptionInfo getSubscriptionInfo(String username, String clientId, String accountId, String bankId)
-			throws Exception
 	{
 		
 		logger.info("bankId = " + bankId + ", accountId = " + accountId + ", username = " + username);
@@ -29,21 +28,20 @@ public class SubscriptionServiceImpl implements SubscriptionService
 
 	@Override
 	public List<SubscriptionInfo> getSubscriptionInfo(String username, String clientId, String bankId)
-			throws Exception
 	{
 		logger.info("bankId = " + bankId + ", username = " + username);
 		return msir.findByUsernameAndClientIdAndBankId(username, clientId, bankId);
 	}
 
 	@Override
-	public List<SubscriptionInfo> getSubscriptionInfo(String username, String clientId) throws Exception
+	public List<SubscriptionInfo> getSubscriptionInfo(String username, String clientId)
 	{
 		logger.info("username = " + username);
 		return msir.findByUsernameAndClientId(username, clientId);
 	}
 
 	@Override
-	public void createSubscriptionInfo(SubscriptionInfo s) throws Exception
+	public void createSubscriptionInfo(SubscriptionInfo s)
 	{
 		SubscriptionInfo existingSI = msir.findByUsernameAndClientIdAndAccountIdAndBankId(s.getUsername(), s.getClientId(), s.getAccountId(), s.getBankId());
 		if (existingSI != null)

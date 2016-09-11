@@ -6,14 +6,12 @@ import com.ibm.psd2.commons.datamodel.subscription.SubscriptionInfo;
 
 public interface SubscriptionService
 {
-	public SubscriptionInfo getSubscriptionInfo(String username, String clientId, String accountId, String bankId)
-			throws Exception;
+	public SubscriptionInfo getSubscriptionInfo(String username, String clientId, String accountId, String bankId);
 
-	public List<SubscriptionInfo> getSubscriptionInfo(String username, String clientId, String bankId)
-			throws Exception;
+	public List<SubscriptionInfo> getSubscriptionInfo(String username, String clientId, String bankId);
 
-	public List<SubscriptionInfo> getSubscriptionInfo(String username, String clientId) throws Exception;
+	public List<SubscriptionInfo> getSubscriptionInfo(String username, String clientId);
 
-	public void createSubscriptionInfo(SubscriptionInfo s) throws Exception;
+	public void createSubscriptionInfo(SubscriptionInfo s);
 
 }
