@@ -18,6 +18,7 @@ public class TransactionDetails implements Serializable
 	private Date completed;
 	private Amount newBalance;
 	private Amount value;
+	private String category;
 	
 	public String getType()
 	{
