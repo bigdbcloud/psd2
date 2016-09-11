@@ -10,7 +10,7 @@ $STORM_HOME/bin/storm jar /media/sf_digital/psd2/master/psd2/psd2integration/tar
 --mongodb.host mongodb://172.30.46.38:27017 \
 --job.submission.type storm  \
 --psd2api.db psd2api \
---payments.collection payments \
---bankaccounts.collection bankaccounts \
---transactions.collection transactions
+--payments.collection TxnRequests \
+--bankaccounts.collection BankAccountDetails \
+--transactions.collection Transactions
 
