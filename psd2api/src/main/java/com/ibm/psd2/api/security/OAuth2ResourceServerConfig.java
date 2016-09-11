@@ -11,12 +11,10 @@ import org.springframework.security.oauth2.config.annotation.web.configuration.E
 import org.springframework.security.oauth2.config.annotation.web.configuration.ResourceServerConfigurerAdapter;
 import org.springframework.security.oauth2.config.annotation.web.configurers.ResourceServerSecurityConfigurer;
 import org.springframework.security.oauth2.provider.token.DefaultTokenServices;
-import org.springframework.security.oauth2.provider.token.RemoteTokenServices;
 import org.springframework.security.oauth2.provider.token.ResourceServerTokenServices;
 import org.springframework.security.oauth2.provider.token.TokenStore;
 import org.springframework.security.oauth2.provider.token.store.JwtAccessTokenConverter;
 import org.springframework.security.oauth2.provider.token.store.JwtTokenStore;
-import org.springframework.web.client.RestTemplate;
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 import org.springframework.web.filter.CorsFilter;
@@ -25,16 +23,6 @@ import org.springframework.web.filter.CorsFilter;
 @EnableResourceServer
 public class OAuth2ResourceServerConfig extends ResourceServerConfigurerAdapter 
 {
-	
-	//http://localhost:8081/oauth2server/oauth/check_token
-	@Value("${oauth.checktoken.endpoint}")
-	private String checkTokenEndpoint;
-	
-	@Value("${oauth.client.id}")
-	private String clientId;
-
-	@Value("${oauth.client.secret}")
-	private String clientSecret;
 	
     @Bean
     public JwtAccessTokenConverter accessTokenConverter() {

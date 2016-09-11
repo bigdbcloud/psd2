@@ -47,7 +47,7 @@ public class PISPController extends APIController
 	@Value("${version}")
 	String version;
 
-	@Value("${kakfa.topic}")
+	@Value("${psd2api.integration.kakfa.topic}")
 	String topic;
 
 	@Value("${psd2api.integration.useKafka}")

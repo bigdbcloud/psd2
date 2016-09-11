@@ -22,7 +22,7 @@ public class KafkaMessageProducer
 	@Autowired
 	private AppConfigService appConfigService;
 	
-	@Value("${kafka.properties.refresh.interval.ms}")
+	@Value("${psd2api.integration.kafka.refresh.interval.ms}")
 	private long reloadTime;
 	
 	private long lastLoadTime = 0;
