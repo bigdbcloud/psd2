@@ -1,4 +1,4 @@
-package com.ibm.psd2.api.security.oauth2;
+package com.ibm.psd2.api.security;
 
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.context.embedded.FilterRegistrationBean;

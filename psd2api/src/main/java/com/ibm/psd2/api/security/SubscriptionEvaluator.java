@@ -1,4 +1,4 @@
-package com.ibm.psd2.api.security.oauth2;
+package com.ibm.psd2.api.security;
 
 import java.io.Serializable;
 import java.util.List;
