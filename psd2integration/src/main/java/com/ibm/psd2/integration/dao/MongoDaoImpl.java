@@ -1,11 +1,9 @@
 package com.ibm.psd2.integration.dao;
 
-import static com.mongodb.client.model.Filters.eq;
 import static com.mongodb.client.model.Filters.and;
+import static com.mongodb.client.model.Filters.eq;
 import static com.mongodb.client.model.Projections.excludeId;
 
-import java.io.PrintWriter;
-import java.io.StringWriter;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;

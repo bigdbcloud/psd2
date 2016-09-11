@@ -112,7 +112,7 @@ public class TxnRequestProcessor extends BaseRichBolt
 
 		} catch (Exception e)
 		{
-			logger.error(e);
+			logger.error(e.getMessage(), e);
 		}
 	}
 
