@@ -91,9 +91,9 @@ public class SubscriptionEvaluator implements PermissionEvaluator
 			else
 			{
 				List<SubscriptionInfo> sis = subService.getSubscriptionInfo(username, clientId, bankId);
-				if (sis == null)
+				if (sis != null)
 				{
-					return false;
+					return true;
 				}
 			}
 		}

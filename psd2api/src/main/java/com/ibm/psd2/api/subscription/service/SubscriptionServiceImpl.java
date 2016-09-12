@@ -29,7 +29,7 @@ public class SubscriptionServiceImpl implements SubscriptionService
 	@Override
 	public List<SubscriptionInfo> getSubscriptionInfo(String username, String clientId, String bankId)
 	{
-		logger.info("bankId = " + bankId + ", username = " + username);
+		logger.info("bankId = " + bankId + ", username = " + username + " clientId = " + clientId);
 		return msir.findByUsernameAndClientIdAndBankId(username, clientId, bankId);
 	}
 
