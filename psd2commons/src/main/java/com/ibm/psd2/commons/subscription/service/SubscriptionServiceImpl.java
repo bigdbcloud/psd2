@@ -55,4 +55,12 @@ public class SubscriptionServiceImpl implements SubscriptionService
 		msir.save(s);
 	}
 
+	@Override
+	public List<SubscriptionInfo> getSubscriptionInfo(String username)
+	{
+		logger.info("username = " + username);
+		return msir.findByUsernameAndClientId(username);
+	}
+
+	
 }
