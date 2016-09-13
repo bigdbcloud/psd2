@@ -9,7 +9,6 @@ import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.PermissionEvaluator;
 import org.springframework.security.core.Authentication;
-import org.springframework.security.oauth2.provider.OAuth2Authentication;
 import org.springframework.stereotype.Component;
 
 import com.ibm.psd2.commons.datamodel.subscription.SubscriptionInfo;
@@ -55,15 +54,19 @@ public class SubscriptionEvaluator implements PermissionEvaluator
 		String target = (String) targetDomainObject;
 		String bankId = null;
 		String accountId = null;
+		String user = null;
 		// permission = owner, etc....
 		String viewId = (String) permission;
 
 		ViewId view = new ViewId();
 		view.setId(viewId);
 
-		OAuth2Authentication auth = (OAuth2Authentication) authentication;
-
 		StringTokenizer st = new StringTokenizer(target, ".");
+		
+		if (st.hasMoreTokens())
+		{
+			user = st.nextToken();
+		}
 
 		if (st.hasMoreTokens())
 		{
@@ -74,26 +77,25 @@ public class SubscriptionEvaluator implements PermissionEvaluator
 			accountId = st.nextToken();
 		}
 
-		logger.info("Method Arguments username: " + auth.getPrincipal() + " clientId: "
-				+ auth.getOAuth2Request().getClientId() + " accountId: " + accountId + " bankId:" + bankId);
+		logger.info("Method Arguments username: " + user + " clientId: "
+				+ authentication.getPrincipal()  + " accountId: " + accountId + " bankId:" + bankId);
 		logger.info("subscriptionService: " + subService);
 
-		if (bankId != null)
+		if (user != null && bankId != null)
 		{
-			String username = (String) auth.getPrincipal();
-			String clientId = (String) auth.getOAuth2Request().getClientId();
+			String clientId = authentication.getName();
 
 			if (accountId != null)
 			{
-				SubscriptionInfo si = subService.getSubscriptionInfo(username, clientId, accountId, bankId);
+				SubscriptionInfo si = subService.getSubscriptionInfo(user, clientId, accountId, bankId);
 				return validateSubscription(si, view);
 			}
 			else
 			{
-				List<SubscriptionInfo> sis = subService.getSubscriptionInfo(username, clientId, bankId);
-				if (sis == null)
+				List<SubscriptionInfo> sis = subService.getSubscriptionInfo(user, clientId, bankId);
+				if (sis != null && !sis.isEmpty())
 				{
-					return false;
+					return true;
 				}
 			}
 		}

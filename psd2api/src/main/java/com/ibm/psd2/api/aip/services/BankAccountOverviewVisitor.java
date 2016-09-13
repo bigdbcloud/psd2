@@ -12,13 +12,12 @@ public class BankAccountOverviewVisitor implements Visitor
 	{
 		BankAccountOverview baob = new BankAccountOverview();
 		BankAccountDetails bad = (BankAccountDetails) u;
-		
+
 		baob.setBankId(bad.getBankId());
 		baob.setId(bad.getId());
 		baob.setLabel(bad.getLabel());
-		
+
 		return (T) baob;
 	}
 
-	
 }

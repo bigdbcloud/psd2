@@ -7,11 +7,11 @@
             "kind": "DeploymentConfig",
             "apiVersion": "v1",
             "metadata": {
-                "name": "psd2api",
+                "name": "psd2subscriptionapi",
                 "namespace": "test",
                 "creationTimestamp": null,
                 "labels": {
-                    "app": "psd2"
+                    "app": "psd2subscriptionapi"
                 },
                 "annotations": {
                     "openshift.io/generated-by": "OpenShiftNewApp"
@@ -38,12 +38,12 @@
                         "imageChangeParams": {
                             "automatic": true,
                             "containerNames": [
-                                "psd2api"
+                                "psd2subscriptionapi"
                             ],
                             "from": {
                                 "kind": "ImageStreamTag",
                                 "namespace": "test",
-                                "name": "psd2api:latest"
+                                "name": "psd2subscriptionapi:latest"
                             }
                         }
                     }
@@ -51,37 +51,37 @@
                 "replicas": 1,
                 "test": false,
                 "selector": {
-                    "app": "psd2",
-                    "deploymentconfig": "psd2api"
+                    "app": "psd2subscriptionapi",
+                    "deploymentconfig": "psd2subscriptionapi"
                 },
                 "template": {
                     "metadata": {
                         "creationTimestamp": null,
                         "labels": {
-                            "app": "psd2",
-                            "deploymentconfig": "psd2api"
+                            "app": "psd2subscriptionapi",
+                            "deploymentconfig": "psd2subscriptionapi"
                         },
                         "annotations": {
-                            "openshift.io/container.psd2api.image.entrypoint": "[\"/bin/sh\",\"-c\",\"java -jar psd2api-0.0.1-SNAPSHOT.jar\"]",
+                            "openshift.io/container.psd2subscriptionapi.image.entrypoint": "[\"/bin/sh\",\"-c\",\"java -jar psd2subscriptionapi-0.0.1-SNAPSHOT.jar \\u003e /logs/psd2subscriptionapi.system.out.log\"]",
                             "openshift.io/generated-by": "OpenShiftNewApp"
                         }
                     },
                     "spec": {
                         "volumes": [
                             {
-                                "name": "psd2api-volume-1",
+                                "name": "psd2subscriptionapi-volume-1",
                                 "hostPath": {
-                                    "path": "/var/local/openshift/logs/psd2api"
+                                    "path": "/var/local/openshift/logs/psd2subscriptionapi"
                                 }
                             }
                         ],
                         "containers": [
                             {
-                                "name": "psd2api",
-                                "image": "172.30.42.135:5000/test/psd2api:latest",
+                                "name": "psd2subscriptionapi",
+                                "image": "172.30.42.135:5000/test/psd2subscriptionapi:latest",
                                 "ports": [
                                     {
-                                        "containerPort": 8082,
+                                        "containerPort": 8083,
                                         "protocol": "TCP"
                                     }
                                 ],
@@ -89,16 +89,12 @@
                                     {
                                         "name": "MONGO_SVC_URI",
                                         "value": "mongodb://172.30.46.38:27017/psd2apirise"
-                                    },
-                                    {
-                                        "name": "USE_KAFKA",
-                                        "value": "false"
                                     }
                                 ],
                                 "resources": {},
                                 "volumeMounts": [
                                     {
-                                        "name": "psd2api-volume-1",
+                                        "name": "psd2subscriptionapi-volume-1",
                                         "mountPath": "/logs"
                                     }
                                 ],
@@ -119,11 +115,11 @@
             "kind": "Service",
             "apiVersion": "v1",
             "metadata": {
-                "name": "psd2api",
+                "name": "psd2subscriptionapi",
                 "namespace": "test",
                 "creationTimestamp": null,
                 "labels": {
-                    "app": "psd2"
+                    "app": "psd2subscriptionapi"
                 },
                 "annotations": {
                     "openshift.io/generated-by": "OpenShiftNewApp"
@@ -132,15 +128,15 @@
             "spec": {
                 "ports": [
                     {
-                        "name": "8082-tcp",
+                        "name": "8083-tcp",
                         "protocol": "TCP",
-                        "port": 8082,
-                        "targetPort": 8082
+                        "port": 8083,
+                        "targetPort": 8083
                     }
                 ],
                 "selector": {
-                    "app": "psd2",
-                    "deploymentconfig": "psd2api"
+                    "app": "psd2subscriptionapi",
+                    "deploymentconfig": "psd2subscriptionapi"
                 },
                 "type": "ClusterIP",
                 "sessionAffinity": "None"

@@ -68,12 +68,9 @@ public class TxnRequestProcessor extends BaseRichBolt
 
 			logger.warn("Processing Transaction Request:" + tdb.getId());
 
-			BankAccountDetails from = new BankAccountDetails();
-			BankAccountDetails to = new BankAccountDetails();
-
-			from = mongoOperation.findOne(query(where("id").is(tdb.getFrom().getAccountId())),
+			BankAccountDetails from = mongoOperation.findOne(query(where("id").is(tdb.getFrom().getAccountId())),
 					BankAccountDetails.class);
-			to = mongoOperation.findOne(query(where("id").is(tdb.getBody().getTo().getAccountId())),
+			BankAccountDetails to = mongoOperation.findOne(query(where("id").is(tdb.getBody().getTo().getAccountId())),
 					BankAccountDetails.class);
 
 			if (from != null)

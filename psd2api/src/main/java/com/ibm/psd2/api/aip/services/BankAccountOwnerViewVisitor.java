@@ -8,10 +8,10 @@ public class BankAccountOwnerViewVisitor implements Visitor
 	@Override
 	public <T, U> T visit(U u)
 	{
-		
+
 		BankAccountDetailsView badv = new BankAccountDetailsView();
 		BankAccountDetails bad = (BankAccountDetails) u;
-		
+
 		badv.setId(bad.getId());
 		badv.setBank_id(bad.getBankId());
 		badv.setBalance(bad.getBalance());
@@ -23,5 +23,5 @@ public class BankAccountOwnerViewVisitor implements Visitor
 		badv.setType(bad.getType());
 		return (T) badv;
 	}
-	
+
 }

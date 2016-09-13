@@ -7,6 +7,6 @@ import com.ibm.psd2.commons.datamodel.aip.Transaction;
 
 public interface MongoTransactionsRepositoryCustom
 {
-	public List<Transaction> getTransactions(String bankId, String accountId, String sortDirection,
-			Date fromDate, Date toDate, String sortBy, Integer page, Integer limit);
+	public List<Transaction> getTransactions(String bankId, String accountId, String sortDirection, Date fromDate,
+			Date toDate, String sortBy, Integer page, Integer limit);
 }

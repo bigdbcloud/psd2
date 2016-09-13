@@ -11,9 +11,9 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.oauth2.provider.OAuth2Authentication;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -50,15 +50,15 @@ public class PISPController extends APIController
 	@Value("${psd2api.integration.kakfa.topic}")
 	String topic;
 
-	@Value("${psd2api.integration.useKafka}")
-	private boolean useKafka;
+	private boolean useKafka = false;
 
-	@PreAuthorize("#oauth2.hasScope('write') && hasPermission(#bankId + '.' + #accountId, #viewId)")
+	@PreAuthorize("hasPermission(#user + '.' + #bankId + '.' + #accountId, #viewId)")
 	@RequestMapping(method = RequestMethod.POST, value = "banks/{bankId}/accounts/{accountId}/{viewId}/transaction-request-types/{txnType}/transaction-requests", produces = MediaType.APPLICATION_JSON_VALUE)
 	public @ResponseBody ResponseEntity<TxnRequestDetails> createTransactionRequest(
 			@PathVariable("bankId") String bankId, @PathVariable("accountId") String accountId,
 			@PathVariable("viewId") String viewId, @PathVariable("txnType") String txnType,
-			@RequestBody(required = true) TxnRequest trb)
+			@RequestBody(required = true) TxnRequest trb,
+			@RequestHeader(value = "user", required = true) String user)
 	{
 		ResponseEntity<TxnRequestDetails> response;
 		try
@@ -69,9 +69,8 @@ public class PISPController extends APIController
 				throw new IllegalArgumentException("Invalid Transaction Request");
 			}
 
-			OAuth2Authentication auth = (OAuth2Authentication) SecurityContextHolder.getContext().getAuthentication();
-			SubscriptionInfo sib = subscriptionService.getSubscriptionInfo((String) auth.getPrincipal(),
-					auth.getOAuth2Request().getClientId(), accountId, bankId);
+			Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+			SubscriptionInfo sib = subscriptionService.getSubscriptionInfo(user, (String) auth.getName(), accountId, bankId);
 			TxnParty payee = new TxnParty(bankId, accountId);
 			TxnRequestDetails t = txnReqService.createTransactionRequest(sib, trb, payee, txnType);
 
@@ -90,19 +89,18 @@ public class PISPController extends APIController
 		return response;
 	}
 
-	@PreAuthorize("#oauth2.hasScope('write') && hasPermission(#bankId + '.' + #accountId, #viewId)")
+	@PreAuthorize("hasPermission(#user + '.' + #bankId + '.' + #accountId, #viewId)")
 	@RequestMapping(method = RequestMethod.POST, value = "banks/{bankId}/accounts/{accountId}/{viewId}/transaction-request-types/{txnType}/transaction-requests/{txnReqId}/challenge", produces = MediaType.APPLICATION_JSON_VALUE)
 	public @ResponseBody ResponseEntity<TxnRequestDetails> answerTransactionChallenge(
 			@PathVariable("bankId") String bankId, @PathVariable("accountId") String accountId,
 			@PathVariable("viewId") String viewId, @PathVariable("txnType") String txnType,
-			@PathVariable("txnReqId") String txnReqId, @RequestBody ChallengeAnswer t)
+			@PathVariable("txnReqId") String txnReqId, @RequestBody ChallengeAnswer t,
+			@RequestHeader(value = "user", required = true) String user)
 	{
 		ResponseEntity<TxnRequestDetails> response;
 		try
 		{
-			Authentication auth = (Authentication) SecurityContextHolder.getContext().getAuthentication();
-
-			TxnRequestDetails tdb = txnReqService.answerTransactionRequestChallenge((String) auth.getPrincipal(),
+			TxnRequestDetails tdb = txnReqService.answerTransactionRequestChallenge(user,
 					viewId, bankId, accountId, txnType, txnReqId, t);
 
 			if (useKafka && tdb != null && TxnRequestDetails.TXN_STATUS_PENDING.equalsIgnoreCase(tdb.getStatus()))
@@ -120,19 +118,19 @@ public class PISPController extends APIController
 		return response;
 	}
 
-	@PreAuthorize("#oauth2.hasScope('write') && hasPermission(#bankId + '.' + #accountId, #viewId)")
+	@PreAuthorize("hasPermission(#user + '.' + #bankId + '.' + #accountId, #viewId)")
 	@RequestMapping(method = RequestMethod.GET, value = "banks/{bankId}/accounts/{accountId}/{viewId}/transaction-request-types", produces = MediaType.APPLICATION_JSON_VALUE)
 	public @ResponseBody ResponseEntity<List<TransactionRequestType>> getTransactionRequestTypes(
 			@PathVariable("bankId") String bankId, @PathVariable("accountId") String accountId,
-			@PathVariable("viewId") String viewId)
+			@PathVariable("viewId") String viewId,
+			@RequestHeader(value = "user", required = true) String user)
 	{
 		ResponseEntity<List<TransactionRequestType>> response;
 		try
 		{
-			OAuth2Authentication auth = (OAuth2Authentication) SecurityContextHolder.getContext().getAuthentication();
+			Authentication auth = (Authentication) SecurityContextHolder.getContext().getAuthentication();
 
-			SubscriptionInfo sib = subscriptionService.getSubscriptionInfo((String) auth.getPrincipal(),
-					auth.getOAuth2Request().getClientId(), accountId, bankId);
+			SubscriptionInfo sib = subscriptionService.getSubscriptionInfo(user, (String) auth.getName(), accountId, bankId);
 
 			response = ResponseEntity.ok(sib.getTransactionRequestTypes());
 		}
@@ -144,17 +142,18 @@ public class PISPController extends APIController
 		return response;
 	}
 
-	@PreAuthorize("#oauth2.hasScope('write') && hasPermission(#bankId + '.' + #accountId, #viewId)")
+	@PreAuthorize("hasPermission(#user + '.' + #bankId + '.' + #accountId, #viewId)")
 	@RequestMapping(method = RequestMethod.GET, value = "banks/{bankId}/accounts/{accountId}/{viewId}/transaction-requests", produces = MediaType.APPLICATION_JSON_VALUE)
 	public @ResponseBody ResponseEntity<List<TxnRequestDetails>> getTransactionRequests(
 			@PathVariable("bankId") String bankId, @PathVariable("accountId") String accountId,
-			@PathVariable("viewId") String viewId)
+			@PathVariable("viewId") String viewId,
+			@RequestHeader(value = "user", required = true) String user)
 	{
 		ResponseEntity<List<TxnRequestDetails>> response;
 		try
 		{
-			Authentication auth = (Authentication) SecurityContextHolder.getContext().getAuthentication();
-			List<TxnRequestDetails> txns = txnReqService.getTransactionRequests((String) auth.getPrincipal(), viewId, accountId, bankId);
+			List<TxnRequestDetails> txns = txnReqService.getTransactionRequests(user, viewId,
+					accountId, bankId);
 			response = ResponseEntity.ok(txns);
 		}
 		catch (Exception e)

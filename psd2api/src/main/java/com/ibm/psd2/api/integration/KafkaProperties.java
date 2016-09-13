@@ -27,18 +27,17 @@ public class KafkaProperties
 	private String acks;
 
 	private String retries;
-	
+
 	private String batchSize;
-	
+
 	private String lingerMs;
-	
+
 	private String bufferMemory;
-	
+
 	private String keySerializer;
-	
+
 	private String valueSerializer;
 
-	
 	public String getUuid()
 	{
 		return uuid;
@@ -128,7 +127,7 @@ public class KafkaProperties
 	{
 		this.valueSerializer = valueSerializer;
 	}
-	
+
 	public Properties getProperties()
 	{
 		Properties props = new Properties();
@@ -140,7 +139,7 @@ public class KafkaProperties
 		props.setProperty(kafka_buffer_memory_key, bufferMemory);
 		props.setProperty(kafka_key_serializer_key, keySerializer);
 		props.setProperty(kafka_value_serializer_key, valueSerializer);
-		
+
 		return props;
 	}
 }

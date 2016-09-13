@@ -20,14 +20,14 @@ public class KafkaMessageProducer
 
 	@Value("${psd2api.integration.kafka.refresh.interval.ms}")
 	private long reloadTime;
-	
+
 	private long lastLoadTime = 0;
 
 	private KafkaProducer<String, String> producer;
-	
+
 	@Autowired
 	private MongoKafkaPropertiesRepository mkpr;
-	
+
 	private synchronized KafkaProducer<String, String> getProducer() throws Exception
 	{
 		long loadInterval = Calendar.getInstance().getTimeInMillis() - lastLoadTime;
@@ -45,9 +45,9 @@ public class KafkaMessageProducer
 
 	public void publishMessage(String topic, String key, String value) throws Exception
 	{
-		logger.info("Sending Kafka Message on topic: " + topic + " with key: " + key + " message: "+ value);
+		logger.info("Sending Kafka Message on topic: " + topic + " with key: " + key + " message: " + value);
 		getProducer().send(new ProducerRecord<String, String>(topic, key, value));
 		logger.info("Sending Kafka Message on topic: " + topic + " with key: " + key + " complete...");
 	}
-	
+
 }

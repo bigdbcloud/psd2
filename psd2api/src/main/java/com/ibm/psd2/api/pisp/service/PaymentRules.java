@@ -30,8 +30,8 @@ public class PaymentRules
 
 	public boolean isTransactionTypeAllowed(SubscriptionInfo sib, String txnType)
 	{
-		for (Iterator<TransactionRequestType> iterator = sib.getTransactionRequestTypes()
-				.iterator(); iterator.hasNext();)
+		for (Iterator<TransactionRequestType> iterator = sib.getTransactionRequestTypes().iterator(); iterator
+				.hasNext();)
 		{
 			TransactionRequestType type = (TransactionRequestType) iterator.next();
 			if (type.getValue().equals(txnType))
@@ -72,8 +72,7 @@ public class PaymentRules
 		return false;
 	}
 
-	public TxnCharge getTransactionCharge(TxnRequest trb,
-			TxnParty payee)
+	public TxnCharge getTransactionCharge(TxnRequest trb, TxnParty payee)
 	{
 		Amount ab = new Amount();
 		// Currently hardcoded charge
@@ -85,7 +84,7 @@ public class PaymentRules
 		tcb.setValue(ab);
 		return tcb;
 	}
-	
+
 	public boolean validateTxnChallengeAnswer(ChallengeAnswer t, String user, String accountId, String bankId)
 	{
 		if (t.getAnswer() != null)

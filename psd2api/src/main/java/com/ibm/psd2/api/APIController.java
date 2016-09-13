@@ -25,8 +25,8 @@ public abstract class APIController
 		logger.info("Method Arguments = " + s);
 		logger.info("Method Arguments = " + view);
 
-		if (s != null && view != null && SubscriptionInfo.STATUS_ACTIVE.equals(s.getStatus())
-				&& s.getViewIds() != null && !s.getViewIds().isEmpty() && s.getViewIds().contains(view))
+		if (s != null && view != null && SubscriptionInfo.STATUS_ACTIVE.equals(s.getStatus()) && s.getViewIds() != null
+				&& !s.getViewIds().isEmpty() && s.getViewIds().contains(view))
 		{
 			return true;
 		}

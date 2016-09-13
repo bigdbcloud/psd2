@@ -6,7 +6,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -28,17 +27,17 @@ public class SubscriptionRequestController
 	@Value("${version}")
 	private String version;
 
-	@PreAuthorize("#oauth2.hasScope('write')")
 	@RequestMapping(method = RequestMethod.POST, value = "/subscription", produces = MediaType.APPLICATION_JSON_VALUE)
 	public @ResponseBody ResponseEntity<SubscriptionRequest> createSubscription(
-			@RequestBody(required=true) SubscriptionRequest s)
+			@RequestBody(required = true) SubscriptionRequest s)
 	{
 		ResponseEntity<SubscriptionRequest> response;
 		try
 		{
 			SubscriptionRequest sreturn = subsReqService.createSubscriptionRequest(s);
 			response = ResponseEntity.ok(sreturn);
-		} catch (Exception e)
+		}
+		catch (Exception e)
 		{
 			logger.error(e.getMessage(), e);
 			response = ResponseEntity.badRequest().body(null);

@@ -10,13 +10,13 @@ import com.ibm.psd2.commons.datamodel.subscription.SubscriptionInfo;
 
 public interface TransactionRequestService
 {
-	public TxnRequestDetails createTransactionRequest(SubscriptionInfo sib, TxnRequest trb,
-			TxnParty payee, String txnType) throws Exception;
+	public TxnRequestDetails createTransactionRequest(SubscriptionInfo sib, TxnRequest trb, TxnParty payee,
+			String txnType);
 
 	public List<TxnRequestDetails> getTransactionRequests(String username, String viewId, String accountId,
-			String bankId) throws Exception;
+			String bankId);
 
 	public TxnRequestDetails answerTransactionRequestChallenge(String username, String viewId, String bankId,
-			String accountId, String txnType, String txnReqId, ChallengeAnswer t) throws Exception;
+			String accountId, String txnType, String txnReqId, ChallengeAnswer t);
 
 }

@@ -22,21 +22,23 @@ public class SubscriptionServiceImpl implements SubscriptionService
 	public SubscriptionInfo getSubscriptionInfo(String username, String clientId, String accountId, String bankId)
 	{
 		
-		logger.info("bankId = " + bankId + ", accountId = " + accountId + ", username = " + username);
+		logger.info("bankId = " + bankId + ", accountId = " + accountId + ", username = " + username + ", clientId = " + clientId);
 		return msir.findByUsernameAndClientIdAndAccountIdAndBankId(username, clientId, accountId, bankId);
 	}
 
 	@Override
 	public List<SubscriptionInfo> getSubscriptionInfo(String username, String clientId, String bankId)
 	{
-		logger.info("bankId = " + bankId + ", username = " + username);
-		return msir.findByUsernameAndClientIdAndBankId(username, clientId, bankId);
+		logger.info("bankId = " + bankId + ", username = " + username + " , clientId = " + clientId);
+		List<SubscriptionInfo> lst = msir.findByUsernameAndClientIdAndBankId(username, clientId, bankId);
+		logger.debug("subscriptions = " + lst);
+		return lst;
 	}
 
 	@Override
 	public List<SubscriptionInfo> getSubscriptionInfo(String username, String clientId)
 	{
-		logger.info("username = " + username);
+		logger.info("username = " + username + ", clientId = " + clientId);
 		return msir.findByUsernameAndClientId(username, clientId);
 	}
 

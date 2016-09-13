@@ -13,7 +13,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.oauth2.provider.OAuth2Authentication;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -57,21 +56,19 @@ public class AIPController extends APIController
 	@Value("${version}")
 	private String version;
 
-	@PreAuthorize("#oauth2.hasScope('write') && hasPermission(#bankId, 'owner')")
+	@PreAuthorize("hasPermission(#user + '.' + #bankId, 'owner')")
 	@RequestMapping(method = RequestMethod.GET, value = "/my/banks/{bankId}/accounts", produces = MediaType.APPLICATION_JSON_VALUE)
 	public @ResponseBody ResponseEntity<List<BankAccountOverview>> getBankAccounts(
-			@PathVariable("bankId") String bankId)
+			@PathVariable("bankId") String bankId, @RequestHeader(value = "user", required = true) String user)
 	{
 		ResponseEntity<List<BankAccountOverview>> response;
 		try
 		{
-			OAuth2Authentication auth = (OAuth2Authentication) SecurityContextHolder.getContext().getAuthentication();
-			String user = (String) auth.getPrincipal();
+			Authentication auth = SecurityContextHolder.getContext().getAuthentication();
 			ViewId ownerView = new ViewId();
 			ownerView.setId(Constants.OWNER_VIEW);
 
-			List<SubscriptionInfo> lstSib = sdao.getSubscriptionInfo(user, auth.getOAuth2Request().getClientId(),
-					bankId);
+			List<SubscriptionInfo> lstSib = sdao.getSubscriptionInfo(user, (String) auth.getName(), bankId);
 
 			List<String> accountIds = new ArrayList<>();
 			for (Iterator<SubscriptionInfo> iterator = lstSib.iterator(); iterator.hasNext();)
@@ -110,17 +107,17 @@ public class AIPController extends APIController
 		return response;
 	}
 
-	@PreAuthorize("#oauth2.hasScope('write') && hasPermission(#bankId + '.' + #accountId, #viewId)")
+	@PreAuthorize("hasPermission(#user + '.' + #bankId + '.' + #accountId, #viewId)")
 	@RequestMapping(method = RequestMethod.GET, value = "/banks/{bankId}/accounts/{accountId}/{viewId}/account", produces = MediaType.APPLICATION_JSON_VALUE)
 	public @ResponseBody ResponseEntity<BankAccountDetailsView> getAccountById(@PathVariable("bankId") String bankId,
-			@PathVariable("accountId") String accountId, @PathVariable("viewId") String viewId)
+			@PathVariable("accountId") String accountId, @PathVariable("viewId") String viewId,
+			@RequestHeader(value = "user", required = true) String user)
 	{
 		ResponseEntity<BankAccountDetailsView> response;
 		try
 		{
 
-			Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-			BankAccountDetails b = bad.getBankAccountDetails(bankId, accountId, (String) auth.getPrincipal());
+			BankAccountDetails b = bad.getBankAccountDetails(bankId, accountId, user);
 			BankAccountDetailsView bo = null;
 
 			if (b == null)
@@ -149,16 +146,14 @@ public class AIPController extends APIController
 		return response;
 	}
 
-	@PreAuthorize("#oauth2.hasScope('write') && hasPermission(#bankId + '.' + #accountId, 'owner')")
+	@PreAuthorize("hasPermission(#user + '.' + #bankId + '.' + #accountId, 'owner')")
 	@RequestMapping(method = RequestMethod.GET, value = "/my/banks/{bankId}/accounts/{accountId}/account", produces = MediaType.APPLICATION_JSON_VALUE)
 	public @ResponseBody ResponseEntity<BankAccountDetailsView> getAccountById(@PathVariable("bankId") String bankId,
-			@PathVariable("accountId") String accountId)
+			@PathVariable("accountId") String accountId, @RequestHeader(value = "user", required = true) String user)
 	{
 		ResponseEntity<BankAccountDetailsView> response;
 		try
 		{
-			Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-			String user = (String) auth.getPrincipal();
 			BankAccountDetails b = bad.getBankAccountDetails(bankId, accountId, user);
 
 			if (b == null)
@@ -180,18 +175,15 @@ public class AIPController extends APIController
 		return response;
 	}
 
-	@PreAuthorize("#oauth2.hasScope('write') && hasPermission(#bankId + '.' + #accountId, #viewId)")
+	@PreAuthorize("hasPermission(#user + '.' + #bankId + '.' + #accountId, #viewId)")
 	@RequestMapping(method = RequestMethod.GET, value = "/banks/{bankId}/accounts/{accountId}/{viewId}/transactions/{txnId}/transaction", produces = MediaType.APPLICATION_JSON_VALUE)
 	public @ResponseBody ResponseEntity<Transaction> getTransactionById(@PathVariable("bankId") String bankId,
 			@PathVariable("accountId") String accountId, @PathVariable("viewId") String viewId,
-			@PathVariable("txnId") String txnId)
+			@PathVariable("txnId") String txnId, @RequestHeader(value = "user", required = true) String user)
 	{
 		ResponseEntity<Transaction> response;
 		try
 		{
-			// Authentication auth =
-			// SecurityContextHolder.getContext().getAuthentication();
-			// String user = (String) auth.getPrincipal();
 			Transaction t = tdao.getTransactionById(bankId, accountId, txnId);
 			response = ResponseEntity.ok(t);
 		}
@@ -203,7 +195,7 @@ public class AIPController extends APIController
 		return response;
 	}
 
-	@PreAuthorize("#oauth2.hasScope('write') && hasPermission(#bankId + '.' + #accountId, #viewId)")
+	@PreAuthorize("hasPermission(#user + '.' + #bankId + '.' + #accountId, #viewId)")
 	@RequestMapping(method = RequestMethod.GET, value = "/banks/{bankId}/accounts/{accountId}/{viewId}/transactions", produces = MediaType.APPLICATION_JSON_VALUE)
 	public @ResponseBody ResponseEntity<List<Transaction>> getTransactions(@PathVariable("bankId") String bankId,
 			@PathVariable("accountId") String accountId, @PathVariable("viewId") String viewId,
@@ -212,7 +204,8 @@ public class AIPController extends APIController
 			@RequestHeader(value = "obp_from_date", required = false) String fromDate,
 			@RequestHeader(value = "obp_to_date", required = false) String toDate,
 			@RequestHeader(value = "obp_sort_by", required = false) String sortBy,
-			@RequestHeader(value = "obp_offset", required = false) Integer offset)
+			@RequestHeader(value = "obp_offset", required = false) Integer offset,
+			@RequestHeader(value = "user", required = true) String user)
 	{
 		ResponseEntity<List<Transaction>> response;
 		try
@@ -240,7 +233,6 @@ public class AIPController extends APIController
 		return response;
 	}
 
-	@PreAuthorize("#oauth2.hasScope('write')")
 	@RequestMapping(method = RequestMethod.GET, value = "/banks", produces = MediaType.APPLICATION_JSON_VALUE)
 	public @ResponseBody ResponseEntity<List<Bank>> getBanks()
 	{
@@ -258,7 +250,6 @@ public class AIPController extends APIController
 		return response;
 	}
 
-	@PreAuthorize("#oauth2.hasScope('write')")
 	@RequestMapping(method = RequestMethod.GET, value = "/banks/{bankId}", produces = MediaType.APPLICATION_JSON_VALUE)
 	public @ResponseBody ResponseEntity<Bank> getBankById(@PathVariable("bankId") String bankId)
 	{

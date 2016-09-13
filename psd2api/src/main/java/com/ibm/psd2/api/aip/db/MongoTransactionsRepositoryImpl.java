@@ -22,8 +22,8 @@ public class MongoTransactionsRepositoryImpl implements MongoTransactionsReposit
 	private MongoTemplate mongoTemplate;
 
 	@Override
-	public List<Transaction> getTransactions(String bankId, String accountId, String sortDirection,
-			Date fromDate, Date toDate, String sortBy, Integer page, Integer limit)
+	public List<Transaction> getTransactions(String bankId, String accountId, String sortDirection, Date fromDate,
+			Date toDate, String sortBy, Integer page, Integer limit)
 	{
 
 		Sort sort = null;

@@ -16,7 +16,9 @@ import com.mongodb.MongoClient;
 import com.mongodb.MongoClientURI;
 
 @Configuration
-@EnableMongoRepositories(basePackages = {"com.ibm.psd2.api.aip.db","com.ibm.psd2.api.utils.db","com.ibm.psd2.api.pisp.db","com.ibm.psd2.commons.subscription.db"})
+@EnableMongoRepositories(basePackages = { "com.ibm.psd2.api.aip.db", "com.ibm.psd2.api.integration",
+		"com.ibm.psd2.api.pisp.db", "com.ibm.psd2.api.txns.db", "com.ibm.psd2.commons.subscription.db",
+		"com.ibm.psd2.api.security"})
 public class MongoConfiguration extends AbstractMongoConfiguration
 {
 	private final Logger logger = LogManager.getLogger(MongoConfiguration.class);
@@ -27,7 +29,7 @@ public class MongoConfiguration extends AbstractMongoConfiguration
 	@Override
 	protected String getDatabaseName()
 	{
-		MongoClientURI mcuri= new MongoClientURI(uri);
+		MongoClientURI mcuri = new MongoClientURI(uri);
 		return mcuri.getDatabase();
 	}
 

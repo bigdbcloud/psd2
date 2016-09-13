@@ -18,3 +18,13 @@ services:
   depends_on:
   - oauth2server
 
+
+ psd2subscriptionapi:
+  image: psd2/psd2subscriptionapi
+  ports:
+   - "8083:8083"
+  volumes:
+   - /logs:/logs
+  env_file: .env
+  depends_on:
+  - oauth2server
