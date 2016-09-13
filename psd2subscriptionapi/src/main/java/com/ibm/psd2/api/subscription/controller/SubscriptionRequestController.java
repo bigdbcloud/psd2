@@ -52,7 +52,7 @@ public class SubscriptionRequestController
 		try
 		{
 			OAuth2Authentication auth = (OAuth2Authentication) SecurityContextHolder.getContext().getAuthentication();
-			List<SubscriptionInfo> sreturn = subsService.getSubscriptionInfo((String) auth.getPrincipal(), auth.getOAuth2Request().getClientId());
+			List<SubscriptionInfo> sreturn = subsService.getSubscriptionInfo((String) auth.getPrincipal());
 			response = ResponseEntity.ok(sreturn);
 		} catch (Exception e)
 		{
