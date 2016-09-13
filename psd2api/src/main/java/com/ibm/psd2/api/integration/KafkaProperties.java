@@ -1,4 +1,4 @@
-package com.ibm.psd2.api.utils;
+package com.ibm.psd2.api.integration;
 
 import java.util.Properties;
 

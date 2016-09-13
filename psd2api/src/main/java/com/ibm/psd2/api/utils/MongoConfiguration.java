@@ -1,4 +1,4 @@
-package com.ibm.psd2.api.utils.db;
+package com.ibm.psd2.api.utils;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -16,7 +16,7 @@ import com.mongodb.MongoClient;
 import com.mongodb.MongoClientURI;
 
 @Configuration
-@EnableMongoRepositories(basePackages = {"com.ibm.psd2.api.aip.db","com.ibm.psd2.api.utils.db","com.ibm.psd2.api.pisp.db","com.ibm.psd2.api.subscription.db"})
+@EnableMongoRepositories(basePackages = {"com.ibm.psd2.api.aip.db","com.ibm.psd2.api.utils.db","com.ibm.psd2.api.pisp.db","com.ibm.psd2.commons.subscription.db"})
 public class MongoConfiguration extends AbstractMongoConfiguration
 {
 	private final Logger logger = LogManager.getLogger(MongoConfiguration.class);

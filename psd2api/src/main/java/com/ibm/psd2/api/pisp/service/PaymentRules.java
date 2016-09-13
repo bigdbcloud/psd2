@@ -1,4 +1,4 @@
-package com.ibm.psd2.api.pisp.rules;
+package com.ibm.psd2.api.pisp.service;
 
 import java.util.Iterator;
 import java.util.List;

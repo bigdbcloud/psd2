@@ -1,4 +1,4 @@
-package com.ibm.psd2.api.subscription.service;
+package com.ibm.psd2.commons.subscription.service;
 
 import java.util.List;
 
@@ -7,8 +7,8 @@ import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.ibm.psd2.api.subscription.db.MongoSubscriptionInfoRepository;
 import com.ibm.psd2.commons.datamodel.subscription.SubscriptionInfo;
+import com.ibm.psd2.commons.subscription.db.MongoSubscriptionInfoRepository;
 
 @Service
 public class SubscriptionServiceImpl implements SubscriptionService

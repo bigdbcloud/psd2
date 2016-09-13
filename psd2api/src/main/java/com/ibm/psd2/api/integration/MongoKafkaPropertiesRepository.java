@@ -1,8 +1,6 @@
-package com.ibm.psd2.api.utils.db;
+package com.ibm.psd2.api.integration;
 
 import org.springframework.data.mongodb.repository.MongoRepository;
-
-import com.ibm.psd2.api.utils.KafkaProperties;
 
 public interface MongoKafkaPropertiesRepository extends MongoRepository<KafkaProperties, String>
 {

@@ -10,7 +10,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 
 import com.ibm.psd2.api.pisp.db.MongoTxnRequestDetailsRepository;
-import com.ibm.psd2.api.pisp.rules.PaymentRules;
 import com.ibm.psd2.api.utils.Constants;
 import com.ibm.psd2.commons.datamodel.Challenge;
 import com.ibm.psd2.commons.datamodel.ChallengeAnswer;

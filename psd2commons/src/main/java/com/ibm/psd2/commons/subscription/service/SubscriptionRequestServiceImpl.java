@@ -1,4 +1,4 @@
-package com.ibm.psd2.api.subscription.service;
+package com.ibm.psd2.commons.subscription.service;
 
 import java.util.Date;
 
@@ -7,17 +7,18 @@ import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.ibm.psd2.api.subscription.db.MongoSubscriptionRequestRepository;
-import com.ibm.psd2.api.utils.Constants;
 import com.ibm.psd2.commons.datamodel.Challenge;
 import com.ibm.psd2.commons.datamodel.ChallengeAnswer;
 import com.ibm.psd2.commons.datamodel.subscription.SubscriptionRequest;
+import com.ibm.psd2.commons.subscription.db.MongoSubscriptionRequestRepository;
 import com.ibm.psd2.commons.utils.UUIDGenerator;
 
 @Service
 public class SubscriptionRequestServiceImpl implements SubscriptionRequestService
 {
-	private static final Logger logger = LogManager.getLogger(SubscriptionRequestServiceImpl.class);
+	private  final Logger logger = LogManager.getLogger(SubscriptionRequestServiceImpl.class);
+	
+	private static final int CHALLENGE_MAX_ATTEMPTS = 3;
 
 	@Autowired
 	private MongoSubscriptionRequestRepository msrr;
@@ -47,7 +48,7 @@ public class SubscriptionRequestServiceImpl implements SubscriptionRequestServic
 		Challenge c = new Challenge();
 		c.setId(UUIDGenerator.generateUUID());
 		c.setChallenge_type("NEW_SUBSCRIPTION");
-		c.setAllowed_attempts(Constants.CHALLENGE_MAX_ATTEMPTS);
+		c.setAllowed_attempts(CHALLENGE_MAX_ATTEMPTS);
 		
 		s.setChallenge(c);
 		

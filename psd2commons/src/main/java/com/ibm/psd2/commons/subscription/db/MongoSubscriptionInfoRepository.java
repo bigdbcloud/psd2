@@ -1,4 +1,4 @@
-package com.ibm.psd2.api.subscription.db;
+package com.ibm.psd2.commons.subscription.db;
 
 import java.util.List;
 

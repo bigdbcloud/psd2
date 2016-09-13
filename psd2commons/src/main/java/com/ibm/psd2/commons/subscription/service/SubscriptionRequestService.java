@@ -1,4 +1,4 @@
-package com.ibm.psd2.api.subscription.service;
+package com.ibm.psd2.commons.subscription.service;
 
 import com.ibm.psd2.commons.datamodel.ChallengeAnswer;
 import com.ibm.psd2.commons.datamodel.subscription.SubscriptionRequest;
