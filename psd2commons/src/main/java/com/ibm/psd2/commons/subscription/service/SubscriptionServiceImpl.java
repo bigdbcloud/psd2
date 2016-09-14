@@ -59,7 +59,7 @@ public class SubscriptionServiceImpl implements SubscriptionService
 	public List<SubscriptionInfo> getSubscriptionInfo(String username)
 	{
 		logger.info("username = " + username);
-		return msir.findByUsernameAndClientId(username);
+		return msir.findByUsername(username);
 	}
 
 	

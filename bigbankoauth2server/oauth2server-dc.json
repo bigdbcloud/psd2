@@ -1,0 +1,149 @@
+{
+    "kind": "List",
+    "apiVersion": "v1",
+    "metadata": {},
+    "items": [
+        {
+            "kind": "DeploymentConfig",
+            "apiVersion": "v1",
+            "metadata": {
+                "name": "bigbankoauth2server",
+                "namespace": "test",
+                "creationTimestamp": null,
+                "labels": {
+                    "app": "bigbankoauth2server"
+                },
+                "annotations": {
+                    "openshift.io/generated-by": "OpenShiftNewApp"
+                }
+            },
+            "spec": {
+                "strategy": {
+                    "type": "Rolling",
+                    "rollingParams": {
+                        "updatePeriodSeconds": 1,
+                        "intervalSeconds": 1,
+                        "timeoutSeconds": 600,
+                        "maxUnavailable": "25%",
+                        "maxSurge": "25%"
+                    },
+                    "resources": {}
+                },
+                "triggers": [
+                    {
+                        "type": "ConfigChange"
+                    },
+                    {
+                        "type": "ImageChange",
+                        "imageChangeParams": {
+                            "automatic": true,
+                            "containerNames": [
+                                "bigbankoauth2server"
+                            ],
+                            "from": {
+                                "kind": "ImageStreamTag",
+                                "namespace": "test",
+                                "name": "bigbankoauth2server:latest"
+                            }
+                        }
+                    }
+                ],
+                "replicas": 1,
+                "test": false,
+                "selector": {
+                    "app": "bigbankoauth2server",
+                    "deploymentconfig": "bigbankoauth2server"
+                },
+                "template": {
+                    "metadata": {
+                        "creationTimestamp": null,
+                        "labels": {
+                            "app": "bigbankoauth2server",
+                            "deploymentconfig": "bigbankoauth2server"
+                        },
+                        "annotations": {
+                            "openshift.io/container.bigbankoauth2server.image.entrypoint": "[\"/bin/sh\",\"-c\",\"java -jar bigbankoauth2server-0.0.1-SNAPSHOT.jar \\u003e /logs/bigbankoauth2server.system.out.log\"]",
+                            "openshift.io/generated-by": "OpenShiftNewApp"
+                        }
+                    },
+                    "spec": {
+                        "volumes": [
+                            {
+                                "name": "bigbankoauth2server-volume-1",
+                                "hostPath": {
+                                    "path": "/var/local/openshift/logs/psd2api"
+                                }
+                            }
+                        ],
+                        "containers": [
+                            {
+                                "name": "bigbankoauth2server",
+                                "image": "172.30.42.135:5000/test/bigbankoauth2server:latest",
+                                "ports": [
+                                    {
+                                        "containerPort": 8081,
+                                        "protocol": "TCP"
+                                    }
+                                ],
+                                "env": [
+                                    {
+                                        "name": "MONGO_SVC_URI",
+                                        "value": "mongodb://172.30.46.38:27017/psd2apirise"
+                                    }
+                                ],
+                                "resources": {},
+                                "volumeMounts": [
+                                    {
+                                        "name": "bigbankoauth2server-volume-1",
+                                        "mountPath": "/logs"
+                                    }
+                                ],
+                                "terminationMessagePath": "/dev/termination-log",
+                                "imagePullPolicy": "Always"
+                            }
+                        ],
+                        "restartPolicy": "Always",
+                        "terminationGracePeriodSeconds": 30,
+                        "dnsPolicy": "ClusterFirst",
+                        "securityContext": {}
+                    }
+                }
+            },
+            "status": {}
+        },
+        {
+            "kind": "Service",
+            "apiVersion": "v1",
+            "metadata": {
+                "name": "bigbankoauth2server",
+                "namespace": "test",
+                "creationTimestamp": null,
+                "labels": {
+                    "app": "bigbankoauth2server"
+                },
+                "annotations": {
+                    "openshift.io/generated-by": "OpenShiftNewApp"
+                }
+            },
+            "spec": {
+                "ports": [
+                    {
+                        "name": "8081-tcp",
+                        "protocol": "TCP",
+                        "port": 8081,
+                        "targetPort": 8081
+                    }
+                ],
+                "selector": {
+                    "app": "bigbankoauth2server",
+                    "deploymentconfig": "bigbankoauth2server"
+                },
+                "type": "ClusterIP",
+                "sessionAffinity": "None"
+            },
+            "status": {
+                "loadBalancer": {}
+            }
+        }
+    ]
+}

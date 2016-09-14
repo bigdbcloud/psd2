@@ -161,8 +161,9 @@ public class TransactionRequestServiceImpl implements TransactionRequestService
 	public TxnRequestDetails answerTransactionRequestChallenge(String username, String viewId, String bankId,
 			String accountId, String txnType, String txnReqId, ChallengeAnswer t)
 	{
-		TxnRequestDetails tdb = mtrdr.findByFromAccountIdAndFromBankIdAndTypeAndIdAndChallengeId(accountId, bankId,
-				txnType, txnReqId, t.getId());
+//		TxnRequestDetails tdb = mtrdr.findByFromAccountIdAndFromBankIdAndTypeAndIdAndChallengeId(accountId, bankId,
+//				txnType, txnReqId, t.getId());
+		TxnRequestDetails tdb = mtrdr.findOne(txnReqId);
 		if (tdb == null)
 		{
 			throw new IllegalArgumentException("Specified Transaction Not Found");

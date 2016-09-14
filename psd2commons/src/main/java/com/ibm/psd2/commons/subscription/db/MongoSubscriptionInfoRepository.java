@@ -11,5 +11,5 @@ public interface MongoSubscriptionInfoRepository extends MongoRepository<Subscri
 	public SubscriptionInfo findByUsernameAndClientIdAndAccountIdAndBankId(String username, String clientId, String accountId, String bankId);
 	public List<SubscriptionInfo> findByUsernameAndClientIdAndBankId(String username, String clientId, String bankId);
 	public List<SubscriptionInfo> findByUsernameAndClientId(String username, String clientId);
-	public List<SubscriptionInfo> findByUsernameAndClientId(String username);
+	public List<SubscriptionInfo> findByUsername(String username);
 }
