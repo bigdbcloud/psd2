@@ -38,6 +38,7 @@ EXPOSE 8082
 EXPOSE 8084
 EXPOSE 27017
 
+
 WORKDIR /usr/local/psd2
 
 ENTRYPOINT ["/usr/local/psd2/startup.sh"]
