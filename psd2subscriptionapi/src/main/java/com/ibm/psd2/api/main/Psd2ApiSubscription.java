@@ -6,8 +6,10 @@ import org.springframework.context.annotation.ComponentScan;
 
 
 @SpringBootApplication
-@ComponentScan(basePackages = { "com.ibm.psd2.commons.subscription.db", 
-		"com.ibm.psd2.commons.subscription.service",
+@ComponentScan(basePackages = { "com.ibm.psd2.api.subscription.db", 
+		"com.ibm.psd2.api.subscription.service",
+		"com.ibm.psd2.api.user.db", 
+		"com.ibm.psd2.api.user.service",
 		"com.ibm.psd2.api.security",
 		"com.ibm.psd2.api.subscription.controller",
 		"com.ibm.psd2.api.swagger",

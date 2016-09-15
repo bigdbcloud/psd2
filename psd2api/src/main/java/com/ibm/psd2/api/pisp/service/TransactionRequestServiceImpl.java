@@ -13,18 +13,18 @@ import com.ibm.psd2.api.aip.services.BankAccountDetailsService;
 import com.ibm.psd2.api.aip.services.TransactionStatementService;
 import com.ibm.psd2.api.pisp.db.MongoTxnRequestDetailsRepository;
 import com.ibm.psd2.api.utils.Constants;
-import com.ibm.psd2.commons.datamodel.Challenge;
-import com.ibm.psd2.commons.datamodel.ChallengeAnswer;
-import com.ibm.psd2.commons.datamodel.aip.BankAccountDetails;
-import com.ibm.psd2.commons.datamodel.aip.Transaction;
-import com.ibm.psd2.commons.datamodel.aip.TransactionAccount;
-import com.ibm.psd2.commons.datamodel.aip.TransactionBank;
-import com.ibm.psd2.commons.datamodel.aip.TransactionDetails;
-import com.ibm.psd2.commons.datamodel.pisp.TxnParty;
-import com.ibm.psd2.commons.datamodel.pisp.TxnRequest;
-import com.ibm.psd2.commons.datamodel.pisp.TxnRequestDetails;
-import com.ibm.psd2.commons.datamodel.subscription.SubscriptionInfo;
-import com.ibm.psd2.commons.utils.UUIDGenerator;
+import com.ibm.psd2.datamodel.Challenge;
+import com.ibm.psd2.datamodel.ChallengeAnswer;
+import com.ibm.psd2.datamodel.aip.BankAccountDetails;
+import com.ibm.psd2.datamodel.aip.Transaction;
+import com.ibm.psd2.datamodel.aip.TransactionAccount;
+import com.ibm.psd2.datamodel.aip.TransactionBank;
+import com.ibm.psd2.datamodel.aip.TransactionDetails;
+import com.ibm.psd2.datamodel.pisp.TxnParty;
+import com.ibm.psd2.datamodel.pisp.TxnRequest;
+import com.ibm.psd2.datamodel.pisp.TxnRequestDetails;
+import com.ibm.psd2.datamodel.subscription.SubscriptionInfo;
+import com.ibm.psd2.utils.UUIDGenerator;
 
 @Service
 public class TransactionRequestServiceImpl implements TransactionRequestService

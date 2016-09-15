@@ -1,7 +1,7 @@
 package com.ibm.psd2.api.aip.services;
 
-import com.ibm.psd2.commons.datamodel.aip.*;
-import com.ibm.psd2.commons.utils.Visitor;
+import com.ibm.psd2.datamodel.aip.*;
+import com.ibm.psd2.utils.Visitor;
 
 public class BankAccountOwnerViewVisitor implements Visitor
 {

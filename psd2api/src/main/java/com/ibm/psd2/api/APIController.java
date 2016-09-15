@@ -3,8 +3,8 @@ package com.ibm.psd2.api;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-import com.ibm.psd2.commons.datamodel.subscription.SubscriptionInfo;
-import com.ibm.psd2.commons.datamodel.subscription.ViewId;
+import com.ibm.psd2.datamodel.subscription.SubscriptionInfo;
+import com.ibm.psd2.datamodel.subscription.ViewId;
 
 public abstract class APIController
 {

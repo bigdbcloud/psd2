@@ -8,7 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.ibm.psd2.api.aip.db.MongoBankRepository;
-import com.ibm.psd2.commons.datamodel.Bank;
+import com.ibm.psd2.datamodel.Bank;
 
 @Service
 public class BankServiceImpl implements BankService

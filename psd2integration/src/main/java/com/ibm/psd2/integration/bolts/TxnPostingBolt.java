@@ -14,12 +14,12 @@ import org.springframework.context.annotation.AnnotationConfigApplicationContext
 import org.springframework.data.mongodb.core.MongoOperations;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.ibm.psd2.commons.datamodel.aip.BankAccountDetails;
-import com.ibm.psd2.commons.datamodel.aip.Transaction;
-import com.ibm.psd2.commons.datamodel.aip.TransactionAccount;
-import com.ibm.psd2.commons.datamodel.aip.TransactionBank;
-import com.ibm.psd2.commons.datamodel.aip.TransactionDetails;
-import com.ibm.psd2.commons.datamodel.pisp.TxnRequestDetails;
+import com.ibm.psd2.datamodel.aip.BankAccountDetails;
+import com.ibm.psd2.datamodel.aip.Transaction;
+import com.ibm.psd2.datamodel.aip.TransactionAccount;
+import com.ibm.psd2.datamodel.aip.TransactionBank;
+import com.ibm.psd2.datamodel.aip.TransactionDetails;
+import com.ibm.psd2.datamodel.pisp.TxnRequestDetails;
 import com.ibm.psd2.integration.ArgumentsContainer;
 import com.ibm.psd2.integration.dao.MongoConfig;
 

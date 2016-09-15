@@ -6,14 +6,14 @@ import java.util.List;
 import org.springframework.stereotype.Component;
 
 import com.ibm.psd2.api.utils.Constants;
-import com.ibm.psd2.commons.datamodel.Amount;
-import com.ibm.psd2.commons.datamodel.ChallengeAnswer;
-import com.ibm.psd2.commons.datamodel.pisp.TxnCharge;
-import com.ibm.psd2.commons.datamodel.pisp.TxnParty;
-import com.ibm.psd2.commons.datamodel.pisp.TxnRequest;
-import com.ibm.psd2.commons.datamodel.subscription.SubscriptionInfo;
-import com.ibm.psd2.commons.datamodel.subscription.TransactionLimit;
-import com.ibm.psd2.commons.datamodel.subscription.TransactionRequestType;
+import com.ibm.psd2.datamodel.Amount;
+import com.ibm.psd2.datamodel.ChallengeAnswer;
+import com.ibm.psd2.datamodel.pisp.TxnCharge;
+import com.ibm.psd2.datamodel.pisp.TxnParty;
+import com.ibm.psd2.datamodel.pisp.TxnRequest;
+import com.ibm.psd2.datamodel.subscription.SubscriptionInfo;
+import com.ibm.psd2.datamodel.subscription.TransactionLimit;
+import com.ibm.psd2.datamodel.subscription.TransactionRequestType;
 
 @Component
 public class PaymentRules

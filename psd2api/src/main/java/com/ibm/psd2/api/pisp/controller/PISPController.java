@@ -22,13 +22,13 @@ import org.springframework.web.bind.annotation.RestController;
 import com.ibm.psd2.api.APIController;
 import com.ibm.psd2.api.integration.KafkaMessageProducer;
 import com.ibm.psd2.api.pisp.service.TransactionRequestService;
-import com.ibm.psd2.commons.datamodel.ChallengeAnswer;
-import com.ibm.psd2.commons.datamodel.pisp.TxnParty;
-import com.ibm.psd2.commons.datamodel.pisp.TxnRequest;
-import com.ibm.psd2.commons.datamodel.pisp.TxnRequestDetails;
-import com.ibm.psd2.commons.datamodel.subscription.SubscriptionInfo;
-import com.ibm.psd2.commons.datamodel.subscription.TransactionRequestType;
-import com.ibm.psd2.commons.subscription.service.SubscriptionService;
+import com.ibm.psd2.api.subscription.service.SubscriptionService;
+import com.ibm.psd2.datamodel.ChallengeAnswer;
+import com.ibm.psd2.datamodel.pisp.TxnParty;
+import com.ibm.psd2.datamodel.pisp.TxnRequest;
+import com.ibm.psd2.datamodel.pisp.TxnRequestDetails;
+import com.ibm.psd2.datamodel.subscription.SubscriptionInfo;
+import com.ibm.psd2.datamodel.subscription.TransactionRequestType;
 
 @RestController
 public class PISPController extends APIController

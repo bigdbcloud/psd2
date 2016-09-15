@@ -11,7 +11,7 @@ import org.springframework.stereotype.Service;
 
 import com.ibm.psd2.api.aip.db.MongoTransactionsRepository;
 import com.ibm.psd2.api.utils.Constants;
-import com.ibm.psd2.commons.datamodel.aip.Transaction;
+import com.ibm.psd2.datamodel.aip.Transaction;
 
 @Service
 public class TransactionStatementServiceImpl implements TransactionStatementService

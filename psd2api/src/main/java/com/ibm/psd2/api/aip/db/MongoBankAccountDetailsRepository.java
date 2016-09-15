@@ -5,7 +5,7 @@ import java.util.List;
 
 import org.springframework.data.mongodb.repository.MongoRepository;
 
-import com.ibm.psd2.commons.datamodel.aip.BankAccountDetails;
+import com.ibm.psd2.datamodel.aip.BankAccountDetails;
 
 public interface MongoBankAccountDetailsRepository extends MongoRepository<BankAccountDetails, Serializable>, MongoBankAccountDetailsRepositoryCustom
 {

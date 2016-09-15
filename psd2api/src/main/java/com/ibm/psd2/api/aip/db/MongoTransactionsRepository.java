@@ -4,7 +4,7 @@ import java.io.Serializable;
 
 import org.springframework.data.mongodb.repository.MongoRepository;
 
-import com.ibm.psd2.commons.datamodel.aip.Transaction;
+import com.ibm.psd2.datamodel.aip.Transaction;
 
 public interface MongoTransactionsRepository
 		extends MongoRepository<Transaction, Serializable>, MongoTransactionsRepositoryCustom

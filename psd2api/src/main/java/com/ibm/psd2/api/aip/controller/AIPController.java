@@ -26,15 +26,15 @@ import com.ibm.psd2.api.aip.services.BankAccountOverviewVisitor;
 import com.ibm.psd2.api.aip.services.BankAccountOwnerViewVisitor;
 import com.ibm.psd2.api.aip.services.BankService;
 import com.ibm.psd2.api.aip.services.TransactionStatementService;
+import com.ibm.psd2.api.subscription.service.SubscriptionService;
 import com.ibm.psd2.api.utils.Constants;
-import com.ibm.psd2.commons.datamodel.Bank;
-import com.ibm.psd2.commons.datamodel.aip.BankAccountDetails;
-import com.ibm.psd2.commons.datamodel.aip.BankAccountDetailsView;
-import com.ibm.psd2.commons.datamodel.aip.BankAccountOverview;
-import com.ibm.psd2.commons.datamodel.aip.Transaction;
-import com.ibm.psd2.commons.datamodel.subscription.SubscriptionInfo;
-import com.ibm.psd2.commons.datamodel.subscription.ViewId;
-import com.ibm.psd2.commons.subscription.service.SubscriptionService;
+import com.ibm.psd2.datamodel.Bank;
+import com.ibm.psd2.datamodel.aip.BankAccountDetails;
+import com.ibm.psd2.datamodel.aip.BankAccountDetailsView;
+import com.ibm.psd2.datamodel.aip.BankAccountOverview;
+import com.ibm.psd2.datamodel.aip.Transaction;
+import com.ibm.psd2.datamodel.subscription.SubscriptionInfo;
+import com.ibm.psd2.datamodel.subscription.ViewId;
 
 @RestController
 public class AIPController extends APIController

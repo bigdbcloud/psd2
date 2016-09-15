@@ -4,7 +4,7 @@ import java.util.List;
 
 import org.springframework.data.mongodb.repository.MongoRepository;
 
-import com.ibm.psd2.commons.datamodel.pisp.TxnRequestDetails;
+import com.ibm.psd2.datamodel.pisp.TxnRequestDetails;
 
 public interface MongoTxnRequestDetailsRepository
 		extends MongoRepository<TxnRequestDetails, String>, MongoTxnRequestDetailsRepositoryCustom

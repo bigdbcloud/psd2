@@ -11,9 +11,9 @@ import org.springframework.security.access.PermissionEvaluator;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Component;
 
-import com.ibm.psd2.commons.datamodel.subscription.SubscriptionInfo;
-import com.ibm.psd2.commons.datamodel.subscription.ViewId;
-import com.ibm.psd2.commons.subscription.service.SubscriptionService;
+import com.ibm.psd2.api.subscription.service.SubscriptionService;
+import com.ibm.psd2.datamodel.subscription.SubscriptionInfo;
+import com.ibm.psd2.datamodel.subscription.ViewId;
 
 @Component
 public class SubscriptionEvaluator implements PermissionEvaluator

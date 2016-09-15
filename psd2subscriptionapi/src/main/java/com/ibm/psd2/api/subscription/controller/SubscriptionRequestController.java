@@ -18,13 +18,13 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.ibm.psd2.commons.datamodel.ChallengeAnswer;
-import com.ibm.psd2.commons.datamodel.SimpleResponse;
-import com.ibm.psd2.commons.datamodel.subscription.SubscriptionInfo;
-import com.ibm.psd2.commons.datamodel.subscription.SubscriptionRequest;
-import com.ibm.psd2.commons.subscription.service.SubscriptionRequestService;
-import com.ibm.psd2.commons.subscription.service.SubscriptionRules;
-import com.ibm.psd2.commons.subscription.service.SubscriptionService;
+import com.ibm.psd2.api.subscription.service.SubscriptionRequestService;
+import com.ibm.psd2.api.subscription.service.SubscriptionRules;
+import com.ibm.psd2.api.subscription.service.SubscriptionService;
+import com.ibm.psd2.datamodel.ChallengeAnswer;
+import com.ibm.psd2.datamodel.SimpleResponse;
+import com.ibm.psd2.datamodel.subscription.SubscriptionInfo;
+import com.ibm.psd2.datamodel.subscription.SubscriptionRequest;
 
 @RestController
 public class SubscriptionRequestController

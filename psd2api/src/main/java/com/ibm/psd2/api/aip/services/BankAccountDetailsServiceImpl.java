@@ -9,7 +9,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import com.ibm.psd2.api.aip.db.MongoBankAccountDetailsRepository;
-import com.ibm.psd2.commons.datamodel.aip.BankAccountDetails;
+import com.ibm.psd2.datamodel.aip.BankAccountDetails;
 
 @Service
 public class BankAccountDetailsServiceImpl implements BankAccountDetailsService

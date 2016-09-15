@@ -15,9 +15,9 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.ibm.psd2.api.aip.services.BankAccountDetailsService;
 import com.ibm.psd2.api.aip.services.BankService;
-import com.ibm.psd2.commons.datamodel.Bank;
-import com.ibm.psd2.commons.datamodel.SimpleResponse;
-import com.ibm.psd2.commons.datamodel.aip.BankAccountDetails;
+import com.ibm.psd2.datamodel.Bank;
+import com.ibm.psd2.datamodel.SimpleResponse;
+import com.ibm.psd2.datamodel.aip.BankAccountDetails;
 
 @RestController
 public class AdminController

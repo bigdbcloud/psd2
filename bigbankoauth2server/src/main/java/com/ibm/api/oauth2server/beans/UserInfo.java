@@ -8,6 +8,8 @@ import org.springframework.data.mongodb.core.mapping.Document;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonInclude.Include;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 
 @Document(collection = "Users")
 @JsonInclude(value = Include.NON_EMPTY)
@@ -109,6 +111,38 @@ public class UserInfo implements Serializable
 		else if (!username.equals(other.username))
 			return false;
 		return true;
+	}
+	
+	public String toString()
+	{
+		ObjectMapper mapper = new ObjectMapper();
+		try
+		{
+			return mapper.writeValueAsString(this);
+		} catch (JsonProcessingException e)
+		{
+			e.printStackTrace();
+		}
+		return "";
+	}
+	
+	
+	public static void main(String[] args)
+	{
+		UserInfo ui = new UserInfo();
+		ui.setEmail("tanmay.ambre@in.ibm.com");
+		ui.setMobileNumber("00919860306111");
+		ui.setPassword("password01");
+		ui.setRole("ROLE_USER");
+		ui.setUsername("tambre");
+		Address add = new Address();
+		add.setAddressLine1("VANSHAJ PRESTIGE");
+		add.setAddressLine2("SUS ROAD");
+		add.setCity("PUNE");
+		add.setHouseNumber("B-503");
+		add.setPostcode("411021");
+		ui.setAddress(add);
+		System.out.println("ui = " + ui);
 	}
 
 }

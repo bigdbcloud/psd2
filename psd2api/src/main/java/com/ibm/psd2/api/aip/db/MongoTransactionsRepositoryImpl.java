@@ -14,7 +14,7 @@ import org.springframework.data.mongodb.core.query.CriteriaDefinition;
 import org.springframework.data.mongodb.core.query.Query;
 
 import com.ibm.psd2.api.utils.Constants;
-import com.ibm.psd2.commons.datamodel.aip.Transaction;
+import com.ibm.psd2.datamodel.aip.Transaction;
 
 public class MongoTransactionsRepositoryImpl implements MongoTransactionsRepositoryCustom
 {

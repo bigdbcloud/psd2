@@ -2,11 +2,11 @@ package com.ibm.psd2.api.pisp.service;
 
 import java.util.List;
 
-import com.ibm.psd2.commons.datamodel.ChallengeAnswer;
-import com.ibm.psd2.commons.datamodel.pisp.TxnParty;
-import com.ibm.psd2.commons.datamodel.pisp.TxnRequest;
-import com.ibm.psd2.commons.datamodel.pisp.TxnRequestDetails;
-import com.ibm.psd2.commons.datamodel.subscription.SubscriptionInfo;
+import com.ibm.psd2.datamodel.ChallengeAnswer;
+import com.ibm.psd2.datamodel.pisp.TxnParty;
+import com.ibm.psd2.datamodel.pisp.TxnRequest;
+import com.ibm.psd2.datamodel.pisp.TxnRequestDetails;
+import com.ibm.psd2.datamodel.subscription.SubscriptionInfo;
 
 public interface TransactionRequestService
 {

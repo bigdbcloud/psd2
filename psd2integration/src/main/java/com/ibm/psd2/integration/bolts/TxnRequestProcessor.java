@@ -21,11 +21,11 @@ import org.springframework.context.annotation.AnnotationConfigApplicationContext
 import org.springframework.data.mongodb.core.MongoOperations;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.ibm.psd2.commons.datamodel.aip.BankAccountDetails;
-import com.ibm.psd2.commons.datamodel.pisp.TxnRequestDetails;
-import com.ibm.psd2.commons.utils.UUIDGenerator;
+import com.ibm.psd2.datamodel.aip.BankAccountDetails;
+import com.ibm.psd2.datamodel.pisp.TxnRequestDetails;
 import com.ibm.psd2.integration.ArgumentsContainer;
 import com.ibm.psd2.integration.dao.MongoConfig;
+import com.ibm.psd2.utils.UUIDGenerator;
 
 public class TxnRequestProcessor extends BaseRichBolt
 {

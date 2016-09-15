@@ -8,7 +8,8 @@ import org.springframework.context.annotation.ComponentScan;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 @SpringBootApplication
-@ComponentScan(basePackages = { "com.ibm.psd2.commons.subscription.db", "com.ibm.psd2.commons.subscription.service",
+@ComponentScan(basePackages = { "com.ibm.psd2.api.subscription.db", "com.ibm.psd2.api.subscription.service",
+		"com.ibm.psd2.api.user.db", "com.ibm.psd2.api.user.service",
 		"com.ibm.psd2.api.admin.controller", "com.ibm.psd2.api.aip.controller", "com.ibm.psd2.api.aip.db",
 		"com.ibm.psd2.api.aip.services", "com.ibm.psd2.api.integration", "com.ibm.psd2.api.pisp.controller",
 		"com.ibm.psd2.api.pisp.db", "com.ibm.psd2.api.pisp.service", "com.ibm.psd2.api.txns.service",

@@ -16,7 +16,7 @@ import com.mongodb.MongoClient;
 import com.mongodb.MongoClientURI;
 
 @Configuration
-@EnableMongoRepositories(basePackages = {"com.ibm.psd2.commons.subscription.db"})
+@EnableMongoRepositories(basePackages = {"com.ibm.psd2.api.subscription.db", "com.ibm.psd2.api.user.db"})
 public class MongoConfiguration extends AbstractMongoConfiguration
 {
 	private final Logger logger = LogManager.getLogger(MongoConfiguration.class);

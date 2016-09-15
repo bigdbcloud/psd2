@@ -2,7 +2,7 @@ package com.ibm.psd2.api.aip.services;
 
 import java.util.List;
 
-import com.ibm.psd2.commons.datamodel.Bank;
+import com.ibm.psd2.datamodel.Bank;
 
 public interface BankService
 {

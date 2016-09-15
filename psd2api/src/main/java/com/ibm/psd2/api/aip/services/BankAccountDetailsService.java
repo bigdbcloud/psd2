@@ -2,7 +2,7 @@ package com.ibm.psd2.api.aip.services;
 
 import java.util.List;
 
-import com.ibm.psd2.commons.datamodel.aip.BankAccountDetails;
+import com.ibm.psd2.datamodel.aip.BankAccountDetails;
 
 public interface BankAccountDetailsService
 {
