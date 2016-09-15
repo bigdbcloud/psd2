@@ -12,7 +12,7 @@
 		</Appender>
 
 		<RollingFile name="RollingFile" fileName="/logs/BigOAuth2Server.log"
-			filePattern="logs/$${date:yyyy-MM}/app-%d{MM-dd-yyyy}-%i.log.gz">
+			filePattern="/logs/$${date:yyyy-MM}/app-%d{MM-dd-yyyy}-%i.log.gz">
 			<PatternLayout>
 				<pattern>[%d] [%t] [%p] [%C{3.}::%M] - %m%n</pattern>
 			</PatternLayout>

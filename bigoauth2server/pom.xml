@@ -3,7 +3,7 @@
 	<modelVersion>4.0.0</modelVersion>
 
 	<groupId>com.ibm.big</groupId>
-	<artifactId>oauth2server</artifactId>
+	<artifactId>bigoauth2server</artifactId>
 	<version>beta</version>
 	<packaging>jar</packaging>
 	<name>B.I.G. OAuth2 Server</name>

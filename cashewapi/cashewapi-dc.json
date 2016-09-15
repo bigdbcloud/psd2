@@ -1,0 +1,149 @@
+{
+    "kind": "List",
+    "apiVersion": "v1",
+    "metadata": {},
+    "items": [
+        {
+            "kind": "DeploymentConfig",
+            "apiVersion": "v1",
+            "metadata": {
+                "name": "cashewapi",
+                "namespace": "test",
+                "creationTimestamp": null,
+                "labels": {
+                    "app": "cashewapi"
+                },
+                "annotations": {
+                    "openshift.io/generated-by": "OpenShiftNewApp"
+                }
+            },
+            "spec": {
+                "strategy": {
+                    "type": "Rolling",
+                    "rollingParams": {
+                        "updatePeriodSeconds": 1,
+                        "intervalSeconds": 1,
+                        "timeoutSeconds": 600,
+                        "maxUnavailable": "25%",
+                        "maxSurge": "25%"
+                    },
+                    "resources": {}
+                },
+                "triggers": [
+                    {
+                        "type": "ConfigChange"
+                    },
+                    {
+                        "type": "ImageChange",
+                        "imageChangeParams": {
+                            "automatic": true,
+                            "containerNames": [
+                                "cashewapi"
+                            ],
+                            "from": {
+                                "kind": "ImageStreamTag",
+                                "namespace": "test",
+                                "name": "cashewapi:latest"
+                            }
+                        }
+                    }
+                ],
+                "replicas": 1,
+                "test": false,
+                "selector": {
+                    "app": "cashewapi",
+                    "deploymentconfig": "cashewapi"
+                },
+                "template": {
+                    "metadata": {
+                        "creationTimestamp": null,
+                        "labels": {
+                            "app": "cashewapi",
+                            "deploymentconfig": "cashewapi"
+                        },
+                        "annotations": {
+                            "openshift.io/container.cashewapi.image.entrypoint": "[\"/bin/sh\",\"-c\",\"java -jar cashewapi-0.0.1-SNAPSHOT.jar \\u003e /logs/cashewapi.system.out.log\"]",
+                            "openshift.io/generated-by": "OpenShiftNewApp"
+                        }
+                    },
+                    "spec": {
+                        "volumes": [
+                            {
+                                "name": "cashewapi-volume-1",
+                                "hostPath": {
+                                    "path": "/var/local/openshift/logs/cashewapi"
+                                }
+                            }
+                        ],
+                        "containers": [
+                            {
+                                "name": "cashewapi",
+                                "image": "172.30.42.135:5000/test/cashewapi:latest",
+                                "ports": [
+                                    {
+                                        "containerPort": 8085,
+                                        "protocol": "TCP"
+                                    }
+                                ],
+                                "env": [
+                                    {
+                                        "name": "CASHEW_MONGO_SVC_URI",
+                                        "value": "mongodb://172.30.46.38:27017/cashew"
+                                    }
+                                ],
+                                "resources": {},
+                                "volumeMounts": [
+                                    {
+                                        "name": "cashewapi-volume-1",
+                                        "mountPath": "/logs"
+                                    }
+                                ],
+                                "terminationMessagePath": "/dev/termination-log",
+                                "imagePullPolicy": "Always"
+                            }
+                        ],
+                        "restartPolicy": "Always",
+                        "terminationGracePeriodSeconds": 30,
+                        "dnsPolicy": "ClusterFirst",
+                        "securityContext": {}
+                    }
+                }
+            },
+            "status": {}
+        },
+        {
+            "kind": "Service",
+            "apiVersion": "v1",
+            "metadata": {
+                "name": "cashewapi",
+                "namespace": "test",
+                "creationTimestamp": null,
+                "labels": {
+                    "app": "cashewapi"
+                },
+                "annotations": {
+                    "openshift.io/generated-by": "OpenShiftNewApp"
+                }
+            },
+            "spec": {
+                "ports": [
+                    {
+                        "name": "8085-tcp",
+                        "protocol": "TCP",
+                        "port": 8085,
+                        "targetPort": 8085
+                    }
+                ],
+                "selector": {
+                    "app": "cashewapi",
+                    "deploymentconfig": "cashewapi"
+                },
+                "type": "ClusterIP",
+                "sessionAffinity": "None"
+            },
+            "status": {
+                "loadBalancer": {}
+            }
+        }
+    ]
+}

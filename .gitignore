@@ -1,6 +1,10 @@
 .metadata
-oauth2server/target
-oauth2server/logs
+bigoauth2server/target
+bigoauth2server/logs
+bigbankoauth2server/target
+bigbankoauth2server/logs
+cashew/target
+cashew/logs
 psd2api/target
 psd2api/logs
 psd2integration/target

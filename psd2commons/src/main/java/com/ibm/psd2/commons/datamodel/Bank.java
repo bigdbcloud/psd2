@@ -14,8 +14,8 @@ public class Bank implements Serializable
 {
 	@Id
 	String id;
-	String short_name;
-	String full_name;
+	String shortName;
+	String fullName;
 	String logo;
 	String website;
 	
@@ -27,21 +27,21 @@ public class Bank implements Serializable
 	{
 		this.id = id;
 	}
-	public String getShort_name()
+	public String getShortName()
 	{
-		return short_name;
+		return shortName;
 	}
-	public void setShort_name(String short_name)
+	public void setShortName(String short_name)
 	{
-		this.short_name = short_name;
+		this.shortName = short_name;
 	}
-	public String getFull_name()
+	public String getFullName()
 	{
-		return full_name;
+		return fullName;
 	}
-	public void setFull_name(String full_name)
+	public void setFullName(String full_name)
 	{
-		this.full_name = full_name;
+		this.fullName = full_name;
 	}
 	public String getLogo()
 	{
