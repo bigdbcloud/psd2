@@ -3,8 +3,8 @@ bigoauth2server/target
 bigoauth2server/logs
 bigbankoauth2server/target
 bigbankoauth2server/logs
-cashew/target
-cashew/logs
+cashewapi/target
+cashewapi/logs
 psd2api/target
 psd2api/logs
 psd2integration/target
