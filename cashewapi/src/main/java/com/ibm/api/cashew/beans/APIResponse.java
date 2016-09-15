@@ -4,15 +4,15 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonInclude.Include;
 
 @JsonInclude(value = Include.NON_EMPTY)
-public class APIResponse
+public class APIResponse<T>
 {
 	public static final String STATUS_SUCCESS = "SUCCESS";
 	public static final String STATUS_ERROR = "ERROR";
 
 	private String status;
 	private String errMsg;
-	private Object errDetails;
-	private Object response;
+	private String errDetails;
+	private T response;
 	private String version;
 
 	public String getVersion()
@@ -45,22 +45,22 @@ public class APIResponse
 		this.errMsg = errMsg;
 	}
 
-	public Object getErrDetails()
+	public String getErrDetails()
 	{
 		return errDetails;
 	}
 
-	public void setErrDetails(Object errDetails)
+	public void setErrDetails(String errDetails)
 	{
 		this.errDetails = errDetails;
 	}
 
-	public Object getResponse()
+	public T getResponse()
 	{
 		return response;
 	}
 
-	public void setResponse(Object response)
+	public void setResponse(T response)
 	{
 		this.response = response;
 	}

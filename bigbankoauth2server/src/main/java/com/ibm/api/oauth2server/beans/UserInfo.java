@@ -1,6 +1,7 @@
 package com.ibm.api.oauth2server.beans;
 
 import java.io.Serializable;
+import java.util.Date;
 
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
@@ -15,7 +16,11 @@ public class UserInfo implements Serializable
 	@Id
 	private String username;
 	private String password;
+	private String email;
+	private String mobileNumber;
 	private String role;
+	private Address address;
+	private Date dateOfBirth;
 
 	public String getUsername()
 	{
@@ -45,6 +50,36 @@ public class UserInfo implements Serializable
 	public void setRole(String role)
 	{
 		this.role = role;
+	}
+
+	public String getEmail()
+	{
+		return email;
+	}
+
+	public void setEmail(String email)
+	{
+		this.email = email;
+	}
+
+	public String getMobileNumber()
+	{
+		return mobileNumber;
+	}
+
+	public void setMobileNumber(String mobileNumber)
+	{
+		this.mobileNumber = mobileNumber;
+	}
+
+	public Address getAddress()
+	{
+		return address;
+	}
+
+	public void setAddress(Address address)
+	{
+		this.address = address;
 	}
 
 	@Override

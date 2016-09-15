@@ -32,37 +32,38 @@ public class UserController extends APIController
 	UserService userService;
 
 	@RequestMapping(method = RequestMethod.GET, value = "/userInfo", produces = MediaType.APPLICATION_JSON_VALUE)
-	public @ResponseBody ResponseEntity<APIResponse> getUserInfo()
+	public @ResponseBody ResponseEntity<APIResponse<User>> getUserInfo()
 	{
-		APIResponse result = null;
-		ResponseEntity<APIResponse> response;
+		APIResponse<User> result = null;
+		ResponseEntity<APIResponse<User>> response;
 		try
 		{
 			OAuth2Authentication auth = (OAuth2Authentication) SecurityContextHolder.getContext().getAuthentication();
 			logger.debug("Principal = " + auth.getPrincipal());
-			result = new APIResponse();
+			result = new APIResponse<>();
+			User user = userService.findUserById((String)auth.getName());
 			result.setStatus(APIResponse.STATUS_SUCCESS);
-			result.setResponse(auth.getPrincipal());
+			result.setResponse(user);
 			result.setVersion(version);
 			response = ResponseEntity.ok(result);
 		}
 		catch (Exception e)
 		{
-			response = handleException(e, version);
+			response = handleException(e, version, result);
 		}
 		return response;
 	}
 
 	@RequestMapping(method = RequestMethod.PATCH, value = "/user", produces = MediaType.APPLICATION_JSON_VALUE)
 	@PreAuthorize("#user.userId == authentication.name || hasRole('ADMIN')")
-	public @ResponseBody ResponseEntity<APIResponse> updateUser(@RequestBody(required = true) User user)
+	public @ResponseBody ResponseEntity<APIResponse<User>> updateUser(@RequestBody(required = true) User user)
 	{
-		APIResponse result = null;
-		ResponseEntity<APIResponse> response;
+		APIResponse<User> result = null;
+		ResponseEntity<APIResponse<User>> response;
 		try
 		{
 			User res = userService.updateUser(user);
-			result = new APIResponse();
+			result = new APIResponse<>();
 			result.setStatus(APIResponse.STATUS_SUCCESS);
 			result.setResponse(res);
 			result.setVersion(version);
@@ -70,7 +71,7 @@ public class UserController extends APIController
 		}
 		catch (Exception e)
 		{
-			response = handleException(e, version);
+			response = handleException(e, version, result);
 		}
 		return response;
 	}

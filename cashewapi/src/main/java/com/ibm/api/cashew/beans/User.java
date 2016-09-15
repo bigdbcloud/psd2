@@ -1,5 +1,7 @@
 package com.ibm.api.cashew.beans;
 
+import java.util.Date;
+
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
@@ -17,7 +19,9 @@ public class User
 
 	private String name;
 	private String email;
-	private String phone;
+	private String mobileNumber;
+	private Date dateOfBirth;
+	private Address address;
 
 	private String authProvider;
 	private String authProviderClientId;
@@ -75,14 +79,14 @@ public class User
 		this.email = email;
 	}
 
-	public String getPhone()
+	public String getMobileNumber()
 	{
-		return phone;
+		return mobileNumber;
 	}
 
-	public void setPhone(String phone)
+	public void setMobileNumber(String phone)
 	{
-		this.phone = phone;
+		this.mobileNumber = phone;
 	}
 
 	public boolean isLocked()
@@ -93,6 +97,26 @@ public class User
 	public void setLocked(boolean locked)
 	{
 		Locked = locked;
+	}
+
+	public Date getDateOfBirth()
+	{
+		return dateOfBirth;
+	}
+
+	public void setDateOfBirth(Date dateOfBirth)
+	{
+		this.dateOfBirth = dateOfBirth;
+	}
+
+	public Address getAddress()
+	{
+		return address;
+	}
+
+	public void setAddress(Address address)
+	{
+		this.address = address;
 	}
 
 	@Override

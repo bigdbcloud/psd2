@@ -18,7 +18,7 @@ public class User
 	private String userId;
 
 	private String email;
-	private String phone;
+	private String mobileNumber;
 	private String pwd;
 
 	private String authProvider;
@@ -90,14 +90,14 @@ public class User
 		this.email = email;
 	}
 
-	public String getPhone()
+	public String getMobileNumber()
 	{
-		return phone;
+		return mobileNumber;
 	}
 
-	public void setPhone(String phone)
+	public void setMobileNumber(String phone)
 	{
-		this.phone = phone;
+		this.mobileNumber = phone;
 	}
 
 	public ArrayList<String> getRoles()

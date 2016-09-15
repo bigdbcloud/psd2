@@ -95,9 +95,9 @@ public class UserServiceImpl implements UserService
 			existingUser.setName(user.getName());
 		}
 
-		if (user.getPhone() != null && !user.getPhone().isEmpty())
+		if (user.getMobileNumber() != null && !user.getMobileNumber().isEmpty())
 		{
-			existingUser.setPhone(user.getPhone());
+			existingUser.setMobileNumber(user.getMobileNumber());
 		}
 		
 		if (user.getEmail() != null && !user.getEmail().isEmpty())
