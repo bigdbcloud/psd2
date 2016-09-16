@@ -8,6 +8,7 @@ import org.springframework.data.mongodb.core.mapping.Document;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonInclude.Include;
+import com.ibm.psd2.datamodel.subscription.SubscriptionInfo;
 
 @Document(collection = "UserAccounts")
 @JsonInclude(value = Include.NON_EMPTY)
@@ -16,7 +17,9 @@ public class UserAccounts
 	@Id
 	private String userId;
 
-	List<AccountSubscription> accountSubscriptions;
+	List<Account> accountSubscriptions;
+	
+	
 
 	public String getUserId()
 	{
@@ -28,7 +31,7 @@ public class UserAccounts
 		this.userId = userId;
 	}
 	
-	public void addAccountSubscription(AccountSubscription accountSubscription)
+	public void addAccountSubscription(Account accountSubscription)
 	{
 		if (accountSubscriptions == null)
 		{
@@ -37,12 +40,12 @@ public class UserAccounts
 		accountSubscriptions.add(accountSubscription);
 	}
 
-	public List<AccountSubscription> getBankAccounts()
+	public List<Account> getBankAccounts()
 	{
 		return accountSubscriptions;
 	}
 
-	public void setBankAccounts(List<AccountSubscription> bankAccounts)
+	public void setBankAccounts(List<Account> bankAccounts)
 	{
 		this.accountSubscriptions = bankAccounts;
 	}

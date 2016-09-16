@@ -15,7 +15,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.ibm.api.cashew.beans.APIResponse;
-import com.ibm.api.cashew.beans.AccountSubscription;
+import com.ibm.api.cashew.beans.Account;
 import com.ibm.api.cashew.services.UserSubscriptionService;
 import com.ibm.psd2.datamodel.subscription.SubscriptionRequest;
 
@@ -30,8 +30,8 @@ public class UserSubscriptionController extends APIController
 	@Autowired
 	UserSubscriptionService uss;
 
-	@RequestMapping(method = RequestMethod.PUT, value = "/user/{userId}/subscription", produces = MediaType.APPLICATION_JSON_VALUE)
-	public @ResponseBody ResponseEntity<APIResponse<SubscriptionRequest>> getUserInfo(@RequestBody(required = true) AccountSubscription subscription)
+	@RequestMapping(method = RequestMethod.PUT, value = "/user/{userId}/subscriptionRequest", produces = MediaType.APPLICATION_JSON_VALUE)
+	public @ResponseBody ResponseEntity<APIResponse<SubscriptionRequest>> getUserInfo(@RequestBody(required = true) SubscriptionRequest subscriptionRequest)
 	{
 		APIResponse<SubscriptionRequest> result = null;
 		ResponseEntity<APIResponse<SubscriptionRequest>> response;

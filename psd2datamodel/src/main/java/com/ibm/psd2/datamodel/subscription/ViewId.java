@@ -8,6 +8,7 @@ import com.fasterxml.jackson.annotation.JsonInclude.Include;
 @JsonInclude(value = Include.NON_EMPTY)
 public class ViewId implements Serializable
 {
+	public static final String VIEW_OWNER = "owner";
 	String id;
 
 	public String getId()
