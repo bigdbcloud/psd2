@@ -7,7 +7,7 @@
 	<version>0.0.1-SNAPSHOT</version>
 	<packaging>jar</packaging>
 
-	<name>cashewapi</name>
+	<name>Cashew API</name>
 	<url>http://maven.apache.org</url>
 
 	<parent>
@@ -62,7 +62,7 @@
 		</dependency>
 		<dependency>
 			<groupId>com.ibm.api.psd2</groupId>
-			<artifactId>psd2commons</artifactId>
+			<artifactId>psd2datamodel</artifactId>
 			<version>${version}</version>
 		</dependency>
 		<dependency>
@@ -111,6 +111,12 @@
 			<artifactId>kafka-clients</artifactId>
 			<version>0.9.0.0</version>
 		</dependency>
+		<dependency>
+			<groupId>com.ibm.api.psd2</groupId>
+			<artifactId>psd2commons</artifactId>
+			<version>0.0.1-SNAPSHOT</version>
+		</dependency>
+		
 	</dependencies>
 
 	<build>

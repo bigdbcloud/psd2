@@ -24,8 +24,8 @@ public class BankAccountDetailsView implements Serializable
 	private String type;
 	private Amount balance;
 	private String iban;
-	private String swift_bic;
-	private String bank_id;
+	private String swiftBic;
+	private String bankId;
 	private String username;
 
 	public void addOwners(BankAccountOwner b)
@@ -116,24 +116,24 @@ public class BankAccountDetailsView implements Serializable
 		this.iban = iban;
 	}
 
-	public String getSwift_bic()
+	public String getSwiftBic()
 	{
-		return swift_bic;
+		return swiftBic;
 	}
 
-	public void setSwift_bic(String swift_bic)
+	public void setSwiftBic(String swift_bic)
 	{
-		this.swift_bic = swift_bic;
+		this.swiftBic = swift_bic;
 	}
 
-	public String getBank_id()
+	public String getBankId()
 	{
-		return bank_id;
+		return bankId;
 	}
 
-	public void setBank_id(String bank_id)
+	public void setBankId(String bank_id)
 	{
-		this.bank_id = bank_id;
+		this.bankId = bank_id;
 	}
 
 	public String getUsername()

@@ -9,7 +9,7 @@
 	<packaging>jar</packaging>
 
 	<name>psd2api</name>
-	<description>Demo project for Spring Boot</description>
+	<description>Sample PSD2 Implementation</description>
 
 	<parent>
 		<groupId>org.springframework.boot</groupId>
@@ -33,7 +33,6 @@
 			<url>http://nexus.vagrant.f8/content/repositories/releases</url>
 		</repository>
 	</distributionManagement>
-
 
 	<dependencies>
 		<dependency>

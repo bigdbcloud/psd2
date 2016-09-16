@@ -85,6 +85,7 @@ public class UserServiceImpl implements UserService
 		}
 
 		User existingUser = getUserById(user.getUserId());
+		
 		if (existingUser == null)
 		{
 			throw new IllegalArgumentException("User doesn't exist");
@@ -103,6 +104,11 @@ public class UserServiceImpl implements UserService
 		if (user.getEmail() != null && !user.getEmail().isEmpty())
 		{
 			existingUser.setEmail(user.getEmail());
+		}
+		
+		if (user.getDateOfBirth() != null)
+		{
+			existingUser.setDateOfBirth(user.getDateOfBirth());
 		}
 		
 		logger.debug("User will be updated as: " + existingUser);

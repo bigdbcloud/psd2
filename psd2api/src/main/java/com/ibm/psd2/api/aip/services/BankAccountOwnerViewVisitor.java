@@ -13,13 +13,13 @@ public class BankAccountOwnerViewVisitor implements Visitor
 		BankAccountDetails bad = (BankAccountDetails) u;
 
 		badv.setId(bad.getId());
-		badv.setBank_id(bad.getBankId());
+		badv.setBankId(bad.getBankId());
 		badv.setBalance(bad.getBalance());
 		badv.setIban(bad.getIban());
 		badv.setLabel(bad.getLabel());
 		badv.setNumber(bad.getNumber());
 		badv.setOwners(bad.getOwners());
-		badv.setSwift_bic(bad.getSwiftBic());
+		badv.setSwiftBic(bad.getSwiftBic());
 		badv.setType(bad.getType());
 		return (T) badv;
 	}
