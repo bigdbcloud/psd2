@@ -126,23 +126,4 @@ public class UserInfo implements Serializable
 		return "";
 	}
 	
-	
-	public static void main(String[] args)
-	{
-		UserInfo ui = new UserInfo();
-		ui.setEmail("tanmay.ambre@in.ibm.com");
-		ui.setMobileNumber("00919860306111");
-		ui.setPassword("password01");
-		ui.setRole("ROLE_USER");
-		ui.setUsername("tambre");
-		Address add = new Address();
-		add.setAddressLine1("VANSHAJ PRESTIGE");
-		add.setAddressLine2("SUS ROAD");
-		add.setCity("PUNE");
-		add.setHouseNumber("B-503");
-		add.setPostcode("411021");
-		ui.setAddress(add);
-		System.out.println("ui = " + ui);
-	}
-
 }
