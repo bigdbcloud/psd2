@@ -113,10 +113,15 @@
 		</dependency>
 		<dependency>
 			<groupId>com.ibm.api.psd2</groupId>
-			<artifactId>psd2commons</artifactId>
+			<artifactId>psd2datamodel</artifactId>
 			<version>0.0.1-SNAPSHOT</version>
 		</dependency>
-		
+
+		<dependency>
+			<groupId>org.apache.httpcomponents</groupId>
+			<artifactId>httpclient</artifactId>
+		</dependency>
+
 	</dependencies>
 
 	<build>

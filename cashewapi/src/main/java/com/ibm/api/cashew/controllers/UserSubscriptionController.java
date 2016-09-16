@@ -39,7 +39,9 @@ public class UserSubscriptionController extends APIController
 		{
 			OAuth2Authentication auth = (OAuth2Authentication) SecurityContextHolder.getContext().getAuthentication();
 			logger.debug("Principal = " + auth.getPrincipal());
+			
 			result = new APIResponse<>();
+			result.setResponse(uss.subscribe(subscriptionRequest));
 			response = ResponseEntity.ok(result);
 		}
 		catch (Exception e)
