@@ -1,4 +1,4 @@
-package com.ibm.api.oauth2server.beans;
+package com.ibm.psd2.oauth2server.beans;
 
 import java.io.Serializable;
 import java.util.Date;

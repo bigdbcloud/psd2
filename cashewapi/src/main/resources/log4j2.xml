@@ -11,7 +11,7 @@
 			</PatternLayout>
 		</Appender>
 
-		<RollingFile name="RollingFile" fileName="/logs/BigOAuth2Server.log"
+		<RollingFile name="RollingFile" fileName="/logs/CashewAPI.log"
 			filePattern="/logs/$${date:yyyy-MM}/app-%d{MM-dd-yyyy}-%i.log.gz">
 			<PatternLayout>
 				<pattern>[%d] [%t] [%p] [%C{3.}::%M] - %m%n</pattern>

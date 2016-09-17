@@ -1,4 +1,4 @@
-package com.ibm.api.oauth2server.controller;
+package com.ibm.psd2.oauth2server.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
@@ -8,10 +8,10 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.ibm.api.oauth2server.beans.ClientInfo;
-import com.ibm.api.oauth2server.beans.UserInfo;
-import com.ibm.api.oauth2server.services.ClientDetailsServiceImpl;
-import com.ibm.api.oauth2server.services.UserDetailsServiceImpl;
+import com.ibm.psd2.oauth2server.beans.ClientInfo;
+import com.ibm.psd2.oauth2server.beans.UserInfo;
+import com.ibm.psd2.oauth2server.services.ClientDetailsServiceImpl;
+import com.ibm.psd2.oauth2server.services.UserDetailsServiceImpl;
 
 @RestController
 public class UserController

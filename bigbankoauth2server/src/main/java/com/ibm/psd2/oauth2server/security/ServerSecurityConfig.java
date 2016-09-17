@@ -1,4 +1,4 @@
-package com.ibm.api.oauth2server.security;
+package com.ibm.psd2.oauth2server.security;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.context.embedded.FilterRegistrationBean;
@@ -18,7 +18,7 @@ import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 import org.springframework.web.filter.CorsFilter;
 
-import com.ibm.api.oauth2server.services.UserDetailsServiceImpl;
+import com.ibm.psd2.oauth2server.services.UserDetailsServiceImpl;
 
 @Configuration
 public class ServerSecurityConfig extends WebSecurityConfigurerAdapter

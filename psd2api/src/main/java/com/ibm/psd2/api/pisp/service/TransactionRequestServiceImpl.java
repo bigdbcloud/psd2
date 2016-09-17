@@ -133,8 +133,8 @@ public class TransactionRequestServiceImpl implements TransactionRequestService
 			logger.info("Amount Greater than specified limit. Hence creating a challenge");
 			Challenge challenge = new Challenge();
 			challenge.setId(UUIDGenerator.generateUUID());
-			challenge.setChallenge_type(txnRequest.getType());
-			challenge.setAllowed_attempts(Constants.CHALLENGE_MAX_ATTEMPTS);
+			challenge.setChallengeType(txnRequest.getType());
+			challenge.setAllowedAttempts(Constants.CHALLENGE_MAX_ATTEMPTS);
 			txnRequest.setChallenge(challenge);
 			txnRequest.setStatus(TxnRequestDetails.TXN_STATUS_INITIATED);
 		}

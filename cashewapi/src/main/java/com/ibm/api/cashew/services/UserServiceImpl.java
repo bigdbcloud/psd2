@@ -127,7 +127,7 @@ public class UserServiceImpl implements UserService
 		{
 			throw new IllegalArgumentException("PhoneNumber can't be null");
 		}
-		return userRepo.updatePhone(userId, email);
+		return userRepo.updateEmail(userId, email);
 	}
 
 	@Override

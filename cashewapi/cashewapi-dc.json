@@ -89,6 +89,10 @@
                                     {
                                         "name": "CASHEW_MONGO_SVC_URI",
                                         "value": "mongodb://172.30.46.38:27017/cashew"
+                                    },
+                                    {
+                                        "name": "PSD2_URL",
+                                        "value": "http://172.30.91.54:8082/psd2api"
                                     }
                                 ],
                                 "resources": {},

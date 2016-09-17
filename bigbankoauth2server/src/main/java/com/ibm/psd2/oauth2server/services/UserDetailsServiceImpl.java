@@ -1,4 +1,4 @@
-package com.ibm.api.oauth2server.services;
+package com.ibm.psd2.oauth2server.services;
 
 import java.util.Arrays;
 
@@ -14,8 +14,8 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import com.ibm.api.oauth2server.beans.UserInfo;
-import com.ibm.api.oauth2server.db.MongoUserRepository;
+import com.ibm.psd2.oauth2server.beans.UserInfo;
+import com.ibm.psd2.oauth2server.db.MongoUserRepository;
 
 @Service
 public class UserDetailsServiceImpl implements UserDetailsService

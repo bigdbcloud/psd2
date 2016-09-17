@@ -15,6 +15,10 @@ public abstract class APIController
 	{
 		ResponseEntity<APIResponse<T>> response;
 		logger.error(e.getMessage(), e);
+		if (result == null)
+		{
+			result = new APIResponse<>();
+		}
 		result.setStatus(APIResponse.STATUS_ERROR);
 		result.setErrMsg(e.getMessage());
 		result.setVersion(version);

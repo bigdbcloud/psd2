@@ -1,4 +1,4 @@
-package com.ibm.api.oauth2server.security;
+package com.ibm.psd2.oauth2server.security;
 
 import java.util.Collection;
 

@@ -8,32 +8,52 @@ import com.fasterxml.jackson.annotation.JsonInclude.Include;
 @JsonInclude(value = Include.NON_EMPTY)
 public class Challenge implements Serializable
 {
-	private String id;
-	private int allowed_attempts;
-	private String challenge_type;
+
+	public static final String ACCOUNT_SUBSCRIPTION = "ACCOUNT_SUBSCRIPTION";
+	public static final String TXN_CHALLENGE = "TXN_CHALLENGE";
 	
+	private String id;
+	private int allowedAttempts;
+	private String challengeType;
+	private String answer;
+
 	public String getId()
 	{
 		return id;
 	}
+
 	public void setId(String id)
 	{
 		this.id = id;
 	}
-	public int getAllowed_attempts()
+
+	public int getAllowedAttempts()
 	{
-		return allowed_attempts;
+		return allowedAttempts;
 	}
-	public void setAllowed_attempts(int allowed_attempts)
+
+	public void setAllowedAttempts(int allowed_attempts)
 	{
-		this.allowed_attempts = allowed_attempts;
+		this.allowedAttempts = allowed_attempts;
 	}
-	public String getChallenge_type()
+
+	public String getChallengeType()
 	{
-		return challenge_type;
+		return challengeType;
 	}
-	public void setChallenge_type(String challenge_type)
+
+	public void setChallengeType(String challenge_type)
 	{
-		this.challenge_type = challenge_type;
+		this.challengeType = challenge_type;
+	}
+
+	public String getAnswer()
+	{
+		return answer;
+	}
+
+	public void setAnswer(String answer)
+	{
+		this.answer = answer;
 	}
 }

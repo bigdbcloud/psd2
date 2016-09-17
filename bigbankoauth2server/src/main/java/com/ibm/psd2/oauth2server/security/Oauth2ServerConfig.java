@@ -1,4 +1,4 @@
-package com.ibm.api.oauth2server.security;
+package com.ibm.psd2.oauth2server.security;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -19,8 +19,8 @@ import org.springframework.security.oauth2.provider.token.TokenStore;
 import org.springframework.security.oauth2.provider.token.store.JwtAccessTokenConverter;
 import org.springframework.security.oauth2.provider.token.store.JwtTokenStore;
 
-import com.ibm.api.oauth2server.services.ClientDetailsServiceImpl;
-import com.ibm.api.oauth2server.services.UserDetailsServiceImpl;
+import com.ibm.psd2.oauth2server.services.ClientDetailsServiceImpl;
+import com.ibm.psd2.oauth2server.services.UserDetailsServiceImpl;
 
 @Configuration
 @EnableAuthorizationServer

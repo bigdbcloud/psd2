@@ -18,7 +18,6 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.ibm.psd2.api.subscription.service.SubscriptionRequestService;
-import com.ibm.psd2.api.subscription.service.SubscriptionRules;
 import com.ibm.psd2.api.subscription.service.SubscriptionService;
 import com.ibm.psd2.datamodel.ChallengeAnswer;
 import com.ibm.psd2.datamodel.subscription.SubscriptionInfo;
@@ -30,12 +29,9 @@ public class SubscriptionRequestController
 
 	@Autowired
 	SubscriptionRequestService subsReqService;
-	
+
 	@Autowired
 	SubscriptionService subsService;
-	
-	@Autowired
-	SubscriptionRules srules;
 
 	private final Logger logger = LogManager.getLogger(SubscriptionRequestController.class);
 
@@ -59,9 +55,10 @@ public class SubscriptionRequestController
 		}
 		return response;
 	}
-	
+
 	@RequestMapping(method = RequestMethod.GET, value = "/subscription/{username}", produces = MediaType.APPLICATION_JSON_VALUE)
-	public @ResponseBody ResponseEntity<List<SubscriptionInfo>> getSubscriptionInfo(@PathVariable("username") String username)
+	public @ResponseBody ResponseEntity<List<SubscriptionInfo>> getSubscriptionInfo(
+			@PathVariable("username") String username)
 	{
 		ResponseEntity<List<SubscriptionInfo>> response;
 		try
@@ -69,14 +66,15 @@ public class SubscriptionRequestController
 			Authentication auth = SecurityContextHolder.getContext().getAuthentication();
 			List<SubscriptionInfo> sreturn = subsService.getSubscriptionInfo(username, auth.getName());
 			response = ResponseEntity.ok(sreturn);
-		} catch (Exception e)
+		}
+		catch (Exception e)
 		{
 			logger.error(e.getMessage(), e);
 			response = ResponseEntity.badRequest().body(null);
 		}
 		return response;
 	}
-	
+
 	@RequestMapping(method = RequestMethod.PATCH, value = "/subscription/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
 	public @ResponseBody ResponseEntity<SubscriptionInfo> activateSubscription(@PathVariable("id") String id,
 			@RequestBody(required = true) ChallengeAnswer cab)
@@ -84,26 +82,14 @@ public class SubscriptionRequestController
 		ResponseEntity<SubscriptionInfo> response;
 		try
 		{
-			SubscriptionRequest sr = subsReqService.getSubscriptionRequestByIdAndChallenge(id, cab);
-			if (sr == null)
-			{
-				throw new IllegalArgumentException("Subscription Request Not Found for id = " + id + " , challenge.id = " + cab.getId());
-			}
-			
-			if (!srules.validateTxnChallengeAnswer(cab))
-			{
-				throw new IllegalArgumentException("Challenge Answer is not correct");
-			}
-			
-			SubscriptionInfo si = subsService.createSubscriptionInfo(sr.getSubscriptionInfo());
-			subsReqService.updateSubscriptionRequestStatus(id, SubscriptionRequest.STATUS_SUBSCRIBED);
+			SubscriptionInfo si = subsReqService.validateTxnChallengeAnswer(id, cab);
 			response = ResponseEntity.ok(si);
-			
-		} catch (Exception e)
+		}
+		catch (Exception e)
 		{
 			logger.error(e.getMessage(), e);
 			response = ResponseEntity.badRequest().body(null);
 		}
 		return response;
-	}	
+	}
 }

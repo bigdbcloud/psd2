@@ -9,8 +9,6 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.oauth2.provider.OAuth2Authentication;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -21,6 +19,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.ibm.api.cashew.beans.APIResponse;
 import com.ibm.api.cashew.beans.User;
 import com.ibm.api.cashew.services.UserService;
+import com.ibm.api.cashew.utils.Utils;
 
 @RestController
 @RequestMapping
@@ -33,18 +32,19 @@ public class UserController extends APIController
 
 	@Autowired
 	UserService userService;
+	
+	@Autowired
+	Utils utils;
 
-	@RequestMapping(method = RequestMethod.GET, value = "/user/profile", produces = MediaType.APPLICATION_JSON_VALUE)
-	public @ResponseBody ResponseEntity<APIResponse<User>> getUserInfo()
+	@RequestMapping(method = RequestMethod.GET, value = "/user/{userId}/profile", produces = MediaType.APPLICATION_JSON_VALUE)
+	@PreAuthorize("#userId == authentication.name || hasRole('ADMIN')")
+	public @ResponseBody ResponseEntity<APIResponse<User>> getUserInfo(@PathVariable("userId") String userId)
 	{
-		APIResponse<User> result = null;
+		APIResponse<User> result = new APIResponse<>();
 		ResponseEntity<APIResponse<User>> response;
 		try
 		{
-			OAuth2Authentication auth = (OAuth2Authentication) SecurityContextHolder.getContext().getAuthentication();
-			logger.debug("Principal = " + auth.getPrincipal());
-			result = new APIResponse<>();
-			User user = userService.findUserById((String)auth.getName());
+			User user = userService.findUserById(userId);
 			result.setStatus(APIResponse.STATUS_SUCCESS);
 			result.setResponse(user);
 			result.setVersion(version);
@@ -61,12 +61,11 @@ public class UserController extends APIController
 	@PreAuthorize("#user.userId == authentication.name || hasRole('ADMIN')")
 	public @ResponseBody ResponseEntity<APIResponse<User>> updateUser(@RequestBody(required = true) User user)
 	{
-		APIResponse<User> result = null;
+		APIResponse<User> result = new APIResponse<>();
 		ResponseEntity<APIResponse<User>> response;
 		try
 		{
 			User res = userService.updateUser(user);
-			result = new APIResponse<>();
 			result.setStatus(APIResponse.STATUS_SUCCESS);
 			result.setResponse(res);
 			result.setVersion(version);
@@ -79,18 +78,18 @@ public class UserController extends APIController
 		return response;
 	}
 	
-	@RequestMapping(method = RequestMethod.PATCH, value = "/user/{userId}/phone/{phone}", produces = MediaType.APPLICATION_JSON_VALUE)
+	@RequestMapping(method = RequestMethod.PATCH, value = "/user/{userId}/phone/{phone}/", produces = MediaType.APPLICATION_JSON_VALUE)
+	@PreAuthorize("#userId == authentication.name || hasRole('ADMIN')")
 	public @ResponseBody ResponseEntity<APIResponse<Long>> changePhone(@PathVariable("userId") String userId,
 			@PathVariable("phone") String phone)
 	{
-		APIResponse<Long> result = null;
+		APIResponse<Long> result = new APIResponse<>();
 		ResponseEntity<APIResponse<Long>> response;
 
 		logger.info("changing phone of user: " + userId);
 		try
 		{
 			Long res = userService.changePhone(userId, phone);
-			result = new APIResponse<>();
 			result.setStatus(APIResponse.STATUS_SUCCESS);
 			result.setResponse(res);
 			result.setVersion(version);
@@ -103,17 +102,17 @@ public class UserController extends APIController
 	}
 	
 	@RequestMapping(method = RequestMethod.PATCH, value = "/user/{userId}/email/{email}/", produces = MediaType.APPLICATION_JSON_VALUE)
+	@PreAuthorize("#userId == authentication.name || hasRole('ADMIN')")
 	public @ResponseBody ResponseEntity<APIResponse<Long>> changeEmail(@PathVariable("userId") String userId,
 			@PathVariable("email") String email)
 	{
-		APIResponse<Long> result = null;
+		APIResponse<Long> result = new APIResponse<>();
 		ResponseEntity<APIResponse<Long>> response;
 
 		logger.info("changing email of user: " + userId);
 		try
 		{
 			Long res = userService.changeEmail(userId, email);
-			result = new APIResponse<>();
 			result.setStatus(APIResponse.STATUS_SUCCESS);
 			result.setResponse(res);
 			result.setVersion(version);
@@ -125,18 +124,19 @@ public class UserController extends APIController
 		return response;
 	}
 
-	@RequestMapping(method = RequestMethod.PATCH, value = "/user/{userId}/dob/{dob}", produces = MediaType.APPLICATION_JSON_VALUE)
+	@RequestMapping(method = RequestMethod.PATCH, value = "/user/{userId}/dob/{dob}/", produces = MediaType.APPLICATION_JSON_VALUE)
+	@PreAuthorize("#userId == authentication.name || hasRole('ADMIN')")
 	public @ResponseBody ResponseEntity<APIResponse<Long>> changeDateOfBirth(@PathVariable("userId") String userId,
-			@PathVariable("dob") Date dob)
+			@PathVariable("dob") String dob)
 	{
-		APIResponse<Long> result = null;
+		APIResponse<Long> result = new APIResponse<>();
 		ResponseEntity<APIResponse<Long>> response;
 
 		logger.info("changing date of birth of user: " + userId);
 		try
 		{
-			Long res = userService.changeDOB(userId, dob);
-			result = new APIResponse<>();
+			Date d = utils.DATE_FORMAT.parse(dob);
+			Long res = userService.changeDOB(userId, d);
 			result.setStatus(APIResponse.STATUS_SUCCESS);
 			result.setResponse(res);
 			result.setVersion(version);

@@ -1,5 +1,6 @@
 package com.ibm.api.cashew.beans;
 
+import java.io.Serializable;
 import java.util.Date;
 
 import org.springframework.data.annotation.Id;
@@ -12,7 +13,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 
 @Document(collection = "users")
 @JsonInclude(value = Include.NON_EMPTY)
-public class User
+public class User implements Serializable
 {
 	@Id
 	private String userId;

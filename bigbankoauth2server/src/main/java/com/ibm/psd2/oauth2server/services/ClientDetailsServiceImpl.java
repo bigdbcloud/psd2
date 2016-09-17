@@ -1,4 +1,4 @@
-package com.ibm.api.oauth2server.services;
+package com.ibm.psd2.oauth2server.services;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -11,8 +11,8 @@ import org.springframework.security.oauth2.provider.client.BaseClientDetails;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 
-import com.ibm.api.oauth2server.beans.ClientInfo;
-import com.ibm.api.oauth2server.db.MongoClientRepository;
+import com.ibm.psd2.oauth2server.beans.ClientInfo;
+import com.ibm.psd2.oauth2server.db.MongoClientRepository;
 
 @Service
 public class ClientDetailsServiceImpl implements ClientDetailsService

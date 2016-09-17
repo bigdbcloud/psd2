@@ -1,4 +1,4 @@
-package com.ibm.api.oauth2server.utils;
+package com.ibm.psd2.oauth2server.utils;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;

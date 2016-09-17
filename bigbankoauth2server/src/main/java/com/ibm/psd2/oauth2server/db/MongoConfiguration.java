@@ -1,4 +1,4 @@
-package com.ibm.api.oauth2server.db;
+package com.ibm.psd2.oauth2server.db;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -16,7 +16,7 @@ import com.mongodb.MongoClient;
 import com.mongodb.MongoClientURI;
 
 @Configuration
-@EnableMongoRepositories(basePackages = "com/ibm/api/oauth2server/db")
+@EnableMongoRepositories(basePackages = "com/ibm/psd2/oauth2server/db")
 public class MongoConfiguration extends AbstractMongoConfiguration
 {
 	private final Logger logger = LogManager.getLogger(MongoConfiguration.class);
