@@ -21,6 +21,7 @@ public class BankAccountOwnerViewVisitor implements Visitor
 		badv.setOwners(bad.getOwners());
 		badv.setSwiftBic(bad.getSwiftBic());
 		badv.setType(bad.getType());
+		badv.setUsername(bad.getUsername());
 		return (T) badv;
 	}
 
