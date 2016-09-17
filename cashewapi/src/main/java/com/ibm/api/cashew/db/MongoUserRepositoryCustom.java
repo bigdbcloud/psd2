@@ -1,22 +1,12 @@
 package com.ibm.api.cashew.db;
 
-import java.util.List;
-
-import com.ibm.api.cashew.beans.User;
-
+import java.util.Date;
 
 public interface MongoUserRepositoryCustom
 {
 	public long updateUserLock(String userId, boolean locked);
-
-	public List<User> findUsersFTS(String any, int fetchLimit);
-
-	public long updatePassword(String userId, String newPwd);
-
 	public long updatePhone(String userId, String phone);
-
-	public long addExpertise(String userId, String expertise);
-
-	public long addRole(String userId, String role);
+	public long updateEmail(String userId, String email);
+	public long updateDOB(String userId, Date dob);
 
 }

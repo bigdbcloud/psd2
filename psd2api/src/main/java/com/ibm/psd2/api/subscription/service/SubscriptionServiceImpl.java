@@ -43,7 +43,7 @@ public class SubscriptionServiceImpl implements SubscriptionService
 	}
 
 	@Override
-	public void createSubscriptionInfo(SubscriptionInfo s)
+	public SubscriptionInfo createSubscriptionInfo(SubscriptionInfo s)
 	{
 		SubscriptionInfo existingSI = msir.findByUsernameAndClientIdAndAccountIdAndBankId(s.getUsername(), s.getClientId(), s.getAccountId(), s.getBankId());
 		if (existingSI != null)
@@ -52,7 +52,7 @@ public class SubscriptionServiceImpl implements SubscriptionService
 		}
 		
 		s.setStatus(SubscriptionInfo.STATUS_ACTIVE);
-		msir.save(s);
+		return msir.save(s);
 	}
 
 	@Override

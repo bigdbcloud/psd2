@@ -14,6 +14,6 @@ public interface SubscriptionService
 
 	public List<SubscriptionInfo> getSubscriptionInfo(String username);
 
-	public void createSubscriptionInfo(SubscriptionInfo s);
+	public SubscriptionInfo createSubscriptionInfo(SubscriptionInfo s);
 
 }

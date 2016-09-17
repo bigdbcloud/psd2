@@ -2,9 +2,9 @@ package com.ibm.api.cashew.db;
 
 import org.springframework.data.mongodb.repository.MongoRepository;
 
-import com.ibm.api.cashew.beans.UserAccounts;
+import com.ibm.api.cashew.beans.UserAccount;
 
-public interface MongoUserAccountsRepository extends MongoRepository<UserAccounts, String>
+public interface MongoUserAccountsRepository extends MongoRepository<UserAccount, String>
 {
-	
+	public UserAccount findByAppUsernameAndAccountIdAndAccountBankIdAndAccountUsername(String username, String accountId, String bankId, String bankUsername);
 }

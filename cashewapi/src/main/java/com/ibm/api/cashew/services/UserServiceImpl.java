@@ -1,8 +1,6 @@
 package com.ibm.api.cashew.services;
 
-import java.util.HashSet;
-import java.util.List;
-import java.util.StringTokenizer;
+import java.util.Date;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -35,12 +33,6 @@ public class UserServiceImpl implements UserService
 	{
 		User user = getUserById(userId);
 		return user;
-	}
-
-	@Override
-	public User findUserByEmail(String email)
-	{
-		return userRepo.findByEmail(email);
 	}
 
 	@Override
@@ -117,18 +109,6 @@ public class UserServiceImpl implements UserService
 	}
 
 	@Override
-	public long addExpertise(String userId, String expertise)
-	{
-		logger.info("updating user's expertise: " + userId + " : " + expertise);
-
-		if (expertise == null || expertise.isEmpty())
-		{
-			throw new IllegalArgumentException("Expertise can't be null");
-		}
-		return userRepo.addExpertise(userId, expertise);
-	}
-
-	@Override
 	public long changePhone(String userId, String phoneNumber)
 	{
 		logger.info("changing user's phonenumber: " + userId + " : " + phoneNumber);
@@ -139,4 +119,25 @@ public class UserServiceImpl implements UserService
 		return userRepo.updatePhone(userId, phoneNumber);
 	}
 
+	@Override
+	public long changeEmail(String userId, String email)
+	{
+		logger.info("changing user's email: " + userId );
+		if (email == null || email.isEmpty())
+		{
+			throw new IllegalArgumentException("PhoneNumber can't be null");
+		}
+		return userRepo.updatePhone(userId, email);
+	}
+
+	@Override
+	public long changeDOB(String userId, Date dob)
+	{
+		logger.info("changing user's dateOfBirth: " + userId + " : " + dob);
+		if (dob == null)
+		{
+			throw new IllegalArgumentException("PhoneNumber can't be null");
+		}
+		return userRepo.updateDOB(userId, dob);
+	}
 }

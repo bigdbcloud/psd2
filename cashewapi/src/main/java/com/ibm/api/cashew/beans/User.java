@@ -26,7 +26,7 @@ public class User
 	private String authProvider;
 	private String authProviderClientId;
 
-	private boolean Locked;
+	private boolean locked;
 	
 
 	public String getUserId()
@@ -91,12 +91,12 @@ public class User
 
 	public boolean isLocked()
 	{
-		return Locked;
+		return locked;
 	}
 
 	public void setLocked(boolean locked)
 	{
-		Locked = locked;
+		this.locked = locked;
 	}
 
 	public Date getDateOfBirth()

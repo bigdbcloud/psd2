@@ -21,7 +21,6 @@ import com.ibm.psd2.api.subscription.service.SubscriptionRequestService;
 import com.ibm.psd2.api.subscription.service.SubscriptionRules;
 import com.ibm.psd2.api.subscription.service.SubscriptionService;
 import com.ibm.psd2.datamodel.ChallengeAnswer;
-import com.ibm.psd2.datamodel.SimpleResponse;
 import com.ibm.psd2.datamodel.subscription.SubscriptionInfo;
 import com.ibm.psd2.datamodel.subscription.SubscriptionRequest;
 
@@ -79,11 +78,10 @@ public class SubscriptionRequestController
 	}
 	
 	@RequestMapping(method = RequestMethod.PATCH, value = "/subscription/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
-	public @ResponseBody ResponseEntity<SimpleResponse> activateSubscription(@PathVariable("id") String id,
+	public @ResponseBody ResponseEntity<SubscriptionInfo> activateSubscription(@PathVariable("id") String id,
 			@RequestBody(required = true) ChallengeAnswer cab)
 	{
-		ResponseEntity<SimpleResponse> response;
-		SimpleResponse srb = new SimpleResponse();
+		ResponseEntity<SubscriptionInfo> response;
 		try
 		{
 			SubscriptionRequest sr = subsReqService.getSubscriptionRequestByIdAndChallenge(id, cab);
@@ -97,17 +95,14 @@ public class SubscriptionRequestController
 				throw new IllegalArgumentException("Challenge Answer is not correct");
 			}
 			
-			subsService.createSubscriptionInfo(sr.getSubscriptionInfo());
+			SubscriptionInfo si = subsService.createSubscriptionInfo(sr.getSubscriptionInfo());
 			subsReqService.updateSubscriptionRequestStatus(id, SubscriptionRequest.STATUS_SUBSCRIBED);
-			srb.setResponseCode(SimpleResponse.CODE_SUCCESS);
-			response = ResponseEntity.ok(srb);
+			response = ResponseEntity.ok(si);
 			
 		} catch (Exception e)
 		{
-			logger.error(e);
-			srb.setResponseCode(SimpleResponse.CODE_ERROR);
-			srb.setResponseMessage(e.getMessage());
-			response = ResponseEntity.badRequest().body(srb);
+			logger.error(e.getMessage(), e);
+			response = ResponseEntity.badRequest().body(null);
 		}
 		return response;
 	}	
