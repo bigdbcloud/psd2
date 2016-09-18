@@ -16,7 +16,7 @@ import com.mongodb.MongoClient;
 import com.mongodb.MongoClientURI;
 
 @Configuration
-@EnableMongoRepositories(basePackages = "com/ibm/api/cashew/db")
+@EnableMongoRepositories(basePackages = "com/ibm/api/cashew")
 public class MongoConfiguration extends AbstractMongoConfiguration
 {
 	private final Logger logger = LogManager.getLogger(MongoConfiguration.class);

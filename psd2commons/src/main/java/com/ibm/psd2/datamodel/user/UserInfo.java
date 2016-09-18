@@ -111,4 +111,12 @@ public class UserInfo implements Serializable
 		return true;
 	}
 
+	public Date getDateOfBirth() {
+		return dateOfBirth;
+	}
+
+	public void setDateOfBirth(Date dateOfBirth) {
+		this.dateOfBirth = dateOfBirth;
+	}
+
 }

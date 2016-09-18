@@ -18,7 +18,7 @@ public class TransactionDetails implements Serializable
 	private Date completed;
 	private Amount newBalance;
 	private Amount value;
-	private String category;
+	private String tag;
 	
 	public String getType()
 	{
@@ -69,6 +69,13 @@ public class TransactionDetails implements Serializable
 		this.value = value;
 	}
 	
+	public String getTag() {
+		return tag;
+	}
+	public void setTag(String tag) {
+		this.tag = tag;
+	}
+	
 	public String toString()
 	{
 		ObjectMapper mapper = new ObjectMapper();
@@ -81,5 +88,6 @@ public class TransactionDetails implements Serializable
 		}
 		return "";
 	}
-
+	
+	
 }

@@ -4,9 +4,13 @@ import java.nio.charset.Charset;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Base64;
+import java.util.Calendar;
 import java.util.Date;
+import java.util.Random;
 
 import org.springframework.stereotype.Component;
+
+import com.ibm.api.cashew.beans.Vocher;
 
 @Component
 public class Utils
@@ -45,6 +49,27 @@ public class Utils
 		byte[] encodedAuth = Base64.getEncoder().encode(auth.getBytes(Charset.forName("US-ASCII")));
 		String authHeader = "Basic " + new String(encodedAuth);
 		return authHeader;
+	}
+	
+
+	public String getVocherCode() {
+
+		char[] chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789".toCharArray();
+		Random rnd = new Random();
+		StringBuilder sb = new StringBuilder("Cashew" + "-" + (100000 + rnd.nextInt(900000)) + "-");
+		for (int i = 0; i < 5; i++)
+			sb.append(chars[rnd.nextInt(chars.length)]);
+
+		return sb.toString();
+	}
+
+	public String getVocherExpDate() {
+
+		Calendar c = Calendar.getInstance();
+		c.setTime(new Date());
+		c.add(Calendar.MONTH, 12);
+		return Vocher.DATE_FORMAT.format(c.getTime());
+
 	}
 	
 }

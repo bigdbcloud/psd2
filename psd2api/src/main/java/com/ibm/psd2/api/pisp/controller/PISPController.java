@@ -20,10 +20,12 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.ibm.psd2.api.APIController;
+import com.ibm.psd2.api.aip.services.TransactionStatementService;
 import com.ibm.psd2.api.integration.KafkaMessageProducer;
 import com.ibm.psd2.api.pisp.service.TransactionRequestService;
 import com.ibm.psd2.api.subscription.service.SubscriptionService;
 import com.ibm.psd2.datamodel.ChallengeAnswer;
+import com.ibm.psd2.datamodel.aip.Transaction;
 import com.ibm.psd2.datamodel.pisp.TxnParty;
 import com.ibm.psd2.datamodel.pisp.TxnRequest;
 import com.ibm.psd2.datamodel.pisp.TxnRequestDetails;
@@ -40,6 +42,9 @@ public class PISPController extends APIController
 
 	@Autowired
 	SubscriptionService subscriptionService;
+	
+	@Autowired
+	TransactionStatementService tdao;
 
 	@Autowired
 	KafkaMessageProducer kmp;
@@ -159,6 +164,41 @@ public class PISPController extends APIController
 		catch (Exception e)
 		{
 			logger.error(e.getMessage(), e);
+			response = ResponseEntity.badRequest().body(null);
+		}
+		return response;
+	}
+	
+
+	@RequestMapping(method = RequestMethod.PUT, value = "/banks/{bankId}/accounts/{accountId}/{viewId}/transaction/{txnId}/tag/{tag}", produces = MediaType.APPLICATION_JSON_VALUE)
+	public @ResponseBody ResponseEntity<Transaction> tagTransaction(@PathVariable("bankId") String bankId,
+			@PathVariable("accountId") String accountId,
+			@PathVariable("viewId") String viewId,
+			@PathVariable("txnId") String txnId,
+			@PathVariable("tag") String tag)
+	{
+		ResponseEntity<Transaction> response;
+		try
+		{
+			Transaction t = tdao.getTransactionById(bankId, accountId, txnId);
+			
+			if (t == null)
+			{
+				throw new IllegalArgumentException("Transaction details not found");
+			}
+
+			if(tag!=null){
+			  
+				t.getDetails().setTag(tag);;
+			}
+			
+			t=tdao.updateTransaction(t);
+			
+			response = ResponseEntity.ok(t);
+		}
+		catch (Exception ex)
+		{
+			logger.error(ex.getMessage(), ex);
 			response = ResponseEntity.badRequest().body(null);
 		}
 		return response;

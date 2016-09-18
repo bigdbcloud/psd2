@@ -60,5 +60,11 @@ public class TransactionStatementServiceImpl implements TransactionStatementServ
 	{
 		return mtr.save(t);
 	}
+	
+	@Override
+	public Transaction updateTransaction(Transaction t) {
+		
+		return mtr.save(t);
+	}
 
 }

@@ -13,4 +13,6 @@ public interface TransactionStatementService
 
 	public Transaction createTransaction(Transaction t);
 
+	public Transaction updateTransaction(Transaction t);
+
 }
