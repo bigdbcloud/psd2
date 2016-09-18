@@ -1,7 +1,7 @@
 version: '2'
 services:
  bigbankoauth2server:
-  image: psd2/bigbankoauth2server
+  image: rise/bigbankoauth2server
   ports:
    - "8081:8081"
   volumes:
@@ -9,7 +9,7 @@ services:
   env_file: .env
  
  psd2api:
-  image: psd2/psd2api
+  image: rise/psd2api
   ports:
    - "8082:8082"
   volumes:
@@ -19,7 +19,7 @@ services:
   - bigbankoauth2server
 
  bigoauth2server:
-  image: psd2/bigoauth2server
+  image: rise/bigoauth2server
   ports:
    - "8084:8084"
   volumes:
@@ -27,9 +27,11 @@ services:
   env_file: .env
 
  cashewapi:
-  image: cashewapi
+  image: rise/cashewapi
   ports:
    - "8085:8085"
   volumes:
    - /logs:/logs
   env_file: .env
+  depends_on:
+  - bigoauth2server
