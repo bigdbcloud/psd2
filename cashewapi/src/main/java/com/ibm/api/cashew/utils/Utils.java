@@ -46,5 +46,5 @@ public class Utils
 		String authHeader = "Basic " + new String(encodedAuth);
 		return authHeader;
 	}
-
+	
 }

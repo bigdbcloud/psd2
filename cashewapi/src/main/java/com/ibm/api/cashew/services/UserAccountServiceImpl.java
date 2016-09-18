@@ -1,6 +1,7 @@
 package com.ibm.api.cashew.services;
 
 import java.net.URI;
+import java.util.List;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -10,6 +11,7 @@ import org.springframework.http.MediaType;
 import org.springframework.http.RequestEntity;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.client.RestTemplate;
 
 import com.ibm.api.cashew.beans.SubscriptionChallengeAnswer;
@@ -18,6 +20,7 @@ import com.ibm.api.cashew.db.MongoUserAccountsRepository;
 import com.ibm.api.cashew.utils.Utils;
 import com.ibm.psd2.datamodel.ChallengeAnswer;
 import com.ibm.psd2.datamodel.aip.BankAccountDetailsView;
+import com.ibm.psd2.datamodel.aip.Transaction;
 import com.ibm.psd2.datamodel.subscription.SubscriptionInfo;
 import com.ibm.psd2.datamodel.subscription.SubscriptionRequest;
 import com.ibm.psd2.utils.UUIDGenerator;
@@ -142,7 +145,7 @@ public class UserAccountServiceImpl implements UserAccountService
 	}
 
 	@Override
-	public BankAccountDetailsView getAccountInformation(String appUser, String bankId, String accountId, String viewId)
+	public BankAccountDetailsView getAccountInformation(String appUser, String bankId, String accountId)
 	{
 		UserAccount ua = muar.findByAppUsernameAndAccountIdAndAccountBankId(appUser, accountId, bankId);
 		BankAccountDetailsView bdv = null;
@@ -153,7 +156,7 @@ public class UserAccountServiceImpl implements UserAccountService
 		}
 
 		String url = psd2Url + "/banks/" + ua.getAccount().getBankId() + "/accounts/" + ua.getAccount().getId() + "/"
-				+ viewId + "/account";
+				+ ua.getViewIds().get(0).getId() + "/account";
 		logger.debug("url = " + url);
 
 		try
@@ -173,6 +176,51 @@ public class UserAccountServiceImpl implements UserAccountService
 			throw new RuntimeException(e);
 		}
 		return bdv;
+
+	}
+
+	@Override
+	public List<Transaction> getTransactions(String appUser, String bankId, String accountId, String sortDirection, String fromDate, String toDate, String sortBy,
+			Integer offset, Integer limit)
+	{
+		UserAccount ua = muar.findByAppUsernameAndAccountIdAndAccountBankId(appUser, accountId, bankId);
+		List<Transaction> txns = null;
+		if (ua == null || ua.getSubscriptionInfoStatus() == null
+				|| !ua.getSubscriptionInfoStatus().equals(SubscriptionInfo.STATUS_ACTIVE))
+		{
+			throw new IllegalArgumentException("Account is not yet subscribed");
+		}
+
+		/**
+		 * /banks/{bankId}/accounts/{accountId}/{viewId}/transactions
+		 */
+		String url = psd2Url + "/banks/" + ua.getAccount().getBankId() + "/accounts/" + ua.getAccount().getId() + "/"
+				+ ua.getViewIds().get(0).getId() + "/transactions";
+		logger.debug("url = " + url);
+
+		try
+		{
+			URI uri = new URI(url);
+			
+			RequestEntity<Void> rea = RequestEntity.get(uri).accept(MediaType.APPLICATION_JSON)
+					.header("Authorization", getPSD2Authorization()).header("user", ua.getAccount().getUsername())
+					.header("obp_sort_direction", sortDirection)
+					.header("obp_from_date", fromDate)
+					.header("obp_to_date", toDate)
+					.header("obp_sort_by", sortBy)
+					.header("obp_offset", (offset == null)? "0": offset.toString())
+					.header("obp_limit", (limit == null)? "10":offset.toString())
+					.build();
+
+			ResponseEntity<List> res = restTemplate.exchange(rea, List.class);
+
+			txns = (List<Transaction>)res.getBody();
+		}
+		catch (Exception e)
+		{
+			throw new RuntimeException(e);
+		}
+		return txns;
 
 	}
 

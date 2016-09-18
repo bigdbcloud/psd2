@@ -1,5 +1,7 @@
 package com.ibm.api.cashew.controllers;
 
+import java.util.List;
+
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,6 +13,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -22,6 +25,7 @@ import com.ibm.api.cashew.beans.UserAccount;
 import com.ibm.api.cashew.services.UserAccountService;
 import com.ibm.api.cashew.utils.Utils;
 import com.ibm.psd2.datamodel.aip.BankAccountDetailsView;
+import com.ibm.psd2.datamodel.aip.Transaction;
 import com.ibm.psd2.datamodel.subscription.SubscriptionRequest;
 
 @RestController
@@ -82,12 +86,11 @@ public class UserAccountInformationController extends APIController
 		return response;
 	}
 
-	@RequestMapping(method = RequestMethod.GET, value = "/{userId}/{bankId}/{accountId}/{viewId}", produces = MediaType.APPLICATION_JSON_VALUE)
+	@RequestMapping(method = RequestMethod.GET, value = "/{userId}/{bankId}/{accountId}", produces = MediaType.APPLICATION_JSON_VALUE)
 	@PreAuthorize("authentication.name == #userId")
 	public @ResponseBody ResponseEntity<APIResponse<BankAccountDetailsView>> getAccountDetails(@PathVariable("userId") String userId, 
 			@PathVariable("bankId") String bankId,
-			@PathVariable("accountId") String accountId,
-			@PathVariable("viewId") String viewId)
+			@PathVariable("accountId") String accountId)
 	{
 		logger.debug("Getting Account Details for user = " + userId);
 		APIResponse<BankAccountDetailsView> result = null;
@@ -95,7 +98,35 @@ public class UserAccountInformationController extends APIController
 		try
 		{
 			result = new APIResponse<>();
-			result.setResponse(uss.getAccountInformation(userId, bankId, accountId, viewId));
+			result.setResponse(uss.getAccountInformation(userId, bankId, accountId));
+			response = ResponseEntity.ok(result);
+		}
+		catch (Exception e)
+		{
+			response = handleException(e, version, result);
+		}
+		return response;
+	}
+
+	@RequestMapping(method = RequestMethod.GET, value = "/{userId}/{bankId}/{accountId}/transactions", produces = MediaType.APPLICATION_JSON_VALUE)
+	@PreAuthorize("authentication.name == #userId")
+	public @ResponseBody ResponseEntity<APIResponse<List<Transaction>>> getTransactionStatement(@PathVariable("userId") String userId, 
+			@PathVariable("bankId") String bankId,
+			@PathVariable("accountId") String accountId,
+			@RequestHeader(value = "obp_sort_direction", required = false) String sortDirection,
+			@RequestHeader(value = "obp_limit", required = false) Integer limit,
+			@RequestHeader(value = "obp_from_date", required = false) String fromDate,
+			@RequestHeader(value = "obp_to_date", required = false) String toDate,
+			@RequestHeader(value = "obp_sort_by", required = false) String sortBy,
+			@RequestHeader(value = "obp_offset", required = false) Integer offset)
+	{
+		logger.debug("Getting Account Details for user = " + userId);
+		APIResponse<List<Transaction>> result = null;
+		ResponseEntity<APIResponse<List<Transaction>>> response;
+		try
+		{
+			result = new APIResponse<>();
+			result.setResponse(uss.getTransactions(userId, bankId, accountId, sortDirection, fromDate, toDate, sortBy, offset, limit));
 			response = ResponseEntity.ok(result);
 		}
 		catch (Exception e)
