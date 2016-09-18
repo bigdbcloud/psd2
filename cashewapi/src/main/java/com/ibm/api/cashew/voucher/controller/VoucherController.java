@@ -1,4 +1,4 @@
-package com.ibm.api.cashew.vocher.controller;
+package com.ibm.api.cashew.voucher.controller;
 
 import org.apache.commons.lang3.StringUtils;
 import org.apache.logging.log4j.LogManager;
@@ -16,27 +16,27 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.ibm.api.cashew.beans.APIResponse;
-import com.ibm.api.cashew.beans.Vocher;
+import com.ibm.api.cashew.beans.Voucher;
 import com.ibm.api.cashew.controllers.APIController;
-import com.ibm.api.cashew.vocher.service.VocherService;
+import com.ibm.api.cashew.voucher.service.VoucherService;
 
 @RestController
-public class VocherController extends APIController {
+public class VoucherController extends APIController {
 
-	private final Logger logger = LogManager.getLogger(VocherController.class);
+	private final Logger logger = LogManager.getLogger(VoucherController.class);
 
 	@Value("${version}")
 	private String version;
 
 	@Autowired
-	private VocherService vocherService;
+	private VoucherService vocherService;
 
 	@RequestMapping(method = RequestMethod.POST, value = "/vocher", produces = MediaType.APPLICATION_JSON_VALUE)
-	public @ResponseBody ResponseEntity<APIResponse<Vocher>> createVocher(
-			@RequestBody(required = true) Vocher vocher) {
+	public @ResponseBody ResponseEntity<APIResponse<Voucher>> createVocher(
+			@RequestBody(required = true) Voucher vocher) {
 
-		APIResponse<Vocher> result = null;
-		ResponseEntity<APIResponse<Vocher>> response;
+		APIResponse<Voucher> result = null;
+		ResponseEntity<APIResponse<Voucher>> response;
 		try {
 
 			OAuth2Authentication auth = (OAuth2Authentication) SecurityContextHolder.getContext().getAuthentication();
@@ -46,7 +46,7 @@ public class VocherController extends APIController {
 				vocher.setCreatedBy(auth.getName());
 			}
 
-			Vocher vocherRes = vocherService.createVocher(vocher);
+			Voucher vocherRes = vocherService.createVocher(vocher);
 
 			result.setResponse(vocherRes);
 			response = ResponseEntity.ok(result);
@@ -59,14 +59,14 @@ public class VocherController extends APIController {
 	}
 
 	@RequestMapping(method = RequestMethod.PATCH, value = "/vocher", produces = MediaType.APPLICATION_JSON_VALUE)
-	public @ResponseBody ResponseEntity<APIResponse<Vocher>> redeemVocher(@RequestBody(required = true) Vocher vocher) {
+	public @ResponseBody ResponseEntity<APIResponse<Voucher>> redeemVocher(@RequestBody(required = true) Voucher vocher) {
 
-		APIResponse<Vocher> result = null;
-		ResponseEntity<APIResponse<Vocher>> response;
+		APIResponse<Voucher> result = null;
+		ResponseEntity<APIResponse<Voucher>> response;
 		try {
 
 			result = new APIResponse<>();
-			Vocher remRes = vocherService.redeemVocher(vocher);
+			Voucher remRes = vocherService.redeemVocher(vocher);
 			result.setResponse(remRes);
 			response = ResponseEntity.ok(result);
 

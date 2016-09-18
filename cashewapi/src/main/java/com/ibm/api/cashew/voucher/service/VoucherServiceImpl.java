@@ -1,4 +1,4 @@
-package com.ibm.api.cashew.vocher.service;
+package com.ibm.api.cashew.voucher.service;
 
 import java.text.ParseException;
 import java.util.Date;
@@ -11,18 +11,18 @@ import org.springframework.util.CollectionUtils;
 
 import com.ibm.api.cashew.bank.service.BankService;
 import com.ibm.api.cashew.beans.TxnDetails;
-import com.ibm.api.cashew.beans.Vocher;
+import com.ibm.api.cashew.beans.Voucher;
 import com.ibm.api.cashew.utils.Utils;
-import com.ibm.api.cashew.vocher.db.MongoVocherRepository;
+import com.ibm.api.cashew.voucher.db.MongoVoucherRepository;
 import com.ibm.psd2.datamodel.pisp.TxnParty;
 import com.ibm.psd2.datamodel.pisp.TxnRequest;
 import com.ibm.psd2.datamodel.subscription.TransactionRequestType;
 
 @Service
-public class VocherServiceImpl implements VocherService {
+public class VoucherServiceImpl implements VoucherService {
 
 	@Autowired
-	private MongoVocherRepository mongoVocherRepos;
+	private MongoVoucherRepository mongoVoucherRepos;
 
 	@Autowired
 	private BankService bankService;
@@ -40,7 +40,7 @@ public class VocherServiceImpl implements VocherService {
 	private String centrlAcctUser;
 
 	@Override
-	public Vocher createVocher(Vocher vocher) {
+	public Voucher createVocher(Voucher vocher) {
 
 		validateCreateVocher(vocher);
 
@@ -59,21 +59,21 @@ public class VocherServiceImpl implements VocherService {
 		}
 
 		vocher.setCode(utils.getVocherCode());
-		vocher.setCreationDate(Vocher.DATE_FORMAT.format(new Date()));
+		vocher.setCreationDate(Voucher.DATE_FORMAT.format(new Date()));
 		vocher.setExpiryDate(utils.getVocherExpDate());
 
-		return mongoVocherRepos.save(vocher);
+		return mongoVoucherRepos.save(vocher);
 
 	}
 
 	@Override
-	public Vocher redeemVocher(Vocher vocher) {
+	public Voucher redeemVocher(Voucher vocher) {
 
 		if (StringUtils.isBlank(vocher.getCode())) {
-			throw new IllegalArgumentException("Vocher code is required");
+			throw new IllegalArgumentException("Voucher code is required");
 		}
 
-		Vocher existngVocher = mongoVocherRepos.findOne(vocher.getCode());
+		Voucher existngVocher = mongoVoucherRepos.findOne(vocher.getCode());
 		validateRedeemVocher(vocher, existngVocher);
 
 		double amtRedeemed = getAmountRedeemed(vocher, existngVocher);
@@ -96,26 +96,26 @@ public class VocherServiceImpl implements VocherService {
 				vocher.setRedeemed(true);
 			}
 
-			mongoVocherRepos.updateVocher(vocher, txnReq);
+			mongoVoucherRepos.updateVocher(vocher, txnReq);
 
 		}
 
-		return mongoVocherRepos.findOne(vocher.getCode());
+		return mongoVoucherRepos.findOne(vocher.getCode());
 	}
 
-	private void validateCreateVocher(Vocher vocher) {
+	private void validateCreateVocher(Voucher vocher) {
 
 		if (vocher == null) {
-			throw new IllegalArgumentException("Invalid Vocher request");
+			throw new IllegalArgumentException("Invalid Voucher request");
 		}
 
 		if (vocher.getAcctFrom() == null || CollectionUtils.isEmpty(vocher.getAcctFrom())) {
-			throw new IllegalArgumentException("Account details is required to create Vocher");
+			throw new IllegalArgumentException("Account details is required to create Voucher");
 		}
 
 		if (vocher.getAmount() == null || vocher.getAmount().getAmount() == 0
 				|| StringUtils.isBlank(vocher.getAmount().getCurrency())) {
-			throw new IllegalArgumentException("Vocher amount should be specified");
+			throw new IllegalArgumentException("Voucher amount should be specified");
 		}
 
 		double totalAmt = 0.00;
@@ -139,7 +139,7 @@ public class VocherServiceImpl implements VocherService {
 
 	}
 
-	private void validateRedeemVocher(Vocher vocher, Vocher existingVocher) {
+	private void validateRedeemVocher(Voucher vocher, Voucher existingVocher) {
 
 		if (CollectionUtils.isEmpty(vocher.getRedeemedTo())) {
 
@@ -151,20 +151,20 @@ public class VocherServiceImpl implements VocherService {
 		}
 
 		if (existingVocher.isRedeemed()) {
-			throw new IllegalArgumentException("Vocher amount is already redeemed");
+			throw new IllegalArgumentException("Voucher amount is already redeemed");
 		}
 
 		Date expiryDate;
 
 		try {
-			expiryDate = Vocher.DATE_FORMAT.parse(existingVocher.getExpiryDate());
+			expiryDate = Voucher.DATE_FORMAT.parse(existingVocher.getExpiryDate());
 		} catch (ParseException e) {
 
 			throw new IllegalArgumentException("Invalid vocher expiry date");
 		}
 
 		if (expiryDate.before(new Date())) {
-			throw new IllegalArgumentException("Vocher has expired");
+			throw new IllegalArgumentException("Voucher has expired");
 		}
 
 		double amtLeft = 0.00;
@@ -187,7 +187,7 @@ public class VocherServiceImpl implements VocherService {
 
 	}
 
-	private double getAmountToRedeem(Vocher vocher, Vocher existingVocher) {
+	private double getAmountToRedeem(Voucher vocher, Voucher existingVocher) {
 
 		double amtToRedeem = 0.00;
 
@@ -201,7 +201,7 @@ public class VocherServiceImpl implements VocherService {
 		return amtToRedeem;
 	}
 
-	private double getAmountRedeemed(Vocher vocher, Vocher existingVocher) {
+	private double getAmountRedeemed(Voucher vocher, Voucher existingVocher) {
 
 		double amtRedeemed = 0.00;
 		if (!CollectionUtils.isEmpty(existingVocher.getRedeemedTo())) {

@@ -10,7 +10,7 @@ import java.util.Random;
 
 import org.springframework.stereotype.Component;
 
-import com.ibm.api.cashew.beans.Vocher;
+import com.ibm.api.cashew.beans.Voucher;
 
 @Component
 public class Utils
@@ -68,7 +68,7 @@ public class Utils
 		Calendar c = Calendar.getInstance();
 		c.setTime(new Date());
 		c.add(Calendar.MONTH, 12);
-		return Vocher.DATE_FORMAT.format(c.getTime());
+		return Voucher.DATE_FORMAT.format(c.getTime());
 
 	}
 	
