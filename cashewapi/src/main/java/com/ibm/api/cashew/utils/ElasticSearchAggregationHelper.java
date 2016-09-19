@@ -1,4 +1,4 @@
-package com.ibm.api.cashew.elastic.aggregation.helper;
+package com.ibm.api.cashew.utils;
 
 import static org.elasticsearch.index.query.QueryBuilders.boolQuery;
 import static org.elasticsearch.index.query.QueryBuilders.matchAllQuery;
