@@ -19,6 +19,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.ibm.api.cashew.beans.APIResponse;
 import com.ibm.api.cashew.services.PaymentsService;
 import com.ibm.api.cashew.utils.Utils;
+import com.ibm.psd2.datamodel.aip.Transaction;
 import com.ibm.psd2.datamodel.pisp.TxnRequest;
 import com.ibm.psd2.datamodel.pisp.TxnRequestDetails;
 import com.ibm.psd2.datamodel.subscription.TransactionRequestType;
@@ -78,6 +79,31 @@ public class PaymentsController extends APIController
 		catch (Exception e)
 		{
 			response = handleException(e, version, result);
+		}
+		return response;
+	}
+	
+
+	@RequestMapping(method = RequestMethod.PATCH, value = "/{userId}/{bankId}/{accountId}/transaction/{txnId}/tag/{tag}", produces = MediaType.APPLICATION_JSON_VALUE)
+	@PreAuthorize("authentication.name == #userId")
+	public @ResponseBody ResponseEntity<APIResponse<Transaction>> tagTransaction(@PathVariable("userId") String userId,
+			@PathVariable("bankId") String bankId, @PathVariable("accountId") String accountId,
+			@PathVariable("txnId") String txnId, @PathVariable("tag") String tag) {
+
+		APIResponse<Transaction> result = null;
+		ResponseEntity<APIResponse<Transaction>> response;
+		try {
+
+			Transaction txn = paymentService.tagTransaction(userId, bankId, accountId, txnId, tag);
+
+			result = new APIResponse<>();
+			result.setResponse(txn);
+			response = ResponseEntity.ok(result);
+
+		} catch (Exception ex) {
+
+			logger.error(ex.getMessage(), ex);
+			response = handleException(ex, version, result);
 		}
 		return response;
 	}

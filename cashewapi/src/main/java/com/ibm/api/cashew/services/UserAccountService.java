@@ -11,8 +11,7 @@ import com.ibm.psd2.datamodel.pisp.TxnRequest;
 import com.ibm.psd2.datamodel.pisp.TxnRequestDetails;
 import com.ibm.psd2.datamodel.subscription.SubscriptionRequest;
 
-public interface UserAccountService
-{
+public interface UserAccountService {
 	public SubscriptionRequest subscribe(String username, SubscriptionRequest subscriptionRequest);
 
 	public UserAccount answerSubscriptionRequestChallenge(SubscriptionChallengeAnswer sca);
@@ -23,7 +22,5 @@ public interface UserAccountService
 			String fromDate, String toDate, String sortBy, Integer offset, Integer limit);
 
 	public TxnRequestDetails createTransaction(TxnRequest txnReq, TxnParty payer, String txnType, String user);
-	
-	public Transaction tagTransaction(String userId, String bankId, String accountId, String txnId, String tag);
 
 }

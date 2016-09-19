@@ -154,27 +154,5 @@ public class UserAccountInformationController extends APIController {
 		return response;
 	}
 
-	@RequestMapping(method = RequestMethod.PATCH, value = "/{userId}/{bankId}/{accountId}/transaction/{txnId}/tag/{tag}", produces = MediaType.APPLICATION_JSON_VALUE)
-	public @ResponseBody ResponseEntity<APIResponse<Transaction>> tagTransaction(@PathVariable("userId") String userId,
-			@PathVariable("bankId") String bankId, @PathVariable("accountId") String accountId,
-			@PathVariable("txnId") String txnId, @PathVariable("tag") String tag) {
-
-		APIResponse<Transaction> result = null;
-		ResponseEntity<APIResponse<Transaction>> response;
-		try {
-
-			Transaction txn = uss.tagTransaction(userId, bankId, accountId, txnId, tag);
-
-			result = new APIResponse<>();
-			result.setResponse(txn);
-			response = ResponseEntity.ok(result);
-
-		} catch (Exception ex) {
-
-			logger.error(ex.getMessage(), ex);
-			response = handleException(ex, version, result);
-		}
-		return response;
-	}
 
 }
