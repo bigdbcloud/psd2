@@ -14,7 +14,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
 import com.ibm.api.cashew.beans.UserAccount;
-import com.ibm.api.cashew.db.MongoUserAccountsRepository;
+import com.ibm.api.cashew.db.mongo.MongoUserAccountsRepository;
 import com.ibm.api.cashew.utils.Utils;
 import com.ibm.psd2.datamodel.pisp.TxnRequest;
 import com.ibm.psd2.datamodel.pisp.TxnRequestDetails;

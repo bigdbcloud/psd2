@@ -1,4 +1,4 @@
-package com.ibm.api.cashew.elastic.db;
+package com.ibm.api.cashew.db.elastic;
 import java.net.InetAddress;
 
 import org.apache.logging.log4j.LogManager;

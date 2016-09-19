@@ -1,4 +1,4 @@
-package com.ibm.api.cashew.db;
+package com.ibm.api.cashew.db.mongo;
 
 import static org.springframework.data.mongodb.core.query.Criteria.where;
 import static org.springframework.data.mongodb.core.query.Query.query;

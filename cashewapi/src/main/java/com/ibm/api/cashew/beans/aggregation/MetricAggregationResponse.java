@@ -1,4 +1,4 @@
-package com.ibm.api.cashew.elastic.aggregation.beans;
+package com.ibm.api.cashew.beans.aggregation;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonInclude.Include;

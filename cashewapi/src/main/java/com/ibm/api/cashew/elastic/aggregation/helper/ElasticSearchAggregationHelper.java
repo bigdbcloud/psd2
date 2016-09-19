@@ -45,15 +45,15 @@ import org.elasticsearch.search.aggregations.metrics.valuecount.ValueCount;
 import org.joda.time.DateTime;
 import org.joda.time.format.DateTimeFormat;
 
-import com.ibm.api.cashew.elastic.aggregation.beans.AggregationRequest;
-import com.ibm.api.cashew.elastic.aggregation.beans.AggregationTypes;
-import com.ibm.api.cashew.elastic.aggregation.beans.BucketAggregationRequest;
-import com.ibm.api.cashew.elastic.aggregation.beans.BucketAggregationResponse;
-import com.ibm.api.cashew.elastic.aggregation.beans.BucketResponse;
-import com.ibm.api.cashew.elastic.aggregation.beans.FieldBean;
-import com.ibm.api.cashew.elastic.aggregation.beans.MetricAggregationRequest;
-import com.ibm.api.cashew.elastic.aggregation.beans.MetricAggregationResponse;
-import com.ibm.api.cashew.elastic.aggregation.beans.QueryRequest;
+import com.ibm.api.cashew.beans.aggregation.AggregationRequest;
+import com.ibm.api.cashew.beans.aggregation.AggregationTypes;
+import com.ibm.api.cashew.beans.aggregation.BucketAggregationRequest;
+import com.ibm.api.cashew.beans.aggregation.BucketAggregationResponse;
+import com.ibm.api.cashew.beans.aggregation.BucketResponse;
+import com.ibm.api.cashew.beans.aggregation.FieldBean;
+import com.ibm.api.cashew.beans.aggregation.MetricAggregationRequest;
+import com.ibm.api.cashew.beans.aggregation.MetricAggregationResponse;
+import com.ibm.api.cashew.beans.aggregation.QueryRequest;
 
 public class ElasticSearchAggregationHelper {
 

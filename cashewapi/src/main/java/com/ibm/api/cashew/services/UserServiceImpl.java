@@ -9,7 +9,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import com.ibm.api.cashew.beans.User;
-import com.ibm.api.cashew.db.MongoUserRepository;
+import com.ibm.api.cashew.db.mongo.MongoUserRepository;
 
 @Service
 public class UserServiceImpl implements UserService

@@ -18,7 +18,7 @@ import org.springframework.util.MultiValueMap;
 import org.springframework.web.client.RestTemplate;
 
 import com.ibm.api.cashew.bank.db.MongoTransactionRepository;
-import com.ibm.api.cashew.elastic.db.ElasticTransactionRepository;
+import com.ibm.api.cashew.db.elastic.ElasticTransactionRepository;
 import com.ibm.api.cashew.utils.Utils;
 import com.ibm.psd2.datamodel.aip.Transaction;
 import com.ibm.psd2.datamodel.pisp.TxnParty;
@@ -110,12 +110,12 @@ public class BankServiceImpl implements BankService {
 
 	}
 
-	private List<com.ibm.api.cashew.elastic.beans.Transaction> populateElasticTxnDetails(List<Transaction> txnList) {
+	private List<com.ibm.api.cashew.beans.Transaction> populateElasticTxnDetails(List<Transaction> txnList) {
 
-		List<com.ibm.api.cashew.elastic.beans.Transaction> elasticTxnList = new ArrayList<com.ibm.api.cashew.elastic.beans.Transaction>();
+		List<com.ibm.api.cashew.beans.Transaction> elasticTxnList = new ArrayList<com.ibm.api.cashew.beans.Transaction>();
 
 		for (Transaction txn : txnList) {
-			com.ibm.api.cashew.elastic.beans.Transaction elasticTxn = new com.ibm.api.cashew.elastic.beans.Transaction();
+			com.ibm.api.cashew.beans.Transaction elasticTxn = new com.ibm.api.cashew.beans.Transaction();
 			elasticTxn.setId(txn.getId());
 
 			TxnParty from = new TxnParty();

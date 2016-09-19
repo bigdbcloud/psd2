@@ -1,23 +1,24 @@
-package com.ibm.api.cashew.elastic.aggregation.beans;
+package com.ibm.api.cashew.beans.aggregation;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonInclude.Include;
 
 @JsonInclude(value = Include.NON_EMPTY)
-public class FieldBean
+public abstract class AggregationRequest
 {
-	String name;
-	Object value;
+	private AggregationTypes type;
+	private String name;
+	private FieldBean field;
+	private ScriptBean script;
 	
-	public FieldBean()
+	public AggregationTypes getType()
 	{
-		
+		return type;
 	}
-	
-	public FieldBean(String name, Object value)
+
+	public void setType(AggregationTypes type)
 	{
-		this.name = name;
-		this.value = value;
+		this.type = type;
 	}
 
 	public String getName()
@@ -25,19 +26,29 @@ public class FieldBean
 		return name;
 	}
 
-	public void setName(String field)
+	public void setName(String name)
 	{
-		this.name = field;
+		this.name = name;
 	}
 
-	public Object getValue()
+	public ScriptBean getScript()
 	{
-		return value;
+		return script;
 	}
 
-	public void setValue(Object value)
+	public void setScript(ScriptBean script)
 	{
-		this.value = value;
+		this.script = script;
+	}
+
+	public FieldBean getField()
+	{
+		return field;
+	}
+
+	public void setField(FieldBean field)
+	{
+		this.field = field;
 	}
 
 	@Override
@@ -58,7 +69,7 @@ public class FieldBean
 			return false;
 		if (getClass() != obj.getClass())
 			return false;
-		FieldBean other = (FieldBean) obj;
+		AggregationRequest other = (AggregationRequest) obj;
 		if (name == null)
 		{
 			if (other.name != null)
@@ -67,6 +78,6 @@ public class FieldBean
 			return false;
 		return true;
 	}
-
+	
 	
 }

@@ -1,25 +1,13 @@
-package com.ibm.api.cashew.elastic.aggregation.beans;
+package com.ibm.api.cashew.beans.aggregation;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonInclude.Include;
 
 @JsonInclude(value = Include.NON_EMPTY)
-public abstract class AggregationRequest
+public abstract class AggregationResponse
 {
-	private AggregationTypes type;
-	private String name;
-	private FieldBean field;
-	private ScriptBean script;
-	
-	public AggregationTypes getType()
-	{
-		return type;
-	}
 
-	public void setType(AggregationTypes type)
-	{
-		this.type = type;
-	}
+	String name;
 
 	public String getName()
 	{
@@ -29,26 +17,6 @@ public abstract class AggregationRequest
 	public void setName(String name)
 	{
 		this.name = name;
-	}
-
-	public ScriptBean getScript()
-	{
-		return script;
-	}
-
-	public void setScript(ScriptBean script)
-	{
-		this.script = script;
-	}
-
-	public FieldBean getField()
-	{
-		return field;
-	}
-
-	public void setField(FieldBean field)
-	{
-		this.field = field;
 	}
 
 	@Override
@@ -69,7 +37,7 @@ public abstract class AggregationRequest
 			return false;
 		if (getClass() != obj.getClass())
 			return false;
-		AggregationRequest other = (AggregationRequest) obj;
+		AggregationResponse other = (AggregationResponse) obj;
 		if (name == null)
 		{
 			if (other.name != null)
@@ -78,6 +46,5 @@ public abstract class AggregationRequest
 			return false;
 		return true;
 	}
-	
-	
+
 }

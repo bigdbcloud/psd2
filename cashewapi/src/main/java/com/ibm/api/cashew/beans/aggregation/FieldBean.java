@@ -1,22 +1,43 @@
-package com.ibm.api.cashew.elastic.aggregation.beans;
+package com.ibm.api.cashew.beans.aggregation;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonInclude.Include;
 
 @JsonInclude(value = Include.NON_EMPTY)
-public abstract class AggregationResponse
+public class FieldBean
 {
-
 	String name;
+	Object value;
+	
+	public FieldBean()
+	{
+		
+	}
+	
+	public FieldBean(String name, Object value)
+	{
+		this.name = name;
+		this.value = value;
+	}
 
 	public String getName()
 	{
 		return name;
 	}
 
-	public void setName(String name)
+	public void setName(String field)
 	{
-		this.name = name;
+		this.name = field;
+	}
+
+	public Object getValue()
+	{
+		return value;
+	}
+
+	public void setValue(Object value)
+	{
+		this.value = value;
 	}
 
 	@Override
@@ -37,7 +58,7 @@ public abstract class AggregationResponse
 			return false;
 		if (getClass() != obj.getClass())
 			return false;
-		AggregationResponse other = (AggregationResponse) obj;
+		FieldBean other = (FieldBean) obj;
 		if (name == null)
 		{
 			if (other.name != null)
@@ -47,4 +68,5 @@ public abstract class AggregationResponse
 		return true;
 	}
 
+	
 }

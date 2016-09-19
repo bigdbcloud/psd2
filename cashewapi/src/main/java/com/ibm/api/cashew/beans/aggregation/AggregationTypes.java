@@ -1,4 +1,4 @@
-package com.ibm.api.cashew.elastic.aggregation.beans;
+package com.ibm.api.cashew.beans.aggregation;
 
 public enum AggregationTypes
 {
