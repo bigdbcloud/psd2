@@ -170,7 +170,7 @@ public class PISPController extends APIController
 	}
 	
 
-	@RequestMapping(method = RequestMethod.PUT, value = "/banks/{bankId}/accounts/{accountId}/{viewId}/transaction/{txnId}/tag/{tag}", produces = MediaType.APPLICATION_JSON_VALUE)
+	@RequestMapping(method = RequestMethod.PATCH, value = "/banks/{bankId}/accounts/{accountId}/{viewId}/transaction/{txnId}/tag/{tag}", produces = MediaType.APPLICATION_JSON_VALUE)
 	public @ResponseBody ResponseEntity<Transaction> tagTransaction(@PathVariable("bankId") String bankId,
 			@PathVariable("accountId") String accountId,
 			@PathVariable("viewId") String viewId,
