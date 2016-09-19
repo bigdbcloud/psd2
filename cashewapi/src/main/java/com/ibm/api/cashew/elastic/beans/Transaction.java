@@ -1,7 +1,7 @@
 package com.ibm.api.cashew.elastic.beans;
 
 import org.springframework.data.annotation.Id;
-import org.springframework.data.mongodb.core.mapping.Document;
+import org.springframework.data.elasticsearch.annotations.Document;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonInclude.Include;
@@ -9,7 +9,7 @@ import com.ibm.api.cashew.beans.User;
 import com.ibm.psd2.datamodel.aip.TransactionDetails;
 import com.ibm.psd2.datamodel.pisp.TxnParty;
 
-@Document(collection = "transactions")
+@Document(indexName = "transactions", type = "transaction")
 @JsonInclude(value = Include.NON_EMPTY)
 public class Transaction {
 	
