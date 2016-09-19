@@ -12,5 +12,6 @@ public interface BankService {
 	public TxnRequestDetails createTransaction(TxnRequest txnReq, TxnParty payer, String txnType, String string);
 	public List<Transaction> getTransactions(String userId, String accountId, String bankId, String fromDate,
 			String toDate, String sortBy, Integer offset, Integer limit);
+	public Transaction tagTransaction(String bankId, String accountId, String txnId, String tag);
 
 }

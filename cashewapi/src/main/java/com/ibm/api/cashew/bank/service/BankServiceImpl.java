@@ -45,7 +45,7 @@ public class BankServiceImpl implements BankService {
 
 	@Autowired
 	private MongoTransactionRepository mongoTxnRepo;
-	
+
 	@Autowired
 	private ElasticTransactionRepository elasticTxnRepo;
 
@@ -98,11 +98,11 @@ public class BankServiceImpl implements BankService {
 				new ParameterizedTypeReference<List<Transaction>>() {
 				}, uriVariables);
 
-		//save data in mongo and elastic search
-		
+		// save data in mongo and elastic search
+
 		if (!CollectionUtils.isEmpty(response.getBody())) {
 
-			mongoTxnRepo.save(response.getBody());			
+			mongoTxnRepo.save(response.getBody());
 			elasticTxnRepo.save(populateElasticTxnDetails(response.getBody()));
 		}
 
@@ -112,8 +112,8 @@ public class BankServiceImpl implements BankService {
 
 	private List<com.ibm.api.cashew.elastic.beans.Transaction> populateElasticTxnDetails(List<Transaction> txnList) {
 
-		List<com.ibm.api.cashew.elastic.beans.Transaction> elasticTxnList =new ArrayList<com.ibm.api.cashew.elastic.beans.Transaction>();
-		
+		List<com.ibm.api.cashew.elastic.beans.Transaction> elasticTxnList = new ArrayList<com.ibm.api.cashew.elastic.beans.Transaction>();
+
 		for (Transaction txn : txnList) {
 			com.ibm.api.cashew.elastic.beans.Transaction elasticTxn = new com.ibm.api.cashew.elastic.beans.Transaction();
 			elasticTxn.setId(txn.getId());
@@ -126,15 +126,40 @@ public class BankServiceImpl implements BankService {
 			TxnParty to = new TxnParty();
 			to.setAccountId(txn.getOtherAccount().getId());
 			to.setBankId(txn.getOtherAccount().getBank().getName());
-			
+
 			elasticTxn.setTo(to);
 
 			elasticTxn.setDetails(txn.getDetails());
-			
+
 			elasticTxnList.add(elasticTxn);
 		}
 
 		return elasticTxnList;
+
+	}
+
+	@Override
+	public Transaction tagTransaction(String bankId, String accountId, String txnId, String tag) {
+
+		String url = psd2Url + "/banks/{bankId}/accounts/{accountId}/{viewId}/transaction/{txnId}/tag/{tag}";
+
+		MultiValueMap<String, String> headers = new LinkedMultiValueMap<String, String>();
+		headers.add("Authorization", utils.createBase64AuthHeader(psd2Username, psd2Password));
+		headers.add("Content-Type", "application/json");
+
+		HttpEntity request = new HttpEntity(headers);
+
+		Map<String, String> uriVariables = new HashMap<String, String>();
+		uriVariables.put("bankId", bankId);
+		uriVariables.put("accountId", accountId);
+		uriVariables.put("viewId", "owner");
+		uriVariables.put("txnId", txnId);
+		uriVariables.put("tag", tag);
+		
+		ResponseEntity<Transaction> response = restTemplate.exchange(url, HttpMethod.PATCH, request,Transaction.class, uriVariables);
+		
+		return response.getBody();
+
 
 	}
 
