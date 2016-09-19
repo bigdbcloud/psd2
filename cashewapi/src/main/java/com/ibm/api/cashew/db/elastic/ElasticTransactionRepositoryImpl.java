@@ -10,7 +10,6 @@ import org.elasticsearch.action.search.SearchResponse;
 import org.elasticsearch.action.search.SearchType;
 import org.elasticsearch.index.query.QueryBuilder;
 import org.elasticsearch.search.aggregations.AbstractAggregationBuilder;
-import org.elasticsearch.search.aggregations.Aggregation;
 import org.elasticsearch.search.aggregations.Aggregations;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.elasticsearch.core.ElasticsearchOperations;
@@ -23,7 +22,8 @@ import com.ibm.api.cashew.beans.aggregation.BucketAggregationRequest;
 import com.ibm.api.cashew.beans.aggregation.BucketAggregationResponse;
 import com.ibm.api.cashew.beans.aggregation.BucketResponse;
 import com.ibm.api.cashew.beans.aggregation.QueryRequest;
-import com.ibm.api.cashew.elastic.aggregation.helper.ElasticSearchAggregationHelper;
+import com.ibm.api.cashew.utils.ElasticSearchAggregationHelper;
+
 
 public class ElasticTransactionRepositoryImpl implements ElasticTransactionCustomRepository{
 

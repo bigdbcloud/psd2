@@ -56,7 +56,7 @@ public class AIPController extends APIController
 	@Value("${version}")
 	private String version;
 
-	@PreAuthorize("hasPermission(#user + '.' + #bankId, 'owner')")
+	@PreAuthorize("hasPermission(#user + '.' + #bankId + '.ALL.owner', 'getAllAccounts')")
 	@RequestMapping(method = RequestMethod.GET, value = "/my/banks/{bankId}/accounts", produces = MediaType.APPLICATION_JSON_VALUE)
 	public @ResponseBody ResponseEntity<List<BankAccountOverview>> getBankAccounts(
 			@PathVariable("bankId") String bankId, @RequestHeader(value = "user", required = true) String user)
@@ -107,7 +107,7 @@ public class AIPController extends APIController
 		return response;
 	}
 
-	@PreAuthorize("hasPermission(#user + '.' + #bankId + '.' + #accountId, #viewId)")
+	@PreAuthorize("hasPermission(#user + '.' + #bankId + '.' + #accountId + '.' + #viewId, 'getAccountInfo')")
 	@RequestMapping(method = RequestMethod.GET, value = "/banks/{bankId}/accounts/{accountId}/{viewId}/account", produces = MediaType.APPLICATION_JSON_VALUE)
 	public @ResponseBody ResponseEntity<BankAccountDetailsView> getAccountById(@PathVariable("bankId") String bankId,
 			@PathVariable("accountId") String accountId, @PathVariable("viewId") String viewId,
@@ -146,7 +146,7 @@ public class AIPController extends APIController
 		return response;
 	}
 
-	@PreAuthorize("hasPermission(#user + '.' + #bankId + '.' + #accountId, 'owner')")
+	@PreAuthorize("hasPermission(#user + '.' + #bankId + '.' + #accountId + '.owner', 'getAccountInfo')")
 	@RequestMapping(method = RequestMethod.GET, value = "/my/banks/{bankId}/accounts/{accountId}/account", produces = MediaType.APPLICATION_JSON_VALUE)
 	public @ResponseBody ResponseEntity<BankAccountDetailsView> getAccountById(@PathVariable("bankId") String bankId,
 			@PathVariable("accountId") String accountId, @RequestHeader(value = "user", required = true) String user)
@@ -175,7 +175,7 @@ public class AIPController extends APIController
 		return response;
 	}
 
-	@PreAuthorize("hasPermission(#user + '.' + #bankId + '.' + #accountId, #viewId)")
+	@PreAuthorize("hasPermission(#user + '.' + #bankId + '.' + #accountId + '.' + #viewId, 'getAccountInfo')")
 	@RequestMapping(method = RequestMethod.GET, value = "/banks/{bankId}/accounts/{accountId}/{viewId}/transactions/{txnId}/transaction", produces = MediaType.APPLICATION_JSON_VALUE)
 	public @ResponseBody ResponseEntity<Transaction> getTransactionById(@PathVariable("bankId") String bankId,
 			@PathVariable("accountId") String accountId, @PathVariable("viewId") String viewId,
@@ -195,7 +195,7 @@ public class AIPController extends APIController
 		return response;
 	}
 
-	@PreAuthorize("hasPermission(#user + '.' + #bankId + '.' + #accountId, #viewId)")
+	@PreAuthorize("hasPermission(#user + '.' + #bankId + '.' + #accountId + '.' + #viewId, 'getAccountInfo')")
 	@RequestMapping(method = RequestMethod.GET, value = "/banks/{bankId}/accounts/{accountId}/{viewId}/transactions", produces = MediaType.APPLICATION_JSON_VALUE)
 	public @ResponseBody ResponseEntity<List<Transaction>> getTransactions(@PathVariable("bankId") String bankId,
 			@PathVariable("accountId") String accountId, @PathVariable("viewId") String viewId,
