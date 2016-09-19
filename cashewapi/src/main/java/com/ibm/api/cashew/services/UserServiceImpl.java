@@ -49,12 +49,12 @@ public class UserServiceImpl implements UserService
 		{
 			throw new IllegalArgumentException("userId can't be null");
 		}
-
+/*
 		if (user.getAuthProvider() == null || user.getAuthProviderClientId() == null)
 		{
 			throw new IllegalArgumentException("Client Details are not set");
 		}
-
+*/
 		if (getUserById(user.getUserId()) != null)
 		{
 			throw new IllegalArgumentException("User already exists");

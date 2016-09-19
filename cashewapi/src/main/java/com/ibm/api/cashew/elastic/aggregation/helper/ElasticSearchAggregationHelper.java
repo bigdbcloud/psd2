@@ -75,10 +75,8 @@ public class ElasticSearchAggregationHelper {
 		}
 
 		if (qr.getFromDate() != null && qr.getToDate() != null && qr.getDateField() != null) {
-			DateTime dtFrom = DateTime.parse(qr.getFromDate(),
-					DateTimeFormat.forPattern(DATE_FORMAT.toPattern()));
-			DateTime dtTo = DateTime.parse(qr.getToDate(),
-					DateTimeFormat.forPattern(DATE_FORMAT.toPattern()));
+			DateTime dtFrom = DateTime.parse(qr.getFromDate(), DateTimeFormat.forPattern(DATE_FORMAT.toPattern()));
+			DateTime dtTo = DateTime.parse(qr.getToDate(), DateTimeFormat.forPattern(DATE_FORMAT.toPattern()));
 
 			long fromEpoch = dtFrom.getMillis();
 			long toEpoch = dtTo.getMillis();
@@ -170,8 +168,7 @@ public class ElasticSearchAggregationHelper {
 
 		if (qr.getDateField() != null || qr.getFromDate() != null || qr.getToDate() != null) {
 
-			dtFrom = DateTime.parse(qr.getFromDate(),
-					DateTimeFormat.forPattern(DATE_FORMAT.toPattern()));
+			dtFrom = DateTime.parse(qr.getFromDate(), DateTimeFormat.forPattern(DATE_FORMAT.toPattern()));
 			dtTo = DateTime.parse(qr.getToDate(), DateTimeFormat.forPattern(DATE_FORMAT.toPattern()));
 		}
 

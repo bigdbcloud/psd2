@@ -26,11 +26,13 @@ import com.ibm.api.cashew.services.UserAccountService;
 import com.ibm.api.cashew.utils.Utils;
 import com.ibm.psd2.datamodel.aip.BankAccountDetailsView;
 import com.ibm.psd2.datamodel.aip.Transaction;
+import com.ibm.psd2.datamodel.pisp.TxnParty;
+import com.ibm.psd2.datamodel.pisp.TxnRequest;
+import com.ibm.psd2.datamodel.pisp.TxnRequestDetails;
 import com.ibm.psd2.datamodel.subscription.SubscriptionRequest;
 
 @RestController
-public class UserAccountInformationController extends APIController
-{
+public class UserAccountInformationController extends APIController {
 	private final Logger logger = LogManager.getLogger(UserAccountInformationController.class);
 
 	@Value("${version}")
@@ -44,22 +46,19 @@ public class UserAccountInformationController extends APIController
 
 	@RequestMapping(method = RequestMethod.PUT, value = "/user/{userId}/account/subscriptionRequest", produces = MediaType.APPLICATION_JSON_VALUE)
 	@PreAuthorize("authentication.name == #userId")
-	public @ResponseBody ResponseEntity<APIResponse<SubscriptionRequest>> addBankAccountAndRequestSubscription(@PathVariable("userId") String userId,
-			@RequestBody(required = true) SubscriptionRequest subscriptionRequest)
-	{
+	public @ResponseBody ResponseEntity<APIResponse<SubscriptionRequest>> addBankAccountAndRequestSubscription(
+			@PathVariable("userId") String userId,
+			@RequestBody(required = true) SubscriptionRequest subscriptionRequest) {
 		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-		
+
 		logger.debug("Creating psd2 bank account for user = " + auth.getName());
 		APIResponse<SubscriptionRequest> result = null;
 		ResponseEntity<APIResponse<SubscriptionRequest>> response;
-		try
-		{
+		try {
 			result = new APIResponse<>();
 			result.setResponse(uss.subscribe(auth.getName(), subscriptionRequest));
 			response = ResponseEntity.ok(result);
-		}
-		catch (Exception e)
-		{
+		} catch (Exception e) {
 			response = handleException(e, version, result);
 		}
 		return response;
@@ -67,20 +66,16 @@ public class UserAccountInformationController extends APIController
 
 	@RequestMapping(method = RequestMethod.PATCH, value = "/user/{userId}/account/subscription/challenge", produces = MediaType.APPLICATION_JSON_VALUE)
 	@PreAuthorize("authentication.name == #userId")
-	public @ResponseBody ResponseEntity<APIResponse<UserAccount>> answerSubscriptionChallenge(@PathVariable("userId") String userId,
-			@RequestBody(required = true) SubscriptionChallengeAnswer sca)
-	{
+	public @ResponseBody ResponseEntity<APIResponse<UserAccount>> answerSubscriptionChallenge(
+			@PathVariable("userId") String userId, @RequestBody(required = true) SubscriptionChallengeAnswer sca) {
 		logger.debug("Answering Challenge for psd2 bank account for user = " + sca.getAppUsername());
 		APIResponse<UserAccount> result = null;
 		ResponseEntity<APIResponse<UserAccount>> response;
-		try
-		{
+		try {
 			result = new APIResponse<>();
 			result.setResponse(uss.answerSubscriptionRequestChallenge(sca));
 			response = ResponseEntity.ok(result);
-		}
-		catch (Exception e)
-		{
+		} catch (Exception e) {
 			response = handleException(e, version, result);
 		}
 		return response;
@@ -88,21 +83,17 @@ public class UserAccountInformationController extends APIController
 
 	@RequestMapping(method = RequestMethod.GET, value = "/{userId}/{bankId}/{accountId}", produces = MediaType.APPLICATION_JSON_VALUE)
 	@PreAuthorize("authentication.name == #userId")
-	public @ResponseBody ResponseEntity<APIResponse<BankAccountDetailsView>> getAccountDetails(@PathVariable("userId") String userId, 
-			@PathVariable("bankId") String bankId,
-			@PathVariable("accountId") String accountId)
-	{
+	public @ResponseBody ResponseEntity<APIResponse<BankAccountDetailsView>> getAccountDetails(
+			@PathVariable("userId") String userId, @PathVariable("bankId") String bankId,
+			@PathVariable("accountId") String accountId) {
 		logger.debug("Getting Account Details for user = " + userId);
 		APIResponse<BankAccountDetailsView> result = null;
 		ResponseEntity<APIResponse<BankAccountDetailsView>> response;
-		try
-		{
+		try {
 			result = new APIResponse<>();
 			result.setResponse(uss.getAccountInformation(userId, bankId, accountId));
 			response = ResponseEntity.ok(result);
-		}
-		catch (Exception e)
-		{
+		} catch (Exception e) {
 			response = handleException(e, version, result);
 		}
 		return response;
@@ -110,29 +101,80 @@ public class UserAccountInformationController extends APIController
 
 	@RequestMapping(method = RequestMethod.GET, value = "/{userId}/{bankId}/{accountId}/transactions", produces = MediaType.APPLICATION_JSON_VALUE)
 	@PreAuthorize("authentication.name == #userId")
-	public @ResponseBody ResponseEntity<APIResponse<List<Transaction>>> getTransactionStatement(@PathVariable("userId") String userId, 
-			@PathVariable("bankId") String bankId,
+	public @ResponseBody ResponseEntity<APIResponse<List<Transaction>>> getTransactionStatement(
+			@PathVariable("userId") String userId, @PathVariable("bankId") String bankId,
 			@PathVariable("accountId") String accountId,
 			@RequestHeader(value = "obp_sort_direction", required = false) String sortDirection,
 			@RequestHeader(value = "obp_limit", required = false) Integer limit,
 			@RequestHeader(value = "obp_from_date", required = false) String fromDate,
 			@RequestHeader(value = "obp_to_date", required = false) String toDate,
 			@RequestHeader(value = "obp_sort_by", required = false) String sortBy,
-			@RequestHeader(value = "obp_offset", required = false) Integer offset)
-	{
+			@RequestHeader(value = "obp_offset", required = false) Integer offset) {
 		logger.debug("Getting Account Details for user = " + userId);
 		APIResponse<List<Transaction>> result = null;
 		ResponseEntity<APIResponse<List<Transaction>>> response;
-		try
-		{
+		try {
 			result = new APIResponse<>();
-			result.setResponse(uss.getTransactions(userId, bankId, accountId, sortDirection, fromDate, toDate, sortBy, offset, limit));
+			result.setResponse(uss.getTransactions(userId, bankId, accountId, sortDirection, fromDate, toDate, sortBy,
+					offset, limit));
 			response = ResponseEntity.ok(result);
-		}
-		catch (Exception e)
-		{
+		} catch (Exception e) {
 			response = handleException(e, version, result);
 		}
 		return response;
 	}
+
+	@RequestMapping(method = RequestMethod.POST, value = "/{userId}/{bankId}/{accountId}/transaction-type/{txnType}/transaction", produces = MediaType.APPLICATION_JSON_VALUE)
+	@PreAuthorize("authentication.name == #userId")
+	public @ResponseBody ResponseEntity<APIResponse<TxnRequestDetails>> postTransaction(
+			@PathVariable("userId") String userId, @PathVariable("bankId") String bankId,
+			@PathVariable("accountId") String accountId, @PathVariable("txnType") String txnType,
+			@RequestBody(required = true) TxnRequest txnReq) {
+
+		APIResponse<TxnRequestDetails> result = null;
+		ResponseEntity<APIResponse<TxnRequestDetails>> response;
+
+		try {
+			if (txnReq == null || txnReq.getTo() == null
+					|| (accountId.equals(txnReq.getTo().getAccountId()) && bankId.equals(txnReq.getTo().getBankId()))) {
+				throw new IllegalArgumentException("Invalid Transaction Request");
+			}
+
+			TxnParty payer = new TxnParty(bankId, accountId);
+			TxnRequestDetails t = uss.createTransaction(txnReq, payer, txnType, userId);
+
+			result = new APIResponse<>();
+			result.setResponse(t);
+			response = ResponseEntity.ok(result);
+
+		} catch (Exception e) {
+			logger.error(e.getMessage(), e);
+			response = handleException(e, version, result);
+		}
+		return response;
+	}
+
+	@RequestMapping(method = RequestMethod.PATCH, value = "/{userId}/{bankId}/{accountId}/transaction/{txnId}/tag/{tag}", produces = MediaType.APPLICATION_JSON_VALUE)
+	public @ResponseBody ResponseEntity<APIResponse<Transaction>> tagTransaction(@PathVariable("userId") String userId,
+			@PathVariable("bankId") String bankId, @PathVariable("accountId") String accountId,
+			@PathVariable("txnId") String txnId, @PathVariable("tag") String tag) {
+
+		APIResponse<Transaction> result = null;
+		ResponseEntity<APIResponse<Transaction>> response;
+		try {
+
+			Transaction txn = uss.tagTransaction(userId, bankId, accountId, txnId, tag);
+
+			result = new APIResponse<>();
+			result.setResponse(txn);
+			response = ResponseEntity.ok(result);
+
+		} catch (Exception ex) {
+
+			logger.error(ex.getMessage(), ex);
+			response = handleException(ex, version, result);
+		}
+		return response;
+	}
+
 }

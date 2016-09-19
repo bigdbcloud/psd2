@@ -9,9 +9,9 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.util.CollectionUtils;
 
-import com.ibm.api.cashew.bank.service.BankService;
 import com.ibm.api.cashew.beans.TxnDetails;
 import com.ibm.api.cashew.beans.Voucher;
+import com.ibm.api.cashew.services.UserAccountService;
 import com.ibm.api.cashew.utils.Utils;
 import com.ibm.api.cashew.voucher.db.MongoVoucherRepository;
 import com.ibm.psd2.datamodel.pisp.TxnParty;
@@ -25,7 +25,7 @@ public class VoucherServiceImpl implements VoucherService {
 	private MongoVoucherRepository mongoVoucherRepos;
 
 	@Autowired
-	private BankService bankService;
+	private UserAccountService userAcctService;
 
 	@Autowired
 	private Utils utils;
@@ -54,8 +54,8 @@ public class VoucherServiceImpl implements VoucherService {
 
 			TxnParty txnFrom = new TxnParty(txnDetail.getBankId(), txnDetail.getAccountId());
 
-			bankService.createTransaction(txnRequest, txnFrom, TransactionRequestType.TYPES.INTER_BANK.name(),
-					txnDetail.getCustomerId());
+			userAcctService.createTransaction(txnRequest, txnFrom, TransactionRequestType.TYPES.INTER_BANK.name(),
+					vocher.getCreatedBy());
 		}
 
 		vocher.setCode(utils.getVocherCode());
@@ -88,7 +88,7 @@ public class VoucherServiceImpl implements VoucherService {
 			txnRequest.setValue(txnReq.getValue());
 			txnRequest.setDescription(vocher.getDescription());
 
-			bankService.createTransaction(txnRequest, txnFrom, TransactionRequestType.TYPES.INTER_BANK.name(),
+			userAcctService.createTransaction(txnRequest, txnFrom, TransactionRequestType.TYPES.INTER_BANK.name(),
 					centrlAcctUser);
 			amtLeft = amtLeft - txnReq.getValue().getAmount();
 
