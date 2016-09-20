@@ -1,4 +1,4 @@
-package com.ibm.api.cashew.reminder.controller;
+package com.ibm.api.cashew.controllers;
 
 import java.util.List;
 
@@ -21,8 +21,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.ibm.api.cashew.beans.APIResponse;
 import com.ibm.api.cashew.beans.Reminder;
-import com.ibm.api.cashew.controllers.APIController;
-import com.ibm.api.cashew.reminder.services.ReminderService;
+import com.ibm.api.cashew.services.ReminderService;
 
 @RestController
 public class ReminderController extends APIController {

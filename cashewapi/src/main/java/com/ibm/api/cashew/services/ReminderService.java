@@ -1,4 +1,4 @@
-package com.ibm.api.cashew.reminder.services;
+package com.ibm.api.cashew.services;
 
 import java.util.List;
 

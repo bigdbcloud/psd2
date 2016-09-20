@@ -1,4 +1,4 @@
-package com.ibm.api.cashew.dashboard.controller;
+package com.ibm.api.cashew.controllers;
 
 import java.util.List;
 
@@ -18,9 +18,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.ibm.api.cashew.beans.APIResponse;
 import com.ibm.api.cashew.beans.aggregation.AggregationResponse;
-import com.ibm.api.cashew.controllers.APIController;
-import com.ibm.api.cashew.dashboard.services.UserTransactionService;
-import com.ibm.api.cashew.voucher.controller.VoucherController;
+import com.ibm.api.cashew.services.UserTransactionService;
 
 @RestController
 public class UserTransactionController extends APIController {

@@ -1,4 +1,4 @@
-package com.ibm.api.cashew.voucher.service;
+package com.ibm.api.cashew.services;
 
 import java.text.ParseException;
 import java.util.Date;
@@ -11,9 +11,8 @@ import org.springframework.util.CollectionUtils;
 
 import com.ibm.api.cashew.beans.TxnDetails;
 import com.ibm.api.cashew.beans.Voucher;
-import com.ibm.api.cashew.services.PaymentsService;
+import com.ibm.api.cashew.db.mongo.MongoVoucherRepository;
 import com.ibm.api.cashew.utils.Utils;
-import com.ibm.api.cashew.voucher.db.MongoVoucherRepository;
 import com.ibm.psd2.datamodel.pisp.TxnParty;
 import com.ibm.psd2.datamodel.pisp.TxnRequest;
 

@@ -1,4 +1,4 @@
-package com.ibm.api.cashew.reminder.services;
+package com.ibm.api.cashew.services;
 
 import java.util.Date;
 import java.util.HashSet;
@@ -10,7 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.ibm.api.cashew.beans.Reminder;
-import com.ibm.api.cashew.reminder.db.MongoReminderRepository;
+import com.ibm.api.cashew.db.mongo.MongoReminderRepository;
 import com.ibm.api.cashew.utils.UUIDGenerator;
 
 @Service

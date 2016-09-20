@@ -1,4 +1,4 @@
-package com.ibm.api.cashew.dashboard.services;
+package com.ibm.api.cashew.services;
 
 import java.util.List;
 

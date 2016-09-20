@@ -1,4 +1,4 @@
-package com.ibm.api.cashew.voucher.controller;
+package com.ibm.api.cashew.controllers;
 
 import org.apache.commons.lang3.StringUtils;
 import org.apache.logging.log4j.LogManager;
@@ -17,8 +17,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.ibm.api.cashew.beans.APIResponse;
 import com.ibm.api.cashew.beans.Voucher;
-import com.ibm.api.cashew.controllers.APIController;
-import com.ibm.api.cashew.voucher.service.VoucherService;
+import com.ibm.api.cashew.services.VoucherService;
 
 @RestController
 public class VoucherController extends APIController {

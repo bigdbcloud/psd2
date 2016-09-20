@@ -1,4 +1,4 @@
-package com.ibm.api.cashew.reminder.db;
+package com.ibm.api.cashew.db.mongo;
 
 import org.springframework.data.mongodb.repository.MongoRepository;
 
