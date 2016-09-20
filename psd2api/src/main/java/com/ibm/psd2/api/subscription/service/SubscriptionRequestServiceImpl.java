@@ -3,17 +3,20 @@ package com.ibm.psd2.api.subscription.service;
 import java.text.MessageFormat;
 import java.util.Date;
 
+import org.apache.commons.lang3.StringUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
+import com.ibm.psd2.api.aip.services.BankAccountDetailsService;
 import com.ibm.psd2.api.subscription.db.MongoSubscriptionRequestRepository;
 import com.ibm.psd2.api.twilio.message.service.MessageService;
 import com.ibm.psd2.api.user.service.UserService;
 import com.ibm.psd2.datamodel.Challenge;
 import com.ibm.psd2.datamodel.ChallengeAnswer;
+import com.ibm.psd2.datamodel.aip.BankAccountDetails;
 import com.ibm.psd2.datamodel.subscription.SubscriptionInfo;
 import com.ibm.psd2.datamodel.subscription.SubscriptionRequest;
 import com.ibm.psd2.datamodel.user.UserInfo;
@@ -40,6 +43,9 @@ public class SubscriptionRequestServiceImpl implements SubscriptionRequestServic
 
 	@Autowired
 	private UserService userService;
+
+	@Autowired
+	private BankAccountDetailsService bankAcctService;
 
 	@Value("${bank.subscription.response.number}")
 	private String bankSubscribeRspnsNo;
@@ -76,16 +82,31 @@ public class SubscriptionRequestServiceImpl implements SubscriptionRequestServic
 
 		SubscriptionRequest sr = msrr.save(s);
 
-		//send subscription challenge answer to user registered Mobile No
-		
-		UserInfo userInfo = userService.getUserDetails(s.getSubscriptionInfo().getUsername());
-		String userMobNo = userInfo.getMobileNumber();
+		// send subscription challenge answer to user registered Mobile No
+
+		String userMobNo = null;
+
+		BankAccountDetails bankAcct = bankAcctService.getBankAccountDetails(s.getSubscriptionInfo().getBankId(),
+				s.getSubscriptionInfo().getAccountId());
+		if (bankAcct != null && StringUtils.isNotBlank(bankAcct.getUsername())) {
+			UserInfo userInfo = userService.getUserDetails(bankAcct.getUsername());
+
+			if (userInfo != null) {
+				userMobNo = userInfo.getMobileNumber();
+			}
+		}
+
 		String msg = MessageFormat.format(Challenge.CHALLENGE_RESPONSE, c.getAnswer());
 
-		try {
-			messageService.sendMessage(bankSubscribeRspnsNo, userMobNo, msg);
-		} catch (TwilioRestException e) {
-			logger.error("Failed to send challenge answer for subscription request : {}", s.getId());
+		logger.debug("Sending challenge answer to user mobile no: {} ");
+
+		if (StringUtils.isNotBlank(userMobNo)) {
+
+			try {
+				messageService.sendMessage(bankSubscribeRspnsNo, userMobNo, msg);
+			} catch (TwilioRestException e) {
+				logger.error("Failed to send challenge answer for subscription request : {}", s.getId());
+			}
 		}
 
 		// Don't let the answer go out

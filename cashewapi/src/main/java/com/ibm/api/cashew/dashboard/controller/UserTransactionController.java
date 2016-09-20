@@ -76,7 +76,7 @@ public class UserTransactionController extends APIController {
 
 		try {
 
-			List<AggregationResponse> aggrResponse=null;
+			List<AggregationResponse> aggrResponse=userTxnService.getUserAvgTxnDistribution(userId, bankId, accountId, fromDate, toDate);
 			result.setResponse(aggrResponse);
 			response = ResponseEntity.ok(result);
 
@@ -90,5 +90,7 @@ public class UserTransactionController extends APIController {
 		return response;
 
 	}
+	
+	
 
 }
