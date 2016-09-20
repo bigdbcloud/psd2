@@ -24,6 +24,9 @@ import org.springframework.security.oauth2.config.annotation.web.configuration.E
 import org.springframework.security.web.authentication.LoginUrlAuthenticationEntryPoint;
 import org.springframework.security.web.authentication.www.BasicAuthenticationFilter;
 import org.springframework.web.filter.CompositeFilter;
+import org.springframework.web.servlet.config.annotation.CorsRegistry;
+import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
+import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter;
 
 @Configuration
 @EnableOAuth2Client
@@ -57,6 +60,21 @@ public class ServerSecurityConfig extends WebSecurityConfigurerAdapter
 	public BCryptPasswordEncoder bCryptPasswordEncoder()
 	{
 		return new BCryptPasswordEncoder();
+	}
+	
+	@Bean
+	public WebMvcConfigurer corsConfigurer()
+	{
+		return new WebMvcConfigurerAdapter()
+		{
+			@Override
+			public void addCorsMappings(CorsRegistry registry)
+			{
+				System.out.println("adding cors support");
+				registry.addMapping("/**").allowedOrigins("*").allowedHeaders("*").allowedMethods("OPTIONS", "HEAD",
+						"GET", "PUT", "POST", "PATCH");
+			}
+		};
 	}	
 
 	@Bean
@@ -101,7 +119,7 @@ public class ServerSecurityConfig extends WebSecurityConfigurerAdapter
 	@Override
 	protected void configure(HttpSecurity http) throws Exception
 	{
-		http.authorizeRequests().antMatchers(HttpMethod.OPTIONS, "/oauth/**").permitAll();
+		http.authorizeRequests().antMatchers(HttpMethod.OPTIONS, "/**").permitAll();
 		http.authorizeRequests().antMatchers(HttpMethod.PUT, "/user").permitAll();
 		http.authorizeRequests().antMatchers(HttpMethod.PUT, "/client").permitAll();
 		http.authorizeRequests().antMatchers(HttpMethod.PUT, "/provider").permitAll();
