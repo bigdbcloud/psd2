@@ -1,33 +1,43 @@
 package com.ibm.api.cashew.services;
 
 import java.net.URI;
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.http.HttpEntity;
 import org.springframework.http.MediaType;
 import org.springframework.http.RequestEntity;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
-import org.springframework.web.bind.annotation.RequestHeader;
+import org.springframework.util.CollectionUtils;
+import org.springframework.util.LinkedMultiValueMap;
+import org.springframework.util.MultiValueMap;
 import org.springframework.web.client.RestTemplate;
 
 import com.ibm.api.cashew.beans.SubscriptionChallengeAnswer;
 import com.ibm.api.cashew.beans.UserAccount;
-import com.ibm.api.cashew.db.MongoUserAccountsRepository;
+import com.ibm.api.cashew.db.elastic.ElasticTransactionRepository;
+import com.ibm.api.cashew.db.mongo.MongoTransactionRepository;
+import com.ibm.api.cashew.db.mongo.MongoUserAccountsRepository;
 import com.ibm.api.cashew.utils.Utils;
 import com.ibm.psd2.datamodel.ChallengeAnswer;
 import com.ibm.psd2.datamodel.aip.BankAccountDetailsView;
 import com.ibm.psd2.datamodel.aip.Transaction;
+import com.ibm.psd2.datamodel.pisp.TxnParty;
+import com.ibm.psd2.datamodel.pisp.TxnRequest;
+import com.ibm.psd2.datamodel.pisp.TxnRequestDetails;
 import com.ibm.psd2.datamodel.subscription.SubscriptionInfo;
 import com.ibm.psd2.datamodel.subscription.SubscriptionRequest;
 import com.ibm.psd2.utils.UUIDGenerator;
 
 @Service
-public class UserAccountServiceImpl implements UserAccountService
-{
+public class UserAccountServiceImpl implements UserAccountService {
 	private Logger logger = LogManager.getLogger(UserAccountServiceImpl.class);
 
 	@Autowired
@@ -50,13 +60,17 @@ public class UserAccountServiceImpl implements UserAccountService
 	@Value("${psd2.password}")
 	private String psd2Password;
 
+	@Autowired
+	private MongoTransactionRepository mongoTxnRepo;
+
+	@Autowired
+	private ElasticTransactionRepository elasticTxnRepo;
+
 	@Override
-	public SubscriptionRequest subscribe(String username, SubscriptionRequest subscriptionRequest)
-	{
+	public SubscriptionRequest subscribe(String username, SubscriptionRequest subscriptionRequest) {
 		SubscriptionRequest res = null;
 		logger.debug("subscribing to username = " + username);
-		try
-		{
+		try {
 			/*
 			 * First save the account in local DB Then make a subscription
 			 * request call
@@ -85,17 +99,14 @@ public class UserAccountServiceImpl implements UserAccountService
 			badv.setId(res.getSubscriptionInfo().getAccountId());
 			ua.setAccount(badv);
 			muar.save(ua);
-		}
-		catch (Exception e)
-		{
+		} catch (Exception e) {
 			throw new RuntimeException(e);
 		}
 		return res;
 	}
 
 	@Override
-	public UserAccount answerSubscriptionRequestChallenge(SubscriptionChallengeAnswer sca)
-	{
+	public UserAccount answerSubscriptionRequestChallenge(SubscriptionChallengeAnswer sca) {
 		/**
 		 * first answer challenge of PSD2API /subscription/{id} once
 		 * subscription request completes. call the getAccountAPI to
@@ -103,8 +114,7 @@ public class UserAccountServiceImpl implements UserAccountService
 		 * /banks/{bankId}/accounts/{accountId}/{viewId}/account
 		 */
 		UserAccount ua = null;
-		try
-		{
+		try {
 			String url = psd2Url + "/subscription/" + sca.getSubscriptionRequestId();
 			logger.debug("url = " + url);
 			URI uri = new URI(url);
@@ -113,8 +123,7 @@ public class UserAccountServiceImpl implements UserAccountService
 			ResponseEntity<SubscriptionInfo> response = restTemplate.exchange(re, SubscriptionInfo.class);
 			SubscriptionInfo si = response.getBody();
 
-			if (si != null)
-			{
+			if (si != null) {
 				url = psd2Url + "/banks/" + si.getBankId() + "/accounts/" + si.getAccountId() + "/"
 						+ si.getViewIds().get(0).getId() + "/account";
 				uri = new URI(url);
@@ -125,8 +134,7 @@ public class UserAccountServiceImpl implements UserAccountService
 				ResponseEntity<BankAccountDetailsView> res = restTemplate.exchange(rea, BankAccountDetailsView.class);
 
 				BankAccountDetailsView bdv = res.getBody();
-				if (bdv != null)
-				{
+				if (bdv != null) {
 					ua = muar.findByAppUsernameAndAccountIdAndAccountBankIdAndAccountUsername(sca.getAppUsername(),
 							si.getAccountId(), si.getBankId(), si.getUsername());
 
@@ -136,22 +144,18 @@ public class UserAccountServiceImpl implements UserAccountService
 					muar.save(ua);
 				}
 			}
-		}
-		catch (Exception e)
-		{
+		} catch (Exception e) {
 			throw new RuntimeException(e);
 		}
 		return ua;
 	}
 
 	@Override
-	public BankAccountDetailsView getAccountInformation(String appUser, String bankId, String accountId)
-	{
+	public BankAccountDetailsView getAccountInformation(String appUser, String bankId, String accountId) {
 		UserAccount ua = muar.findByAppUsernameAndAccountIdAndAccountBankId(appUser, accountId, bankId);
 		BankAccountDetailsView bdv = null;
 		if (ua == null || ua.getSubscriptionInfoStatus() == null
-				|| !ua.getSubscriptionInfoStatus().equals(SubscriptionInfo.STATUS_ACTIVE))
-		{
+				|| !ua.getSubscriptionInfoStatus().equals(SubscriptionInfo.STATUS_ACTIVE)) {
 			throw new IllegalArgumentException("Account is not yet subscribed");
 		}
 
@@ -159,8 +163,7 @@ public class UserAccountServiceImpl implements UserAccountService
 				+ ua.getViewIds().get(0).getId() + "/account";
 		logger.debug("url = " + url);
 
-		try
-		{
+		try {
 			URI uri = new URI(url);
 
 			RequestEntity<Void> rea = RequestEntity.get(uri).accept(MediaType.APPLICATION_JSON)
@@ -170,9 +173,7 @@ public class UserAccountServiceImpl implements UserAccountService
 			ResponseEntity<BankAccountDetailsView> res = restTemplate.exchange(rea, BankAccountDetailsView.class);
 
 			bdv = res.getBody();
-		}
-		catch (Exception e)
-		{
+		} catch (Exception e) {
 			throw new RuntimeException(e);
 		}
 		return bdv;
@@ -180,14 +181,12 @@ public class UserAccountServiceImpl implements UserAccountService
 	}
 
 	@Override
-	public List<Transaction> getTransactions(String appUser, String bankId, String accountId, String sortDirection, String fromDate, String toDate, String sortBy,
-			Integer offset, Integer limit)
-	{
+	public List<Transaction> getTransactions(String appUser, String bankId, String accountId, String sortDirection,
+			String fromDate, String toDate, String sortBy, Integer offset, Integer limit) {
 		UserAccount ua = muar.findByAppUsernameAndAccountIdAndAccountBankId(appUser, accountId, bankId);
 		List<Transaction> txns = null;
 		if (ua == null || ua.getSubscriptionInfoStatus() == null
-				|| !ua.getSubscriptionInfoStatus().equals(SubscriptionInfo.STATUS_ACTIVE))
-		{
+				|| !ua.getSubscriptionInfoStatus().equals(SubscriptionInfo.STATUS_ACTIVE)) {
 			throw new IllegalArgumentException("Account is not yet subscribed");
 		}
 
@@ -198,39 +197,109 @@ public class UserAccountServiceImpl implements UserAccountService
 				+ ua.getViewIds().get(0).getId() + "/transactions";
 		logger.debug("url = " + url);
 
-		try
-		{
+		try {
 			URI uri = new URI(url);
-			
+
 			RequestEntity<Void> rea = RequestEntity.get(uri).accept(MediaType.APPLICATION_JSON)
 					.header("Authorization", getPSD2Authorization()).header("user", ua.getAccount().getUsername())
-					.header("obp_sort_direction", sortDirection)
-					.header("obp_from_date", fromDate)
-					.header("obp_to_date", toDate)
-					.header("obp_sort_by", sortBy)
-					.header("obp_offset", (offset == null)? "0": offset.toString())
-					.header("obp_limit", (limit == null)? "10":offset.toString())
-					.build();
+					.header("obp_sort_direction", sortDirection).header("obp_from_date", fromDate)
+					.header("obp_to_date", toDate).header("obp_sort_by", sortBy)
+					.header("obp_offset", (offset == null) ? "0" : offset.toString())
+					.header("obp_limit", (limit == null) ? "10" : offset.toString()).build();
 
 			ResponseEntity<List> res = restTemplate.exchange(rea, List.class);
 
-			txns = (List<Transaction>)res.getBody();
-		}
-		catch (Exception e)
-		{
+			txns = (List<Transaction>) res.getBody();
+
+			// save data in mongo and elastic search
+
+			if (!CollectionUtils.isEmpty(txns)) {
+
+				mongoTxnRepo.save(txns);
+				elasticTxnRepo.save(populateElasticTxnDetails(txns));
+			}
+
+		} catch (Exception e) {
 			throw new RuntimeException(e);
 		}
 		return txns;
 
 	}
 
-	private String getPSD2Authorization()
-	{
-		if (psd2Authorization == null)
-		{
+	@Override
+	public TxnRequestDetails createTransaction(TxnRequest txnReq, TxnParty payer, String txnType, String user) {
+
+		UserAccount ua = muar.findByAppUsernameAndAccountIdAndAccountBankId(user, payer.getAccountId(),
+				payer.getBankId());
+		TxnRequestDetails txnReqDetails = null;
+
+		BankAccountDetailsView bdv = null;
+		if (ua == null || ua.getSubscriptionInfoStatus() == null
+				|| !ua.getSubscriptionInfoStatus().equals(SubscriptionInfo.STATUS_ACTIVE)) {
+			throw new IllegalArgumentException("Account is not yet subscribed");
+		}
+
+		try {
+
+			String url = psd2Url
+					+ "/banks/{bankId}/accounts/{accountId}/{viewId}/transaction-request-types/{txnType}/transaction-requests";
+
+			MultiValueMap<String, String> headers = new LinkedMultiValueMap<String, String>();
+			headers.add("Authorization", getPSD2Authorization());
+			headers.add("Content-Type", "application/json");
+			headers.add("user", ua.getAccount().getUsername());
+
+			HttpEntity<TxnRequest> request = new HttpEntity<TxnRequest>(txnReq, headers);
+
+			Map<String, String> uriVariables = new HashMap<String, String>();
+			uriVariables.put("bankId", payer.getBankId());
+			uriVariables.put("accountId", payer.getAccountId());
+			uriVariables.put("viewId", ua.getViewIds().get(0).getId());
+			uriVariables.put("txnType", txnType);
+
+			txnReqDetails = restTemplate.postForObject(url, request, TxnRequestDetails.class, uriVariables);
+
+		} catch (Exception e) {
+
+			throw new RuntimeException(e);
+		}
+
+		return txnReqDetails;
+	}
+
+	private String getPSD2Authorization() {
+		if (psd2Authorization == null) {
 			psd2Authorization = utils.createBase64AuthHeader(psd2Username, psd2Password);
 		}
 		return psd2Authorization;
+	}
+
+	private List<com.ibm.api.cashew.beans.Transaction> populateElasticTxnDetails(List<Transaction> txnList) {
+
+		List<com.ibm.api.cashew.beans.Transaction> elasticTxnList = new ArrayList<com.ibm.api.cashew.beans.Transaction>();
+
+		for (Transaction txn : txnList) {
+			com.ibm.api.cashew.beans.Transaction elasticTxn = new com.ibm.api.cashew.beans.Transaction();
+			elasticTxn.setId(txn.getId());
+
+			TxnParty from = new TxnParty();
+			from.setAccountId(txn.getThisAccount().getId());
+			from.setBankId(txn.getThisAccount().getBank().getName());
+			elasticTxn.setFrom(from);
+
+			TxnParty to = new TxnParty();
+			to.setAccountId(txn.getOtherAccount().getId());
+			to.setBankId(txn.getOtherAccount().getBank().getName());
+
+			elasticTxn.setTo(to);
+
+			elasticTxn.setDetails(txn.getDetails());
+
+			elasticTxnList.add(elasticTxn);
+		}
+
+		return elasticTxnList;
+
 	}
 
 }

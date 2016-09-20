@@ -9,14 +9,13 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.util.CollectionUtils;
 
-import com.ibm.api.cashew.bank.service.BankService;
 import com.ibm.api.cashew.beans.TxnDetails;
 import com.ibm.api.cashew.beans.Voucher;
+import com.ibm.api.cashew.services.PaymentsService;
 import com.ibm.api.cashew.utils.Utils;
 import com.ibm.api.cashew.voucher.db.MongoVoucherRepository;
 import com.ibm.psd2.datamodel.pisp.TxnParty;
 import com.ibm.psd2.datamodel.pisp.TxnRequest;
-import com.ibm.psd2.datamodel.subscription.TransactionRequestType;
 
 @Service
 public class VoucherServiceImpl implements VoucherService {
@@ -25,7 +24,7 @@ public class VoucherServiceImpl implements VoucherService {
 	private MongoVoucherRepository mongoVoucherRepos;
 
 	@Autowired
-	private BankService bankService;
+	private PaymentsService paymentsService;
 
 	@Autowired
 	private Utils utils;
@@ -52,10 +51,9 @@ public class VoucherServiceImpl implements VoucherService {
 			txnRequest.setValue(txnDetail.getValue());
 			txnRequest.setDescription(vocher.getDescription());
 
-			TxnParty txnFrom = new TxnParty(txnDetail.getBankId(), txnDetail.getAccountId());
+			paymentsService.createTransactionRequest(vocher.getCreatedBy(), txnDetail.getBankId(),
+					txnDetail.getAccountId(), txnRequest);
 
-			bankService.createTransaction(txnRequest, txnFrom, TransactionRequestType.TYPES.INTER_BANK.name(),
-					txnDetail.getCustomerId());
 		}
 
 		vocher.setCode(utils.getVocherCode());
@@ -79,7 +77,6 @@ public class VoucherServiceImpl implements VoucherService {
 		double amtRedeemed = getAmountRedeemed(vocher, existngVocher);
 		double amtLeft = vocher.getAmount().getAmount() - amtRedeemed;
 
-		TxnParty txnFrom = new TxnParty(centralBank, centralAcct);
 		for (TxnDetails txnReq : vocher.getRedeemedTo()) {
 
 			TxnParty txnTo = new TxnParty(txnReq.getBankId(), txnReq.getAccountId());
@@ -88,8 +85,8 @@ public class VoucherServiceImpl implements VoucherService {
 			txnRequest.setValue(txnReq.getValue());
 			txnRequest.setDescription(vocher.getDescription());
 
-			bankService.createTransaction(txnRequest, txnFrom, TransactionRequestType.TYPES.INTER_BANK.name(),
-					centrlAcctUser);
+			paymentsService.createTransactionRequest(centrlAcctUser, centralBank, centralAcct, txnRequest);
+
 			amtLeft = amtLeft - txnReq.getValue().getAmount();
 
 			if (amtLeft == 0) {

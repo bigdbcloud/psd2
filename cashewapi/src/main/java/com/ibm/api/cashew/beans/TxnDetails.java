@@ -6,7 +6,6 @@ public class TxnDetails {
 
 	private String bankId;
 	private String accountId;
-	private String customerId;
 	private Amount value;
 
 	public Amount getValue() {
@@ -33,12 +32,5 @@ public class TxnDetails {
 		this.accountId = accountId;
 	}
 
-	public String getCustomerId() {
-		return customerId;
-	}
-
-	public void setCustomerId(String customerId) {
-		this.customerId = customerId;
-	}
-
+	
 }

@@ -57,7 +57,7 @@ public class PISPController extends APIController
 
 	private boolean useKafka = false;
 
-	@PreAuthorize("hasPermission(#user + '.' + #bankId + '.' + #accountId, #viewId)")
+	@PreAuthorize("hasPermission(#user + '.' + #bankId + '.' + #accountId + '.' + #viewId + '.' + #txnType, 'createTransactionRequest')")
 	@RequestMapping(method = RequestMethod.POST, value = "banks/{bankId}/accounts/{accountId}/{viewId}/transaction-request-types/{txnType}/transaction-requests", produces = MediaType.APPLICATION_JSON_VALUE)
 	public @ResponseBody ResponseEntity<TxnRequestDetails> createTransactionRequest(
 			@PathVariable("bankId") String bankId, @PathVariable("accountId") String accountId,
@@ -94,7 +94,7 @@ public class PISPController extends APIController
 		return response;
 	}
 
-	@PreAuthorize("hasPermission(#user + '.' + #bankId + '.' + #accountId, #viewId)")
+	@PreAuthorize("hasPermission(#user + '.' + #bankId + '.' + #accountId + '.' + #viewId + '.' + #txnType, 'createTransactionRequest')")
 	@RequestMapping(method = RequestMethod.POST, value = "banks/{bankId}/accounts/{accountId}/{viewId}/transaction-request-types/{txnType}/transaction-requests/{txnReqId}/challenge", produces = MediaType.APPLICATION_JSON_VALUE)
 	public @ResponseBody ResponseEntity<TxnRequestDetails> answerTransactionChallenge(
 			@PathVariable("bankId") String bankId, @PathVariable("accountId") String accountId,
@@ -123,7 +123,7 @@ public class PISPController extends APIController
 		return response;
 	}
 
-	@PreAuthorize("hasPermission(#user + '.' + #bankId + '.' + #accountId, #viewId)")
+	@PreAuthorize("hasPermission(#user + '.' + #bankId + '.' + #accountId + '.' + #viewId, 'getTransactionRequestTypes')")
 	@RequestMapping(method = RequestMethod.GET, value = "banks/{bankId}/accounts/{accountId}/{viewId}/transaction-request-types", produces = MediaType.APPLICATION_JSON_VALUE)
 	public @ResponseBody ResponseEntity<List<TransactionRequestType>> getTransactionRequestTypes(
 			@PathVariable("bankId") String bankId, @PathVariable("accountId") String accountId,
@@ -147,7 +147,7 @@ public class PISPController extends APIController
 		return response;
 	}
 
-	@PreAuthorize("hasPermission(#user + '.' + #bankId + '.' + #accountId, #viewId)")
+	@PreAuthorize("hasPermission(#user + '.' + #bankId + '.' + #accountId + '.' + #viewId, 'getAccountInfo')")
 	@RequestMapping(method = RequestMethod.GET, value = "banks/{bankId}/accounts/{accountId}/{viewId}/transaction-requests", produces = MediaType.APPLICATION_JSON_VALUE)
 	public @ResponseBody ResponseEntity<List<TxnRequestDetails>> getTransactionRequests(
 			@PathVariable("bankId") String bankId, @PathVariable("accountId") String accountId,
@@ -169,13 +169,14 @@ public class PISPController extends APIController
 		return response;
 	}
 	
-
-	@RequestMapping(method = RequestMethod.PUT, value = "/banks/{bankId}/accounts/{accountId}/{viewId}/transaction/{txnId}/tag/{tag}", produces = MediaType.APPLICATION_JSON_VALUE)
+	@PreAuthorize("hasPermission(#user + '.' + #bankId + '.' + #accountId + '.' + #viewId, 'getAccountInfo')")
+	@RequestMapping(method = RequestMethod.PATCH, value = "/banks/{bankId}/accounts/{accountId}/{viewId}/transaction/{txnId}/tag/{tag}", produces = MediaType.APPLICATION_JSON_VALUE)
 	public @ResponseBody ResponseEntity<Transaction> tagTransaction(@PathVariable("bankId") String bankId,
 			@PathVariable("accountId") String accountId,
 			@PathVariable("viewId") String viewId,
 			@PathVariable("txnId") String txnId,
-			@PathVariable("tag") String tag)
+			@PathVariable("tag") String tag,
+			@RequestHeader(value = "user", required = true) String user)
 	{
 		ResponseEntity<Transaction> response;
 		try
