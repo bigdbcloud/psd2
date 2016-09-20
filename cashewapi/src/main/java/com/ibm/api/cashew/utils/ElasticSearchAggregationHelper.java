@@ -91,7 +91,7 @@ public class ElasticSearchAggregationHelper {
 
 				bqb = rangeQuery(qr.getDateField()).gte(fromEpoch).lte(toEpoch).format("epoch_millis");
 			}
-		} else {
+		} else{
 
 			bqb = matchAllQuery();
 		}
@@ -315,6 +315,23 @@ public class ElasticSearchAggregationHelper {
 					aggrBucket.setKey(bucket.getKey());
 					aggrBucket.setDoc_count(bucket.getDocCount());
 					baresp.addBuckets(aggrBucket);
+					
+
+					if (requestedAggregation.getSubAggregations() != null) {
+						for (Iterator<AggregationRequest> itr = requestedAggregation.getSubAggregations().iterator(); itr
+								.hasNext();) {
+							AggregationRequest ab = itr.next();
+							Aggregation agg = bucket.getAggregations().get(ab.getName());
+							if (agg != null) {
+								logger.debug(
+										"aggregation name - " + agg.getName() + " value - " + agg.getProperty("value"));
+								MetricAggregationResponse mar = buildMetricAggregationResponse(ab, agg);
+								aggrBucket.addAggregations(mar);
+							} else {
+								logger.warn("Aggregation not found - " + ab.getName());
+							}
+						}
+					}
 				}
 
 			} else if (obj instanceof LongTerms) {

@@ -86,15 +86,15 @@ public class PaymentsController extends APIController
 
 	@RequestMapping(method = RequestMethod.PATCH, value = "/{userId}/{bankId}/{accountId}/transaction/{txnId}/tag/{tag}", produces = MediaType.APPLICATION_JSON_VALUE)
 	@PreAuthorize("authentication.name == #userId")
-	public @ResponseBody ResponseEntity<APIResponse<Transaction>> tagTransaction(@PathVariable("userId") String userId,
+	public @ResponseBody ResponseEntity<APIResponse<com.ibm.api.cashew.beans.Transaction>> tagTransaction(@PathVariable("userId") String userId,
 			@PathVariable("bankId") String bankId, @PathVariable("accountId") String accountId,
 			@PathVariable("txnId") String txnId, @PathVariable("tag") String tag) {
 
-		APIResponse<Transaction> result = null;
-		ResponseEntity<APIResponse<Transaction>> response;
+		APIResponse<com.ibm.api.cashew.beans.Transaction> result = null;
+		ResponseEntity<APIResponse<com.ibm.api.cashew.beans.Transaction>> response;
 		try {
 
-			Transaction txn = paymentService.tagTransaction(userId, bankId, accountId, txnId, tag);
+			com.ibm.api.cashew.beans.Transaction txn = paymentService.tagTransaction(userId, bankId, accountId, txnId, tag);
 
 			result = new APIResponse<>();
 			result.setResponse(txn);

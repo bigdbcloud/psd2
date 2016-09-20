@@ -10,6 +10,7 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.MediaType;
 import org.springframework.http.RequestEntity;
@@ -207,15 +208,15 @@ public class UserAccountServiceImpl implements UserAccountService {
 					.header("obp_offset", (offset == null) ? "0" : offset.toString())
 					.header("obp_limit", (limit == null) ? "10" : offset.toString()).build();
 
-			ResponseEntity<List> res = restTemplate.exchange(rea, List.class);
+			ResponseEntity<List<Transaction>> res = restTemplate.exchange(rea, new ParameterizedTypeReference<List<Transaction>>() {
+				});
 
-			txns = (List<Transaction>) res.getBody();
+			 txns=res.getBody();
 
 			// save data in mongo and elastic search
 
 			if (!CollectionUtils.isEmpty(txns)) {
 
-				mongoTxnRepo.save(txns);
 				elasticTxnRepo.save(populateElasticTxnDetails(txns));
 			}
 

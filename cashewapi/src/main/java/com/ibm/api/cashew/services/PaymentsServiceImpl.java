@@ -20,6 +20,8 @@ import org.springframework.util.MultiValueMap;
 import org.springframework.web.client.RestTemplate;
 
 import com.ibm.api.cashew.beans.UserAccount;
+import com.ibm.api.cashew.db.elastic.ElasticTransactionRepository;
+import com.ibm.api.cashew.db.mongo.MongoTransactionRepository;
 import com.ibm.api.cashew.db.mongo.MongoUserAccountsRepository;
 import com.ibm.api.cashew.utils.Utils;
 import com.ibm.psd2.datamodel.aip.BankAccountDetailsView;
@@ -50,6 +52,12 @@ public class PaymentsServiceImpl implements PaymentsService {
 
 	@Value("${psd2.password}")
 	private String psd2Password;
+	
+	@Autowired
+	private MongoTransactionRepository mongoTxnRepo;
+
+	@Autowired
+	private ElasticTransactionRepository elasticTxnRepo;
 
 	private String psd2Authorization;
 
@@ -122,45 +130,18 @@ public class PaymentsServiceImpl implements PaymentsService {
 	}
 
 	@Override
-	public Transaction tagTransaction(String userId, String bankId, String accountId, String txnId, String tag) {
-
-		UserAccount ua = muar.findByAppUsernameAndAccountIdAndAccountBankId(userId, accountId, bankId);
-		Transaction txn = null;
-
-		BankAccountDetailsView bdv = null;
-		if (ua == null || ua.getSubscriptionInfoStatus() == null
-				|| !ua.getSubscriptionInfoStatus().equals(SubscriptionInfo.STATUS_ACTIVE)) {
-			throw new IllegalArgumentException("Account is not yet subscribed");
+	public com.ibm.api.cashew.beans.Transaction tagTransaction(String userId, String bankId, String accountId, String txnId, String tag) {
+		
+		com.ibm.api.cashew.beans.Transaction txn=elasticTxnRepo.findOne(txnId);
+		
+		if(txn==null){
+			
+			throw new IllegalArgumentException("Transaction details doesn't exist");
 		}
-
-		try {
-
-			String url = psd2Url + "/banks/{bankId}/accounts/{accountId}/{viewId}/transaction/{txnId}/tag/{tag}";
-
-			MultiValueMap<String, String> headers = new LinkedMultiValueMap<String, String>();
-			headers.add("Authorization", utils.createBase64AuthHeader(psd2Username, psd2Password));
-			headers.add("Content-Type", "application/json");
-
-			HttpEntity request = new HttpEntity(headers);
-
-			Map<String, String> uriVariables = new HashMap<String, String>();
-			uriVariables.put("bankId", bankId);
-			uriVariables.put("accountId", accountId);
-			uriVariables.put("viewId", ua.getViewIds().get(0).getId());
-			uriVariables.put("txnId", txnId);
-			uriVariables.put("tag", tag);
-
-			ResponseEntity<Transaction> response = restTemplate.exchange(url, HttpMethod.PATCH, request,
-					Transaction.class, uriVariables);
-
-			txn = response.getBody();
-
-		} catch (Exception e) {
-
-			throw new RuntimeException(e);
-		}
-
-		return txn;
+		
+		txn.getDetails().setTag(tag);
+		return elasticTxnRepo.save(txn);	
+		
 	}
 
 }

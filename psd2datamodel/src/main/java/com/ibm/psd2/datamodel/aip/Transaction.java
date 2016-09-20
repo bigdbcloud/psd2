@@ -1,7 +1,5 @@
 package com.ibm.psd2.datamodel.aip;
 
-import java.io.Serializable;
-
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
@@ -10,10 +8,9 @@ import com.fasterxml.jackson.annotation.JsonInclude.Include;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
-@Document(collection = "Transactions")
+@Document(collection = "transactions")
 @JsonInclude(value = Include.NON_EMPTY)
-public class Transaction implements Serializable
-{
+public class Transaction {
 	@Id
 	private String id;
 	private TransactionAccount thisAccount;

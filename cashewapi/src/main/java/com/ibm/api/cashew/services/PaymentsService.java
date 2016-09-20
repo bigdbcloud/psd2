@@ -11,6 +11,6 @@ public interface PaymentsService
 {
 	public List<TransactionRequestType> getTransactionRequestTypes(String appUsername, String bankId, String accountId);
 	public TxnRequestDetails createTransactionRequest (String appUsername, String bankId, String accountId, TxnRequest trb);
-	public Transaction tagTransaction(String userId, String bankId, String accountId, String txnId, String tag);
+	public com.ibm.api.cashew.beans.Transaction tagTransaction(String userId, String bankId, String accountId, String txnId, String tag);
 
 }
