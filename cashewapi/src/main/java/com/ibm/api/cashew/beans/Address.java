@@ -13,6 +13,8 @@ public class Address implements Serializable
 	private String addressLine2;
 	private String city;
 	private String postcode;
+	private String country;
+	
 	public String getHouseNumber()
 	{
 		return houseNumber;
@@ -53,6 +55,12 @@ public class Address implements Serializable
 	{
 		this.postcode = postcode;
 	}
-	
-	
+	public String getCountry()
+	{
+		return country;
+	}
+	public void setCountry(String country)
+	{
+		this.country = country;
+	}
 }

@@ -93,6 +93,14 @@
                                     {
                                         "name": "PSD2_URL",
                                         "value": "http://172.30.91.54:8082/psd2api"
+                                    },
+                                    {
+                                        "name": "ELASTIC_SEARCH_HOST",
+                                        "value": "172.30.174.24"
+                                    },
+                                    {
+                                        "name": "ELASTIC_SEARCH_PORT",
+                                        "value": "9300"
                                     }
                                 ],
                                 "resources": {},

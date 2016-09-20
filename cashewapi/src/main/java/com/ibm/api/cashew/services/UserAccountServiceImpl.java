@@ -3,6 +3,7 @@ package com.ibm.api.cashew.services;
 import java.net.URI;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
@@ -210,11 +211,16 @@ public class UserAccountServiceImpl implements UserAccountService {
 			ResponseEntity<List> res = restTemplate.exchange(rea, List.class);
 
 			txns = (List<Transaction>) res.getBody();
-
+			
+			for (Iterator iterator = txns.iterator(); iterator.hasNext();)
+			{
+				Transaction transaction = (Transaction) iterator.next();
+				logger.debug("Transaction = " + transaction);
+				
+			}
+			
 			// save data in mongo and elastic search
-
 			if (!CollectionUtils.isEmpty(txns)) {
-
 				mongoTxnRepo.save(txns);
 				elasticTxnRepo.save(populateElasticTxnDetails(txns));
 			}

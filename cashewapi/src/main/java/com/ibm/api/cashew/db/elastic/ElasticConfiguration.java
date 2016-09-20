@@ -15,7 +15,7 @@ import org.springframework.data.elasticsearch.core.ElasticsearchTemplate;
 import org.springframework.data.elasticsearch.repository.config.EnableElasticsearchRepositories;
 
 @Configuration
-@EnableElasticsearchRepositories(basePackages = "com/ibm/api/cashew/elastic/db")
+@EnableElasticsearchRepositories(basePackages = "com/ibm/api/cashew/db/elastic")
 public class ElasticConfiguration
 {
 
@@ -35,13 +35,14 @@ public class ElasticConfiguration
 		{
 			Settings settings = Settings.settingsBuilder()
 			        .put("client.transport.ping_timeout","60s").build();
+			
+			logger.debug("Elastic props are: host = " + host + " , port = " + port);
 
 			client = TransportClient.builder().settings(settings).build()
 					.addTransportAddress(new InetSocketTransportAddress(InetAddress.getByName(host), port));
 		} catch (Exception e)
 		{
-			e.printStackTrace(System.out);
-			logger.error(e);
+			logger.error(e.getMessage(), e);
 		}
 		return client;
 	}
