@@ -26,6 +26,7 @@ import com.ibm.api.cashew.db.mongo.MongoUserAccountsRepository;
 import com.ibm.api.cashew.utils.Utils;
 import com.ibm.psd2.datamodel.aip.BankAccountDetailsView;
 import com.ibm.psd2.datamodel.aip.Transaction;
+import com.ibm.psd2.datamodel.aip.TransactionDetails;
 import com.ibm.psd2.datamodel.pisp.TxnRequest;
 import com.ibm.psd2.datamodel.pisp.TxnRequestDetails;
 import com.ibm.psd2.datamodel.subscription.SubscriptionInfo;
@@ -52,7 +53,7 @@ public class PaymentsServiceImpl implements PaymentsService {
 
 	@Value("${psd2.password}")
 	private String psd2Password;
-	
+
 	@Autowired
 	private MongoTransactionRepository mongoTxnRepo;
 
@@ -130,18 +131,23 @@ public class PaymentsServiceImpl implements PaymentsService {
 	}
 
 	@Override
-	public com.ibm.api.cashew.beans.Transaction tagTransaction(String userId, String bankId, String accountId, String txnId, String tag) {
-		
-		com.ibm.api.cashew.beans.Transaction txn=elasticTxnRepo.findOne(txnId);
-		
-		if(txn==null){
-			
+	public com.ibm.api.cashew.beans.Transaction tagTransaction(String userId, String bankId, String accountId,
+			String txnId, String tag) {
+
+		com.ibm.api.cashew.beans.Transaction txn = elasticTxnRepo.findOne(txnId);
+
+		if (txn == null) {
 			throw new IllegalArgumentException("Transaction details doesn't exist");
 		}
-		
+
+		if (txn.getDetails() == null) {
+
+			txn.setDetails(new TransactionDetails());
+		}
+
 		txn.getDetails().setTag(tag);
-		return elasticTxnRepo.save(txn);	
-		
+		return elasticTxnRepo.save(txn);
+
 	}
 
 }

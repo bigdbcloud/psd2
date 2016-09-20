@@ -91,7 +91,7 @@ public class ElasticSearchAggregationHelper {
 
 				bqb = rangeQuery(qr.getDateField()).gte(fromEpoch).lte(toEpoch).format("epoch_millis");
 			}
-		} else{
+		} else if (bqb==null){
 
 			bqb = matchAllQuery();
 		}
