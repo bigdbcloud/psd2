@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -37,12 +38,13 @@ public class UserController extends APIController
 	Utils utils;
 
 	@RequestMapping(method = RequestMethod.GET, value = "/user/profile", produces = MediaType.APPLICATION_JSON_VALUE)
-	public @ResponseBody ResponseEntity<APIResponse<User>> getUserInfo(@PathVariable("userId") String userId)
+	public @ResponseBody ResponseEntity<APIResponse<User>> getUserInfo()
 	{
 		APIResponse<User> result = new APIResponse<>();
 		ResponseEntity<APIResponse<User>> response;
 		try
 		{
+			String userId = SecurityContextHolder.getContext().getAuthentication().getName();
 			User user = userService.findUserById(userId);
 			result.setStatus(APIResponse.STATUS_SUCCESS);
 			result.setResponse(user);

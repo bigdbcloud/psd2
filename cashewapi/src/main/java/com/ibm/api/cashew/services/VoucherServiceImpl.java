@@ -54,7 +54,6 @@ public class VoucherServiceImpl implements VoucherService {
 					txnDetail.getAccountId(), txnRequest);
 
 		}
-
 		vocher.setCode(utils.getVocherCode());
 		vocher.setCreationDate(Voucher.DATE_FORMAT.format(new Date()));
 		vocher.setExpiryDate(utils.getVocherExpDate());

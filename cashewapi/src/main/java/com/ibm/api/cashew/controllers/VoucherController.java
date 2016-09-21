@@ -28,7 +28,7 @@ public class VoucherController extends APIController {
 	private String version;
 
 	@Autowired
-	private VoucherService vocherService;
+	private VoucherService voucherService;
 
 	@RequestMapping(method = RequestMethod.POST, value = "/voucher", produces = MediaType.APPLICATION_JSON_VALUE)
 	public @ResponseBody ResponseEntity<APIResponse<Voucher>> createVoucher(
@@ -40,12 +40,9 @@ public class VoucherController extends APIController {
 
 			OAuth2Authentication auth = (OAuth2Authentication) SecurityContextHolder.getContext().getAuthentication();
 			result = new APIResponse<>();
+			vocher.setCreatedBy(auth.getName());
 
-			if (StringUtils.isBlank(vocher.getCreatedBy())) {
-				vocher.setCreatedBy(auth.getName());
-			}
-
-			Voucher vocherRes = vocherService.createVocher(vocher);
+			Voucher vocherRes = voucherService.createVocher(vocher);
 
 			result.setResponse(vocherRes);
 			response = ResponseEntity.ok(result);
@@ -58,14 +55,14 @@ public class VoucherController extends APIController {
 	}
 
 	@RequestMapping(method = RequestMethod.PATCH, value = "/voucher", produces = MediaType.APPLICATION_JSON_VALUE)
-	public @ResponseBody ResponseEntity<APIResponse<Voucher>> redeemVoucher(@RequestBody(required = true) Voucher vocher) {
+	public @ResponseBody ResponseEntity<APIResponse<Voucher>> redeemVoucher(@RequestBody(required = true) Voucher voucher) {
 
 		APIResponse<Voucher> result = null;
 		ResponseEntity<APIResponse<Voucher>> response;
 		try {
 
 			result = new APIResponse<>();
-			Voucher remRes = vocherService.redeemVocher(vocher);
+			Voucher remRes = voucherService.redeemVocher(voucher);
 			result.setResponse(remRes);
 			response = ResponseEntity.ok(result);
 

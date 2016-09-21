@@ -18,7 +18,6 @@ import com.ibm.api.cashew.db.elastic.ElasticTransactionRepository;
 import com.ibm.api.cashew.db.mongo.MongoTransactionRepository;
 import com.ibm.api.cashew.db.mongo.MongoUserAccountsRepository;
 import com.ibm.api.cashew.services.ibmbank.IBMUserAccountService;
-import com.ibm.api.cashew.utils.Utils;
 import com.ibm.psd2.datamodel.aip.BankAccountDetailsView;
 import com.ibm.psd2.datamodel.aip.Transaction;
 import com.ibm.psd2.datamodel.pisp.TxnParty;
@@ -42,28 +41,13 @@ public class UserAccountServiceImpl implements UserAccountService
 	@Autowired
 	IBMUserAccountService ibmUserAccSvc;
 
-	@Autowired
-	Utils utils;
 
-	@Value("${psd2.url}")
-	private String psd2Url;
-
-	@Value("${psd2.username}")
-	private String psd2Username;
-
-	private String psd2Authorization;
-
-	@Value("${psd2.password}")
-	private String psd2Password;
 
 	@Value("${ibmbank.id}")
 	private String ibmBank;
 
 	@Value("${barclays.id}")
 	private String barclaysBank;
-
-	@Autowired
-	private MongoTransactionRepository mongoTxnRepo;
 
 	@Autowired
 	private ElasticTransactionRepository elasticTxnRepo;
@@ -129,6 +113,11 @@ public class UserAccountServiceImpl implements UserAccountService
 
 			ua = muar.findBySubscriptionRequestId(sca.getSubscriptionRequestId());
 			logger.debug("Found UserAccount = " + ua);
+			
+			if (ua == null || !ua.getAppUsername().equals(sca.getAppUsername()))
+			{
+				throw new IllegalArgumentException("Invalid Subscription Challenge Answer Specified");
+			}
 			
 			SubscriptionInfo si = null;
 			if (ua.getAccount().getBankId().equals(ibmBank))
