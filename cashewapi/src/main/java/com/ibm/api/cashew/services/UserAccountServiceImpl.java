@@ -187,7 +187,7 @@ public class UserAccountServiceImpl implements UserAccountService {
 			String fromDate, String toDate, String sortBy, Integer offset, Integer limit) {
 		UserAccount ua = muar.findByAppUsernameAndAccountIdAndAccountBankId(appUser, accountId, bankId);
 		List<Transaction> txns = null;
-		
+
 		if (ua == null || ua.getSubscriptionInfoStatus() == null
 				|| !ua.getSubscriptionInfoStatus().equals(SubscriptionInfo.STATUS_ACTIVE)) {
 			throw new IllegalArgumentException("Account is not yet subscribed");
@@ -220,7 +220,10 @@ public class UserAccountServiceImpl implements UserAccountService {
 
 			if (!CollectionUtils.isEmpty(txns)) {
 
-				elasticTxnRepo.save(populateElasticTxnDetails(txns, appUser));
+				List<com.ibm.api.cashew.beans.Transaction> txnList = populateElasticTxnDetails(txns, appUser);
+				if (!CollectionUtils.isEmpty(txnList)) {
+					elasticTxnRepo.save(txnList);
+				}
 			}
 
 		} catch (Exception e) {
@@ -286,7 +289,7 @@ public class UserAccountServiceImpl implements UserAccountService {
 		for (Transaction txn : txnList) {
 
 			if (elasticTxnRepo.findOne(txn.getId()) == null) {
-				
+
 				com.ibm.api.cashew.beans.Transaction elasticTxn = new com.ibm.api.cashew.beans.Transaction();
 				elasticTxn.setId(txn.getId());
 
