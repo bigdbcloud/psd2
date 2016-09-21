@@ -63,7 +63,7 @@ public class IBMPaymentsServiceImpl implements IBMPaymentsService
 		
 		URI uri = new URI(url);
 		
-		RequestEntity<Void> rea = RequestEntity.post(uri).accept(MediaType.APPLICATION_JSON)
+		RequestEntity<Void> rea = RequestEntity.get(uri).accept(MediaType.APPLICATION_JSON)
 				.header("Authorization", psd2Credentials.getPSD2Authorization())
 				.header("user", ua.getAccount().getUsername()).build();
 
