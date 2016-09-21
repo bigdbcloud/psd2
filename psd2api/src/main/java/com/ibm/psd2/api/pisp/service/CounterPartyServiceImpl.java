@@ -32,6 +32,4 @@ public class CounterPartyServiceImpl implements CounterPartyService
 		return mcpr.save(cp);
 	}
 
-	
-	
 }
