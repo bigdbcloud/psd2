@@ -8,5 +8,5 @@ import com.ibm.psd2.datamodel.pisp.CounterParty;
 
 public interface MongoCounterPartyRepository extends MongoRepository<CounterParty, String>
 {
-	public List<CounterParty> findBySourceBankIdAndAccountId(String bankId, String accountId);
+	public List<CounterParty> findBySourceBankIdAndSourceAccountId(String bankId, String accountId);
 }

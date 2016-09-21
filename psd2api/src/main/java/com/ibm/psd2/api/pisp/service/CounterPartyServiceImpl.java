@@ -22,7 +22,7 @@ public class CounterPartyServiceImpl implements CounterPartyService
 	public List<CounterParty> getCounterParties(String bankId, String accountId)
 	{
 		logger.debug("Parameters are: " + bankId + ", " + accountId);
-		return mcpr.findBySourceBankIdAndAccountId(bankId, accountId);
+		return mcpr.findBySourceBankIdAndSourceAccountId(bankId, accountId);
 	}
 
 	@Override
