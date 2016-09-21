@@ -312,7 +312,7 @@ public class ElasticSearchAggregationHelper {
 
 					org.elasticsearch.search.aggregations.bucket.terms.Terms.Bucket bucket = iterator.next();
 					BucketResponse aggrBucket = new BucketResponse();
-					aggrBucket.setKey(bucket.getKey());
+					aggrBucket.setKey_as_string(bucket.getKeyAsString());
 					aggrBucket.setDoc_count(bucket.getDocCount());
 					baresp.addBuckets(aggrBucket);
 					

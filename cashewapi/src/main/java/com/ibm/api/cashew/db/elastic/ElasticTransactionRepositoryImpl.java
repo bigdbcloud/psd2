@@ -24,42 +24,47 @@ import com.ibm.api.cashew.beans.aggregation.BucketResponse;
 import com.ibm.api.cashew.beans.aggregation.QueryRequest;
 import com.ibm.api.cashew.utils.ElasticSearchAggregationHelper;
 
+public class ElasticTransactionRepositoryImpl implements ElasticTransactionCustomRepository
+{
 
-public class ElasticTransactionRepositoryImpl implements ElasticTransactionCustomRepository{
-
-	
 	private static final Logger logger = LogManager.getLogger(ElasticTransactionRepositoryImpl.class);
 
 	@Autowired
 	ElasticsearchOperations elasticTemplate;
 
 	@Override
-	public List<AggregationResponse> getBucketAggregation(QueryRequest qr) {
+	public List<AggregationResponse> getBucketAggregation(QueryRequest qr)
+	{
 
 		if (qr == null || qr.getAggregations() == null || qr.getAggregations().isEmpty())
 		{
 			return null;
 		}
-		
+
 		QueryBuilder qb = ElasticSearchAggregationHelper.buildQuery(qr);
 
 		NativeSearchQueryBuilder searchQuery = new NativeSearchQueryBuilder().withQuery(qb)
 				.withSearchType(SearchType.QUERY_THEN_FETCH).withIndices("transactions").withTypes("transaction");
 
-		for (Iterator<AggregationRequest> iterator = qr.getAggregations().iterator(); iterator.hasNext();) {
+		for (Iterator<AggregationRequest> iterator = qr.getAggregations().iterator(); iterator.hasNext();)
+		{
 			AggregationRequest bar = iterator.next();
-			if (bar instanceof BucketAggregationRequest) {
+			if (bar instanceof BucketAggregationRequest)
+			{
 				AbstractAggregationBuilder builder = ElasticSearchAggregationHelper.buildBucketAggregationRequest(qr,
 						(BucketAggregationRequest) bar);
-				if (builder != null) {
+				if (builder != null)
+				{
 					searchQuery.addAggregation(builder);
 				}
 			}
 		}
 
-		Aggregations aggregations = elasticTemplate.query(searchQuery.build(), new ResultsExtractor<Aggregations>() {
+		Aggregations aggregations = elasticTemplate.query(searchQuery.build(), new ResultsExtractor<Aggregations>()
+		{
 			@Override
-			public Aggregations extract(SearchResponse response) {
+			public Aggregations extract(SearchResponse response)
+			{
 				return response.getAggregations();
 			}
 		});
@@ -68,19 +73,15 @@ public class ElasticTransactionRepositoryImpl implements ElasticTransactionCusto
 		for (Iterator<AggregationRequest> iterator = qr.getAggregations().iterator(); iterator.hasNext();)
 		{
 			BucketAggregationRequest bareq = (BucketAggregationRequest) iterator.next();
-			BucketAggregationResponse baresp = ElasticSearchAggregationHelper.buildBucketAggregationResponse(bareq, aggregations);
+			BucketAggregationResponse baresp = ElasticSearchAggregationHelper.buildBucketAggregationResponse(bareq,
+					aggregations);
 			if (baresp != null)
 			{
-				BucketAggregationResponse aggrResponse = new BucketAggregationResponse();
-				BucketResponse aggrBucket = new BucketResponse();
-				aggrBucket.addAggregations(baresp);
-				aggrResponse.addBuckets(aggrBucket);
-				response.add(aggrResponse);
+				response.add(baresp);
 			}
-			
-			
+
 		}
-		
+
 		return response;
 	}
 }

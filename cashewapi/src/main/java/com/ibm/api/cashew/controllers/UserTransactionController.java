@@ -22,7 +22,8 @@ import com.ibm.api.cashew.beans.aggregation.AggregationResponse;
 import com.ibm.api.cashew.services.UserTransactionService;
 
 @RestController
-public class UserTransactionController extends APIController {
+public class UserTransactionController extends APIController
+{
 
 	private final Logger logger = LogManager.getLogger(VoucherController.class);
 
@@ -35,8 +36,8 @@ public class UserTransactionController extends APIController {
 	@RequestMapping(method = RequestMethod.GET, value = "/user/{userId}/transactions/distribution", produces = MediaType.APPLICATION_JSON_VALUE)
 	@PreAuthorize("authentication.name == #userId")
 	public @ResponseBody ResponseEntity<APIResponse<List<AggregationResponse>>> getUserTxnDistribution(
-			@PathVariable(value = "userId") String userId, 
-			@RequestParam(value = "bankId",required = false) String bankId,
+			@PathVariable(value = "userId") String userId,
+			@RequestParam(value = "bankId", required = false) String bankId,
 			@RequestParam(value = "accountId", required = false) String accountId,
 			@RequestHeader(value = "fromDate", required = false) String fromDate,
 			@RequestHeader(value = "toDate", required = false) String toDate)
@@ -46,13 +47,17 @@ public class UserTransactionController extends APIController {
 		APIResponse<List<AggregationResponse>> result = new APIResponse<>();
 		ResponseEntity<APIResponse<List<AggregationResponse>>> response;
 
-		try {
+		try
+		{
 
-			List<AggregationResponse> aggrResponse = userTxnService.getUserTxnHistogram(userId, bankId, accountId,fromDate,toDate);
+			List<AggregationResponse> aggrResponse = userTxnService.getUserTxnDistribution(userId, bankId, accountId,
+					fromDate, toDate);
 			result.setResponse(aggrResponse);
 			response = ResponseEntity.ok(result);
 
-		} catch (Exception e) {
+		}
+		catch (Exception e)
+		{
 
 			logger.error(e.getMessage(), e);
 			response = handleException(e, version, result);
@@ -66,8 +71,8 @@ public class UserTransactionController extends APIController {
 	@RequestMapping(method = RequestMethod.GET, value = "/user/{userId}/transactions/histogram", produces = MediaType.APPLICATION_JSON_VALUE)
 	@PreAuthorize("authentication.name == #userId")
 	public @ResponseBody ResponseEntity<APIResponse<List<AggregationResponse>>> getUserTxnHistogram(
-			@PathVariable(value = "userId") String userId, 
-			@RequestParam(value = "bankId",required = false) String bankId,
+			@PathVariable(value = "userId") String userId,
+			@RequestParam(value = "bankId", required = false) String bankId,
 			@RequestParam(value = "accountId", required = false) String accountId,
 			@RequestHeader(value = "fromDate", required = false) String fromDate,
 			@RequestHeader(value = "toDate", required = false) String toDate)
@@ -77,13 +82,17 @@ public class UserTransactionController extends APIController {
 		APIResponse<List<AggregationResponse>> result = new APIResponse<>();
 		ResponseEntity<APIResponse<List<AggregationResponse>>> response;
 
-		try {
+		try
+		{
 
-			List<AggregationResponse> aggrResponse=userTxnService.getUserTxnHistogram(userId, bankId, accountId, fromDate, toDate);
+			List<AggregationResponse> aggrResponse = userTxnService.getUserTxnHistogram(userId, bankId, accountId,
+					fromDate, toDate);
 			result.setResponse(aggrResponse);
 			response = ResponseEntity.ok(result);
 
-		} catch (Exception e) {
+		}
+		catch (Exception e)
+		{
 
 			logger.error(e.getMessage(), e);
 			response = handleException(e, version, result);
@@ -93,7 +102,5 @@ public class UserTransactionController extends APIController {
 		return response;
 
 	}
-	
-	
 
 }

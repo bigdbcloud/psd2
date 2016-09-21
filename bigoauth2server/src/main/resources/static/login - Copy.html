@@ -1,0 +1,26 @@
+<html>
+	<head>
+		<title>B.I.G. Authentication Server Login Page</title>
+	</head>
+	<body onload='document.f.username.focus();'>
+	
+		<div>
+			<img alt="" src="images/biglogo1.PNG">
+		</div>
+		<div>
+			<h3>Social Login</h3>
+			<a href="/bigoauth2server/login/facebook"><img alt="Login with Facebook" src="images/fb.jpg"></a>
+		</div>
+	
+		<div>
+			<h3>Login with Username and Password</h3>
+			<form name='f' action='/bigoauth2server/login/bigoauth2server' method='POST'>
+				<table>
+					<tr><td>User:</td><td><input type='text' name='username' value=''></td></tr>
+					<tr><td>Password:</td><td><input type='password' name='password'/></td></tr>
+					<tr><td colspan='2'><input name="submit" type="submit" value="Login"/></td></tr>
+				</table>
+			</form>
+		</div>
+	</body>
+</html>
