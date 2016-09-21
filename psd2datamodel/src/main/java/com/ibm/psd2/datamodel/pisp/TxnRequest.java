@@ -1,6 +1,7 @@
 package com.ibm.psd2.datamodel.pisp;
 
 import java.io.Serializable;
+import java.text.SimpleDateFormat;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonInclude.Include;
@@ -9,6 +10,8 @@ import com.ibm.psd2.datamodel.Amount;
 @JsonInclude(value = Include.NON_EMPTY)
 public class TxnRequest implements Serializable
 {
+	public static final SimpleDateFormat DATE_FORMAT = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSZ");
+	
 	/*
 		"to":{
 				"bank_id":"psd201-bank-x--uk",

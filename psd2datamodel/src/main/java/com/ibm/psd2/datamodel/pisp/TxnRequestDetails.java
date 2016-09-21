@@ -28,8 +28,8 @@ public class TxnRequestDetails implements Serializable
 	private TxnRequest body;
 	String transactionIds;
 	String status;
-	Date startDate;
-	Date endDate;
+	String startDate;
+	String endDate;
 	private Challenge challenge;
 	private TxnCharge charge;
 	
@@ -81,22 +81,7 @@ public class TxnRequestDetails implements Serializable
 	{
 		this.status = status;
 	}
-	public Date getStartDate()
-	{
-		return startDate;
-	}
-	public void setStartDate(Date start_date)
-	{
-		this.startDate = start_date;
-	}
-	public Date getEndDate()
-	{
-		return endDate;
-	}
-	public void setEndDate(Date end_date)
-	{
-		this.endDate = end_date;
-	}
+	
 	public Challenge getChallenge()
 	{
 		return challenge;
@@ -126,5 +111,17 @@ public class TxnRequestDetails implements Serializable
 			e.printStackTrace();
 		}
 		return "";
+	}
+	public String getStartDate() {
+		return startDate;
+	}
+	public void setStartDate(String startDate) {
+		this.startDate = startDate;
+	}
+	public String getEndDate() {
+		return endDate;
+	}
+	public void setEndDate(String endDate) {
+		this.endDate = endDate;
 	}
 }

@@ -1,6 +1,7 @@
 package com.ibm.psd2.datamodel.aip;
 
 import java.io.Serializable;
+import java.text.SimpleDateFormat;
 import java.util.Date;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
@@ -14,8 +15,8 @@ public class TransactionDetails implements Serializable
 {
 	private String type;
 	private String description;
-	private Date posted;
-	private Date completed;
+	private String posted;
+	private String completed;
 	private Amount newBalance;
 	private Amount value;
 	private String tag;
@@ -36,22 +37,7 @@ public class TransactionDetails implements Serializable
 	{
 		this.description = description;
 	}
-	public Date getPosted()
-	{
-		return posted;
-	}
-	public void setPosted(Date posted)
-	{
-		this.posted = posted;
-	}
-	public Date getCompleted()
-	{
-		return completed;
-	}
-	public void setCompleted(Date completed)
-	{
-		this.completed = completed;
-	}
+	
 	public Amount getNewBalance()
 	{
 		return newBalance;
@@ -87,6 +73,18 @@ public class TransactionDetails implements Serializable
 			e.printStackTrace();
 		}
 		return "";
+	}
+	public String getPosted() {
+		return posted;
+	}
+	public void setPosted(String posted) {
+		this.posted = posted;
+	}
+	public String getCompleted() {
+		return completed;
+	}
+	public void setCompleted(String completed) {
+		this.completed = completed;
 	}
 	
 	

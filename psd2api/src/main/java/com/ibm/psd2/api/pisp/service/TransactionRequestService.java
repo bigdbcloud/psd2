@@ -1,5 +1,6 @@
 package com.ibm.psd2.api.pisp.service;
 
+import java.text.ParseException;
 import java.util.List;
 
 import com.ibm.psd2.datamodel.ChallengeAnswer;
@@ -11,12 +12,12 @@ import com.ibm.psd2.datamodel.subscription.SubscriptionInfo;
 public interface TransactionRequestService
 {
 	public TxnRequestDetails createTransactionRequest(SubscriptionInfo sib, TxnRequest trb, TxnParty payee,
-			String txnType);
+			String txnType) throws ParseException;
 
 	public List<TxnRequestDetails> getTransactionRequests(String username, String viewId, String accountId,
 			String bankId);
 
 	public TxnRequestDetails answerTransactionRequestChallenge(String username, String viewId, String bankId,
-			String accountId, String txnType, String txnReqId, ChallengeAnswer t);
+			String accountId, String txnType, String txnReqId, ChallengeAnswer t) throws ParseException;
 
 }

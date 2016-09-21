@@ -1,5 +1,7 @@
 package com.ibm.psd2.datamodel.aip;
 
+import java.text.SimpleDateFormat;
+
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
@@ -11,6 +13,9 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 @Document(collection = "transactions")
 @JsonInclude(value = Include.NON_EMPTY)
 public class Transaction {
+	
+	public static final SimpleDateFormat DATE_FORMAT = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSZ");
+		
 	@Id
 	private String id;
 	private TransactionAccount thisAccount;

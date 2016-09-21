@@ -22,6 +22,7 @@ import org.springframework.util.MultiValueMap;
 import org.springframework.web.client.RestTemplate;
 
 import com.ibm.api.cashew.beans.SubscriptionChallengeAnswer;
+import com.ibm.api.cashew.beans.User;
 import com.ibm.api.cashew.beans.UserAccount;
 import com.ibm.api.cashew.db.elastic.ElasticTransactionRepository;
 import com.ibm.api.cashew.db.mongo.MongoTransactionRepository;
@@ -186,6 +187,7 @@ public class UserAccountServiceImpl implements UserAccountService {
 			String fromDate, String toDate, String sortBy, Integer offset, Integer limit) {
 		UserAccount ua = muar.findByAppUsernameAndAccountIdAndAccountBankId(appUser, accountId, bankId);
 		List<Transaction> txns = null;
+		
 		if (ua == null || ua.getSubscriptionInfoStatus() == null
 				|| !ua.getSubscriptionInfoStatus().equals(SubscriptionInfo.STATUS_ACTIVE)) {
 			throw new IllegalArgumentException("Account is not yet subscribed");
@@ -208,16 +210,17 @@ public class UserAccountServiceImpl implements UserAccountService {
 					.header("obp_offset", (offset == null) ? "0" : offset.toString())
 					.header("obp_limit", (limit == null) ? "10" : offset.toString()).build();
 
-			ResponseEntity<List<Transaction>> res = restTemplate.exchange(rea, new ParameterizedTypeReference<List<Transaction>>() {
-				});
+			ResponseEntity<List<Transaction>> res = restTemplate.exchange(rea,
+					new ParameterizedTypeReference<List<Transaction>>() {
+					});
 
-			 txns=res.getBody();
+			txns = res.getBody();
 
 			// save data in mongo and elastic search
 
 			if (!CollectionUtils.isEmpty(txns)) {
 
-				elasticTxnRepo.save(populateElasticTxnDetails(txns));
+				elasticTxnRepo.save(populateElasticTxnDetails(txns, appUser));
 			}
 
 		} catch (Exception e) {
@@ -275,28 +278,38 @@ public class UserAccountServiceImpl implements UserAccountService {
 		return psd2Authorization;
 	}
 
-	private List<com.ibm.api.cashew.beans.Transaction> populateElasticTxnDetails(List<Transaction> txnList) {
+	private List<com.ibm.api.cashew.beans.Transaction> populateElasticTxnDetails(List<Transaction> txnList,
+			String appUser) {
 
 		List<com.ibm.api.cashew.beans.Transaction> elasticTxnList = new ArrayList<com.ibm.api.cashew.beans.Transaction>();
 
 		for (Transaction txn : txnList) {
-			com.ibm.api.cashew.beans.Transaction elasticTxn = new com.ibm.api.cashew.beans.Transaction();
-			elasticTxn.setId(txn.getId());
 
-			TxnParty from = new TxnParty();
-			from.setAccountId(txn.getThisAccount().getId());
-			from.setBankId(txn.getThisAccount().getBank().getName());
-			elasticTxn.setFrom(from);
+			if (elasticTxnRepo.findOne(txn.getId()) == null) {
+				
+				com.ibm.api.cashew.beans.Transaction elasticTxn = new com.ibm.api.cashew.beans.Transaction();
+				elasticTxn.setId(txn.getId());
 
-			TxnParty to = new TxnParty();
-			to.setAccountId(txn.getOtherAccount().getId());
-			to.setBankId(txn.getOtherAccount().getBank().getName());
+				TxnParty from = new TxnParty();
+				from.setAccountId(txn.getThisAccount().getId());
+				from.setBankId(txn.getThisAccount().getBank().getName());
+				elasticTxn.setFrom(from);
 
-			elasticTxn.setTo(to);
+				TxnParty to = new TxnParty();
+				to.setAccountId(txn.getOtherAccount().getId());
+				to.setBankId(txn.getOtherAccount().getBank().getName());
 
-			elasticTxn.setDetails(txn.getDetails());
+				elasticTxn.setTo(to);
 
-			elasticTxnList.add(elasticTxn);
+				elasticTxn.setDetails(txn.getDetails());
+
+				User user = new User();
+				user.setUserId(appUser);
+
+				elasticTxn.setUserInfo(user);
+				elasticTxnList.add(elasticTxn);
+
+			}
 		}
 
 		return elasticTxnList;

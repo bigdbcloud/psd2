@@ -69,10 +69,10 @@ public class TransactionRequestServiceImpl implements TransactionRequestService
 		from.getBalance().setAmount(newFromBalance);
 
 		TransactionDetails txnDetails = new TransactionDetails();
-		txnDetails.setCompleted(txnReq.getEndDate());
+		txnDetails.setCompleted(Transaction.DATE_FORMAT.format(new Date()));
 		txnDetails.setDescription(txnReq.getBody().getDescription());
 		txnDetails.setNewBalance(from.getBalance());
-		txnDetails.setPosted(txnReq.getEndDate());
+		txnDetails.setPosted(Transaction.DATE_FORMAT.format(new Date()));
 		txnDetails.setType(txnReq.getType());
 		txnDetails.setValue(txnReq.getBody().getValue());
 
@@ -141,7 +141,7 @@ public class TransactionRequestServiceImpl implements TransactionRequestService
 
 		txnRequest.setTransactionIds(UUIDGenerator.generateUUID());
 		txnRequest.setFrom(payee);
-		txnRequest.setStartDate(new Date());
+		txnRequest.setStartDate(TxnRequest.DATE_FORMAT.format(new Date()));
 		txnRequest.setId(UUIDGenerator.generateUUID());
 		txnRequest.setCharge(pr.getTransactionCharge(trb, payee));
 
@@ -152,7 +152,7 @@ public class TransactionRequestServiceImpl implements TransactionRequestService
 		{
 			postTransaction(savedTxn);
 			savedTxn.setStatus(TxnRequestDetails.TXN_STATUS_COMPLETED);
-			savedTxn.setEndDate(new Date());
+			savedTxn.setEndDate(TxnRequest.DATE_FORMAT.format(new Date()));
 		}
 		return mtrdr.save(savedTxn);
 	}
@@ -182,7 +182,7 @@ public class TransactionRequestServiceImpl implements TransactionRequestService
 		{
 			postTransaction(savedTxn);
 			savedTxn.setStatus(TxnRequestDetails.TXN_STATUS_COMPLETED);
-			savedTxn.setEndDate(new Date());
+			savedTxn.setEndDate(TxnRequest.DATE_FORMAT.format(new Date()));
 		}
 		return mtrdr.save(savedTxn);
 	}

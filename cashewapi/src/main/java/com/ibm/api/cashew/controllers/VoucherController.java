@@ -30,8 +30,8 @@ public class VoucherController extends APIController {
 	@Autowired
 	private VoucherService vocherService;
 
-	@RequestMapping(method = RequestMethod.POST, value = "/vocher", produces = MediaType.APPLICATION_JSON_VALUE)
-	public @ResponseBody ResponseEntity<APIResponse<Voucher>> createVocher(
+	@RequestMapping(method = RequestMethod.POST, value = "/voucher", produces = MediaType.APPLICATION_JSON_VALUE)
+	public @ResponseBody ResponseEntity<APIResponse<Voucher>> createVoucher(
 			@RequestBody(required = true) Voucher vocher) {
 
 		APIResponse<Voucher> result = null;
@@ -57,8 +57,8 @@ public class VoucherController extends APIController {
 		return response;
 	}
 
-	@RequestMapping(method = RequestMethod.PATCH, value = "/vocher", produces = MediaType.APPLICATION_JSON_VALUE)
-	public @ResponseBody ResponseEntity<APIResponse<Voucher>> redeemVocher(@RequestBody(required = true) Voucher vocher) {
+	@RequestMapping(method = RequestMethod.PATCH, value = "/voucher", produces = MediaType.APPLICATION_JSON_VALUE)
+	public @ResponseBody ResponseEntity<APIResponse<Voucher>> redeemVoucher(@RequestBody(required = true) Voucher vocher) {
 
 		APIResponse<Voucher> result = null;
 		ResponseEntity<APIResponse<Voucher>> response;

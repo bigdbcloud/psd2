@@ -8,6 +8,7 @@ import com.fasterxml.jackson.annotation.JsonInclude.Include;
 import com.ibm.psd2.datamodel.aip.TransactionDetails;
 import com.ibm.psd2.datamodel.pisp.TxnParty;
 
+
 @Document(indexName = "transactions", type = "transaction")
 @JsonInclude(value = Include.NON_EMPTY)
 public class Transaction {
@@ -49,4 +50,5 @@ public class Transaction {
 	public void setUserInfo(User userInfo) {
 		this.userInfo = userInfo;
 	}
+	
 }
