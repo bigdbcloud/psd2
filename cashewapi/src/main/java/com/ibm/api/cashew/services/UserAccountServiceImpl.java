@@ -16,7 +16,6 @@ import com.ibm.api.cashew.beans.SubscriptionChallengeAnswer;
 import com.ibm.api.cashew.beans.User;
 import com.ibm.api.cashew.beans.UserAccount;
 import com.ibm.api.cashew.db.elastic.ElasticTransactionRepository;
-import com.ibm.api.cashew.db.mongo.MongoTransactionRepository;
 import com.ibm.api.cashew.db.mongo.MongoUserAccountsRepository;
 import com.ibm.api.cashew.services.ibmbank.IBMUserAccountService;
 import com.ibm.psd2.datamodel.aip.BankAccountDetailsView;

@@ -14,7 +14,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
 import com.ibm.api.cashew.beans.UserAccount;
-import com.ibm.psd2.datamodel.aip.Transaction;
 import com.ibm.psd2.datamodel.pisp.CounterParty;
 import com.ibm.psd2.datamodel.pisp.TxnRequest;
 import com.ibm.psd2.datamodel.pisp.TxnRequestDetails;

@@ -6,8 +6,6 @@ import static org.springframework.data.mongodb.core.query.Query.query;
 import java.util.Date;
 import java.util.List;
 
-import org.joda.time.DateTime;
-import org.joda.time.format.DateTimeFormat;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.mongodb.core.MongoTemplate;

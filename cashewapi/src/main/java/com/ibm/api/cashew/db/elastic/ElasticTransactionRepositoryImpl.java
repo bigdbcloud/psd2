@@ -20,7 +20,6 @@ import com.ibm.api.cashew.beans.aggregation.AggregationRequest;
 import com.ibm.api.cashew.beans.aggregation.AggregationResponse;
 import com.ibm.api.cashew.beans.aggregation.BucketAggregationRequest;
 import com.ibm.api.cashew.beans.aggregation.BucketAggregationResponse;
-import com.ibm.api.cashew.beans.aggregation.BucketResponse;
 import com.ibm.api.cashew.beans.aggregation.QueryRequest;
 import com.ibm.api.cashew.utils.ElasticSearchAggregationHelper;
 

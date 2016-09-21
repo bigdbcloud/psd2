@@ -32,8 +32,6 @@ import org.elasticsearch.search.aggregations.Aggregation;
 import org.elasticsearch.search.aggregations.AggregationBuilder;
 import org.elasticsearch.search.aggregations.Aggregations;
 import org.elasticsearch.search.aggregations.bucket.histogram.DateHistogramInterval;
-import static org.elasticsearch.search.aggregations.bucket.histogram.DateHistogramInterval.DAY;
-
 import org.elasticsearch.search.aggregations.bucket.histogram.InternalHistogram;
 import org.elasticsearch.search.aggregations.bucket.histogram.InternalHistogram.Bucket;
 import org.elasticsearch.search.aggregations.bucket.terms.LongTerms;
