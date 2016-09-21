@@ -54,7 +54,6 @@ public class PaymentsServiceImpl implements PaymentsService
 		{
 			throw new IllegalArgumentException("Account is not yet subscribed");
 		}
-
 		return ua.getTransactionRequestTypes();
 	}
 
