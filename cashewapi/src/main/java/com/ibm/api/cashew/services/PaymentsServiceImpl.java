@@ -33,7 +33,8 @@ import com.ibm.psd2.datamodel.subscription.SubscriptionInfo;
 import com.ibm.psd2.datamodel.subscription.TransactionRequestType;
 
 @Service
-public class PaymentsServiceImpl implements PaymentsService {
+public class PaymentsServiceImpl implements PaymentsService
+{
 	private Logger logger = LogManager.getLogger(UserAccountServiceImpl.class);
 
 	@Autowired
@@ -62,19 +63,22 @@ public class PaymentsServiceImpl implements PaymentsService {
 
 	private String psd2Authorization;
 
-	private String getPSD2Authorization() {
-		if (psd2Authorization == null) {
+	private String getPSD2Authorization()
+	{
+		if (psd2Authorization == null)
+		{
 			psd2Authorization = utils.createBase64AuthHeader(psd2Username, psd2Password);
 		}
 		return psd2Authorization;
 	}
 
 	@Override
-	public List<TransactionRequestType> getTransactionRequestTypes(String appUsername, String bankId,
-			String accountId) {
+	public List<TransactionRequestType> getTransactionRequestTypes(String appUsername, String bankId, String accountId)
+	{
 		UserAccount ua = muar.findByAppUsernameAndAccountIdAndAccountBankId(appUsername, accountId, bankId);
 		if (ua == null || ua.getSubscriptionInfoStatus() == null
-				|| !ua.getSubscriptionInfoStatus().equals(SubscriptionInfo.STATUS_ACTIVE)) {
+				|| !ua.getSubscriptionInfoStatus().equals(SubscriptionInfo.STATUS_ACTIVE))
+		{
 			throw new IllegalArgumentException("Account is not yet subscribed");
 		}
 
@@ -83,16 +87,19 @@ public class PaymentsServiceImpl implements PaymentsService {
 
 	@Override
 	public TxnRequestDetails createTransactionRequest(String appUsername, String bankId, String accountId,
-			TxnRequest trb) {
+			TxnRequest trb)
+	{
 		UserAccount ua = muar.findByAppUsernameAndAccountIdAndAccountBankId(appUsername, accountId, bankId);
 
 		if (ua == null || ua.getSubscriptionInfoStatus() == null
-				|| !ua.getSubscriptionInfoStatus().equals(SubscriptionInfo.STATUS_ACTIVE)) {
+				|| !ua.getSubscriptionInfoStatus().equals(SubscriptionInfo.STATUS_ACTIVE))
+		{
 			throw new IllegalArgumentException("Account is not yet subscribed");
 		}
 
 		if (trb == null || trb.getTo() == null || trb.getTo().getBankId() == null || trb.getTo().getAccountId() == null
-				|| trb.getValue() == null) {
+				|| trb.getValue() == null)
+		{
 			throw new IllegalArgumentException("Invalid Transaction Request");
 		}
 
@@ -104,9 +111,12 @@ public class PaymentsServiceImpl implements PaymentsService {
 		String txnType = null;
 		TxnRequestDetails txnDetails = null;
 
-		if (ua.getAccount().getBankId().equals(bankId)) {
+		if (ua.getAccount().getBankId().equals(bankId))
+		{
 			txnType = TransactionRequestType.TYPES.WITHIN_BANK.name();
-		} else {
+		}
+		else
+		{
 			txnType = TransactionRequestType.TYPES.INTER_BANK.name();
 		}
 
@@ -114,7 +124,8 @@ public class PaymentsServiceImpl implements PaymentsService {
 				+ ua.getViewIds().get(0).getId() + "/transaction-request-types/" + txnType + "/transaction-requests";
 		logger.debug("url = " + url);
 
-		try {
+		try
+		{
 			URI uri = new URI(url);
 
 			RequestEntity<TxnRequest> rea = RequestEntity.post(uri).accept(MediaType.APPLICATION_JSON)
@@ -124,7 +135,9 @@ public class PaymentsServiceImpl implements PaymentsService {
 			ResponseEntity<TxnRequestDetails> res = restTemplate.exchange(rea, TxnRequestDetails.class);
 
 			txnDetails = res.getBody();
-		} catch (Exception e) {
+		}
+		catch (Exception e)
+		{
 			throw new RuntimeException(e);
 		}
 		return txnDetails;
@@ -132,15 +145,18 @@ public class PaymentsServiceImpl implements PaymentsService {
 
 	@Override
 	public com.ibm.api.cashew.beans.Transaction tagTransaction(String userId, String bankId, String accountId,
-			String txnId, String tag) {
+			String txnId, String tag)
+	{
 
 		com.ibm.api.cashew.beans.Transaction txn = elasticTxnRepo.findOne(txnId);
 
-		if (txn == null) {
+		if (txn == null)
+		{
 			throw new IllegalArgumentException("Transaction details doesn't exist");
 		}
 
-		if (txn.getDetails() == null) {
+		if (txn.getDetails() == null)
+		{
 
 			txn.setDetails(new TransactionDetails());
 		}

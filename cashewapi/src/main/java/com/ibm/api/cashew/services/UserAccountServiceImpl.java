@@ -128,6 +128,8 @@ public class UserAccountServiceImpl implements UserAccountService
 		{
 
 			ua = muar.findBySubscriptionRequestId(sca.getSubscriptionRequestId());
+			logger.debug("Found UserAccount = " + ua);
+			
 			SubscriptionInfo si = null;
 			if (ua.getAccount().getBankId().equals(ibmBank))
 			{
@@ -144,6 +146,7 @@ public class UserAccountServiceImpl implements UserAccountService
 				}
 				if (bdv != null)
 				{
+					logger.debug("parameters to useraccount are: " + sca.getAppUsername() + ", " + si.getAccountId() + ", " + si.getBankId() + ", " + si.getUsername());
 					ua = muar.findByAppUsernameAndAccountIdAndAccountBankIdAndAccountUsername(sca.getAppUsername(),
 							si.getAccountId(), si.getBankId(), si.getUsername());
 
@@ -165,6 +168,8 @@ public class UserAccountServiceImpl implements UserAccountService
 	public BankAccountDetailsView getAccountInformation(String appUser, String bankId, String accountId)
 	{
 		UserAccount ua = muar.findByAppUsernameAndAccountIdAndAccountBankId(appUser, accountId, bankId);
+		logger.debug("Found UserAccount = " + ua);
+
 		BankAccountDetailsView bdv = null;
 		if (ua == null || ua.getSubscriptionInfoStatus() == null
 				|| !ua.getSubscriptionInfoStatus().equals(SubscriptionInfo.STATUS_ACTIVE))
@@ -192,6 +197,8 @@ public class UserAccountServiceImpl implements UserAccountService
 			String fromDate, String toDate, String sortBy, Integer offset, Integer limit)
 	{
 		UserAccount ua = muar.findByAppUsernameAndAccountIdAndAccountBankId(appUser, accountId, bankId);
+		logger.debug("Found UserAccount = " + ua);
+
 		List<Transaction> txns = null;
 
 		if (ua == null || ua.getSubscriptionInfoStatus() == null
@@ -233,6 +240,7 @@ public class UserAccountServiceImpl implements UserAccountService
 
 		UserAccount ua = muar.findByAppUsernameAndAccountIdAndAccountBankId(user, payer.getAccountId(),
 				payer.getBankId());
+		logger.debug("Found UserAccount = " + ua);
 
 		TxnRequestDetails txnReqDetails = null;
 

@@ -36,8 +36,7 @@ public class UserController extends APIController
 	@Autowired
 	Utils utils;
 
-	@RequestMapping(method = RequestMethod.GET, value = "/user/{userId}/profile", produces = MediaType.APPLICATION_JSON_VALUE)
-	@PreAuthorize("#userId == authentication.name || hasRole('ADMIN')")
+	@RequestMapping(method = RequestMethod.GET, value = "/user/profile", produces = MediaType.APPLICATION_JSON_VALUE)
 	public @ResponseBody ResponseEntity<APIResponse<User>> getUserInfo(@PathVariable("userId") String userId)
 	{
 		APIResponse<User> result = new APIResponse<>();
