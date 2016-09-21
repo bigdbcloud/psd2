@@ -1,10 +1,12 @@
 package com.ibm.api.cashew.services.ibmbank;
 
 import java.net.URI;
+import java.util.List;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.http.MediaType;
 import org.springframework.http.RequestEntity;
 import org.springframework.http.ResponseEntity;
@@ -12,6 +14,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
 import com.ibm.api.cashew.beans.UserAccount;
+import com.ibm.psd2.datamodel.aip.Transaction;
+import com.ibm.psd2.datamodel.pisp.CounterParty;
 import com.ibm.psd2.datamodel.pisp.TxnRequest;
 import com.ibm.psd2.datamodel.pisp.TxnRequestDetails;
 
@@ -45,6 +49,32 @@ public class IBMPaymentsServiceImpl implements IBMPaymentsService
 
 		txnDetails = res.getBody();
 		return txnDetails;
+	}
+	
+	@Override
+	public List<CounterParty> getPayees(UserAccount ua) throws Exception
+	{
+		/**
+		 * banks/{bankId}/accounts/{accountId}/{viewId}/counter-parties
+		 */
+		String url = psd2Credentials.getPsd2Url() + "/banks/" + ua.getAccount().getBankId() + "/accounts/"
+				+ ua.getAccount().getId() + "/" + ua.getViewIds().get(0).getId() + "/counter-parties";
+		logger.debug("url = " + url);
+		
+		URI uri = new URI(url);
+		
+		RequestEntity<Void> rea = RequestEntity.post(uri).accept(MediaType.APPLICATION_JSON)
+				.header("Authorization", psd2Credentials.getPSD2Authorization())
+				.header("user", ua.getAccount().getUsername()).build();
+
+		ResponseEntity<List<CounterParty>> res = restTemplate.exchange(rea, new ParameterizedTypeReference<List<CounterParty>>()
+		{
+		});
+
+		List<CounterParty> cp = res.getBody();
+		return cp;
+		
+		
 	}
 
 }

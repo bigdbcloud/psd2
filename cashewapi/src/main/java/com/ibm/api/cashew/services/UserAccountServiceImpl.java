@@ -1,6 +1,7 @@
 package com.ibm.api.cashew.services;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 
 import org.apache.logging.log4j.LogManager;
@@ -181,6 +182,51 @@ public class UserAccountServiceImpl implements UserAccountService
 
 	}
 
+	@Override
+	public List<BankAccountDetailsView> getAllAccountInformation(String appUser)
+	{
+		List<UserAccount> uas = muar.findByAppUsername(appUser);
+		logger.debug("Found UserAccount = " + uas);
+		List<BankAccountDetailsView> bdvs = null;
+		
+		try
+		{
+			if (uas != null)
+			{
+				for (Iterator<UserAccount> iterator = uas.iterator(); iterator.hasNext();)
+				{
+					UserAccount ua = iterator.next();
+					
+					if (!ua.getSubscriptionInfoStatus().equals(SubscriptionInfo.STATUS_ACTIVE))
+					{
+						continue;
+					}
+					
+					BankAccountDetailsView badv =  null;
+					if (ua.getAccount().getBankId().equals(ibmBank))
+					{
+						badv =  ibmUserAccSvc.getAccountInformation(ua);
+					}
+					
+					if (badv != null)
+					{
+						if (bdvs == null)
+						{
+							bdvs = new ArrayList<>();
+						}
+						bdvs.add(badv);
+					}
+					
+				}
+			}
+		}
+		catch (Exception e)
+		{
+			throw new RuntimeException(e);
+		}
+		return bdvs;
+	}
+	
 	@Override
 	public List<Transaction> getTransactions(String appUser, String bankId, String accountId, String sortDirection,
 			String fromDate, String toDate, String sortBy, Integer offset, Integer limit)

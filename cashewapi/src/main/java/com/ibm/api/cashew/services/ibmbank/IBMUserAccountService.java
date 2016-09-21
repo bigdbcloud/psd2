@@ -15,10 +15,15 @@ import com.ibm.psd2.datamodel.subscription.SubscriptionRequest;
 public interface IBMUserAccountService
 {
 	public SubscriptionRequest subscribe(SubscriptionRequest subscriptionRequest) throws Exception;
+
 	public SubscriptionInfo answerSubscriptionRequestChallenge(SubscriptionChallengeAnswer sca) throws Exception;
+
 	public BankAccountDetailsView getAccountInformation(UserAccount ua) throws Exception;
-	public List<Transaction> getTransactions(UserAccount ua, String sortDirection,
-			String fromDate, String toDate, String sortBy, Integer offset, Integer limit) throws Exception;
-	public TxnRequestDetails createTransaction(TxnRequest txnReq, TxnParty payer, String txnType, UserAccount ua) throws Exception;
-	
+
+	public List<Transaction> getTransactions(UserAccount ua, String sortDirection, String fromDate, String toDate,
+			String sortBy, Integer offset, Integer limit) throws Exception;
+
+	public TxnRequestDetails createTransaction(TxnRequest txnReq, TxnParty payer, String txnType, UserAccount ua)
+			throws Exception;
+
 }

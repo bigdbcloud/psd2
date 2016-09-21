@@ -35,7 +35,7 @@ import com.ibm.psd2.datamodel.subscription.TransactionRequestType;
 @RestController
 public class PISPController extends APIController
 {
-	private static final Logger logger = LogManager.getLogger(PISPController.class);
+	private final Logger logger = LogManager.getLogger(PISPController.class);
 
 	@Autowired
 	TransactionRequestService txnReqService;

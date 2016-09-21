@@ -99,6 +99,25 @@ public class UserAccountInformationController extends APIController {
 		return response;
 	}
 
+	@RequestMapping(method = RequestMethod.GET, value = "/{userId}/accounts", produces = MediaType.APPLICATION_JSON_VALUE)
+	@PreAuthorize("authentication.name == #userId")
+	public @ResponseBody ResponseEntity<APIResponse<List<BankAccountDetailsView>>> getAllAccountDetails(
+			@PathVariable("userId") String userId, @PathVariable("bankId") String bankId,
+			@PathVariable("accountId") String accountId) {
+		logger.debug("Getting Account Details for user = " + userId);
+		APIResponse<List<BankAccountDetailsView>> result = null;
+		ResponseEntity<APIResponse<List<BankAccountDetailsView>>> response;
+		try {
+			result = new APIResponse<>();
+			result.setResponse(uss.getAllAccountInformation(userId));
+			response = ResponseEntity.ok(result);
+		} catch (Exception e) {
+			response = handleException(e, version, result);
+		}
+		return response;
+	}
+	
+	
 	@RequestMapping(method = RequestMethod.GET, value = "/{userId}/{bankId}/{accountId}/transactions", produces = MediaType.APPLICATION_JSON_VALUE)
 	@PreAuthorize("authentication.name == #userId")
 	public @ResponseBody ResponseEntity<APIResponse<List<Transaction>>> getTransactionStatement(

@@ -23,4 +23,6 @@ public interface UserAccountService {
 
 	public TxnRequestDetails createTransaction(TxnRequest txnReq, TxnParty payer, String txnType, String user);
 
+	public List<BankAccountDetailsView> getAllAccountInformation(String appUser);
+
 }

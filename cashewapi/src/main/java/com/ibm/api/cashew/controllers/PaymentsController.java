@@ -19,7 +19,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.ibm.api.cashew.beans.APIResponse;
 import com.ibm.api.cashew.services.PaymentsService;
 import com.ibm.api.cashew.utils.Utils;
-import com.ibm.psd2.datamodel.aip.Transaction;
+import com.ibm.psd2.datamodel.pisp.CounterParty;
 import com.ibm.psd2.datamodel.pisp.TxnRequest;
 import com.ibm.psd2.datamodel.pisp.TxnRequestDetails;
 import com.ibm.psd2.datamodel.subscription.TransactionRequestType;
@@ -51,6 +51,29 @@ public class PaymentsController extends APIController
 		{
 			result = new APIResponse<>();
 			result.setResponse(paymentService.getTransactionRequestTypes(userId, bankId, accountId));
+			response = ResponseEntity.ok(result);
+		}
+		catch (Exception e)
+		{
+			response = handleException(e, version, result);
+		}
+		return response;
+	}
+
+	@RequestMapping(method = RequestMethod.GET, value = "/{userId}/{bankId}/{accountId}/payees", produces = MediaType.APPLICATION_JSON_VALUE)
+	@PreAuthorize("authentication.name == #userId")
+	public @ResponseBody ResponseEntity<APIResponse<List<CounterParty>>> getPayees(
+			@PathVariable("userId") String userId, 
+			@PathVariable("bankId") String bankId,
+			@PathVariable("accountId") String accountId)
+	{
+		logger.debug("Getting Txn Request Types for user = " + userId);
+		APIResponse<List<CounterParty>> result = null;
+		ResponseEntity<APIResponse<List<CounterParty>>> response;
+		try
+		{
+			result = new APIResponse<>();
+			result.setResponse(paymentService.getPayees(userId, bankId, accountId));
 			response = ResponseEntity.ok(result);
 		}
 		catch (Exception e)

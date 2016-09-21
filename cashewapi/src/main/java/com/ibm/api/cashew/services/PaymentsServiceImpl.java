@@ -14,6 +14,7 @@ import com.ibm.api.cashew.db.elastic.ElasticTransactionRepository;
 import com.ibm.api.cashew.db.mongo.MongoUserAccountsRepository;
 import com.ibm.api.cashew.services.ibmbank.IBMPaymentsService;
 import com.ibm.psd2.datamodel.aip.TransactionDetails;
+import com.ibm.psd2.datamodel.pisp.CounterParty;
 import com.ibm.psd2.datamodel.pisp.TxnRequest;
 import com.ibm.psd2.datamodel.pisp.TxnRequestDetails;
 import com.ibm.psd2.datamodel.subscription.SubscriptionInfo;
@@ -122,6 +123,28 @@ public class PaymentsServiceImpl implements PaymentsService
 
 		txn.getDetails().setTag(tag);
 		return elasticTxnRepo.save(txn);
+	}
+
+	@Override
+	public List<CounterParty> getPayees(String appUsername, String bankId, String accountId)
+	{
+		List<CounterParty> payees = null;
+		logger.debug("parameters to useraccount are: " + appUsername + ", " + accountId + ", " + bankId);
+		UserAccount ua = muar.findByAppUsernameAndAccountIdAndAccountBankId(appUsername, accountId, bankId);
+		logger.debug("ua = " + ua);
+
+		try
+		{
+			if (ua.getAccount().getBankId().equals(ibmBank))
+			{
+				payees = ibmPaymentsService.getPayees(ua);
+			}
+		}
+		catch (Exception e)
+		{
+			throw new RuntimeException(e);
+		}
+		return payees;
 	}
 
 }
