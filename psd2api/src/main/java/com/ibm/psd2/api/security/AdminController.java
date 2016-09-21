@@ -15,9 +15,11 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.ibm.psd2.api.aip.services.BankAccountDetailsService;
 import com.ibm.psd2.api.aip.services.BankService;
+import com.ibm.psd2.api.pisp.service.CounterPartyService;
 import com.ibm.psd2.datamodel.Bank;
 import com.ibm.psd2.datamodel.SimpleResponse;
 import com.ibm.psd2.datamodel.aip.BankAccountDetails;
+import com.ibm.psd2.datamodel.pisp.CounterParty;
 
 @RestController
 public class AdminController
@@ -27,6 +29,9 @@ public class AdminController
 
 	@Autowired
 	BankAccountDetailsService badao;
+	
+	@Autowired
+	CounterPartyService cps;
 
 	@Autowired
 	BankService bdao;
@@ -66,6 +71,35 @@ public class AdminController
 		return response;
 	}
 	
+	@RequestMapping(method = RequestMethod.POST, value = "/admin/counterparty", produces = MediaType.APPLICATION_JSON_VALUE)
+	public @ResponseBody ResponseEntity<SimpleResponse> createPayee(@RequestBody CounterParty cp)
+	{
+		ResponseEntity<SimpleResponse> response;
+		SimpleResponse srb = new SimpleResponse();
+		try
+		{
+			if (cp == null)
+			{
+				throw new IllegalArgumentException("No Bank Specified");
+			}
+
+			logger.info("Counter Party = " + cp);
+
+			cps.createCounterParty(cp);
+
+			srb.setResponseCode(SimpleResponse.CODE_SUCCESS);
+			response = ResponseEntity.ok(srb);
+		}
+		catch (Exception e)
+		{
+			logger.error(e.getMessage(), e);
+			srb.setResponseCode(SimpleResponse.CODE_ERROR);
+			srb.setResponseMessage(e.getMessage());
+			response = ResponseEntity.badRequest().body(srb);
+		}
+		return response;
+	}
+
 	@RequestMapping(method = RequestMethod.POST, value = "/admin/account", produces = MediaType.APPLICATION_JSON_VALUE)
 	public @ResponseBody ResponseEntity<SimpleResponse> createAccount(@RequestBody BankAccountDetails b)
 	{

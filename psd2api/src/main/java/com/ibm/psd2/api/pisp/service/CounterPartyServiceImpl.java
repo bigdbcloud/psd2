@@ -25,5 +25,13 @@ public class CounterPartyServiceImpl implements CounterPartyService
 		return mcpr.findBySourceBankIdAndAccountId(bankId, accountId);
 	}
 
+	@Override
+	public CounterParty createCounterParty(CounterParty cp)
+	{
+		logger.debug("Parameters are: " + cp);
+		return mcpr.save(cp);
+	}
+
+	
 	
 }

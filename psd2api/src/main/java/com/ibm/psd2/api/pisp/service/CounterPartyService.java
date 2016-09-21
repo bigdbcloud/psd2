@@ -7,4 +7,5 @@ import com.ibm.psd2.datamodel.pisp.CounterParty;
 public interface CounterPartyService
 {
 	public List<CounterParty> getCounterParties(String bankId, String accountId);
+	public CounterParty createCounterParty(CounterParty cp);
 }
