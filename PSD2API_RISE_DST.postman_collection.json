@@ -29,7 +29,8 @@
 				"84a7e248-1589-c0db-a584-449ec7640e0e",
 				"8795d7b4-5ed8-dd50-5cd6-ab84030e75b1",
 				"bcc18bfb-af8c-c78a-23c1-4ce05b2cfa70",
-				"2b6fc811-4934-3e07-db17-fe5fc709f35e"
+				"2b6fc811-4934-3e07-db17-fe5fc709f35e",
+				"69220950-a17a-5217-7222-d589b9492305"
 			],
 			"collectionId": "5b306c15-c816-bc11-fe47-862c5725af0d"
 		},
@@ -59,13 +60,15 @@
 				"e504b9f7-c19c-cc46-d812-c07ad3b65bb7",
 				"0a514851-f213-6984-fcda-b1014dcc94ad",
 				"dd65eac3-564a-28e6-4285-741a1b359e4b",
+				"92c7b91e-263e-76a2-3a58-562611d8e938",
 				"61d8feba-0e89-8d2c-dfb3-9a25db335787",
 				"c6ae9e67-e97c-890f-de0e-36474f971860",
 				"74f09ee4-b6a0-5843-4733-498442625e34",
 				"05fc9c25-f8a3-8d54-54bf-af532a5b9738",
 				"9b4b4c38-6e78-c8c8-303e-4df752c09f5e",
 				"07f6db9a-6eda-ae19-c71c-718c12bcba83"
-			]
+			],
+			"collectionId": "5b306c15-c816-bc11-fe47-862c5725af0d"
 		},
 		{
 			"owner": "590573",
@@ -92,7 +95,8 @@
 				"aa641811-9116-d3ef-45d8-af3b881281be",
 				"55321908-6957-9b1b-ca89-4932df0c2eef",
 				"87a06aaa-5fa6-c0ed-446e-8279d6421e53",
-				"b6b9060b-92de-1ef1-cf6a-8b4ae87d2619"
+				"b6b9060b-92de-1ef1-cf6a-8b4ae87d2619",
+				"a6b2eb08-d0b8-8598-971d-8d50a50983f7"
 			]
 		}
 	],
@@ -292,8 +296,8 @@
 		},
 		{
 			"id": "546f12e7-c78b-754f-cdaf-c30ec63e445b",
-			"headers": "Content-Type: application/json\nAuthorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJjbGllbnRJZCI6IjRhNGIwMjgxLTQ5YjEtNDUzMy1iM2FjLWVlZTExZjFmNmJkOCIsInByb3ZpZGVyIjoiQmlnT2F1dGgyU2VydmVyIiwidXNlcl9uYW1lIjoidGFubWF5LmFtYnJlQGluLmlibS5jb20iLCJzY29wZSI6WyJyZWFkIl0sImV4cCI6MTQ3NDM5MTE0OSwidXNlck5hbWUiOiJ0YW5tYXkuYW1icmVAaW4uaWJtLmNvbSIsInVzZXJJZCI6InRhbm1heS5hbWJyZUBpbi5pYm0uY29tIiwiYXV0aG9yaXRpZXMiOlsiUk9MRV9VU0VSIl0sImp0aSI6Ijc5ZWU0YzFhLWZhYTgtNDhkZi1hNTM4LTg5NTY3MmRkZDhmOSIsImNsaWVudF9pZCI6IjRhNGIwMjgxLTQ5YjEtNDUzMy1iM2FjLWVlZTExZjFmNmJkOCJ9.5rPM6Ur-zIOpmknAyfeaxZSmCYSsFHOBKUeU1G-O0tE\n",
-			"url": "http://inmbz2239.in.dst.ibm.com:8085/cashewapi/tanmay.ambre@in.ibm.com/IBMGB/transaction/distribution?accountId=6111",
+			"headers": "Content-Type: application/json\nAuthorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJjbGllbnRJZCI6IjMxMDk5NTM1NTkxNTA3NyIsInByb3ZpZGVyIjoiZmFjZWJvb2siLCJ1c2VyX25hbWUiOiIxMDY2MzE4OTY0NTg3MzQiLCJzY29wZSI6WyJyZWFkIl0sImV4cCI6MTQ3NDQ2Mjk2MywidXNlck5hbWUiOiJUQSBJbm5vdmF0aW9uIEdhcmFnZSIsInVzZXJJZCI6IjEwNjYzMTg5NjQ1ODczNCIsImF1dGhvcml0aWVzIjpbIlJPTEVfVVNFUiJdLCJqdGkiOiI0ZThjYWI1ZS00Nzc2LTRiNmQtYTgxNi0xNDRiOWQ5NzE0ZDkiLCJjbGllbnRfaWQiOiI0YTRiMDI4MS00OWIxLTQ1MzMtYjNhYy1lZWUxMWYxZjZiZDgifQ.-A6UE9ho0N8b4ts5bzFhLsfxTtcn2yuoFNOEP9rTeEk\n",
+			"url": "http://inmbz2239.in.dst.ibm.com:8085/cashewapi/user/tanmay.ambre@in.ibm.com/transactions/distribution?accountId=6111&bankId=IBMGB",
 			"preRequestScript": null,
 			"pathVariables": {},
 			"method": "GET",
@@ -302,7 +306,7 @@
 			"tests": null,
 			"currentHelper": "normal",
 			"helperAttributes": {},
-			"time": 1474387596506,
+			"time": 1474459442891,
 			"name": "Get Transaction Distribution Graph",
 			"description": "",
 			"collectionId": "5b306c15-c816-bc11-fe47-862c5725af0d",
@@ -320,17 +324,16 @@
 			"tests": null,
 			"currentHelper": "normal",
 			"helperAttributes": {},
-			"time": 1474227480289,
+			"time": 1474461119522,
 			"name": "Create Bank Account on PSD2API server",
 			"description": "",
 			"collectionId": "5b306c15-c816-bc11-fe47-862c5725af0d",
-			"rawModeData": "{ \r\n  \"id\" : \"6111\", \r\n  \"label\" : \"PRIMARY SAVINGS ACCOUNT\", \r\n  \"number\" : \"9860306111\", \r\n  \"owners\" : [ { \"_id\" : \"tambre\", \"provider\" : \"https://www.ibm.co.uk\", \"displayName\" : \"Tanmay Ambre\" } ], \r\n  \"type\" : \"SAVINGS\", \r\n  \"balance\" : { \"currency\" : \"GBP\", \"amount\" : 10000 }, \r\n  \"iban\" : \"IBMGB22\", \r\n  \"swiftBic\" : \"IBMGB22XXX\", \r\n  \"bankId\" : \"IBMGB\", \r\n  \"username\" : \"tambre\"\r\n}",
-			"folder": "e7053745-4e8f-d28f-b9f6-2e49b555bfcc"
+			"rawModeData": "{ \r\n  \"id\" : \"6551\", \r\n  \"label\" : \"PRIMARY SAVINGS ACCOUNT\", \r\n  \"number\" : \"8698666551\", \r\n  \"owners\" : [ { \"_id\" : \"taigersquad\", \"provider\" : \"https://www.ibm.co.uk\", \"displayName\" : \"TA Innovation Garage\" } ], \r\n  \"type\" : \"SAVINGS\", \r\n  \"balance\" : { \"currency\" : \"GBP\", \"amount\" : 10000 }, \r\n  \"iban\" : \"IBMGB22\", \r\n  \"swiftBic\" : \"IBMGB22XXX\", \r\n  \"bankId\" : \"IBMGB\", \r\n  \"username\" : \"taigersquad\"\r\n}"
 		},
 		{
 			"id": "5ae04f61-18f4-c543-7362-f726fa785e5e",
-			"headers": "Content-Type: application/json\nAuthorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJjbGllbnRJZCI6IjRhNGIwMjgxLTQ5YjEtNDUzMy1iM2FjLWVlZTExZjFmNmJkOCIsInByb3ZpZGVyIjoiQmlnT2F1dGgyU2VydmVyIiwidXNlcl9uYW1lIjoidGFubWF5LmFtYnJlQGluLmlibS5jb20iLCJzY29wZSI6WyJyZWFkIl0sImV4cCI6MTQ3NDIzMTQyOSwidXNlck5hbWUiOiJ0YW5tYXkuYW1icmVAaW4uaWJtLmNvbSIsInVzZXJJZCI6InRhbm1heS5hbWJyZUBpbi5pYm0uY29tIiwiYXV0aG9yaXRpZXMiOlsiUk9MRV9VU0VSIl0sImp0aSI6ImEyY2JkNmZiLWZhOTQtNDBiNS04ZGM0LTQ3NTYyNGRkZDEzOCIsImNsaWVudF9pZCI6IjRhNGIwMjgxLTQ5YjEtNDUzMy1iM2FjLWVlZTExZjFmNmJkOCJ9.nRlzuBIFunVCkN2Sq_SJpI9FKsmZ2hnA42sO4gmQ6U4\n",
-			"url": "http://inmbz2239.in.dst.ibm.com:8085/cashewapi/user/tanmay.ambre@in.ibm.com/account/subscription/challenge",
+			"headers": "Content-Type: application/json\nAuthorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJjbGllbnRJZCI6IjMxMDk5NTM1NTkxNTA3NyIsInByb3ZpZGVyIjoiZmFjZWJvb2siLCJ1c2VyX25hbWUiOiIxMDY2MzE4OTY0NTg3MzQiLCJzY29wZSI6WyJyZWFkIl0sImV4cCI6MTQ3NDQ2NDc2MiwidXNlck5hbWUiOiJUQSBJbm5vdmF0aW9uIEdhcmFnZSIsInVzZXJJZCI6IjEwNjYzMTg5NjQ1ODczNCIsImF1dGhvcml0aWVzIjpbIlJPTEVfVVNFUiJdLCJqdGkiOiJhNzkxYWU4My1iOTBiLTQ4ZjktYTg1MC04MmZhMzc1YTEyOWQiLCJjbGllbnRfaWQiOiI0YTRiMDI4MS00OWIxLTQ1MzMtYjNhYy1lZWUxMWYxZjZiZDgifQ.vdwrKZs-SBjudmzaXbHwei4JQz1r4NyqQt0jD08jtRk\n",
+			"url": "http://inmbz2239.in.dst.ibm.com:8085/cashewapi/user/106631896458734/account/subscription/challenge",
 			"preRequestScript": null,
 			"pathVariables": {},
 			"method": "PATCH",
@@ -339,12 +342,11 @@
 			"tests": null,
 			"currentHelper": "normal",
 			"helperAttributes": {},
-			"time": 1474228511429,
+			"time": 1474464051858,
 			"name": "Answer Subscription Challenge",
 			"description": "",
 			"collectionId": "5b306c15-c816-bc11-fe47-862c5725af0d",
-			"rawModeData": "{\n  \"appUsername\": \"tanmay.ambre@in.ibm.com\",\n  \"challengeAnswer\": {\n    \"answer\": \"CLZAS0ID7C\",\n    \"id\": \"ed17d51a-1033-4558-b332-fef441bbcc18\"\n  },\n  \"subscriptionRequestId\": \"364e8a67-c0e1-4a74-b7ce-5735468b1d5f\"\n}",
-			"folder": "5caef9a4-06dd-c9c6-13e3-f1c0952cbad0"
+			"rawModeData": "{\n  \"appUsername\": \"106631896458734\",\n  \"challengeAnswer\": {\n    \"answer\": \"H2HDMO09ID\",\n    \"id\": \"77d0931a-8dfa-4b42-b407-22b77c37371b\"\n  },\n  \"subscriptionRequestId\": \"530d9938-52e6-44da-838a-5c47a4f0594d\"\n}"
 		},
 		{
 			"id": "61d8feba-0e89-8d2c-dfb3-9a25db335787",
@@ -363,6 +365,24 @@
 			"description": "",
 			"collectionId": "5b306c15-c816-bc11-fe47-862c5725af0d",
 			"folder": "5886ea39-a1ee-2e42-a640-e310b0b37fbc"
+		},
+		{
+			"id": "69220950-a17a-5217-7222-d589b9492305",
+			"headers": "Content-Type: application/json\nAuthorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJjbGllbnRJZCI6IjRhNGIwMjgxLTQ5YjEtNDUzMy1iM2FjLWVlZTExZjFmNmJkOCIsInByb3ZpZGVyIjoiQmlnT2F1dGgyU2VydmVyIiwidXNlcl9uYW1lIjoidGFubWF5LmFtYnJlQGluLmlibS5jb20iLCJzY29wZSI6WyJyZWFkIl0sImV4cCI6MTQ3NDQ4Mzg3MiwidXNlck5hbWUiOiJ0YW5tYXkuYW1icmVAaW4uaWJtLmNvbSIsInVzZXJJZCI6InRhbm1heS5hbWJyZUBpbi5pYm0uY29tIiwiYXV0aG9yaXRpZXMiOlsiUk9MRV9VU0VSIl0sImp0aSI6IjdlNTFhNDFjLWJhMWQtNDNjOC1iNmNhLTc0MTZhN2ExZDMyMiIsImNsaWVudF9pZCI6IjRhNGIwMjgxLTQ5YjEtNDUzMy1iM2FjLWVlZTExZjFmNmJkOCJ9.WtIn5UpWP27QOE8Y4k8MbrxBGhyvsKkGQSMlToIQm1E\n",
+			"url": "http://inmbz2239.in.dst.ibm.com:8085/cashewapi/tanmay.ambre@in.ibm.com/IBMGB/6111/payees",
+			"preRequestScript": null,
+			"pathVariables": {},
+			"method": "GET",
+			"data": [],
+			"dataMode": "raw",
+			"tests": null,
+			"currentHelper": "normal",
+			"helperAttributes": {},
+			"time": 1474480307594,
+			"name": "Get User's Bank Account's Payee List",
+			"description": "",
+			"collectionId": "5b306c15-c816-bc11-fe47-862c5725af0d",
+			"rawModeData": "{\r\n    \"to\":{\r\n        \"bankId\":\"BARCGB\",\r\n          \"accountId\":\"6122\"\r\n      },  \r\n    \"value\":{\r\n        \"currency\":\"GBP\",\r\n        \"amount\":\"20\"\r\n      },\r\n    \"description\":\"Lunch 4\"\r\n}"
 		},
 		{
 			"id": "6d8c4e1e-94c4-c098-d8a1-a13b576eea29",
@@ -499,6 +519,23 @@
 			"folder": "e7053745-4e8f-d28f-b9f6-2e49b555bfcc"
 		},
 		{
+			"id": "92c7b91e-263e-76a2-3a58-562611d8e938",
+			"headers": "Authorization: Basic Y2FzaGV3OnBhc3N3b3JkMDE=\nuser: tambre\n",
+			"url": "http://inmbz2239.in.dst.ibm.com:8082/psd2api/banks/IBMGB/accounts/6111/owner/counter-parties",
+			"preRequestScript": null,
+			"pathVariables": {},
+			"method": "GET",
+			"data": null,
+			"dataMode": "params",
+			"tests": null,
+			"currentHelper": "normal",
+			"helperAttributes": {},
+			"time": 1474479059322,
+			"name": "Get CounterParties",
+			"description": "",
+			"collectionId": "5b306c15-c816-bc11-fe47-862c5725af0d"
+		},
+		{
 			"id": "95edeff7-776d-1b0e-183c-a79ae84744dd",
 			"headers": "Content-Type: application/json\n",
 			"url": "http://inmbz2239.in.dst.ibm.com:8082/psd2api/admin/clientsignup",
@@ -591,6 +628,24 @@
 			"description": "",
 			"collectionId": "5b306c15-c816-bc11-fe47-862c5725af0d",
 			"folder": "5886ea39-a1ee-2e42-a640-e310b0b37fbc"
+		},
+		{
+			"id": "a6b2eb08-d0b8-8598-971d-8d50a50983f7",
+			"headers": "Content-Type: application/json\n",
+			"url": "http://inmbz2239.in.dst.ibm.com:8082/psd2api/admin/counterparty",
+			"preRequestScript": null,
+			"pathVariables": {},
+			"method": "POST",
+			"data": [],
+			"dataMode": "raw",
+			"tests": null,
+			"currentHelper": "normal",
+			"helperAttributes": {},
+			"time": 1474478924555,
+			"name": "Create Payee List for User's Bank Account",
+			"description": "",
+			"collectionId": "5b306c15-c816-bc11-fe47-862c5725af0d",
+			"rawModeData": "{\r\n  \"id\": \"1234567890\",\r\n  \"kind\": \"PAYEE\",\r\n  \"party\": {\r\n    \"accountId\": \"6122\",\r\n    \"bankId\": \"IBMGB\",\r\n    \"name\": \"Rakesh Shinde\"\r\n  },\r\n  \"source\": {\r\n    \"accountId\": \"6111\",\r\n    \"bankId\": \"IBMGB\"\r\n  }\r\n}"
 		},
 		{
 			"id": "aa641811-9116-d3ef-45d8-af3b881281be",
@@ -747,8 +802,8 @@
 		},
 		{
 			"id": "d517aec8-e74e-cdf0-d5d9-5f2b3d832670",
-			"headers": "Content-Type: application/json\nAuthorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJjbGllbnRJZCI6IjRhNGIwMjgxLTQ5YjEtNDUzMy1iM2FjLWVlZTExZjFmNmJkOCIsInByb3ZpZGVyIjoiQmlnT2F1dGgyU2VydmVyIiwidXNlcl9uYW1lIjoidGFubWF5LmFtYnJlQGluLmlibS5jb20iLCJzY29wZSI6WyJyZWFkIl0sImV4cCI6MTQ3NDIzMTQyOSwidXNlck5hbWUiOiJ0YW5tYXkuYW1icmVAaW4uaWJtLmNvbSIsInVzZXJJZCI6InRhbm1heS5hbWJyZUBpbi5pYm0uY29tIiwiYXV0aG9yaXRpZXMiOlsiUk9MRV9VU0VSIl0sImp0aSI6ImEyY2JkNmZiLWZhOTQtNDBiNS04ZGM0LTQ3NTYyNGRkZDEzOCIsImNsaWVudF9pZCI6IjRhNGIwMjgxLTQ5YjEtNDUzMy1iM2FjLWVlZTExZjFmNmJkOCJ9.nRlzuBIFunVCkN2Sq_SJpI9FKsmZ2hnA42sO4gmQ6U4\n",
-			"url": "http://inmbz2239.in.dst.ibm.com:8085/cashewapi/user/tanmay.ambre@in.ibm.com/profile",
+			"headers": "Content-Type: application/json\nAuthorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJjbGllbnRJZCI6IjMxMDk5NTM1NTkxNTA3NyIsInByb3ZpZGVyIjoiZmFjZWJvb2siLCJ1c2VyX25hbWUiOiIxMDY2MzE4OTY0NTg3MzQiLCJzY29wZSI6WyJyZWFkIl0sImV4cCI6MTQ3NDQ2ODc2OCwidXNlck5hbWUiOiJUQSBJbm5vdmF0aW9uIEdhcmFnZSIsInVzZXJJZCI6IjEwNjYzMTg5NjQ1ODczNCIsImF1dGhvcml0aWVzIjpbIlJPTEVfVVNFUiJdLCJqdGkiOiI5M2FhZGJjYy0wYzNlLTQ1ZGUtOWM4MC1jNzIyMWM5MDgyMzQiLCJjbGllbnRfaWQiOiI0YTRiMDI4MS00OWIxLTQ1MzMtYjNhYy1lZWUxMWYxZjZiZDgifQ.hD7amCWIWXs-bLnWa6Ynx1fkaPexzLuYkogxygCQY2I\n",
+			"url": "http://inmbz2239.in.dst.ibm.com:8085/cashewapi/user/profile",
 			"preRequestScript": null,
 			"pathVariables": {},
 			"method": "GET",
@@ -757,12 +812,11 @@
 			"tests": null,
 			"currentHelper": "normal",
 			"helperAttributes": {},
-			"time": 1474227851823,
+			"time": 1474465187882,
 			"name": "Get User Profile",
 			"description": "",
 			"collectionId": "5b306c15-c816-bc11-fe47-862c5725af0d",
-			"rawModeData": "{\r\n    \"to\":{\r\n        \"bankId\":\"BARCGB\",\r\n          \"accountId\":\"6122\"\r\n      },  \r\n    \"value\":{\r\n        \"currency\":\"GBP\",\r\n        \"amount\":\"20\"\r\n      },\r\n    \"description\":\"Lunch 4\"\r\n}",
-			"folder": "5caef9a4-06dd-c9c6-13e3-f1c0952cbad0"
+			"rawModeData": "{\r\n    \"to\":{\r\n        \"bankId\":\"BARCGB\",\r\n          \"accountId\":\"6122\"\r\n      },  \r\n    \"value\":{\r\n        \"currency\":\"GBP\",\r\n        \"amount\":\"20\"\r\n      },\r\n    \"description\":\"Lunch 4\"\r\n}"
 		},
 		{
 			"id": "dd65eac3-564a-28e6-4285-741a1b359e4b",
@@ -794,12 +848,11 @@
 			"tests": null,
 			"currentHelper": "normal",
 			"helperAttributes": {},
-			"time": 1474227283634,
+			"time": 1474461061562,
 			"name": "Create Bank User on OAUTH Server",
 			"description": "",
 			"collectionId": "5b306c15-c816-bc11-fe47-862c5725af0d",
-			"rawModeData": "{\n  \"username\":\"tambre\",\n  \"password\":\"password01\",\n  \"email\":\"tanmay.ambre@in.ibm.com\",\n  \"mobileNumber\":\"00919860306111\",\n  \"role\":\"ROLE_USER\",\n  \"dateOfBirth\" : \"1979-06-11T07:15:00.000+0530\",\n  \"address\":{\n    \"houseNumber\":\"B-503\",\n    \"addressLine1\":\"VANSHAJ PRESTIGE\",\n    \"addressLine2\":\"SUS ROAD\",\n    \"city\":\"PUNE\",\n    \"postcode\":\"411021\"\n  }\n}",
-			"folder": "e7053745-4e8f-d28f-b9f6-2e49b555bfcc"
+			"rawModeData": "{\n  \"username\":\"taigersquad\",\n  \"password\":\"password01\",\n  \"email\":\"taigersquad@gmail.com\",\n  \"mobileNumber\":\"00918698666551\",\n  \"role\":\"ROLE_USER\",\n  \"dateOfBirth\" : \"1979-06-11T07:15:00.000+0530\",\n  \"address\":{\n    \"houseNumber\":\"B-503\",\n    \"addressLine1\":\"VANSHAJ PRESTIGE\",\n    \"addressLine2\":\"SUS ROAD\",\n    \"city\":\"PUNE\",\n    \"postcode\":\"411021\"\n  }\n}"
 		},
 		{
 			"id": "e504b9f7-c19c-cc46-d812-c07ad3b65bb7",
@@ -839,8 +892,8 @@
 		},
 		{
 			"id": "f10ed0a2-b371-2f02-3f65-fd270fb64f0d",
-			"headers": "Content-Type: application/json\nAuthorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJjbGllbnRJZCI6IjRhNGIwMjgxLTQ5YjEtNDUzMy1iM2FjLWVlZTExZjFmNmJkOCIsInByb3ZpZGVyIjoiQmlnT2F1dGgyU2VydmVyIiwidXNlcl9uYW1lIjoidGFubWF5LmFtYnJlQGluLmlibS5jb20iLCJzY29wZSI6WyJyZWFkIl0sImV4cCI6MTQ3NDIzMTQyOSwidXNlck5hbWUiOiJ0YW5tYXkuYW1icmVAaW4uaWJtLmNvbSIsInVzZXJJZCI6InRhbm1heS5hbWJyZUBpbi5pYm0uY29tIiwiYXV0aG9yaXRpZXMiOlsiUk9MRV9VU0VSIl0sImp0aSI6ImEyY2JkNmZiLWZhOTQtNDBiNS04ZGM0LTQ3NTYyNGRkZDEzOCIsImNsaWVudF9pZCI6IjRhNGIwMjgxLTQ5YjEtNDUzMy1iM2FjLWVlZTExZjFmNmJkOCJ9.nRlzuBIFunVCkN2Sq_SJpI9FKsmZ2hnA42sO4gmQ6U4\n",
-			"url": "http://inmbz2239.in.dst.ibm.com:8085/cashewapi/user/tanmay.ambre@in.ibm.com/account/subscriptionRequest",
+			"headers": "Content-Type: application/json\nAuthorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJjbGllbnRJZCI6IjMxMDk5NTM1NTkxNTA3NyIsInByb3ZpZGVyIjoiZmFjZWJvb2siLCJ1c2VyX25hbWUiOiIxMDY2MzE4OTY0NTg3MzQiLCJzY29wZSI6WyJyZWFkIl0sImV4cCI6MTQ3NDQ2NDc2MiwidXNlck5hbWUiOiJUQSBJbm5vdmF0aW9uIEdhcmFnZSIsInVzZXJJZCI6IjEwNjYzMTg5NjQ1ODczNCIsImF1dGhvcml0aWVzIjpbIlJPTEVfVVNFUiJdLCJqdGkiOiJhNzkxYWU4My1iOTBiLTQ4ZjktYTg1MC04MmZhMzc1YTEyOWQiLCJjbGllbnRfaWQiOiI0YTRiMDI4MS00OWIxLTQ1MzMtYjNhYy1lZWUxMWYxZjZiZDgifQ.vdwrKZs-SBjudmzaXbHwei4JQz1r4NyqQt0jD08jtRk\n",
+			"url": "http://inmbz2239.in.dst.ibm.com:8085/cashewapi/user/106631896458734/account/subscriptionRequest",
 			"preRequestScript": null,
 			"pathVariables": {},
 			"method": "PUT",
@@ -849,12 +902,11 @@
 			"tests": null,
 			"currentHelper": "normal",
 			"helperAttributes": {},
-			"time": 1474228432401,
+			"time": 1474461213930,
 			"name": "Create Subscription Request",
 			"description": "",
 			"collectionId": "5b306c15-c816-bc11-fe47-862c5725af0d",
-			"rawModeData": "\r\n{\r\n  \"subscriptionInfo\":   {\r\n    \"username\" : \"tambre\",\r\n    \"accountId\" : \"6111\",\r\n    \"bankId\" : \"IBMGB\",\r\n    \"viewIds\": [{\"id\":\"owner\"}],\r\n    \"clientId\": \"cashew\",\r\n    \"limits\": [{\r\n            \"transactionRequestType\": { \"value\" : \"WITHIN_BANK\"},\r\n            \"amount\": { \"currency\" : \"GBP\", \"amount\" : 100.01}\r\n        },\r\n        {\r\n            \"transactionRequestType\": { \"value\" : \"INTER_BANK\"},\r\n            \"amount\": { \"currency\" : \"GBP\", \"amount\" : 50.01}\r\n        },\r\n        {\r\n            \"transactionRequestType\": { \"value\" : \"INTERNATIONAL\"},\r\n            \"amount\": { \"currency\" : \"GBP\", \"amount\" : 25.01}\r\n        }\r\n        ],\r\n    \"transactionRequestTypes\": [{\"value\": \"WITHIN_BANK\"}, {\"value\": \"INTER_BANK\"}, {\"value\": \"INTERNATIONAL\"}]\r\n  }\r\n\r\n}\r\n",
-			"folder": "5caef9a4-06dd-c9c6-13e3-f1c0952cbad0"
+			"rawModeData": "\r\n{\r\n  \"subscriptionInfo\":   {\r\n    \"username\" : \"taigersquad\",\r\n    \"accountId\" : \"6551\",\r\n    \"bankId\" : \"IBMGB\",\r\n    \"viewIds\": [{\"id\":\"owner\"}],\r\n    \"clientId\": \"cashew\",\r\n    \"limits\": [{\r\n            \"transactionRequestType\": { \"value\" : \"WITHIN_BANK\"},\r\n            \"amount\": { \"currency\" : \"GBP\", \"amount\" : 100.01}\r\n        },\r\n        {\r\n            \"transactionRequestType\": { \"value\" : \"INTER_BANK\"},\r\n            \"amount\": { \"currency\" : \"GBP\", \"amount\" : 50.01}\r\n        },\r\n        {\r\n            \"transactionRequestType\": { \"value\" : \"INTERNATIONAL\"},\r\n            \"amount\": { \"currency\" : \"GBP\", \"amount\" : 25.01}\r\n        }\r\n        ],\r\n    \"transactionRequestTypes\": [{\"value\": \"WITHIN_BANK\"}, {\"value\": \"INTER_BANK\"}, {\"value\": \"INTERNATIONAL\"}]\r\n  }\r\n\r\n}\r\n"
 		}
 	]
 }
