@@ -61,16 +61,16 @@ public class PaymentRules
 		return false;
 	}
 
-	public boolean checkTxnType(String txnType)
-	{
-		if (TransactionRequestType.TYPES.WITHIN_BANK.type().equals(txnType)
-				|| TransactionRequestType.TYPES.INTER_BANK.type().equals(txnType)
-				|| TransactionRequestType.TYPES.INTERNATIONAL.type().equals(txnType))
-		{
-			return true;
-		}
-		return false;
-	}
+//	public boolean checkTxnType(String txnType)
+//	{
+//		if (TransactionRequestType.TYPES.WITHIN_BANK.type().equals(txnType)
+//				|| TransactionRequestType.TYPES.INTER_BANK.type().equals(txnType)
+//				|| TransactionRequestType.TYPES.INTERNATIONAL.type().equals(txnType))
+//		{
+//			return true;
+//		}
+//		return false;
+//	}
 
 	public TxnCharge getTransactionCharge(TxnRequest trb, TxnParty payee)
 	{
