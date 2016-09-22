@@ -73,17 +73,6 @@
 		{
 			"owner": "590573",
 			"lastUpdatedBy": "590573",
-			"lastRevision": 560758250,
-			"id": "3cdb2b29-f47e-8486-6227-1a7f030ba0bd",
-			"name": "PSD2SusbcriptionAPI",
-			"description": "",
-			"order": [
-				"d4a90a88-aa1f-803b-b199-c8426e77990c"
-			]
-		},
-		{
-			"owner": "590573",
-			"lastUpdatedBy": "590573",
 			"lastRevision": 560758658,
 			"id": "e7053745-4e8f-d28f-b9f6-2e49b555bfcc",
 			"name": "Setup",
@@ -331,7 +320,7 @@
 		{
 			"id": "5ae04f61-18f4-c543-7362-f726fa785e5e",
 			"headers": "Content-Type: application/json\nAuthorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJjbGllbnRJZCI6IjRhNGIwMjgxLTQ5YjEtNDUzMy1iM2FjLWVlZTExZjFmNmJkOCIsInByb3ZpZGVyIjoiQmlnT2F1dGgyU2VydmVyIiwidXNlcl9uYW1lIjoiY2FzaGV3dm91Y2hlckBnbWFpbC5jb20iLCJzY29wZSI6WyJyZWFkIl0sImV4cCI6MTQ3NDU0NTQxNSwidXNlck5hbWUiOiJjYXNoZXd2b3VjaGVyQGdtYWlsLmNvbSIsInVzZXJJZCI6ImNhc2hld3ZvdWNoZXJAZ21haWwuY29tIiwiYXV0aG9yaXRpZXMiOlsiUk9MRV9VU0VSIl0sImp0aSI6IjY4NmE4ZmFjLWFmMWQtNDFmOS1iYmUyLWNjZGYzMmIzMzUyNyIsImNsaWVudF9pZCI6IjRhNGIwMjgxLTQ5YjEtNDUzMy1iM2FjLWVlZTExZjFmNmJkOCJ9.fM6Fv5Oi3gqXPKjO5NZz0m-sztmAnxsOWW_o1Mcouv4\n",
-			"url": "http://inmbz2239.in.dst.ibm.com:8085/cashewapi/user/cashewvoucher@gmail.com/account/subscription/challenge",
+			"url": "http://inmbz2239.in.dst.ibm.com:8085/cashewapi/user/tanmay.ambre@in.ibm.com/account/subscription/challenge",
 			"preRequestScript": null,
 			"pathVariables": {},
 			"method": "PATCH",
@@ -340,11 +329,11 @@
 			"tests": null,
 			"currentHelper": "normal",
 			"helperAttributes": {},
-			"time": 1474542366694,
+			"time": 1474544526222,
 			"name": "Answer Subscription Challenge",
 			"description": "",
 			"collectionId": "5b306c15-c816-bc11-fe47-862c5725af0d",
-			"rawModeData": "{\n  \"appUsername\": \"cashewvoucher@gmail.com\",\n  \"challengeAnswer\": {\n    \"answer\": \"9I0CH5K7X4\",\n    \"id\": \"50d5111d-69a9-400f-802c-e442d95a2fbd\"\n  },\n  \"subscriptionRequestId\": \"e4fde33d-e005-4c39-8585-bbd8bf7077f1\"\n}"
+			"rawModeData": "{\n  \"appUsername\": \"tanmay.ambre@in.ibm.com\",\n  \"challengeAnswer\": {\n    \"answer\": \"96L2LED5HP\",\n    \"id\": \"1841f9e0-d5a3-4a52-81d0-09faba02ffa1\"\n  },\n  \"subscriptionRequestId\": \"cb47449a-3400-4aa6-992a-f41bd66aeb02\"\n}"
 		},
 		{
 			"id": "61d8feba-0e89-8d2c-dfb3-9a25db335787",
@@ -705,7 +694,7 @@
 		},
 		{
 			"id": "c22a9446-b3a7-c88c-f69d-4ae8e36e635c",
-			"headers": "Content-Type: application/json\nAuthorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJjbGllbnRJZCI6IjRhNGIwMjgxLTQ5YjEtNDUzMy1iM2FjLWVlZTExZjFmNmJkOCIsInByb3ZpZGVyIjoiQmlnT2F1dGgyU2VydmVyIiwidXNlcl9uYW1lIjoidGFubWF5LmFtYnJlQGluLmlibS5jb20iLCJzY29wZSI6WyJyZWFkIl0sImV4cCI6MTQ3NDUzNTMwNSwidXNlck5hbWUiOiJ0YW5tYXkuYW1icmVAaW4uaWJtLmNvbSIsInVzZXJJZCI6InRhbm1heS5hbWJyZUBpbi5pYm0uY29tIiwiYXV0aG9yaXRpZXMiOlsiUk9MRV9VU0VSIl0sImp0aSI6IjJhMmRjODk0LTNjZGItNDBkOC04OTIzLTJjNjFiZDM3ZmMzYiIsImNsaWVudF9pZCI6IjRhNGIwMjgxLTQ5YjEtNDUzMy1iM2FjLWVlZTExZjFmNmJkOCJ9.dTTP8JUg8_zYRp-7u8Xea_KZ7qNQe8Ii0LfaEmbD5UU\n",
+			"headers": "Content-Type: application/json\nAuthorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJjbGllbnRJZCI6IjRhNGIwMjgxLTQ5YjEtNDUzMy1iM2FjLWVlZTExZjFmNmJkOCIsInByb3ZpZGVyIjoiQmlnT2F1dGgyU2VydmVyIiwidXNlcl9uYW1lIjoidGFubWF5LmFtYnJlQGluLmlibS5jb20iLCJzY29wZSI6WyJyZWFkIl0sImV4cCI6MTQ3NDU0Nzg3OSwidXNlck5hbWUiOiJ0YW5tYXkuYW1icmVAaW4uaWJtLmNvbSIsInVzZXJJZCI6InRhbm1heS5hbWJyZUBpbi5pYm0uY29tIiwiYXV0aG9yaXRpZXMiOlsiUk9MRV9VU0VSIl0sImp0aSI6IjMxZGY4MjM5LTMzYmMtNDMyYi1hYWRlLWI5NGY2ZjQ1ZjEzNyIsImNsaWVudF9pZCI6IjRhNGIwMjgxLTQ5YjEtNDUzMy1iM2FjLWVlZTExZjFmNmJkOCJ9.qwRo8euEWzw7_bH8GHI0LraqOpweX2zLMktiYVbm6lo\n",
 			"url": "http://inmbz2239.in.dst.ibm.com:8085/cashewapi/tanmay.ambre@in.ibm.com/IBMGB/6111/payment",
 			"preRequestScript": null,
 			"pathVariables": {},
@@ -715,11 +704,11 @@
 			"tests": null,
 			"currentHelper": "normal",
 			"helperAttributes": {},
-			"time": 1474542420357,
+			"time": 1474546430429,
 			"name": "Make Payment from User's Bank Account ",
 			"description": "",
 			"collectionId": "5b306c15-c816-bc11-fe47-862c5725af0d",
-			"rawModeData": "{\r\n    \"to\":{\r\n        \"bankId\":\"BARCGB\",\r\n          \"accountId\":\"6122\"\r\n      },  \r\n    \"value\":{\r\n        \"currency\":\"GBP\",\r\n        \"amount\":\"20\"\r\n      },\r\n    \"description\":\"Lunch 4\"\r\n}"
+			"rawModeData": "{\r\n    \"to\":{\r\n        \"bankId\":\"BARCGB\",\r\n          \"accountId\":\"6122\"\r\n      },  \r\n    \"value\":{\r\n        \"currency\":\"GBP\",\r\n        \"amount\":\"20\"\r\n      },\r\n    \"description\":\"Lunch 4\",\r\n    \"transactionRequestType\": \"PAYEE\"\r\n}"
 		},
 		{
 			"id": "c6ae9e67-e97c-890f-de0e-36474f971860",
@@ -758,25 +747,6 @@
 			"collectionId": "5b306c15-c816-bc11-fe47-862c5725af0d",
 			"rawModeData": "{\r\n    \"to\":{\r\n        \"bankId\":\"BARCGB\",\r\n          \"accountId\":\"6122\"\r\n      },  \r\n    \"value\":{\r\n        \"currency\":\"GBP\",\r\n        \"amount\":\"20\"\r\n      },\r\n    \"description\":\"Lunch 4\"\r\n}",
 			"folder": "5caef9a4-06dd-c9c6-13e3-f1c0952cbad0"
-		},
-		{
-			"id": "d4a90a88-aa1f-803b-b199-c8426e77990c",
-			"name": "Get Subscriptions",
-			"dataMode": "raw",
-			"data": [],
-			"descriptionFormat": null,
-			"description": "",
-			"headers": "Content-Type: application/json\nAuthorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE0NzM5NzIyMzcsInVzZXJfbmFtZSI6InRhbWJyZSIsImF1dGhvcml0aWVzIjpbIlVTRVIiXSwianRpIjoiN2E5N2QwMzUtNDVmYi00ODE0LWE0ZGYtMWNlZWRkMTY2MGUyIiwiY2xpZW50X2lkIjoicG9zdG1hbiIsInNjb3BlIjpbIndyaXRlIl19.8TTgN-5sQUZg6--MgKLiY-rQSjQLpDd3TSoK5XhnEdk\n",
-			"method": "GET",
-			"pathVariables": {},
-			"url": "https://172.30.178.91:8083/psd2subscriptionapi/subscription",
-			"preRequestScript": null,
-			"tests": null,
-			"currentHelper": "normal",
-			"helperAttributes": {},
-			"collectionId": "5b306c15-c816-bc11-fe47-862c5725af0d",
-			"rawModeData": "{\r\n    \"to\":{\r\n        \"bankId\":\"BARCGB\",\r\n          \"accountId\":\"6122\"\r\n      },  \r\n    \"value\":{\r\n        \"currency\":\"GBP\",\r\n        \"amount\":\"20\"\r\n      },\r\n    \"description\":\"Lunch 4\"\r\n}",
-			"folder": "3cdb2b29-f47e-8486-6227-1a7f030ba0bd"
 		},
 		{
 			"id": "d517aec8-e74e-cdf0-d5d9-5f2b3d832670",
@@ -870,8 +840,8 @@
 		},
 		{
 			"id": "f10ed0a2-b371-2f02-3f65-fd270fb64f0d",
-			"headers": "Content-Type: application/json\nAuthorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJjbGllbnRJZCI6IjRhNGIwMjgxLTQ5YjEtNDUzMy1iM2FjLWVlZTExZjFmNmJkOCIsInByb3ZpZGVyIjoiQmlnT2F1dGgyU2VydmVyIiwidXNlcl9uYW1lIjoiY2FzaGV3dm91Y2hlckBnbWFpbC5jb20iLCJzY29wZSI6WyJyZWFkIl0sImV4cCI6MTQ3NDU0NTQxNSwidXNlck5hbWUiOiJjYXNoZXd2b3VjaGVyQGdtYWlsLmNvbSIsInVzZXJJZCI6ImNhc2hld3ZvdWNoZXJAZ21haWwuY29tIiwiYXV0aG9yaXRpZXMiOlsiUk9MRV9VU0VSIl0sImp0aSI6IjY4NmE4ZmFjLWFmMWQtNDFmOS1iYmUyLWNjZGYzMmIzMzUyNyIsImNsaWVudF9pZCI6IjRhNGIwMjgxLTQ5YjEtNDUzMy1iM2FjLWVlZTExZjFmNmJkOCJ9.fM6Fv5Oi3gqXPKjO5NZz0m-sztmAnxsOWW_o1Mcouv4\n",
-			"url": "http://inmbz2239.in.dst.ibm.com:8085/cashewapi/user/cashewvoucher@gmail.com/account/subscriptionRequest",
+			"headers": "Content-Type: application/json\nAuthorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJjbGllbnRJZCI6IjRhNGIwMjgxLTQ5YjEtNDUzMy1iM2FjLWVlZTExZjFmNmJkOCIsInByb3ZpZGVyIjoiQmlnT2F1dGgyU2VydmVyIiwidXNlcl9uYW1lIjoidGFubWF5LmFtYnJlQGluLmlibS5jb20iLCJzY29wZSI6WyJyZWFkIl0sImV4cCI6MTQ3NDU0Nzg3OSwidXNlck5hbWUiOiJ0YW5tYXkuYW1icmVAaW4uaWJtLmNvbSIsInVzZXJJZCI6InRhbm1heS5hbWJyZUBpbi5pYm0uY29tIiwiYXV0aG9yaXRpZXMiOlsiUk9MRV9VU0VSIl0sImp0aSI6IjMxZGY4MjM5LTMzYmMtNDMyYi1hYWRlLWI5NGY2ZjQ1ZjEzNyIsImNsaWVudF9pZCI6IjRhNGIwMjgxLTQ5YjEtNDUzMy1iM2FjLWVlZTExZjFmNmJkOCJ9.qwRo8euEWzw7_bH8GHI0LraqOpweX2zLMktiYVbm6lo\n",
+			"url": "http://inmbz2239.in.dst.ibm.com:8085/cashewapi/user/tambre/account/subscriptionRequest",
 			"preRequestScript": null,
 			"pathVariables": {},
 			"method": "PUT",
@@ -880,11 +850,11 @@
 			"tests": null,
 			"currentHelper": "normal",
 			"helperAttributes": {},
-			"time": 1474542095005,
+			"time": 1474544316934,
 			"name": "Create Subscription Request",
 			"description": "",
 			"collectionId": "5b306c15-c816-bc11-fe47-862c5725af0d",
-			"rawModeData": "{\r\n  \"subscriptionInfo\":   {\r\n    \"username\" : \"cashewvoucher\",\r\n    \"accountId\" : \"7617\",\r\n    \"bankId\" : \"IBMGB\",\r\n    \"viewIds\": [{\"id\":\"owner\"}],\r\n    \"clientId\": \"cashew\",\r\n    \"limits\": [{\r\n            \"transactionRequestType\": { \"value\" : \"SELF\"},\r\n            \"amount\": { \"currency\" : \"GBP\", \"amount\" : 500}\r\n        },\r\n        {\r\n            \"transactionRequestType\": { \"value\" : \"MERCHANT\"},\r\n            \"amount\": { \"currency\" : \"GBP\", \"amount\" : 10}\r\n        },\r\n        {\r\n            \"transactionRequestType\": { \"value\" : \"PAYEE\"},\r\n            \"amount\": { \"currency\" : \"GBP\", \"amount\" : 25}\r\n        }\r\n        ],\r\n    \"transactionRequestTypes\": [{\"value\": \"SELF\"}, {\"value\": \"MERCHANT\"}, {\"value\": \"PAYEE\"}]\r\n  }\r\n\r\n}\r\n"
+			"rawModeData": "{\r\n  \"subscriptionInfo\":   {\r\n    \"username\" : \"tambre\",\r\n    \"accountId\" : \"6111\",\r\n    \"bankId\" : \"IBMGB\",\r\n    \"viewIds\": [{\"id\":\"owner\"}],\r\n    \"clientId\": \"cashew\",\r\n    \"limits\": [{\r\n            \"transactionRequestType\": { \"value\" : \"SELF\"},\r\n            \"amount\": { \"currency\" : \"GBP\", \"amount\" : 500}\r\n        },\r\n        {\r\n            \"transactionRequestType\": { \"value\" : \"MERCHANT\"},\r\n            \"amount\": { \"currency\" : \"GBP\", \"amount\" : 10}\r\n        },\r\n        {\r\n            \"transactionRequestType\": { \"value\" : \"PAYEE\"},\r\n            \"amount\": { \"currency\" : \"GBP\", \"amount\" : 25}\r\n        }\r\n        ],\r\n    \"transactionRequestTypes\": [{\"value\": \"SELF\"}, {\"value\": \"MERCHANT\"}, {\"value\": \"PAYEE\"}]\r\n  }\r\n\r\n}\r\n"
 		}
 	]
 }
