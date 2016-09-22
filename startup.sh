@@ -3,10 +3,13 @@
 export MOUNTPATH=/data/db
 
 adduser mongodb root
+#adduser elasticsearch root
 
 chmod -R 777 $MOUNTPATH
 chmod -R 777 /logs
 chmod -R 777 /data/configdb
+chmod -R 777 /usr/share/elasticsearch/data
+chmod -R 777 /
 
 echo $MOUNTPATH
 
@@ -22,5 +25,5 @@ set -e
 #echo "API Server logs available at: /logs"
 #exec java -jar /usr/local/mcabuddyapp/mcabuddyapi-beta.jar
 
-mongod --logpath /logs/mongodb.log & java -jar /usr/local/psd2/oauth2server-0.0.1-SNAPSHOT.jar &  java -jar /usr/local/psd2/psd2api-0.0.1-SNAPSHOT.jar & java -jar /usr/local/psd2/psd2demoapp-0.0.1-SNAPSHOT.jar
+elasticsearch -Des.insecure.allow.root=true & mongod --logpath /logs/mongodb.log & java -jar /usr/local/psd2/cashewapi-0.0.1-SNAPSHOT.jar & java -jar /usr/local/psd2/bigoauth2server-beta.jar
 
