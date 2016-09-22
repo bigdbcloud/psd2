@@ -15,6 +15,7 @@ import com.ibm.api.cashew.db.mongo.MongoVoucherRepository;
 import com.ibm.api.cashew.utils.Utils;
 import com.ibm.psd2.datamodel.pisp.TxnParty;
 import com.ibm.psd2.datamodel.pisp.TxnRequest;
+import com.ibm.psd2.datamodel.subscription.TransactionRequestType;
 
 @Service
 public class VoucherServiceImpl implements VoucherService {
@@ -49,6 +50,7 @@ public class VoucherServiceImpl implements VoucherService {
 			txnRequest.setTo(txnTo);
 			txnRequest.setValue(txnDetail.getValue());
 			txnRequest.setDescription(vocher.getDescription());
+			txnRequest.setTransactionRequestType(TransactionRequestType.TYPES.MERCHANT.name());
 
 			paymentsService.createTransactionRequest(vocher.getCreatedBy(), txnDetail.getBankId(),
 					txnDetail.getAccountId(), txnRequest);
@@ -82,6 +84,7 @@ public class VoucherServiceImpl implements VoucherService {
 			txnRequest.setTo(txnTo);
 			txnRequest.setValue(txnReq.getValue());
 			txnRequest.setDescription(vocher.getDescription());
+			txnRequest.setTransactionRequestType(TransactionRequestType.TYPES.PAYEE.name());
 
 			paymentsService.createTransactionRequest(centrlAcctUser, centralBank, centralAcct, txnRequest);
 

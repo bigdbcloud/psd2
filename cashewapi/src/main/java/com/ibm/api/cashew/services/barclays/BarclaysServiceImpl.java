@@ -19,11 +19,14 @@ import org.springframework.stereotype.Service;
 import org.springframework.util.CollectionUtils;
 import org.springframework.web.client.RestTemplate;
 
+import com.ibm.api.cashew.beans.UserAccount;
+import com.ibm.api.cashew.beans.barclays.Account;
 import com.ibm.api.cashew.beans.barclays.Customer;
 import com.ibm.api.cashew.beans.barclays.Transaction;
 import com.ibm.api.cashew.utils.UUIDGenerator;
 import com.ibm.psd2.datamodel.Amount;
 import com.ibm.psd2.datamodel.Challenge;
+import com.ibm.psd2.datamodel.aip.BankAccountDetailsView;
 import com.ibm.psd2.datamodel.aip.TransactionAccount;
 import com.ibm.psd2.datamodel.aip.TransactionBank;
 import com.ibm.psd2.datamodel.aip.TransactionDetails;
@@ -36,29 +39,18 @@ public class BarclaysServiceImpl implements BarclaysService {
 	@Autowired
 	RestTemplate restTemplate;
 
-	@Value("${barclays.service.url}")
-	private String barclaysUrl;
+	@Value("${barclays.account.service.url}")
+	private String acctServiceUrl;
+
+	@Value("${barclays.customer.service.url}")
+	private String custServiceUrl;
 
 	@Value("${barclays.id}")
 	private String barclaysBank;
 
-	public Customer getUserAccounts(String customerId) throws URISyntaxException {
-
-		String url = barclaysUrl + "/customers/{customerId}";
-
-		URI uri = new URI(url);
-
-		RequestEntity<Void> rea = RequestEntity.get(uri).accept(MediaType.APPLICATION_JSON).build();
-		Map<String, String> uriVariables = new HashMap<String, String>();
-		uriVariables.put("customerId", customerId);
-		Customer customer = restTemplate.getForObject(url, Customer.class, uriVariables);
-
-		return customer;
-	}
-
 	public List<com.ibm.psd2.datamodel.aip.Transaction> getTransactions(String accountId) throws URISyntaxException {
 
-		String url = barclaysUrl + "/accounts/" + accountId + "/transactions";
+		String url = acctServiceUrl + "/accounts/" + accountId + "/transactions";
 		URI uri = new URI(url);
 
 		RequestEntity<Void> rea = RequestEntity.get(uri).accept(MediaType.APPLICATION_JSON).build();
@@ -131,18 +123,24 @@ public class BarclaysServiceImpl implements BarclaysService {
 		txnDetails.setNewBalance(accBalance);
 		txn.setDetails(txnDetails);
 
-		TransactionBank txnBank = new TransactionBank();
-		txnBank.setName(barclaysBank);
-		txnBank.setNationalIdentifier(barclaysBank);
+		TransactionBank fromTxnBank = new TransactionBank();
+		fromTxnBank.setName(barclaysBank);
+		fromTxnBank.setNationalIdentifier(barclaysBank);
 
 		TransactionAccount thisAcct = new TransactionAccount();
 		thisAcct.setId(accountId);
-		thisAcct.setBank(txnBank);
+		thisAcct.setBank(fromTxnBank);
 
 		txn.setThisAccount(thisAcct);
 
 		TransactionAccount otherAcct = new TransactionAccount();
 		otherAcct.setId(transaction.getPaymentDescriptor().getId());
+
+		TransactionBank toTxnBank = new TransactionBank();
+		fromTxnBank.setName(transaction.getPaymentDescriptor().getName());
+		fromTxnBank.setNationalIdentifier(barclaysBank);
+		otherAcct.setBank(toTxnBank);
+
 		txn.setOtherAccount(otherAcct);
 
 		return txn;
@@ -163,6 +161,59 @@ public class BarclaysServiceImpl implements BarclaysService {
 		subscriptionRequest.getSubscriptionInfo().setStatus(SubscriptionInfo.STATUS_ACTIVE);
 
 		return subscriptionRequest;
+	}
+
+	@Override
+	public Map<String, BankAccountDetailsView> getAccountInformation(UserAccount ua) throws URISyntaxException {
+
+		Customer customer = getUserAccounts(ua.getAccount().getUsername());
+		Map<String, BankAccountDetailsView> accts = populateCustomerAcct(customer);
+		return accts;
+	}
+
+	private Map<String, BankAccountDetailsView> populateCustomerAcct(Customer customer) {
+
+		if (customer != null && !CollectionUtils.isEmpty(customer.getAccountList())) {
+
+			List<Account> acctList = customer.getAccountList();
+
+			if (!CollectionUtils.isEmpty(acctList)) {
+
+				Map<String, BankAccountDetailsView> bankAccts = new HashMap<String, BankAccountDetailsView>();
+
+				for (Account acct : acctList) {
+					BankAccountDetailsView bankAcctDetails = new BankAccountDetailsView();
+					bankAcctDetails.setBankId(barclaysBank);
+					bankAcctDetails.setId(acct.getId());
+
+					Amount amt = new Amount();
+
+					if (!StringUtils.isEmpty(acct.getCurrentBalance())) {
+						amt.setAmount(Double.valueOf(acct.getCurrentBalance()));
+					}
+
+					bankAcctDetails.setBalance(amt);
+					bankAcctDetails.setUsername(customer.getId());
+					bankAcctDetails.setType(acct.getAccountType());
+					bankAccts.put(acct.getId(), bankAcctDetails);
+				}
+
+				return bankAccts;
+			}
+		}
+
+		return null;
+	}
+
+	private Customer getUserAccounts(String customerId) throws URISyntaxException {
+
+		String url = custServiceUrl + "/customers/{customerId}";
+
+		Map<String, String> uriVariables = new HashMap<String, String>();
+		uriVariables.put("customerId", customerId);
+		Customer customer = restTemplate.getForObject(url, Customer.class, uriVariables);
+
+		return customer;
 	}
 
 }
