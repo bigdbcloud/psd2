@@ -13,6 +13,7 @@ import com.ibm.psd2.api.aip.services.BankAccountDetailsService;
 import com.ibm.psd2.api.aip.services.TransactionStatementService;
 import com.ibm.psd2.api.pisp.db.MongoTxnRequestDetailsRepository;
 import com.ibm.psd2.api.utils.Constants;
+import com.ibm.psd2.datamodel.Amount;
 import com.ibm.psd2.datamodel.Challenge;
 import com.ibm.psd2.datamodel.ChallengeAnswer;
 import com.ibm.psd2.datamodel.aip.BankAccountDetails;
@@ -43,9 +44,69 @@ public class TransactionRequestServiceImpl implements TransactionRequestService
 	@Autowired
 	private BankAccountDetailsService bds;
 
-	private void postTransaction(TxnRequestDetails txnReq)
+	private void postTransactionToBeneficiary(TxnRequestDetails txnReq)
 	{
-		logger.info("Processing txnRequest: " + txnReq);
+		logger.info("Processing Beneficiary txnRequest: " + txnReq);
+		
+		BankAccountDetails to = bds.getBankAccountDetails(txnReq.getBody().getTo().getBankId(), txnReq.getBody().getTo().getAccountId());
+		double newToBalance = 0;
+		if (to!= null)
+		{
+			newToBalance = to.getBalance().getAmount() + txnReq.getBody().getValue().getAmount();
+			to.getBalance().setAmount(newToBalance);
+			bds.updateBalance(to.getBankId(), to.getId(), newToBalance);
+
+			Transaction txn = new Transaction();
+
+			txn.setId(UUIDGenerator.generateUUID());
+			
+			TransactionDetails txnDetails = new TransactionDetails();
+			txnDetails.setCompleted(Transaction.DATE_FORMAT.format(new Date()));
+			txnDetails.setDescription(txnReq.getBody().getDescription());
+			txnDetails.setNewBalance(to.getBalance());
+			txnDetails.setPosted(Transaction.DATE_FORMAT.format(new Date()));
+			txnDetails.setType(txnReq.getType());
+			txnDetails.setValue(txnReq.getBody().getValue());
+
+			txn.setDetails(txnDetails);
+			
+
+			TransactionAccount thisAcc = new TransactionAccount();
+
+			thisAcc.setId(to.getId());
+
+			TransactionBank beneficiaryBank = new TransactionBank();
+			beneficiaryBank.setName(to.getBankId());
+			beneficiaryBank.setNationalIdentifier(to.getBankId());
+			thisAcc.setBank(beneficiaryBank);
+
+			thisAcc.setHolders(to.getOwners());
+			thisAcc.setIban(to.getIban());
+			thisAcc.setNumber(to.getNumber());
+			thisAcc.setSwiftBic(to.getSwiftBic());
+
+			txn.setThisAccount(thisAcc);
+			
+			TransactionAccount toAcc = new TransactionAccount();
+
+			toAcc.setId(txnReq.getFrom().getAccountId());
+
+			TransactionBank payerBank = new TransactionBank();
+			payerBank.setName(txnReq.getFrom().getBankId());
+			payerBank.setNationalIdentifier(txnReq.getFrom().getBankId());
+			toAcc.setBank(payerBank);
+
+			txn.setOtherAccount(toAcc);
+
+			logger.info("Saving Beneficiary Transaction = " + txn);
+			
+			tss.createTransaction(txn);
+		}
+	}
+
+	private void postTransactionToPayer(TxnRequestDetails txnReq)
+	{
+		logger.info("Processing Payer txnRequest: " + txnReq);
 
 		Transaction txn = new Transaction();
 
@@ -53,18 +114,10 @@ public class TransactionRequestServiceImpl implements TransactionRequestService
 		BankAccountDetails from = bds.getBankAccountDetails(txnReq.getFrom().getBankId(),
 				txnReq.getFrom().getAccountId());
 		
-		BankAccountDetails to = bds.getBankAccountDetails(txnReq.getBody().getTo().getBankId(), txnReq.getBody().getTo().getAccountId());
-
 		double newFromBalance = from.getBalance().getAmount() - txnReq.getBody().getValue().getAmount()
 				- txnReq.getCharge().getValue().getAmount();
 		
 		bds.updateBalance(from.getBankId(), from.getId(), newFromBalance);
-		
-		if (to != null)
-		{
-			double newToBalance = to.getBalance().getAmount() + txnReq.getBody().getValue().getAmount();
-			bds.updateBalance(to.getBankId(), to.getId(), newToBalance);
-		}
 		
 		from.getBalance().setAmount(newFromBalance);
 
@@ -74,7 +127,9 @@ public class TransactionRequestServiceImpl implements TransactionRequestService
 		txnDetails.setNewBalance(from.getBalance());
 		txnDetails.setPosted(Transaction.DATE_FORMAT.format(new Date()));
 		txnDetails.setType(txnReq.getType());
-		txnDetails.setValue(txnReq.getBody().getValue());
+		Amount value = txnReq.getBody().getValue();
+		value.setAmount(value.getAmount()*(-1));
+		txnDetails.setValue(value);
 
 		txn.setDetails(txnDetails);
 
@@ -103,7 +158,7 @@ public class TransactionRequestServiceImpl implements TransactionRequestService
 
 		txn.setOtherAccount(toAcc);
 
-		logger.info("Saving Transaction = " + txn);
+		logger.info("Saving Payer Transaction = " + txn);
 
 		tss.createTransaction(txn);
 	}
@@ -150,7 +205,8 @@ public class TransactionRequestServiceImpl implements TransactionRequestService
 		// Hack to bypass Txn Processing
 		if (savedTxn.getStatus().equals(TxnRequestDetails.TXN_STATUS_PENDING))
 		{
-			postTransaction(savedTxn);
+			postTransactionToBeneficiary(savedTxn);
+			postTransactionToPayer(savedTxn);
 			savedTxn.setStatus(TxnRequestDetails.TXN_STATUS_COMPLETED);
 			savedTxn.setEndDate(TxnRequest.DATE_FORMAT.format(new Date()));
 		}
@@ -180,7 +236,8 @@ public class TransactionRequestServiceImpl implements TransactionRequestService
 		// Hack to bypass Txn Processing
 		if (savedTxn.getStatus().equals(TxnRequestDetails.TXN_STATUS_PENDING))
 		{
-			postTransaction(savedTxn);
+			postTransactionToBeneficiary(savedTxn);
+			postTransactionToPayer(savedTxn);
 			savedTxn.setStatus(TxnRequestDetails.TXN_STATUS_COMPLETED);
 			savedTxn.setEndDate(TxnRequest.DATE_FORMAT.format(new Date()));
 		}
