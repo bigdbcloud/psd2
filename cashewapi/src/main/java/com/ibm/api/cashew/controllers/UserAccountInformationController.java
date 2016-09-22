@@ -119,7 +119,7 @@ public class UserAccountInformationController extends APIController {
 	}
 	
 	
-	@RequestMapping(method = RequestMethod.GET, value = "/transactions", produces = MediaType.APPLICATION_JSON_VALUE)
+	@RequestMapping(method = RequestMethod.GET, value = "/{userId}/transactions", produces = MediaType.APPLICATION_JSON_VALUE)
 	@PreAuthorize("authentication.name == #userId")
 	public @ResponseBody ResponseEntity<APIResponse<List<com.ibm.api.cashew.beans.Transaction>>> getTransactionStatement(
 			@RequestParam (value="bankId",required = false) String bankId,
@@ -129,16 +129,15 @@ public class UserAccountInformationController extends APIController {
 			@RequestHeader(value = "obp_from_date", required = false) String fromDate,
 			@RequestHeader(value = "obp_to_date", required = false) String toDate,
 			@RequestHeader(value = "obp_sort_by", required = false) String sortBy,
-			@RequestHeader(value = "obp_offset", required = false) Integer offset) {
+			@RequestHeader(value = "obp_offset", required = false) Integer offset, 
+			@PathVariable("userId") String userId) {
 		
-		OAuth2Authentication auth = (OAuth2Authentication) SecurityContextHolder.getContext().getAuthentication();
-		logger.debug("Getting Account Details for user = " + auth.getName());
 		
 		APIResponse<List<com.ibm.api.cashew.beans.Transaction>> result = null;
 		ResponseEntity<APIResponse<List<com.ibm.api.cashew.beans.Transaction>>> response;
 		try {
 			result = new APIResponse<>();
-			result.setResponse(uss.getTransactions(auth.getName(), bankId, accountId, sortDirection, fromDate, toDate, sortBy,
+			result.setResponse(uss.getTransactions(userId, bankId, accountId, sortDirection, fromDate, toDate, sortBy,
 					offset, limit));
 			response = ResponseEntity.ok(result);
 		} catch (Exception e) {
