@@ -73,6 +73,7 @@ public class UserAccountInformationController extends APIController {
 		ResponseEntity<APIResponse<UserAccount>> response;
 		try {
 			result = new APIResponse<>();
+			sca.setAppUsername(userId);
 			result.setResponse(uss.answerSubscriptionRequestChallenge(sca));
 			response = ResponseEntity.ok(result);
 		} catch (Exception e) {
