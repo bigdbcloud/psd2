@@ -66,7 +66,6 @@ public class PaymentsServiceImpl implements PaymentsService
 		UserAccount ua = muar.findByAppUsernameAndAccountIdAndAccountBankId(appUsername, accountId, bankId);
 		logger.debug("ua = " + ua);
 
-		String txnType = null;
 		TxnRequestDetails txnDetails = null;
 
 		if (ua == null || ua.getSubscriptionInfoStatus() == null
@@ -81,6 +80,7 @@ public class PaymentsServiceImpl implements PaymentsService
 			throw new IllegalArgumentException("Invalid Transaction Request");
 		}
 		
+		
 		if (trb.getTransactionRequestType() == null || trb.getTransactionRequestType().isEmpty() || !TransactionRequestType.isValid(trb.getTransactionRequestType()))
 		{
 			throw new IllegalArgumentException("Invalid Transaction Type specified");
@@ -90,7 +90,7 @@ public class PaymentsServiceImpl implements PaymentsService
 		{
 			if (ua.getAccount().getBankId().equals(ibmBank))
 			{
-				txnDetails = ibmPaymentsService.createTransactionRequest(ua, trb, txnType);
+				txnDetails = ibmPaymentsService.createTransactionRequest(ua, trb, trb.getTransactionRequestType());
 			}
 		}
 		catch (Exception e)

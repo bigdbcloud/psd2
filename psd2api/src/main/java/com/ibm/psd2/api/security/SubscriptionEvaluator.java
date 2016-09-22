@@ -87,7 +87,7 @@ class PermissionData
 		this.permission = permission;
 
 		logger.debug("Method Arguments username: " + userId + " clientId: " + clientId + " accountId: " + accountId
-				+ " bankId:" + bankId);
+				+ " bankId:" + bankId + ", viewId: " + viewId + ", txnType: " + txnType + ", permission: " + permission);
 	}
 
 	public String getUserId()
