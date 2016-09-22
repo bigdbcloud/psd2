@@ -23,7 +23,7 @@ import com.ibm.psd2.datamodel.subscription.TransactionRequestType;
 @Service
 public class PaymentsServiceImpl implements PaymentsService
 {
-	private Logger logger = LogManager.getLogger(UserAccountServiceImpl.class);
+	private Logger logger = LogManager.getLogger(PaymentsServiceImpl.class);
 
 	@Autowired
 	RestTemplate restTemplate;
