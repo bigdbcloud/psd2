@@ -23,7 +23,7 @@ import com.ibm.psd2.datamodel.subscription.TransactionRequestType;
 @Service
 public class PaymentsServiceImpl implements PaymentsService
 {
-	private Logger logger = LogManager.getLogger(UserAccountServiceImpl.class);
+	private Logger logger = LogManager.getLogger(PaymentsServiceImpl.class);
 
 	@Autowired
 	RestTemplate restTemplate;
@@ -80,14 +80,10 @@ public class PaymentsServiceImpl implements PaymentsService
 		{
 			throw new IllegalArgumentException("Invalid Transaction Request");
 		}
-
-		if (ua.getAccount().getBankId().equals(bankId))
+		
+		if (trb.getTransactionRequestType() == null || trb.getTransactionRequestType().isEmpty() || !TransactionRequestType.isValid(trb.getTransactionRequestType()))
 		{
-			txnType = TransactionRequestType.TYPES.WITHIN_BANK.name();
-		}
-		else
-		{
-			txnType = TransactionRequestType.TYPES.INTER_BANK.name();
+			throw new IllegalArgumentException("Invalid Transaction Type specified");
 		}
 
 		try

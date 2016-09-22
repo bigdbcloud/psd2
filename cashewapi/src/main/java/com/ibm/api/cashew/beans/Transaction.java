@@ -13,12 +13,16 @@ import com.ibm.psd2.datamodel.pisp.TxnParty;
 @JsonInclude(value = Include.NON_EMPTY)
 public class Transaction {
 	
+	public static final String TXN_TYPE_CREDIT	= "credit";
+	public static final String TXN_TYPE_DEBIT	= "debit";
+
 	@Id
 	private String id;
 	private TxnParty from;
 	private TxnParty to;
 	private TransactionDetails details;
 	private User userInfo;
+	
 	
 	public String getId() {
 		return id;

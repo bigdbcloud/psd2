@@ -8,19 +8,17 @@ import com.fasterxml.jackson.annotation.JsonInclude.Include;
 @JsonInclude(value = Include.NON_EMPTY)
 public class TransactionRequestType implements Serializable
 {
-	public static enum TYPES 
+	public static enum TYPES
 	{
-		WITHIN_BANK("WITHIN_BANK"),
-		INTER_BANK("INTER_BANK"),
-		INTERNATIONAL("INTERNATIONAL");
-		
+		SELF("SELF"), MERCHANT("MERCHANT"), PAYEE("PAYEE");
+
 		private String type;
-		
+
 		public String type()
 		{
 			return type;
 		}
-		
+
 		TYPES(String type)
 		{
 			this.type = type;
@@ -38,6 +36,21 @@ public class TransactionRequestType implements Serializable
 	{
 		this.value = value;
 	}
-	
-	
+
+	public static boolean isValid(String val)
+	{
+		if (val != null && !val.isEmpty())
+		{
+			TYPES[] types = TYPES.values();
+			for (int i = 0; i < types.length; i++)
+			{
+				if (types[i].type().equals(val))
+				{
+					return true;
+				}
+			}
+		}
+		return false;
+	}
+
 }
