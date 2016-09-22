@@ -16,7 +16,9 @@ import com.ibm.api.cashew.beans.SubscriptionChallengeAnswer;
 import com.ibm.api.cashew.beans.User;
 import com.ibm.api.cashew.beans.UserAccount;
 import com.ibm.api.cashew.db.elastic.ElasticTransactionRepository;
+import com.ibm.api.cashew.db.mongo.MongoTransactionRepository;
 import com.ibm.api.cashew.db.mongo.MongoUserAccountsRepository;
+import com.ibm.api.cashew.services.barclays.BarclaysService;
 import com.ibm.api.cashew.services.ibmbank.IBMUserAccountService;
 import com.ibm.psd2.datamodel.aip.BankAccountDetailsView;
 import com.ibm.psd2.datamodel.aip.Transaction;
@@ -41,13 +43,13 @@ public class UserAccountServiceImpl implements UserAccountService
 	@Autowired
 	IBMUserAccountService ibmUserAccSvc;
 
-
-
 	@Value("${ibmbank.id}")
 	private String ibmBank;
 
 	@Value("${barclays.id}")
 	private String barclaysBank;
+	
+	private BarclaysService barclaysService;
 
 	@Autowired
 	private ElasticTransactionRepository elasticTxnRepo;
@@ -73,6 +75,12 @@ public class UserAccountServiceImpl implements UserAccountService
 			{
 				res = ibmUserAccSvc.subscribe(subscriptionRequest);
 			}
+			
+			if (subscriptionRequest.getSubscriptionInfo().getBankId().equals(barclaysBank))
+			{
+				res = barclaysService.subscribe(subscriptionRequest);
+			}
+
 
 			ua = new UserAccount();
 			ua.setId(UUIDGenerator.generateUUID());
@@ -246,6 +254,11 @@ public class UserAccountServiceImpl implements UserAccountService
 			if (ua.getAccount().getBankId().equals(ibmBank))
 			{
 				txns = ibmUserAccSvc.getTransactions(ua, sortDirection, fromDate, toDate, sortBy, offset, limit);
+			}
+			
+			if (ua.getAccount().getBankId().equals(barclaysBank))
+			{
+				txns = barclaysService.getTransactions(accountId);
 			}
 		}
 		catch (Exception e)
