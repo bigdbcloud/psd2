@@ -49,6 +49,7 @@ public class UserAccountServiceImpl implements UserAccountService
 	@Value("${barclays.id}")
 	private String barclaysBank;
 	
+	@Autowired
 	private BarclaysService barclaysService;
 
 	@Autowired

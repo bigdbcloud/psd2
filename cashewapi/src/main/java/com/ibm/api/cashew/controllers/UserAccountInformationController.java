@@ -73,6 +73,7 @@ public class UserAccountInformationController extends APIController {
 		ResponseEntity<APIResponse<UserAccount>> response;
 		try {
 			result = new APIResponse<>();
+			sca.setAppUsername(userId);
 			result.setResponse(uss.answerSubscriptionRequestChallenge(sca));
 			response = ResponseEntity.ok(result);
 		} catch (Exception e) {
@@ -102,8 +103,7 @@ public class UserAccountInformationController extends APIController {
 	@RequestMapping(method = RequestMethod.GET, value = "/{userId}/accounts", produces = MediaType.APPLICATION_JSON_VALUE)
 	@PreAuthorize("authentication.name == #userId")
 	public @ResponseBody ResponseEntity<APIResponse<List<BankAccountDetailsView>>> getAllAccountDetails(
-			@PathVariable("userId") String userId, @PathVariable("bankId") String bankId,
-			@PathVariable("accountId") String accountId) {
+			@PathVariable("userId") String userId) {
 		logger.debug("Getting Account Details for user = " + userId);
 		APIResponse<List<BankAccountDetailsView>> result = null;
 		ResponseEntity<APIResponse<List<BankAccountDetailsView>>> response;
