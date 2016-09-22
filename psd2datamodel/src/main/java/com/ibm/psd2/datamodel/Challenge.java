@@ -8,7 +8,7 @@ import com.fasterxml.jackson.annotation.JsonInclude.Include;
 @JsonInclude(value = Include.NON_EMPTY)
 public class Challenge implements Serializable
 {
-
+	public static final int CHALLENGE_MAX_ATTEMPTS = 3;
 	public static final String ACCOUNT_SUBSCRIPTION = "ACCOUNT_SUBSCRIPTION";
 	public static final String TXN_CHALLENGE = "TXN_CHALLENGE";
 	public static final String CHALLENGE_RESPONSE ="Secret answer for subscription request initiated by you is {0}.";

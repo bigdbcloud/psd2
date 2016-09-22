@@ -4,6 +4,7 @@ import static org.springframework.data.mongodb.core.query.Criteria.where;
 import static org.springframework.data.mongodb.core.query.Query.query;
 import static org.springframework.data.mongodb.core.query.Update.update;
 
+import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Map;
 
@@ -30,6 +31,7 @@ import com.ibm.psd2.utils.UUIDGenerator;
 public class TxnRequestProcessor extends BaseRichBolt
 {
 	private static final Logger logger = LogManager.getLogger(TxnRequestProcessor.class);
+	public static final SimpleDateFormat DATE_FORMAT = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSZ");
 
 	ObjectMapper mapper = null;
 
@@ -95,7 +97,7 @@ public class TxnRequestProcessor extends BaseRichBolt
 			}
 
 			tdb.setStatus(TxnRequestDetails.TXN_STATUS_COMPLETED);
-			tdb.setEndDate(new Date());
+			tdb.setEndDate(DATE_FORMAT.format(new Date()));
 			tdb.setTransactionIds(UUIDGenerator.generateUUID());
 
 			mongoOperation.save(tdb);

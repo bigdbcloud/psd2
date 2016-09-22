@@ -1,7 +1,6 @@
 package com.ibm.psd2.datamodel.pisp;
 
 import java.io.Serializable;
-import java.util.Date;
 
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
