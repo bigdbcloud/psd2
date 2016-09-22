@@ -135,12 +135,12 @@ public class BarclaysServiceImpl implements BarclaysService {
 
 		TransactionAccount otherAcct = new TransactionAccount();
 		otherAcct.setId(transaction.getPaymentDescriptor().getId());
-		
+
 		TransactionBank toTxnBank = new TransactionBank();
 		fromTxnBank.setName(transaction.getPaymentDescriptor().getName());
 		fromTxnBank.setNationalIdentifier(barclaysBank);
 		otherAcct.setBank(toTxnBank);
-		
+
 		txn.setOtherAccount(otherAcct);
 
 		return txn;
@@ -187,7 +187,10 @@ public class BarclaysServiceImpl implements BarclaysService {
 					bankAcctDetails.setId(acct.getId());
 
 					Amount amt = new Amount();
-					amt.setAmount(Double.valueOf(acct.getCurrentBalance()));
+
+					if (!StringUtils.isEmpty(acct.getCurrentBalance())) {
+						amt.setAmount(Double.valueOf(acct.getCurrentBalance()));
+					}
 
 					bankAcctDetails.setBalance(amt);
 					bankAcctDetails.setUsername(customer.getId());

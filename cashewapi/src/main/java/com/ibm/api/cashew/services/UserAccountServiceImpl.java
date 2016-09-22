@@ -181,7 +181,7 @@ public class UserAccountServiceImpl implements UserAccountService {
 				for (Iterator<UserAccount> iterator = uas.iterator(); iterator.hasNext();) {
 					UserAccount ua = iterator.next();
 
-					if (!ua.getSubscriptionInfoStatus().equals(SubscriptionInfo.STATUS_ACTIVE)) {
+					if (!SubscriptionInfo.STATUS_ACTIVE.equals(ua.getSubscriptionInfoStatus())) {
 						continue;
 					}
 

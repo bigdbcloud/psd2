@@ -90,7 +90,7 @@ public class ElasticTransactionRepositoryImpl implements ElasticTransactionCusto
 	@Override
 	public List<Transaction> getTransactions(String userId, String bankId, String accountId, String fromDate,
 			String toDate) {
-		
+			
 		QueryRequest qr = new QueryRequest();
 
 		qr.setFromDate(fromDate);
@@ -100,7 +100,7 @@ public class ElasticTransactionRepositoryImpl implements ElasticTransactionCusto
 		if (userId != null) {
 			qr.addQueryCriteria(new FieldBean("userInfo.userId", userId));
 		}
-
+	
 		if (bankId != null) {
 			qr.addQueryCriteria(new FieldBean("from.bankId", bankId));
 		}
