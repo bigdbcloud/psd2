@@ -6,8 +6,12 @@ import java.text.SimpleDateFormat;
 import java.util.Base64;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.HashSet;
 import java.util.Random;
+import java.util.Set;
+import java.util.StringTokenizer;
 
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
 import com.ibm.api.cashew.beans.Voucher;
@@ -16,6 +20,11 @@ import com.ibm.api.cashew.beans.Voucher;
 public class Utils
 {
 	public final SimpleDateFormat DATE_FORMAT = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSZ");
+	
+	private Set<String> tagSet;
+	
+	@Value("${default.tags}")
+	private String tags;
 
 	public double getAgeInYears(String dob)
 	{
@@ -69,6 +78,22 @@ public class Utils
 		c.setTime(new Date());
 		c.add(Calendar.MONTH, 12);
 		return Voucher.DATE_FORMAT.format(c.getTime());
+
+	}
+	
+	public Set<String> getTags(){
+	
+		if (tagSet == null)
+		{
+			StringTokenizer st = new StringTokenizer(tags, ",");
+			tagSet = new HashSet<>();
+			while (st.hasMoreTokens())
+			{
+				String channel = st.nextToken();
+				tagSet.add(channel);
+			}
+		}
+		return tagSet;
 
 	}
 	
