@@ -287,7 +287,7 @@ public class UserAccountServiceImpl implements UserAccountService
 
 					if (ua.getAccount().getBankId().equals(barclaysBank))
 					{
-						txns.addAll(barclaysService.getTransactions(accountId));
+						txns.addAll(barclaysService.getTransactions(ua.getAccount().getId()));
 					}
 
 				}
