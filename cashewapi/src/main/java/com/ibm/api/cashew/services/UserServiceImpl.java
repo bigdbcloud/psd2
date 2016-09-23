@@ -131,8 +131,21 @@ public class UserServiceImpl implements UserService {
 	@Override
 	public long addTags(Set<Tag> tags, String userId) {
 
-		if (!CollectionUtils.isEmpty(tags)) {			
-			return userRepo.addTag(tags, userId);
+		User existingUser = getUserById(userId);
+
+		if (existingUser == null) {
+			throw new IllegalArgumentException("User doesn't exist");
+		}
+		
+		if (!CollectionUtils.isEmpty(tags)) {
+			
+			Set<Tag> existngTags=existingUser.getTags();
+			
+			if(existngTags!=null){
+				
+				existngTags.addAll(tags);
+			}
+			return userRepo.addTag(existngTags, userId);
 		}
 		return 0;
 

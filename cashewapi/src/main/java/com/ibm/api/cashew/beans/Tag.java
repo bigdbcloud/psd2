@@ -1,7 +1,7 @@
 package com.ibm.api.cashew.beans;
 
 public class Tag {
-
+	
 	private String name;
 	private String spentLimit;
 
