@@ -41,7 +41,7 @@ public class UserInsightsServiceImpl implements UserInsightsService {
 	@Autowired
 	UserService userService;
 
-	private static String INSIGHT_MSG = "Users at your age group spend {0} on {1}";
+	private static String INSIGHT_MSG = "Users at your age group spend on {0} {1}";
 
 	@Override
 	public List<Insight> getAvgSpendInAgeGroup(String userId) {
@@ -123,11 +123,11 @@ public class UserInsightsServiceImpl implements UserInsightsService {
 
 								Insight insght = new Insight();
 
-								insght.setDescription(MessageFormat.format(INSIGHT_MSG, metricRes.getName(),
-										(metricRes.getValue())));
+								insght.setDescription(MessageFormat.format(INSIGHT_MSG,bucketRes.getKey_as_string(),
+										((Double)metricRes.getValue()).toString().replaceAll("-","")));
 
 								insght.setUnit("AVG");
-								//insght.setValue((metricRes.getValue());
+								insght.setValue(((Double)metricRes.getValue()).toString().replaceAll("-",""));
 								insights.add(insght);
 							}
 						}
