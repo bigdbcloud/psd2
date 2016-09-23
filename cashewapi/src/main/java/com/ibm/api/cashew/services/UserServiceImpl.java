@@ -20,7 +20,7 @@ import com.ibm.api.cashew.db.mongo.MongoUserRepository;
 
 @Service
 public class UserServiceImpl implements UserService {
-	
+
 	public static final SimpleDateFormat DATE_FORMAT = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSZ");
 	private final Logger logger = LogManager.getLogger(UserServiceImpl.class);
 
@@ -29,7 +29,7 @@ public class UserServiceImpl implements UserService {
 
 	@Value("${user.role.lowest}")
 	private String ROLE_USER;
-	
+
 	@Autowired
 	private MongoTagRepository tagRepo;
 
@@ -129,12 +129,9 @@ public class UserServiceImpl implements UserService {
 		if (dob == null) {
 			throw new IllegalArgumentException("Date Of Birth can't be null");
 		}
-		try
-		{
+		try {
 			DATE_FORMAT.parse(dob);
-		}
-		catch (ParseException e)
-		{
+		} catch (ParseException e) {
 			throw new IllegalArgumentException("Incorrect Date format. Specify date in yyyy-MM-dd'T'HH:mm:ss.SSSZ");
 		}
 
@@ -145,20 +142,24 @@ public class UserServiceImpl implements UserService {
 	public long addTags(Set<Tag> tags, String userId) {
 
 		User existingUser = getUserById(userId);
+		Set<Tag> tagSet;
 
 		if (existingUser == null) {
 			throw new IllegalArgumentException("User doesn't exist");
 		}
-		
+
 		if (!CollectionUtils.isEmpty(tags)) {
-			
-			Set<Tag> existngTags=existingUser.getTags();
-			
-			if(existngTags!=null){
-				
-				existngTags.addAll(tags);
+
+			tagSet = existingUser.getTags();
+
+			if (tagSet != null) {
+
+				tagSet.addAll(tags);
+			} else {
+				tagSet = tags;
 			}
-			return userRepo.addTag(existngTags, userId);
+
+			return userRepo.addTag(tagSet, userId);
 		}
 		return 0;
 
@@ -166,8 +167,8 @@ public class UserServiceImpl implements UserService {
 
 	@Override
 	public Set<Tag> getTags() {
-		
-		Set<Tag> tags =new HashSet<Tag>(tagRepo.findAll());		
+
+		Set<Tag> tags = new HashSet<Tag>(tagRepo.findAll());
 		return tags;
 	}
 }
