@@ -75,7 +75,7 @@ public class VoucherServiceImpl implements VoucherService {
 		validateRedeemVocher(vocher, existngVocher);
 
 		double amtRedeemed = getAmountRedeemed(vocher, existngVocher);
-		double amtLeft = vocher.getAmount().getAmount() - amtRedeemed;
+		double amtLeft = existngVocher.getAmount().getAmount() - amtRedeemed;
 
 		for (TxnDetails txnReq : vocher.getRedeemedTo()) {
 
@@ -169,7 +169,7 @@ public class VoucherServiceImpl implements VoucherService {
 		double amtRedeemed = getAmountRedeemed(vocher, existingVocher);
 		double amtToRedeem = getAmountToRedeem(vocher, existingVocher);
 
-		amtLeft = vocher.getAmount().getAmount() - amtRedeemed;
+		amtLeft = existingVocher.getAmount().getAmount() - amtRedeemed;
 
 		for (TxnDetails txDetails : vocher.getRedeemedTo()) {
 			if (txDetails.getValue().getCurrency() == null
