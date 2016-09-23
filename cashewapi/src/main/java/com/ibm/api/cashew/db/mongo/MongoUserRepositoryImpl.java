@@ -52,7 +52,7 @@ public class MongoUserRepositoryImpl implements MongoUserRepositoryCustom {
 	}
 
 	@Override
-	public long updateDOB(String userId, Date dob) {
+	public long updateDOB(String userId, String dob) {
 		logger.debug("updating email of user = " + userId);
 		WriteResult wr = mongoTemplate.updateFirst(query(where("userId").is(userId)), update("dateOfBirth", dob),
 				User.class);

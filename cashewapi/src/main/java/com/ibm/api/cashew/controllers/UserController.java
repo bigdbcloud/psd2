@@ -1,7 +1,5 @@
 package com.ibm.api.cashew.controllers;
 
-import java.util.Date;
-import java.util.List;
 import java.util.Set;
 
 import org.apache.logging.log4j.LogManager;
@@ -12,7 +10,6 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.util.CollectionUtils;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -123,8 +120,7 @@ public class UserController extends APIController {
 
 		logger.info("changing date of birth of user: " + userId);
 		try {
-			Date d = utils.DATE_FORMAT.parse(dob);
-			Long res = userService.changeDOB(userId, d);
+			Long res = userService.changeDOB(userId,dob);
 			result.setStatus(APIResponse.STATUS_SUCCESS);
 			result.setResponse(res);
 			result.setVersion(version);

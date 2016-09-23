@@ -1,5 +1,7 @@
 package com.ibm.api.cashew.services;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;
@@ -18,7 +20,9 @@ import com.ibm.api.cashew.db.mongo.MongoUserRepository;
 
 @Service
 public class UserServiceImpl implements UserService {
-	private static final Logger logger = LogManager.getLogger(UserServiceImpl.class);
+	
+	public static final SimpleDateFormat DATE_FORMAT = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSZ");
+	private final Logger logger = LogManager.getLogger(UserServiceImpl.class);
 
 	@Autowired
 	MongoUserRepository userRepo;
@@ -120,11 +124,20 @@ public class UserServiceImpl implements UserService {
 	}
 
 	@Override
-	public long changeDOB(String userId, Date dob) {
+	public long changeDOB(String userId, String dob) {
 		logger.info("changing user's dateOfBirth: " + userId + " : " + dob);
 		if (dob == null) {
-			throw new IllegalArgumentException("PhoneNumber can't be null");
+			throw new IllegalArgumentException("Date Of Birth can't be null");
 		}
+		try
+		{
+			DATE_FORMAT.parse(dob);
+		}
+		catch (ParseException e)
+		{
+			throw new IllegalArgumentException("Incorrect Date format. Specify date in yyyy-MM-dd'T'HH:mm:ss.SSSZ");
+		}
+
 		return userRepo.updateDOB(userId, dob);
 	}
 

@@ -1,8 +1,10 @@
 package com.ibm.api.cashew.services;
 
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 
 import org.apache.logging.log4j.LogManager;
@@ -46,16 +48,27 @@ public class UserInsightsServiceImpl implements UserInsightsService
 			return null;
 		}
 		
-		Insight insight = new Insight();
+		Date date = null; 
 		
-		QueryRequest qr = new QueryRequest();
+		try
+		{
+			DATE_FORMAT.parse(user.getDateOfBirth());
+		}
+		catch (ParseException e)
+		{
+			logger.error(e.getMessage(), e);
+			return null;
+		}
 
+		Insight insight = new Insight();
+		QueryRequest qr = new QueryRequest();
 		Calendar cal = Calendar.getInstance();
-		cal.setTimeInMillis(user.getDateOfBirth().getTime() - TIME_5_YEARS);
+		
+		cal.setTimeInMillis(date.getTime() - TIME_5_YEARS);
 		String fromDate = DATE_FORMAT.format(cal.getTime());
 		
 		cal = Calendar.getInstance();
-		cal.setTimeInMillis(user.getDateOfBirth().getTime() + TIME_5_YEARS);
+		cal.setTimeInMillis(date.getTime() + TIME_5_YEARS);
 		String toDate = DATE_FORMAT.format(cal.getTime());
 
 		logger.debug("Age Group Range: " + fromDate + " - " + toDate);
