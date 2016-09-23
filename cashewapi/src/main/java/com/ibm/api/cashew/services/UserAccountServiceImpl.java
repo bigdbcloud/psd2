@@ -93,6 +93,11 @@ public class UserAccountServiceImpl implements UserAccountService
 			ua.setLimits(res.getSubscriptionInfo().getLimits());
 			ua.setTransactionRequestTypes(res.getSubscriptionInfo().getTransactionRequestTypes());
 			ua.setSubscriptionRequestChallengeId(res.getChallenge().getId());
+			
+			if (res.getSubscriptionInfo() != null)
+			{
+				ua.setSubscriptionInfoStatus(res.getSubscriptionInfo().getStatus());
+			}
 
 			BankAccountDetailsView badv = new BankAccountDetailsView();
 			badv.setBankId(res.getSubscriptionInfo().getBankId());
@@ -370,7 +375,7 @@ public class UserAccountServiceImpl implements UserAccountService
 
 				if (txn.getDetails() != null && txn.getDetails().getValue() != null)
 				{
-					if (!txn.getDetails().getType().equals(TransactionRequestType.TYPES.SELF.type()))
+					if (txn.getDetails().getType().equals(TransactionRequestType.TYPES.SELF.type()))
 					{
 						elasticTxn.setTxnType(com.ibm.api.cashew.beans.Transaction.TXN_TYPE_ROTATE);
 					}
