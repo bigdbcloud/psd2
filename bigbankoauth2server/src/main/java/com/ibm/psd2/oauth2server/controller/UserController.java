@@ -1,6 +1,7 @@
 package com.ibm.psd2.oauth2server.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -22,13 +23,16 @@ public class UserController
 	@Autowired
 	ClientDetailsServiceImpl cds;
 	
+	@Value("${user.mobileNumber}")
+	private String twilioPhnNumber;
 	
 	@RequestMapping(method = RequestMethod.POST, value = "/admin/user", consumes=MediaType.APPLICATION_JSON_VALUE, produces=MediaType.ALL_VALUE)
-	public ResponseEntity<String> createUser(@RequestBody UserInfo u)
+	public ResponseEntity<String> createUser(@RequestBody(required =true) UserInfo u)
 	{
 		ResponseEntity<String> response;
 		try
 		{
+			u.setMobileNumber(twilioPhnNumber);
 			uds.createUserInfo(u);
 			response = ResponseEntity.ok("SUCCESS");
 		}
@@ -40,7 +44,7 @@ public class UserController
 	}
 	
 	@RequestMapping(method = RequestMethod.POST, value = "/admin/client", consumes=MediaType.APPLICATION_JSON_VALUE, produces=MediaType.ALL_VALUE)
-	public ResponseEntity<String> createClient(@RequestBody ClientInfo c)
+	public ResponseEntity<String> createClient(@RequestBody(required = true) ClientInfo c)
 	{
 		ResponseEntity<String> response;
 		try
