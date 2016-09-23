@@ -66,10 +66,11 @@ public class ResourceServerSecurityConfig extends ResourceServerConfigurerAdapte
 			{
 				System.out.println("adding cors support");
 				registry.addMapping("/**").allowedOrigins("*").allowedHeaders("*").allowedMethods("OPTIONS", "HEAD",
-						"GET", "PUT", "POST", "PATCH");
+						"GET", "PUT", "POST", "PATCH", "DELETE");
 			}
 		};
 	}	
+	
 	
 //	@Bean
 //	public FilterRegistrationBean corsFilter()

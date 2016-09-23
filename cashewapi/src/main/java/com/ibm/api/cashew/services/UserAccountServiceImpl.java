@@ -22,7 +22,6 @@ import com.ibm.api.cashew.services.barclays.BarclaysService;
 import com.ibm.api.cashew.services.ibmbank.IBMUserAccountService;
 import com.ibm.psd2.datamodel.aip.BankAccountDetailsView;
 import com.ibm.psd2.datamodel.aip.Transaction;
-import com.ibm.psd2.datamodel.aip.TransactionDetails;
 import com.ibm.psd2.datamodel.pisp.TxnParty;
 import com.ibm.psd2.datamodel.pisp.TxnRequest;
 import com.ibm.psd2.datamodel.pisp.TxnRequestDetails;
@@ -93,7 +92,7 @@ public class UserAccountServiceImpl implements UserAccountService
 			ua.setLimits(res.getSubscriptionInfo().getLimits());
 			ua.setTransactionRequestTypes(res.getSubscriptionInfo().getTransactionRequestTypes());
 			ua.setSubscriptionRequestChallengeId(res.getChallenge().getId());
-			
+
 			if (res.getSubscriptionInfo() != null)
 			{
 				ua.setSubscriptionInfoStatus(res.getSubscriptionInfo().getStatus());
@@ -366,14 +365,21 @@ public class UserAccountServiceImpl implements UserAccountService
 				elasticTxn.setFrom(from);
 
 				TxnParty to = new TxnParty();
-				to.setAccountId(txn.getOtherAccount().getId());
-				to.setBankId(txn.getOtherAccount().getBank().getName());
 
+				if (txn.getOtherAccount() != null)
+				{
+					to.setAccountId(txn.getOtherAccount().getId());
+					if (txn.getOtherAccount().getBank() != null)
+					{
+						to.setBankId(txn.getOtherAccount().getBank().getName());
+					}
+				}
 				elasticTxn.setTo(to);
 
 				elasticTxn.setDetails(txn.getDetails());
 
-				if (txn.getDetails() != null && txn.getDetails().getValue() != null)
+				if (txn.getDetails() != null && txn.getDetails().getValue() != null
+						&& txn.getDetails().getType() != null)
 				{
 					if (txn.getDetails().getType().equals(TransactionRequestType.TYPES.SELF.type()))
 					{

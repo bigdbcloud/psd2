@@ -22,7 +22,7 @@ import com.ibm.api.cashew.beans.aggregation.QueryRequest;
 import com.ibm.api.cashew.db.elastic.ElasticTransactionRepository;
 
 @Service
-public class UserInsightsServiceImpl
+public class UserInsightsServiceImpl implements UserInsightsService
 {
 	public static final SimpleDateFormat DATE_FORMAT = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSZ");
 	public static final long TIME_5_YEARS = 94608000000L;
@@ -35,6 +35,7 @@ public class UserInsightsServiceImpl
 	@Autowired
 	UserService userService;
 
+	@Override
 	public List<Insight> getAvgSpendInAgeGroup(String userId)
 	{
 		logger.debug("Getting Average Spend in age group of user: " + userId);
