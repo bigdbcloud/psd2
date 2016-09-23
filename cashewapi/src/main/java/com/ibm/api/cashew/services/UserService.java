@@ -1,6 +1,5 @@
 package com.ibm.api.cashew.services;
 
-import java.util.Date;
 import java.util.Set;
 
 import com.ibm.api.cashew.beans.Tag;
@@ -18,7 +17,7 @@ public interface UserService
 
 	public long changeEmail(String userId, String email);
 	
-	public long changeDOB(String userId, Date dob);
+	public long changeDOB(String userId, String dob);
 
 	public Set<Tag> getTags();
 

@@ -22,7 +22,7 @@ public class User implements Serializable {
 	private String name;
 	private String email;
 	private String mobileNumber;
-	private Date dateOfBirth;
+	private String dateOfBirth;
 	private Address address;
 
 	private String authProvider;
@@ -88,11 +88,11 @@ public class User implements Serializable {
 		this.locked = locked;
 	}
 
-	public Date getDateOfBirth() {
+	public String getDateOfBirth() {
 		return dateOfBirth;
 	}
 
-	public void setDateOfBirth(Date dateOfBirth) {
+	public void setDateOfBirth(String dateOfBirth) {
 		this.dateOfBirth = dateOfBirth;
 	}
 
