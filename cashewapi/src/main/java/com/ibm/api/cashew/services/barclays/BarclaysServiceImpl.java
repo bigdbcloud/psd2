@@ -3,12 +3,15 @@ package com.ibm.api.cashew.services.barclays;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 import org.apache.commons.lang.StringUtils;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.ParameterizedTypeReference;
@@ -27,6 +30,7 @@ import com.ibm.api.cashew.utils.UUIDGenerator;
 import com.ibm.psd2.datamodel.Amount;
 import com.ibm.psd2.datamodel.Challenge;
 import com.ibm.psd2.datamodel.aip.BankAccountDetailsView;
+import com.ibm.psd2.datamodel.aip.BankAccountOwner;
 import com.ibm.psd2.datamodel.aip.TransactionAccount;
 import com.ibm.psd2.datamodel.aip.TransactionBank;
 import com.ibm.psd2.datamodel.aip.TransactionDetails;
@@ -34,7 +38,15 @@ import com.ibm.psd2.datamodel.subscription.SubscriptionInfo;
 import com.ibm.psd2.datamodel.subscription.SubscriptionRequest;
 
 @Service
-public class BarclaysServiceImpl implements BarclaysService {
+public class BarclaysServiceImpl implements BarclaysService
+{
+	private Logger logger = LogManager.getLogger(BarclaysServiceImpl.class);
+	
+	private static Map<String, String> groupIdToTxnTypeMap = Collections.unmodifiableMap(new HashMap<String, String>(){
+		{
+			put("4722", "MERCHANT");
+		}
+	});
 
 	@Autowired
 	RestTemplate restTemplate;
@@ -48,9 +60,12 @@ public class BarclaysServiceImpl implements BarclaysService {
 	@Value("${barclays.id}")
 	private String barclaysBank;
 
-	public List<com.ibm.psd2.datamodel.aip.Transaction> getTransactions(String accountId) throws URISyntaxException {
+	public List<com.ibm.psd2.datamodel.aip.Transaction> getTransactions(String accountId) throws URISyntaxException
+	{
 
 		String url = acctServiceUrl + "/accounts/" + accountId + "/transactions";
+
+		logger.debug("URL = " + url);
 		URI uri = new URI(url);
 
 		RequestEntity<Void> rea = RequestEntity.get(uri).accept(MediaType.APPLICATION_JSON).build();
@@ -58,19 +73,23 @@ public class BarclaysServiceImpl implements BarclaysService {
 		uriVariables.put("accountId", accountId);
 
 		ResponseEntity<List<Transaction>> txn = restTemplate.exchange(rea,
-				new ParameterizedTypeReference<List<Transaction>>() {
+				new ParameterizedTypeReference<List<Transaction>>()
+				{
 				});
 
 		List<Transaction> txnList = txn.getBody();
+		logger.debug("Barclays TxnList Response = " + txnList);
 
 		List<com.ibm.psd2.datamodel.aip.Transaction> txnRes = null;
 
-		if (!CollectionUtils.isEmpty(txn.getBody())) {
+		if (!CollectionUtils.isEmpty(txn.getBody()))
+		{
 
 			txnRes = new ArrayList<com.ibm.psd2.datamodel.aip.Transaction>();
-			for (Transaction transaction : txnList) {
+			for (Transaction transaction : txnList)
+			{
 
-				txnRes.add(populateTransactionRespose(transaction, accountId));
+				txnRes.add(populateTransactionResponse(transaction, accountId));
 			}
 
 		}
@@ -78,7 +97,7 @@ public class BarclaysServiceImpl implements BarclaysService {
 		return txnRes;
 	}
 
-	private com.ibm.psd2.datamodel.aip.Transaction populateTransactionRespose(Transaction transaction,
+	private com.ibm.psd2.datamodel.aip.Transaction populateTransactionResponse(Transaction transaction,
 			String accountId) {
 
 		com.ibm.psd2.datamodel.aip.Transaction txn = new com.ibm.psd2.datamodel.aip.Transaction();
@@ -97,11 +116,11 @@ public class BarclaysServiceImpl implements BarclaysService {
 				amt.setAmount(moneyIn);
 			} else {
 
-				amt.setAmount(moneyOut);
+				amt.setAmount(moneyOut*(-1));
 			}
 
 		}
-
+		amt.setCurrency("GBP");
 		txnDetails.setValue(amt);
 		Amount accBalance = new Amount();
 
@@ -109,7 +128,7 @@ public class BarclaysServiceImpl implements BarclaysService {
 				&& StringUtils.isNotBlank(transaction.getAccountBalanceAfterTransaction().getAmount())) {
 
 			accBalance.setAmount(Double.valueOf(transaction.getAccountBalanceAfterTransaction().getAmount()));
-
+			accBalance.setCurrency("GBP");
 		}
 
 		if (StringUtils.isNotBlank(transaction.getCreated())) {
@@ -119,7 +138,7 @@ public class BarclaysServiceImpl implements BarclaysService {
 
 		}
 
-		txnDetails.setDescription(transaction.getDescription());
+		txnDetails.setDescription(transaction.getPaymentDescriptor().getName() + " : " + transaction.getDescription());
 		txnDetails.setNewBalance(accBalance);
 		txn.setDetails(txnDetails);
 
@@ -135,11 +154,12 @@ public class BarclaysServiceImpl implements BarclaysService {
 
 		TransactionAccount otherAcct = new TransactionAccount();
 		otherAcct.setId(transaction.getPaymentDescriptor().getId());
+		
 
 		TransactionBank toTxnBank = new TransactionBank();
-		fromTxnBank.setName(transaction.getPaymentDescriptor().getName());
-		fromTxnBank.setNationalIdentifier(barclaysBank);
-		otherAcct.setBank(toTxnBank);
+//		toTxnBank.setName(transaction.getPaymentDescriptor().getName());
+//		toTxnBank.setNationalIdentifier(barclaysBank);
+//		otherAcct.setBank(toTxnBank);
 
 		txn.setOtherAccount(otherAcct);
 
@@ -147,7 +167,8 @@ public class BarclaysServiceImpl implements BarclaysService {
 	}
 
 	@Override
-	public SubscriptionRequest subscribe(SubscriptionRequest subscriptionRequest) {
+	public SubscriptionRequest subscribe(SubscriptionRequest subscriptionRequest)
+	{
 
 		Challenge challenge = new Challenge();
 		challenge.setId(subscriptionRequest.getSubscriptionInfo().getBankId() + "-" + UUIDGenerator.generateUUID());
@@ -164,31 +185,37 @@ public class BarclaysServiceImpl implements BarclaysService {
 	}
 
 	@Override
-	public Map<String, BankAccountDetailsView> getAccountInformation(UserAccount ua) throws URISyntaxException {
+	public Map<String, BankAccountDetailsView> getAccountInformation(UserAccount ua) throws URISyntaxException
+	{
 
 		Customer customer = getUserAccounts(ua.getAccount().getUsername());
 		Map<String, BankAccountDetailsView> accts = populateCustomerAcct(customer);
 		return accts;
 	}
 
-	private Map<String, BankAccountDetailsView> populateCustomerAcct(Customer customer) {
+	private Map<String, BankAccountDetailsView> populateCustomerAcct(Customer customer)
+	{
 
-		if (customer != null && !CollectionUtils.isEmpty(customer.getAccountList())) {
+		if (customer != null && !CollectionUtils.isEmpty(customer.getAccountList()))
+		{
 
 			List<Account> acctList = customer.getAccountList();
 
-			if (!CollectionUtils.isEmpty(acctList)) {
+			if (!CollectionUtils.isEmpty(acctList))
+			{
 
 				Map<String, BankAccountDetailsView> bankAccts = new HashMap<String, BankAccountDetailsView>();
 
-				for (Account acct : acctList) {
+				for (Account acct : acctList)
+				{
 					BankAccountDetailsView bankAcctDetails = new BankAccountDetailsView();
 					bankAcctDetails.setBankId(barclaysBank);
 					bankAcctDetails.setId(acct.getId());
 
 					Amount amt = new Amount();
 
-					if (!StringUtils.isEmpty(acct.getCurrentBalance())) {
+					if (!StringUtils.isEmpty(acct.getCurrentBalance()))
+					{
 						amt.setAmount(Double.valueOf(acct.getCurrentBalance()));
 					}
 
@@ -205,7 +232,8 @@ public class BarclaysServiceImpl implements BarclaysService {
 		return null;
 	}
 
-	private Customer getUserAccounts(String customerId) throws URISyntaxException {
+	private Customer getUserAccounts(String customerId) throws URISyntaxException
+	{
 
 		String url = custServiceUrl + "/customers/{customerId}";
 

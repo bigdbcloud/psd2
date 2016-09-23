@@ -2,6 +2,9 @@ package com.ibm.api.cashew.beans.barclays;
 
 import java.util.List;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
+
 public class Transaction {
 
 	private Amount amount;
@@ -124,4 +127,13 @@ public class Transaction {
 		this.metadata = metadata;
 	}
 
+	public String toString() {
+		ObjectMapper mapper = new ObjectMapper();
+		try {
+			return mapper.writeValueAsString(this);
+		} catch (JsonProcessingException e) {
+			e.printStackTrace();
+		}
+		return "";
+	}	
 }
