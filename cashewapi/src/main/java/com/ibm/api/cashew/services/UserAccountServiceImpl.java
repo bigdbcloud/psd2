@@ -56,6 +56,9 @@ public class UserAccountServiceImpl implements UserAccountService
 	@Autowired
 	private ElasticTransactionRepository elasticTxnRepo;
 
+	@Autowired
+	private UserService userService;
+
 	@Override
 	public SubscriptionRequest subscribe(String username, SubscriptionRequest subscriptionRequest)
 	{
@@ -399,8 +402,9 @@ public class UserAccountServiceImpl implements UserAccountService
 					}
 				}
 
-				User user = new User();
-				user.setUserId(appUser);
+				User user = userService.findUserById(appUser);
+				user.setAuthProvider(null);
+				user.setAuthProviderClientId(null);
 
 				elasticTxn.setUserInfo(user);
 				elasticTxnList.add(elasticTxn);
