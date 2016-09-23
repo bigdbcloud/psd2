@@ -375,7 +375,7 @@ public class UserAccountServiceImpl implements UserAccountService
 
 				if (txn.getDetails() != null && txn.getDetails().getValue() != null)
 				{
-					if (!txn.getDetails().getType().equals(TransactionRequestType.TYPES.SELF.type()))
+					if (txn.getDetails().getType().equals(TransactionRequestType.TYPES.SELF.type()))
 					{
 						elasticTxn.setTxnType(com.ibm.api.cashew.beans.Transaction.TXN_TYPE_ROTATE);
 					}
