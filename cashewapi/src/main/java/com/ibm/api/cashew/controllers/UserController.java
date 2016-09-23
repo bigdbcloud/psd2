@@ -1,6 +1,7 @@
 package com.ibm.api.cashew.controllers;
 
 import java.util.Date;
+import java.util.List;
 import java.util.Set;
 
 import org.apache.logging.log4j.LogManager;
@@ -46,12 +47,6 @@ public class UserController extends APIController {
 		try {
 			String userId = SecurityContextHolder.getContext().getAuthentication().getName();
 			User user = userService.findUserById(userId);
-			
-			if(user!=null && !CollectionUtils.isEmpty(user.getTags())){	
-				
-				Set<Tag> tags= userService.getTags();
-				user.setTags(tags);
-			}			
 			result.setStatus(APIResponse.STATUS_SUCCESS);
 			result.setResponse(user);
 			result.setVersion(version);
@@ -153,6 +148,29 @@ public class UserController extends APIController {
 		try {
 
 			Long res = userService.addTags(tags, userId);
+			result.setStatus(APIResponse.STATUS_SUCCESS);
+			result.setResponse(res);
+			result.setVersion(version);
+			response = ResponseEntity.ok(result);
+
+		} catch (Exception e) {
+			response = handleException(e, version, result);
+		}
+		
+		return response;
+
+	}
+	
+	@RequestMapping(method = RequestMethod.GET, value = "/tags", produces = MediaType.APPLICATION_JSON_VALUE)
+	public @ResponseBody ResponseEntity<APIResponse<Set<String>>> getTags() {
+
+		APIResponse<Set<String>> result = new APIResponse<>();
+		ResponseEntity<APIResponse<Set<String>>> response;
+
+
+		try {
+
+			Set<String> res = utils.getTags();
 			result.setStatus(APIResponse.STATUS_SUCCESS);
 			result.setResponse(res);
 			result.setVersion(version);

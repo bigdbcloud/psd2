@@ -14,6 +14,7 @@ import java.util.StringTokenizer;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
+import com.ibm.api.cashew.beans.Tag;
 import com.ibm.api.cashew.beans.Voucher;
 
 @Component
@@ -89,8 +90,8 @@ public class Utils
 			tagSet = new HashSet<>();
 			while (st.hasMoreTokens())
 			{
-				String channel = st.nextToken();
-				tagSet.add(channel);
+				String tag = st.nextToken();				
+				tagSet.add(tag);
 			}
 		}
 		return tagSet;
