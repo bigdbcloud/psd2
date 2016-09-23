@@ -55,98 +55,138 @@ import com.ibm.api.cashew.beans.aggregation.MetricAggregationRequest;
 import com.ibm.api.cashew.beans.aggregation.MetricAggregationResponse;
 import com.ibm.api.cashew.beans.aggregation.QueryRequest;
 
-public class ElasticSearchAggregationHelper {
+public class ElasticSearchAggregationHelper
+{
 
 	private static final Logger logger = LogManager.getLogger(ElasticSearchAggregationHelper.class);
 	public static final SimpleDateFormat DATE_FORMAT = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSZ");
 
-	public static QueryBuilder buildQuery(QueryRequest qr) {
+	public static QueryBuilder buildQuery(QueryRequest qr)
+	{
 
 		QueryBuilder bqb = null;
 
-		if (qr.getQueryCriteria() != null) {
+		if (qr.getQueryCriteria() != null)
+		{
 
 			bqb = boolQuery();
-			for (Iterator<FieldBean> iterator = qr.getQueryCriteria().iterator(); iterator.hasNext();) {
+			for (Iterator<FieldBean> iterator = qr.getQueryCriteria().iterator(); iterator.hasNext();)
+			{
 				FieldBean fq = iterator.next();
 				MatchQueryBuilder mqb = matchQuery(fq.getName(), fq.getValue());
 				((BoolQueryBuilder) bqb).must(mqb);
 			}
 		}
 
-		if (qr.getFromDate() != null && qr.getToDate() != null && qr.getDateField() != null) {
+		if (qr.getFromDate() != null && qr.getToDate() != null && qr.getDateField() != null)
+		{
 			DateTime dtFrom = DateTime.parse(qr.getFromDate(), DateTimeFormat.forPattern(DATE_FORMAT.toPattern()));
 			DateTime dtTo = DateTime.parse(qr.getToDate(), DateTimeFormat.forPattern(DATE_FORMAT.toPattern()));
 
 			long fromEpoch = dtFrom.getMillis();
 			long toEpoch = dtTo.getMillis();
 
-			if (bqb != null && bqb instanceof BoolQueryBuilder) {
+			if (bqb != null && bqb instanceof BoolQueryBuilder)
+			{
 
 				bqb = ((BoolQueryBuilder) bqb)
 						.filter(rangeQuery(qr.getDateField()).gte(fromEpoch).lte(toEpoch).format("epoch_millis"));
-			} else {
+			}
+			else
+			{
 
 				bqb = rangeQuery(qr.getDateField()).gte(fromEpoch).lte(toEpoch).format("epoch_millis");
 			}
-		} else if (bqb==null){
+		}
+		else if (bqb == null)
+		{
 
 			bqb = matchAllQuery();
 		}
 		return bqb;
 	}
 
-	public static AbstractAggregationBuilder buildMetricsAggregationRequest(MetricAggregationRequest mar) {
+	public static AbstractAggregationBuilder buildMetricsAggregationRequest(MetricAggregationRequest mar)
+	{
 		AbstractAggregationBuilder builder = null;
-		if (mar.getType() == AggregationTypes.EXTENDEDSTATS) {
-			if (mar.getField() != null) {
+		if (mar.getType() == AggregationTypes.EXTENDEDSTATS)
+		{
+			if (mar.getField() != null)
+			{
 				builder = extendedStats(mar.getName()).field(mar.getField().getName());
-			} else if (mar.getScript() != null) {
+			}
+			else if (mar.getScript() != null)
+			{
 				Script script = new Script(mar.getScript().getScriptText(), ScriptService.ScriptType.INLINE,
 						mar.getScript().getLanguage(), null);
 				logger.debug("creating script - " + script);
 				builder = extendedStats(mar.getName()).script(script);
 			}
-		} else if (mar.getType() == AggregationTypes.SUM) {
-			if (mar.getField() != null) {
+		}
+		else if (mar.getType() == AggregationTypes.SUM)
+		{
+			if (mar.getField() != null)
+			{
 				builder = sum(mar.getName()).field(mar.getField().getName());
-			} else if (mar.getScript() != null) {
+			}
+			else if (mar.getScript() != null)
+			{
 				Script script = new Script(mar.getScript().getScriptText(), ScriptService.ScriptType.INLINE,
 						mar.getScript().getLanguage(), null);
 				logger.debug("creating script - " + script);
 				builder = sum(mar.getName()).script(script);
 			}
-		} else if (mar.getType() == AggregationTypes.AVG) {
-			if (mar.getField() != null) {
+		}
+		else if (mar.getType() == AggregationTypes.AVG)
+		{
+			if (mar.getField() != null)
+			{
 				builder = avg(mar.getName()).field(mar.getField().getName());
-			} else if (mar.getScript() != null) {
+			}
+			else if (mar.getScript() != null)
+			{
 				Script script = new Script(mar.getScript().getScriptText(), ScriptService.ScriptType.INLINE,
 						mar.getScript().getLanguage(), null);
 				logger.debug("creating script - " + script);
 				builder = avg(mar.getName()).script(script);
 			}
-		} else if (mar.getType() == AggregationTypes.MAX) {
-			if (mar.getField() != null) {
+		}
+		else if (mar.getType() == AggregationTypes.MAX)
+		{
+			if (mar.getField() != null)
+			{
 				builder = max(mar.getName()).field(mar.getField().getName());
-			} else if (mar.getScript() != null) {
+			}
+			else if (mar.getScript() != null)
+			{
 				Script script = new Script(mar.getScript().getScriptText(), ScriptService.ScriptType.INLINE,
 						mar.getScript().getLanguage(), null);
 				logger.debug("creating script - " + script);
 				builder = max(mar.getName()).script(script);
 			}
-		} else if (mar.getType() == AggregationTypes.MIN) {
-			if (mar.getField() != null) {
+		}
+		else if (mar.getType() == AggregationTypes.MIN)
+		{
+			if (mar.getField() != null)
+			{
 				builder = min(mar.getName()).field(mar.getField().getName());
-			} else if (mar.getScript() != null) {
+			}
+			else if (mar.getScript() != null)
+			{
 				Script script = new Script(mar.getScript().getScriptText(), ScriptService.ScriptType.INLINE,
 						mar.getScript().getLanguage(), null);
 				logger.debug("creating script - " + script);
 				builder = min(mar.getName()).script(script);
 			}
-		} else if (mar.getType() == AggregationTypes.COUNT) {
-			if (mar.getField() != null) {
+		}
+		else if (mar.getType() == AggregationTypes.COUNT)
+		{
+			if (mar.getField() != null)
+			{
 				builder = count(mar.getName()).field(mar.getField().getName());
-			} else if (mar.getScript() != null) {
+			}
+			else if (mar.getScript() != null)
+			{
 				Script script = new Script(mar.getScript().getScriptText(), ScriptService.ScriptType.INLINE,
 						mar.getScript().getLanguage(), null);
 				logger.debug("creating script - " + script);
@@ -156,40 +196,54 @@ public class ElasticSearchAggregationHelper {
 		return builder;
 	}
 
-	public static AggregationBuilder buildBucketAggregationRequest(QueryRequest qr, BucketAggregationRequest bar) {
+	public static AggregationBuilder buildBucketAggregationRequest(QueryRequest qr, BucketAggregationRequest bar)
+	{
 		AggregationBuilder builder = null;
 
-		if (qr == null || bar == null) {
+		if (qr == null || bar == null)
+		{
 			return null;
 		}
 
 		DateTime dtFrom = null;
 		DateTime dtTo = null;
 
-		if (qr.getDateField() != null || qr.getFromDate() != null || qr.getToDate() != null) {
+		if (qr.getDateField() != null || qr.getFromDate() != null || qr.getToDate() != null)
+		{
 
 			dtFrom = DateTime.parse(qr.getFromDate(), DateTimeFormat.forPattern(DATE_FORMAT.toPattern()));
 			dtTo = DateTime.parse(qr.getToDate(), DateTimeFormat.forPattern(DATE_FORMAT.toPattern()));
 		}
 
-		if (bar.getType() == AggregationTypes.DATEHISTOGRAM) {
+		if (bar.getType() == AggregationTypes.DATEHISTOGRAM)
+		{
 
 			builder = dateHistogram(bar.getName()).field(qr.getDateField())
 					.interval(new DateHistogramInterval(bar.getInterval()))
 					.timeZone(Calendar.getInstance().getTimeZone().getID()).minDocCount(1).extendedBounds(dtFrom, dtTo);
-		} else if (AggregationTypes.TERMS.name().equals(bar.getType().name())) {
-			if (bar.getField() != null) {
+		}
+		else if (AggregationTypes.TERMS.name().equals(bar.getType().name()))
+		{
+			if (bar.getField() != null)
+			{
 				builder = terms(bar.getName()).field(bar.getField().getName());
-			} else if (bar.getScript() != null) {
+			}
+			else if (bar.getScript() != null)
+			{
 				Script script = new Script(bar.getScript().getScriptText(), ScriptService.ScriptType.INLINE,
 						bar.getScript().getLanguage(), bar.getScript().getParams());
 				logger.debug("creating script - " + script);
 				builder = terms(bar.getName()).script(script);
 			}
-		} else if (AggregationTypes.HISTOGRAM.name().equals(bar.getType().name())) {
-			if (bar.getField() != null) {
+		}
+		else if (AggregationTypes.HISTOGRAM.name().equals(bar.getType().name()))
+		{
+			if (bar.getField() != null)
+			{
 				builder = histogram(bar.getName()).field(bar.getField().getName());
-			} else if (bar.getScript() != null) {
+			}
+			else if (bar.getScript() != null)
+			{
 				Script script = new Script(bar.getScript().getScriptText(), ScriptService.ScriptType.INLINE,
 						bar.getScript().getLanguage(), bar.getScript().getParams());
 				logger.debug("creating script - " + script);
@@ -197,8 +251,10 @@ public class ElasticSearchAggregationHelper {
 			}
 		}
 
-		if (bar.getSubAggregations() != null) {
-			for (Iterator<AggregationRequest> iterator = bar.getSubAggregations().iterator(); iterator.hasNext();) {
+		if (bar.getSubAggregations() != null)
+		{
+			for (Iterator<AggregationRequest> iterator = bar.getSubAggregations().iterator(); iterator.hasNext();)
+			{
 				AggregationRequest ab = iterator.next();
 				logger.debug("setting aggregation - " + ab);
 				// TODO: Currently only metric sub aggregation are supported.
@@ -211,14 +267,17 @@ public class ElasticSearchAggregationHelper {
 	}
 
 	public static MetricAggregationResponse buildMetricAggregationResponse(AggregationRequest requestedAggregation,
-			Aggregation agg) {
-		if (agg == null) {
+			Aggregation agg)
+	{
+		if (agg == null)
+		{
 			return null;
 		}
 
 		MetricAggregationResponse responseAggr = new MetricAggregationResponse();
 
-		if (agg instanceof ExtendedStats) {
+		if (agg instanceof ExtendedStats)
+		{
 			ExtendedStats stats = (ExtendedStats) agg;
 
 			responseAggr.setName(requestedAggregation.getName());
@@ -235,23 +294,33 @@ public class ElasticSearchAggregationHelper {
 			value.put("variance", stats.getVariance());
 
 			responseAggr.setValue(value);
-		} else if (agg instanceof Max) {
+		}
+		else if (agg instanceof Max)
+		{
 			Max max = (Max) agg;
 			responseAggr.setName(requestedAggregation.getName());
 			responseAggr.setValue(max.getValue());
-		} else if (agg instanceof Min) {
+		}
+		else if (agg instanceof Min)
+		{
 			Min min = (Min) agg;
 			responseAggr.setName(requestedAggregation.getName());
 			responseAggr.setValue(min.getValue());
-		} else if (agg instanceof Sum) {
+		}
+		else if (agg instanceof Sum)
+		{
 			Sum sum = (Sum) agg;
 			responseAggr.setName(requestedAggregation.getName());
 			responseAggr.setValue(sum.getValue());
-		} else if (agg instanceof Avg) {
+		}
+		else if (agg instanceof Avg)
+		{
 			Avg avg = (Avg) agg;
 			responseAggr.setName(requestedAggregation.getName());
 			responseAggr.setValue(avg.getValue());
-		} else if (agg instanceof ValueCount) {
+		}
+		else if (agg instanceof ValueCount)
+		{
 			ValueCount count = (ValueCount) agg;
 			responseAggr.setName(requestedAggregation.getName());
 			responseAggr.setValue(count.getValue());
@@ -260,17 +329,21 @@ public class ElasticSearchAggregationHelper {
 	}
 
 	public static BucketAggregationResponse buildBucketAggregationResponse(
-			BucketAggregationRequest requestedAggregation, Aggregations aggs) {
-		if (aggs == null || aggs.get(requestedAggregation.getName()) == null) {
+			BucketAggregationRequest requestedAggregation, Aggregations aggs)
+	{
+		if (aggs == null || aggs.get(requestedAggregation.getName()) == null)
+		{
 			return null;
 		}
 
 		BucketAggregationResponse baresp = new BucketAggregationResponse();
 
-		if (requestedAggregation.getType() == AggregationTypes.DATEHISTOGRAM) {
+		if (requestedAggregation.getType() == AggregationTypes.DATEHISTOGRAM)
+		{
 			InternalHistogram<Bucket> internalHistogram = aggs.get(requestedAggregation.getName());
 			List<Bucket> fetchedBuckets = internalHistogram.getBuckets();
-			for (Iterator<Bucket> iterator = fetchedBuckets.iterator(); iterator.hasNext();) {
+			for (Iterator<Bucket> iterator = fetchedBuckets.iterator(); iterator.hasNext();)
+			{
 				Bucket fetchedBucket = iterator.next();
 				logger.debug("key - " + fetchedBucket.getKeyAsString());
 
@@ -280,66 +353,82 @@ public class ElasticSearchAggregationHelper {
 				responseBucket.setKey_as_string(fetchedBucket.getKeyAsString());
 				baresp.addBuckets(responseBucket);
 
-				if (requestedAggregation.getSubAggregations() != null) {
+				if (requestedAggregation.getSubAggregations() != null)
+				{
 					for (Iterator<AggregationRequest> itr = requestedAggregation.getSubAggregations().iterator(); itr
-							.hasNext();) {
+							.hasNext();)
+					{
 						AggregationRequest ab = itr.next();
 						Aggregation agg = fetchedBucket.getAggregations().get(ab.getName());
-						if (agg != null) {
+						if (agg != null)
+						{
 							logger.debug(
 									"aggregation name - " + agg.getName() + " value - " + agg.getProperty("value"));
 							MetricAggregationResponse mar = buildMetricAggregationResponse(ab, agg);
 							responseBucket.addAggregations(mar);
-						} else {
+						}
+						else
+						{
 							logger.warn("Aggregation not found - " + ab.getName());
 						}
 					}
 				}
 			}
-		} else if (AggregationTypes.TERMS == requestedAggregation.getType()) {
+		}
+		else if (AggregationTypes.TERMS == requestedAggregation.getType())
+		{
 
 			Object obj = aggs.get(requestedAggregation.getName());
 
-			if (obj instanceof StringTerms) {
+			if (obj instanceof StringTerms)
+			{
 				baresp.setName(requestedAggregation.getName());
 
 				StringTerms stringTerm = (StringTerms) obj;
 				List<org.elasticsearch.search.aggregations.bucket.terms.Terms.Bucket> buckets = stringTerm.getBuckets();
 				for (Iterator<org.elasticsearch.search.aggregations.bucket.terms.Terms.Bucket> iterator = buckets
-						.iterator(); iterator.hasNext();) {
+						.iterator(); iterator.hasNext();)
+				{
 
 					org.elasticsearch.search.aggregations.bucket.terms.Terms.Bucket bucket = iterator.next();
 					BucketResponse aggrBucket = new BucketResponse();
 					aggrBucket.setKey_as_string(bucket.getKeyAsString());
 					aggrBucket.setDoc_count(bucket.getDocCount());
 					baresp.addBuckets(aggrBucket);
-					
 
-					if (requestedAggregation.getSubAggregations() != null) {
-						for (Iterator<AggregationRequest> itr = requestedAggregation.getSubAggregations().iterator(); itr
-								.hasNext();) {
+					if (requestedAggregation.getSubAggregations() != null)
+					{
+						for (Iterator<AggregationRequest> itr = requestedAggregation.getSubAggregations()
+								.iterator(); itr.hasNext();)
+						{
 							AggregationRequest ab = itr.next();
 							Aggregation agg = bucket.getAggregations().get(ab.getName());
-							if (agg != null) {
+							if (agg != null)
+							{
 								logger.debug(
 										"aggregation name - " + agg.getName() + " value - " + agg.getProperty("value"));
 								MetricAggregationResponse mar = buildMetricAggregationResponse(ab, agg);
 								aggrBucket.addAggregations(mar);
-							} else {
+							}
+							else
+							{
 								logger.warn("Aggregation not found - " + ab.getName());
 							}
 						}
 					}
 				}
 
-			} else if (obj instanceof LongTerms) {
+			}
+			else if (obj instanceof LongTerms)
+			{
 
 				baresp.setName(requestedAggregation.getName());
 
 				LongTerms longTerms = (LongTerms) obj;
 				List<org.elasticsearch.search.aggregations.bucket.terms.Terms.Bucket> buckets = longTerms.getBuckets();
 				for (Iterator<org.elasticsearch.search.aggregations.bucket.terms.Terms.Bucket> iterator = buckets
-						.iterator(); iterator.hasNext();) {
+						.iterator(); iterator.hasNext();)
+				{
 
 					org.elasticsearch.search.aggregations.bucket.terms.Terms.Bucket bucket = iterator.next();
 					BucketResponse aggrBucket = new BucketResponse();
@@ -353,7 +442,8 @@ public class ElasticSearchAggregationHelper {
 	}
 
 	public static QueryRequest buildQueryRequest(List<AggregationRequest> aggReq, String fromDate, String toDate,
-			String dataField) {
+			String dataField)
+	{
 
 		QueryRequest qr = new QueryRequest();
 

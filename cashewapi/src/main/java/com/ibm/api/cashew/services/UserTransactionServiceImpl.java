@@ -17,7 +17,8 @@ import com.ibm.api.cashew.beans.aggregation.QueryRequest;
 import com.ibm.api.cashew.db.elastic.ElasticTransactionRepository;
 
 @Service
-public class UserTransactionServiceImpl implements UserTransactionService {
+public class UserTransactionServiceImpl implements UserTransactionService
+{
 
 	@Autowired
 	ElasticTransactionRepository elasticTxnRepo;
@@ -26,7 +27,8 @@ public class UserTransactionServiceImpl implements UserTransactionService {
 
 	@Override
 	public List<AggregationResponse> getUserTxnDistribution(String userId, String bankId, String accountId,
-			String fromDate, String toDate) {
+			String fromDate, String toDate)
+	{
 
 		QueryRequest qr = buildQueryForTxnDistribution(userId, bankId, accountId, fromDate, toDate);
 		return elasticTxnRepo.getBucketAggregation(qr);
@@ -35,7 +37,8 @@ public class UserTransactionServiceImpl implements UserTransactionService {
 
 	@Override
 	public List<AggregationResponse> getUserTxnHistogram(String userId, String bankId, String accountId,
-			String fromDate, String toDate) {
+			String fromDate, String toDate)
+	{
 
 		QueryRequest qr = buildQueryForTxnHistogram(userId, bankId, accountId, fromDate, toDate);
 		return elasticTxnRepo.getBucketAggregation(qr);
@@ -43,22 +46,26 @@ public class UserTransactionServiceImpl implements UserTransactionService {
 	}
 
 	private QueryRequest buildQueryForTxnHistogram(String userId, String bankId, String accountId, String fromDate,
-			String toDate) {
+			String toDate)
+	{
 		QueryRequest qr = new QueryRequest();
 
 		qr.setFromDate(fromDate);
 		qr.setToDate(toDate);
 		qr.setDateField("details.completed");
 
-		if (userId != null) {
+		if (userId != null)
+		{
 			qr.addQueryCriteria(new FieldBean("userInfo.userId", userId));
 		}
 
-		if (bankId != null) {
+		if (bankId != null)
+		{
 			qr.addQueryCriteria(new FieldBean("from.bankId", bankId));
 		}
 
-		if (accountId != null) {
+		if (accountId != null)
+		{
 			qr.addQueryCriteria(new FieldBean("from.accountId", accountId));
 		}
 
@@ -87,22 +94,26 @@ public class UserTransactionServiceImpl implements UserTransactionService {
 	}
 
 	private QueryRequest buildQueryForTxnDistribution(String userId, String bankId, String accountId, String fromDate,
-			String toDate) {
+			String toDate)
+	{
 		QueryRequest qr = new QueryRequest();
 
 		qr.setFromDate(fromDate);
 		qr.setToDate(toDate);
 		qr.setDateField("details.completed");
 
-		if (userId != null) {
+		if (userId != null)
+		{
 			qr.addQueryCriteria(new FieldBean("userInfo.userId", userId));
 		}
 
-		if (bankId != null) {
+		if (bankId != null)
+		{
 			qr.addQueryCriteria(new FieldBean("from.bankId", bankId));
 		}
 
-		if (accountId != null) {
+		if (accountId != null)
+		{
 			qr.addQueryCriteria(new FieldBean("from.accountId", accountId));
 		}
 

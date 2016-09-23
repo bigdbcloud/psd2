@@ -1,5 +1,6 @@
 package com.ibm.api.cashew.services;
 
+import java.util.Iterator;
 import java.util.List;
 
 import org.apache.logging.log4j.LogManager;
@@ -84,6 +85,16 @@ public class PaymentsServiceImpl implements PaymentsService
 		if (trb.getTransactionRequestType() == null || trb.getTransactionRequestType().isEmpty() || !TransactionRequestType.isValid(trb.getTransactionRequestType()))
 		{
 			throw new IllegalArgumentException("Invalid Transaction Type specified");
+		}
+		
+		/**
+		 * check if the txn is for a self account. This is not a fool proof check.. ideally check has to be on the app.
+		 */
+		UserAccount toAccount = muar.findByAppUsernameAndAccountIdAndAccountBankId(appUsername, trb.getTo().getAccountId(), trb.getTo().getBankId());
+		
+		if (toAccount != null)
+		{
+			trb.setTransactionRequestType(TransactionRequestType.TYPES.SELF.type());
 		}
 
 		try

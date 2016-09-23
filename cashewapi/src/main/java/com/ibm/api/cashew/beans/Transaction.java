@@ -15,6 +15,7 @@ public class Transaction {
 	
 	public static final String TXN_TYPE_CREDIT	= "credit";
 	public static final String TXN_TYPE_DEBIT	= "debit";
+	public static final String TXN_TYPE_ROTATE = "rotate";
 
 	@Id
 	private String id;
@@ -22,6 +23,7 @@ public class Transaction {
 	private TxnParty to;
 	private TransactionDetails details;
 	private User userInfo;
+	private String txnType;
 	
 	
 	public String getId() {
@@ -54,5 +56,12 @@ public class Transaction {
 	public void setUserInfo(User userInfo) {
 		this.userInfo = userInfo;
 	}
-	
+	public String getTxnType()
+	{
+		return txnType;
+	}
+	public void setTxnType(String txnType)
+	{
+		this.txnType = txnType;
+	}
 }

@@ -46,5 +46,7 @@ public abstract class AggregationResponse
 			return false;
 		return true;
 	}
+	
+	
 
 }
