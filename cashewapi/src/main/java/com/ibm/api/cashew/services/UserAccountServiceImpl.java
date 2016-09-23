@@ -22,7 +22,6 @@ import com.ibm.api.cashew.services.barclays.BarclaysService;
 import com.ibm.api.cashew.services.ibmbank.IBMUserAccountService;
 import com.ibm.psd2.datamodel.aip.BankAccountDetailsView;
 import com.ibm.psd2.datamodel.aip.Transaction;
-import com.ibm.psd2.datamodel.aip.TransactionDetails;
 import com.ibm.psd2.datamodel.pisp.TxnParty;
 import com.ibm.psd2.datamodel.pisp.TxnRequest;
 import com.ibm.psd2.datamodel.pisp.TxnRequestDetails;
