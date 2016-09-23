@@ -30,7 +30,6 @@ import com.ibm.api.cashew.utils.UUIDGenerator;
 import com.ibm.psd2.datamodel.Amount;
 import com.ibm.psd2.datamodel.Challenge;
 import com.ibm.psd2.datamodel.aip.BankAccountDetailsView;
-import com.ibm.psd2.datamodel.aip.BankAccountOwner;
 import com.ibm.psd2.datamodel.aip.TransactionAccount;
 import com.ibm.psd2.datamodel.aip.TransactionBank;
 import com.ibm.psd2.datamodel.aip.TransactionDetails;
@@ -41,8 +40,9 @@ import com.ibm.psd2.datamodel.subscription.SubscriptionRequest;
 public class BarclaysServiceImpl implements BarclaysService
 {
 	private Logger logger = LogManager.getLogger(BarclaysServiceImpl.class);
-	
-	private static Map<String, String> groupIdToTxnTypeMap = Collections.unmodifiableMap(new HashMap<String, String>(){
+
+	private static Map<String, String> groupIdToTxnTypeMap = Collections.unmodifiableMap(new HashMap<String, String>()
+	{
 		{
 			put("4722", "MERCHANT");
 		}
@@ -98,7 +98,8 @@ public class BarclaysServiceImpl implements BarclaysService
 	}
 
 	private com.ibm.psd2.datamodel.aip.Transaction populateTransactionResponse(Transaction transaction,
-			String accountId) {
+			String accountId)
+	{
 
 		com.ibm.psd2.datamodel.aip.Transaction txn = new com.ibm.psd2.datamodel.aip.Transaction();
 
@@ -106,17 +107,21 @@ public class BarclaysServiceImpl implements BarclaysService
 		TransactionDetails txnDetails = new TransactionDetails();
 		Amount amt = new Amount();
 
-		if (transaction.getAmount() != null) {
+		if (transaction.getAmount() != null)
+		{
 
 			double moneyIn = Double.valueOf(transaction.getAmount().getMoneyIn());
 			double moneyOut = Double.valueOf(transaction.getAmount().getMoneyOut());
 
-			if (moneyIn > 0.00) {
+			if (moneyIn > 0.00)
+			{
 
 				amt.setAmount(moneyIn);
-			} else {
+			}
+			else
+			{
 
-				amt.setAmount(moneyOut*(-1));
+				amt.setAmount(moneyOut * (-1));
 			}
 
 		}
@@ -125,13 +130,15 @@ public class BarclaysServiceImpl implements BarclaysService
 		Amount accBalance = new Amount();
 
 		if (transaction.getAccountBalanceAfterTransaction() != null
-				&& StringUtils.isNotBlank(transaction.getAccountBalanceAfterTransaction().getAmount())) {
+				&& StringUtils.isNotBlank(transaction.getAccountBalanceAfterTransaction().getAmount()))
+		{
 
 			accBalance.setAmount(Double.valueOf(transaction.getAccountBalanceAfterTransaction().getAmount()));
 			accBalance.setCurrency("GBP");
 		}
 
-		if (StringUtils.isNotBlank(transaction.getCreated())) {
+		if (StringUtils.isNotBlank(transaction.getCreated()))
+		{
 
 			txnDetails.setCompleted(com.ibm.psd2.datamodel.aip.Transaction.DATE_FORMAT.format(new Date()));
 			txnDetails.setPosted(com.ibm.psd2.datamodel.aip.Transaction.DATE_FORMAT.format(new Date()));
@@ -140,6 +147,13 @@ public class BarclaysServiceImpl implements BarclaysService
 
 		txnDetails.setDescription(transaction.getPaymentDescriptor().getName() + " : " + transaction.getDescription());
 		txnDetails.setNewBalance(accBalance);
+
+		String key = transaction.getPaymentDescriptor().getGroupId();
+		if (key != null)
+		{
+			txnDetails.setType(groupIdToTxnTypeMap.get(key));
+		}
+		
 		txn.setDetails(txnDetails);
 
 		TransactionBank fromTxnBank = new TransactionBank();
@@ -154,12 +168,11 @@ public class BarclaysServiceImpl implements BarclaysService
 
 		TransactionAccount otherAcct = new TransactionAccount();
 		otherAcct.setId(transaction.getPaymentDescriptor().getId());
-		
 
 		TransactionBank toTxnBank = new TransactionBank();
-//		toTxnBank.setName(transaction.getPaymentDescriptor().getName());
-//		toTxnBank.setNationalIdentifier(barclaysBank);
-//		otherAcct.setBank(toTxnBank);
+		// toTxnBank.setName(transaction.getPaymentDescriptor().getName());
+		// toTxnBank.setNationalIdentifier(barclaysBank);
+		// otherAcct.setBank(toTxnBank);
 
 		txn.setOtherAccount(otherAcct);
 
