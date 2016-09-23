@@ -71,6 +71,7 @@ public class ResourceServerSecurityConfig extends ResourceServerConfigurerAdapte
 		};
 	}	
 	
+	
 //	@Bean
 //	public FilterRegistrationBean corsFilter()
 //	{
