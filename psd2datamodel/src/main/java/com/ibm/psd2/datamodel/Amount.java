@@ -15,6 +15,10 @@ public class Amount implements Serializable
 			},
 	*/
 
+	public static enum CURRENCY_TYPE{
+		EUR,GBP		
+	}
+	
 	private String currency;
 	private double amount;
 	
