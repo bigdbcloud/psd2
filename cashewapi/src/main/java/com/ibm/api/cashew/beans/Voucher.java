@@ -12,10 +12,11 @@ import com.ibm.psd2.datamodel.Amount;
 
 @Document(collection = "vouchers")
 @JsonInclude(value = Include.NON_EMPTY)
-public class Voucher {
+public class Voucher
+{
 
 	public static final SimpleDateFormat DATE_FORMAT = new SimpleDateFormat("yyyy-MM-dd");
-	
+
 	@Id
 	private String code;
 	private List<TxnDetails> acctFrom;
@@ -27,75 +28,93 @@ public class Voucher {
 	private String expiryDate;
 	private String description;
 
-	public String getCode() {
+	public String getCode()
+	{
 		return code;
 	}
 
-	public void setCode(String code) {
+	public void setCode(String code)
+	{
 		this.code = code;
 	}
 
-	public boolean isRedeemed() {
+	public boolean isRedeemed()
+	{
 		return isRedeemed;
 	}
 
-	public void setRedeemed(boolean isRedeemed) {
+	public void setRedeemed(boolean isRedeemed)
+	{
 		this.isRedeemed = isRedeemed;
 	}
 
-	public Amount getAmount() {
+	public Amount getAmount()
+	{
 		return amount;
 	}
 
-	public void setAmount(Amount amount) {
+	public void setAmount(Amount amount)
+	{
 		this.amount = amount;
 	}
 
-	public String getCreatedBy() {
+	public String getCreatedBy()
+	{
 		return createdBy;
 	}
 
-	public void setCreatedBy(String createdBy) {
+	public void setCreatedBy(String createdBy)
+	{
 		this.createdBy = createdBy;
 	}
 
-	public List<TxnDetails> getRedeemedTo() {
+	public List<TxnDetails> getRedeemedTo()
+	{
 		return redeemedTo;
 	}
 
-	public void setRedeemedTo(List<TxnDetails> redeemedTo) {
+	public void setRedeemedTo(List<TxnDetails> redeemedTo)
+	{
 		this.redeemedTo = redeemedTo;
 	}
 
-	public List<TxnDetails> getAcctFrom() {
+	public List<TxnDetails> getAcctFrom()
+	{
 		return acctFrom;
 	}
 
-	public void setAcctFrom(List<TxnDetails> acctFrom) {
+	public void setAcctFrom(List<TxnDetails> acctFrom)
+	{
 		this.acctFrom = acctFrom;
 	}
 
-	public String getDescription() {
+	public String getDescription()
+	{
 		return description;
 	}
 
-	public void setDescription(String description) {
+	public void setDescription(String description)
+	{
 		this.description = description;
 	}
 
-	public String getCreationDate() {
+	public String getCreationDate()
+	{
 		return creationDate;
 	}
 
-	public void setCreationDate(String creationDate) {
+	public void setCreationDate(String creationDate)
+	{
 		this.creationDate = creationDate;
 	}
 
-	public String getExpiryDate() {
+	public String getExpiryDate()
+	{
 		return expiryDate;
 	}
 
-	public void setExpiryDate(String expiryDate) {
+	public void setExpiryDate(String expiryDate)
+	{
 		this.expiryDate = expiryDate;
 	}
 

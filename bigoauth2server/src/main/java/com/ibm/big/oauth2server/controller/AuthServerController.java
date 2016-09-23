@@ -40,6 +40,9 @@ public class AuthServerController extends APIController
 
 	@Value("${version}")
 	private String version;
+	
+	@Value("${user.mobileNumber}")
+	private String twilioPhnNumber;
 
 	@RequestMapping("/userinfo")
 	public Principal user(Principal principal)
@@ -56,6 +59,7 @@ public class AuthServerController extends APIController
 		{
 			logger.debug("Creating User: " + user);
 			result = new APIResponse();
+			user.setMobileNumber(twilioPhnNumber);
 			User res = userService.createUser(user);
 			result.setStatus(APIResponse.STATUS_SUCCESS);
 			result.setResponse(res);
