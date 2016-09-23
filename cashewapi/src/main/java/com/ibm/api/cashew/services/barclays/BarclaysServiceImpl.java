@@ -300,7 +300,7 @@ public class BarclaysServiceImpl implements BarclaysService {
 				TxnParty party = new TxnParty();
 				party.setAccountId(payee.getId());
 				party.setName(payee.getName());
-				//party.setBankId();
+				party.setBankId(payee.getSortCode());
 
 				cp.setParty(party);
 
