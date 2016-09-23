@@ -93,6 +93,11 @@ public class UserAccountServiceImpl implements UserAccountService
 			ua.setLimits(res.getSubscriptionInfo().getLimits());
 			ua.setTransactionRequestTypes(res.getSubscriptionInfo().getTransactionRequestTypes());
 			ua.setSubscriptionRequestChallengeId(res.getChallenge().getId());
+			
+			if (res.getSubscriptionInfo() != null)
+			{
+				ua.setSubscriptionInfoStatus(res.getSubscriptionInfo().getStatus());
+			}
 
 			BankAccountDetailsView badv = new BankAccountDetailsView();
 			badv.setBankId(res.getSubscriptionInfo().getBankId());
