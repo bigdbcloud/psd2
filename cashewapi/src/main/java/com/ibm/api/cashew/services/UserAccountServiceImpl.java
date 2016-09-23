@@ -373,7 +373,7 @@ public class UserAccountServiceImpl implements UserAccountService
 
 				elasticTxn.setDetails(txn.getDetails());
 
-				if (txn.getDetails() != null && txn.getDetails().getValue() != null)
+				if (txn.getDetails() != null && txn.getDetails().getValue() != null && txn.getDetails().getType() != null)
 				{
 					if (txn.getDetails().getType().equals(TransactionRequestType.TYPES.SELF.type()))
 					{
