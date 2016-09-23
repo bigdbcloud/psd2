@@ -52,7 +52,7 @@ public class UserInsightsServiceImpl implements UserInsightsService
 		
 		try
 		{
-			DATE_FORMAT.parse(user.getDateOfBirth());
+			date = DATE_FORMAT.parse(user.getDateOfBirth());
 		}
 		catch (ParseException e)
 		{
