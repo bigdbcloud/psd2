@@ -27,7 +27,6 @@ import com.ibm.api.cashew.services.UserService;
 import com.ibm.api.cashew.utils.Utils;
 
 @RestController
-@RequestMapping
 public class UserController extends APIController {
 	private final Logger logger = LogManager.getLogger(UserController.class);
 
