@@ -38,7 +38,7 @@ public class UserInsightsServiceImpl implements UserInsightsService
 	@Override
 	public List<Insight> getAvgSpendInAgeGroup(String userId)
 	{
-		logger.debug("Getting Average Spend in age group of user: " + userId);
+		logger.debug("Fetching Average Spend in age group of user: " + userId);
 		User user = userService.findUserById(userId);
 		
 		if (user == null || user.getDateOfBirth() == null)
@@ -59,7 +59,6 @@ public class UserInsightsServiceImpl implements UserInsightsService
 		String toDate = DATE_FORMAT.format(cal.getTime());
 
 		logger.debug("Age Group Range: " + fromDate + " - " + toDate);
-		
 		
 		qr.setFromDate(fromDate);
 		qr.setToDate(toDate);
@@ -87,7 +86,6 @@ public class UserInsightsServiceImpl implements UserInsightsService
 		List<AggregationResponse> aggrResponse = elasticTxnRepo.getBucketAggregation(qr);
 		
 		logger.debug("Response = " + aggrResponse);
-		
 		
 		return null;
 		
