@@ -10,7 +10,7 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonInclude.Include;
 import com.ibm.psd2.datamodel.Amount;
 
-@Document(collection = "vochers")
+@Document(collection = "vouchers")
 @JsonInclude(value = Include.NON_EMPTY)
 public class Voucher {
 
