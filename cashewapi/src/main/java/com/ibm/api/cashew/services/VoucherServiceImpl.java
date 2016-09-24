@@ -173,7 +173,7 @@ public class VoucherServiceImpl implements VoucherService {
 
 		for (TxnDetails txDetails : vocher.getRedeemedTo()) {
 			if (txDetails.getValue().getCurrency() == null
-					|| !txDetails.getValue().getCurrency().equals(vocher.getAmount().getCurrency())) {
+					|| !txDetails.getValue().getCurrency().equals(existingVocher.getAmount().getCurrency())) {
 
 				throw new IllegalArgumentException("Invalid currency specified for redeem amount");
 			}
