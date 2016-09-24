@@ -191,7 +191,7 @@ public class VoucherServiceImpl implements VoucherService {
 
 		for (TxnDetails txDetails : vocher.getRedeemedTo()) {
 
-			if (txDetails != null && txDetails.getValue().getAmount() != 0) {
+			if (txDetails != null && txDetails.getValue() != null && txDetails.getValue().getAmount() != 0) {
 				amtToRedeem = amtToRedeem + txDetails.getValue().getAmount();
 			}
 		}
