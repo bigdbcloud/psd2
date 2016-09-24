@@ -75,10 +75,11 @@ public class TransactionRequestServiceImpl implements TransactionRequestService 
                         txn.setId(UUIDGenerator.generateUUID());
 
                         TransactionDetails txnDetails = new TransactionDetails();
-                        txnDetails.setCompleted(Transaction.DATE_FORMAT.format(new Date()));
+//                        txnDetails.setCompleted(Transaction.DATE_FORMAT.format(new Date()));
+                      txnDetails.setCompleted(new Date());
                         txnDetails.setDescription(txnReq.getBody().getDescription());
                         txnDetails.setNewBalance(to.getBalance());
-                        txnDetails.setPosted(Transaction.DATE_FORMAT.format(new Date()));
+                        txnDetails.setPosted(new Date());
                         txnDetails.setType(txnReq.getType());
                         txnDetails.setValue(txnReq.getBody().getValue());
 
@@ -133,10 +134,10 @@ public class TransactionRequestServiceImpl implements TransactionRequestService 
                 from.getBalance().setAmount(newFromBalance);
 
                 TransactionDetails txnDetails = new TransactionDetails();
-                txnDetails.setCompleted(Transaction.DATE_FORMAT.format(new Date()));
+                txnDetails.setCompleted(new Date());
                 txnDetails.setDescription(txnReq.getBody().getDescription());
                 txnDetails.setNewBalance(from.getBalance());
-                txnDetails.setPosted(Transaction.DATE_FORMAT.format(new Date()));
+                txnDetails.setPosted(new Date());
                 txnDetails.setType(txnReq.getType());
                 Amount value = txnReq.getBody().getValue();
                 value.setAmount(value.getAmount() * (-1));
@@ -282,119 +283,134 @@ public class TransactionRequestServiceImpl implements TransactionRequestService 
     	{
     		logger.info("Processing Beneficiary txnRequest: " + txnReq);
 
-    		BankAccountDetails to = bds.getBankAccountDetails(txnReq.getBody().getTo().getBankId(),
-    				txnReq.getBody().getTo().getAccountId());
-    		double newToBalance = 0;
-    		if (to != null)
-    		{
-    			newToBalance = to.getBalance().getAmount() + txnReq.getBody().getValue().getAmount();
-    			to.getBalance().setAmount(newToBalance);
-    			bds.updateBalance(to.getBankId(), to.getId(), newToBalance);
+    		try
+			{
+				BankAccountDetails to = bds.getBankAccountDetails(txnReq.getBody().getTo().getBankId(),
+						txnReq.getBody().getTo().getAccountId());
+				double newToBalance = 0;
+				if (to != null)
+				{
+					newToBalance = to.getBalance().getAmount() + txnReq.getBody().getValue().getAmount();
+					to.getBalance().setAmount(newToBalance);
+					bds.updateBalance(to.getBankId(), to.getId(), newToBalance);
 
-    			Transaction txn = new Transaction();
+					Transaction txn = new Transaction();
 
-    			txn.setId(UUIDGenerator.generateUUID());
+					txn.setId(UUIDGenerator.generateUUID());
 
-    			TransactionDetails txnDetails = new TransactionDetails();
-    			txnDetails.setCompleted(date);
-    			txnDetails.setDescription(txnReq.getBody().getDescription());
-    			txnDetails.setNewBalance(to.getBalance());
-    			txnDetails.setPosted(date);
-    			txnDetails.setType(txnReq.getType());
-    			txnDetails.setValue(txnReq.getBody().getValue());
+					TransactionDetails txnDetails = new TransactionDetails();
+					txnDetails.setCompleted(TxnRequest.DATE_FORMAT.parse(date));
+					txnDetails.setDescription(txnReq.getBody().getDescription());
+					txnDetails.setNewBalance(to.getBalance());
+					txnDetails.setPosted(TxnRequest.DATE_FORMAT.parse(date));
+					txnDetails.setType(txnReq.getType());
+					txnDetails.setValue(txnReq.getBody().getValue());
 
-    			txn.setDetails(txnDetails);
+					txn.setDetails(txnDetails);
 
-    			TransactionAccount thisAcc = new TransactionAccount();
+					TransactionAccount thisAcc = new TransactionAccount();
 
-    			thisAcc.setId(to.getId());
+					thisAcc.setId(to.getId());
 
-    			TransactionBank beneficiaryBank = new TransactionBank();
-    			beneficiaryBank.setName(to.getBankId());
-    			beneficiaryBank.setNationalIdentifier(to.getBankId());
-    			thisAcc.setBank(beneficiaryBank);
+					TransactionBank beneficiaryBank = new TransactionBank();
+					beneficiaryBank.setName(to.getBankId());
+					beneficiaryBank.setNationalIdentifier(to.getBankId());
+					thisAcc.setBank(beneficiaryBank);
 
-    			thisAcc.setHolders(to.getOwners());
-    			thisAcc.setIban(to.getIban());
-    			thisAcc.setNumber(to.getNumber());
-    			thisAcc.setSwiftBic(to.getSwiftBic());
+					thisAcc.setHolders(to.getOwners());
+					thisAcc.setIban(to.getIban());
+					thisAcc.setNumber(to.getNumber());
+					thisAcc.setSwiftBic(to.getSwiftBic());
 
-    			txn.setThisAccount(thisAcc);
+					txn.setThisAccount(thisAcc);
 
-    			TransactionAccount toAcc = new TransactionAccount();
+					TransactionAccount toAcc = new TransactionAccount();
 
-    			toAcc.setId(txnReq.getFrom().getAccountId());
+					toAcc.setId(txnReq.getFrom().getAccountId());
 
-    			TransactionBank payerBank = new TransactionBank();
-    			payerBank.setName(txnReq.getFrom().getBankId());
-    			payerBank.setNationalIdentifier(txnReq.getFrom().getBankId());
-    			toAcc.setBank(payerBank);
+					TransactionBank payerBank = new TransactionBank();
+					payerBank.setName(txnReq.getFrom().getBankId());
+					payerBank.setNationalIdentifier(txnReq.getFrom().getBankId());
+					toAcc.setBank(payerBank);
 
-    			txn.setOtherAccount(toAcc);
+					txn.setOtherAccount(toAcc);
 
-    			logger.info("Saving Beneficiary Transaction = " + txn);
+					logger.info("Saving Beneficiary Transaction = " + txn);
 
-    			tss.createTransaction(txn);
-    		}
+					tss.createTransaction(txn);
+				}
+			}
+			catch (ParseException e)
+			{
+				logger.error(e.getMessage(), e);
+				throw new RuntimeException(e);
+			}
     	}
 
     	private void postTransactionToPayer(TxnRequestDetails txnReq, String date)
     	{
     		logger.info("Processing Payer txnRequest: " + txnReq);
 
-    		Transaction txn = new Transaction();
+    		try
+			{
+				Transaction txn = new Transaction();
+				txn.setId(txnReq.getTransactionIds());
+				BankAccountDetails from = bds.getBankAccountDetails(txnReq.getFrom().getBankId(),
+						txnReq.getFrom().getAccountId());
 
-    		txn.setId(txnReq.getTransactionIds());
-    		BankAccountDetails from = bds.getBankAccountDetails(txnReq.getFrom().getBankId(),
-    				txnReq.getFrom().getAccountId());
+				double newFromBalance = from.getBalance().getAmount() - txnReq.getBody().getValue().getAmount()
+						- txnReq.getCharge().getValue().getAmount();
 
-    		double newFromBalance = from.getBalance().getAmount() - txnReq.getBody().getValue().getAmount()
-    				- txnReq.getCharge().getValue().getAmount();
+				bds.updateBalance(from.getBankId(), from.getId(), newFromBalance);
 
-    		bds.updateBalance(from.getBankId(), from.getId(), newFromBalance);
+				from.getBalance().setAmount(newFromBalance);
 
-    		from.getBalance().setAmount(newFromBalance);
+				TransactionDetails txnDetails = new TransactionDetails();
+				txnDetails.setCompleted(TxnRequest.DATE_FORMAT.parse(date));
+				txnDetails.setDescription(txnReq.getBody().getDescription());
+				txnDetails.setNewBalance(from.getBalance());
+				txnDetails.setPosted(TxnRequest.DATE_FORMAT.parse(date));
+				txnDetails.setType(txnReq.getType());
+				Amount value = txnReq.getBody().getValue();
+				value.setAmount(value.getAmount() * (-1));
+				txnDetails.setValue(value);
 
-    		TransactionDetails txnDetails = new TransactionDetails();
-    		txnDetails.setCompleted(date);
-    		txnDetails.setDescription(txnReq.getBody().getDescription());
-    		txnDetails.setNewBalance(from.getBalance());
-    		txnDetails.setPosted(date);
-    		txnDetails.setType(txnReq.getType());
-    		Amount value = txnReq.getBody().getValue();
-    		value.setAmount(value.getAmount() * (-1));
-    		txnDetails.setValue(value);
+				txn.setDetails(txnDetails);
 
-    		txn.setDetails(txnDetails);
+				TransactionAccount thisAcc = new TransactionAccount();
+				thisAcc.setId(from.getId());
 
-    		TransactionAccount thisAcc = new TransactionAccount();
-    		thisAcc.setId(from.getId());
+				TransactionBank tbb = new TransactionBank();
+				tbb.setName(from.getBankId());
+				tbb.setNationalIdentifier(from.getBankId());
+				thisAcc.setBank(tbb);
 
-    		TransactionBank tbb = new TransactionBank();
-    		tbb.setName(from.getBankId());
-    		tbb.setNationalIdentifier(from.getBankId());
-    		thisAcc.setBank(tbb);
+				thisAcc.setHolders(from.getOwners());
+				thisAcc.setIban(from.getIban());
+				thisAcc.setNumber(from.getNumber());
+				thisAcc.setSwiftBic(from.getSwiftBic());
 
-    		thisAcc.setHolders(from.getOwners());
-    		thisAcc.setIban(from.getIban());
-    		thisAcc.setNumber(from.getNumber());
-    		thisAcc.setSwiftBic(from.getSwiftBic());
+				txn.setThisAccount(thisAcc);
 
-    		txn.setThisAccount(thisAcc);
+				TransactionAccount toAcc = new TransactionAccount();
+				toAcc.setId(txnReq.getBody().getTo().getAccountId());
 
-    		TransactionAccount toAcc = new TransactionAccount();
-    		toAcc.setId(txnReq.getBody().getTo().getAccountId());
+				TransactionBank tbb1 = new TransactionBank();
+				tbb1.setNationalIdentifier(txnReq.getBody().getTo().getBankId());
+				tbb1.setName(txnReq.getBody().getTo().getBankId());
+				toAcc.setBank(tbb1);
 
-    		TransactionBank tbb1 = new TransactionBank();
-    		tbb1.setNationalIdentifier(txnReq.getBody().getTo().getBankId());
-    		tbb1.setName(txnReq.getBody().getTo().getBankId());
-    		toAcc.setBank(tbb1);
+				txn.setOtherAccount(toAcc);
 
-    		txn.setOtherAccount(toAcc);
+				logger.info("Saving Payer Transaction = " + txn);
 
-    		logger.info("Saving Payer Transaction = " + txn);
-
-    		tss.createTransaction(txn);
+				tss.createTransaction(txn);
+			}
+			catch (ParseException e)
+			{
+				logger.error(e.getMessage(), e);
+				throw new RuntimeException(e);
+			}
     	}
 
     	@Override

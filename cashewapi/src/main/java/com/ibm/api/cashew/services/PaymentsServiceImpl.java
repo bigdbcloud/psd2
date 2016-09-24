@@ -9,13 +9,13 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
+import com.ibm.api.cashew.beans.ElasticTxnDetails;
 import com.ibm.api.cashew.beans.UserAccount;
 import com.ibm.api.cashew.db.elastic.ElasticTransactionRepository;
 import com.ibm.api.cashew.db.mongo.MongoUserAccountsRepository;
 import com.ibm.api.cashew.services.barclays.BarclaysService;
 import com.ibm.api.cashew.services.ibmbank.IBMPaymentsService;
 import com.ibm.psd2.datamodel.ChallengeAnswer;
-import com.ibm.psd2.datamodel.aip.TransactionDetails;
 import com.ibm.psd2.datamodel.pisp.CounterParty;
 import com.ibm.psd2.datamodel.pisp.TxnRequest;
 import com.ibm.psd2.datamodel.pisp.TxnRequestDetails;
@@ -77,12 +77,12 @@ public class PaymentsServiceImpl implements PaymentsService {
 
 		if (trb == null || trb.getTo() == null || trb.getTo().getBankId() == null || trb.getTo().getAccountId() == null
 				|| trb.getValue() == null) {
-			throw new IllegalArgumentException("Invalid Transaction Request");
+			throw new IllegalArgumentException("Invalid ElasticTransaction Request");
 		}
 
 		if (trb.getTransactionRequestType() == null || trb.getTransactionRequestType().isEmpty()
 				|| !TransactionRequestType.isValid(trb.getTransactionRequestType())) {
-			throw new IllegalArgumentException("Invalid Transaction Type specified");
+			throw new IllegalArgumentException("Invalid ElasticTransaction Type specified");
 		}
 
 		/**
@@ -107,17 +107,17 @@ public class PaymentsServiceImpl implements PaymentsService {
 	}
 
 	@Override
-	public com.ibm.api.cashew.beans.Transaction tagTransaction(String userId, String bankId, String accountId,
+	public com.ibm.api.cashew.beans.ElasticTransaction tagTransaction(String userId, String bankId, String accountId,
 			String txnId, String tag) {
-		com.ibm.api.cashew.beans.Transaction txn = elasticTxnRepo.findOne(txnId);
+		com.ibm.api.cashew.beans.ElasticTransaction txn = elasticTxnRepo.findOne(txnId);
 
 		if (txn == null) {
-			throw new IllegalArgumentException("Transaction details doesn't exist");
+			throw new IllegalArgumentException("ElasticTransaction details doesn't exist");
 		}
 
 		if (txn.getDetails() == null) {
 
-			txn.setDetails(new TransactionDetails());
+			txn.setDetails(new ElasticTxnDetails());
 		}
 
 		txn.getDetails().setTag(tag);

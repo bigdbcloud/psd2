@@ -121,7 +121,7 @@ public class UserAccountInformationController extends APIController {
 	
 	@RequestMapping(method = RequestMethod.GET, value = "/{userId}/transactions", produces = MediaType.APPLICATION_JSON_VALUE)
 	@PreAuthorize("authentication.name == #userId")
-	public @ResponseBody ResponseEntity<APIResponse<List<com.ibm.api.cashew.beans.Transaction>>> getTransactionStatement(
+	public @ResponseBody ResponseEntity<APIResponse<List<com.ibm.api.cashew.beans.ElasticTransaction>>> getTransactionStatement(
 			@RequestParam (value="bankId",required = false) String bankId,
 			@RequestParam (value="accountId",required = false) String accountId,
 			@RequestHeader(value = "obp_sort_direction", required = false) String sortDirection,
@@ -133,8 +133,8 @@ public class UserAccountInformationController extends APIController {
 			@PathVariable("userId") String userId) {
 		
 		
-		APIResponse<List<com.ibm.api.cashew.beans.Transaction>> result = null;
-		ResponseEntity<APIResponse<List<com.ibm.api.cashew.beans.Transaction>>> response;
+		APIResponse<List<com.ibm.api.cashew.beans.ElasticTransaction>> result = null;
+		ResponseEntity<APIResponse<List<com.ibm.api.cashew.beans.ElasticTransaction>>> response;
 		try {
 			result = new APIResponse<>();
 			result.setResponse(uss.getTransactions(userId, bankId, accountId, sortDirection, fromDate, toDate, sortBy,
@@ -159,7 +159,7 @@ public class UserAccountInformationController extends APIController {
 		try {
 			if (txnReq == null || txnReq.getTo() == null
 					|| (accountId.equals(txnReq.getTo().getAccountId()) && bankId.equals(txnReq.getTo().getBankId()))) {
-				throw new IllegalArgumentException("Invalid Transaction Request");
+				throw new IllegalArgumentException("Invalid ElasticTransaction Request");
 			}
 
 			TxnParty payer = new TxnParty(bankId, accountId);

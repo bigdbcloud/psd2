@@ -33,7 +33,7 @@ public class TransactionStatementServiceImpl implements TransactionStatementServ
 	public List<Transaction> getTransactions(String bankId, String accountId, String sortDirection, String fromDate,
 			String toDate, String sortBy, Integer page, Integer limit)
 	{
-		logger.info("bankId = " + bankId + ", accountId = " + accountId);
+		logger.info("bankId = " + bankId + ", accountId = " + accountId + " , " + sortDirection + " , " + fromDate + " , " + toDate + " , " + sortBy + " , " + page + " , " + limit);
 		Date fromDt = null;
 		Date toDt = null;
 

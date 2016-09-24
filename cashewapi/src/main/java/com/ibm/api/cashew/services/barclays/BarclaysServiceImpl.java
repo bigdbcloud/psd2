@@ -130,8 +130,8 @@ public class BarclaysServiceImpl implements BarclaysService {
 
 		if (StringUtils.isNotBlank(transaction.getCreated())) {
 
-			txnDetails.setCompleted(com.ibm.psd2.datamodel.aip.Transaction.DATE_FORMAT.format(new Date()));
-			txnDetails.setPosted(com.ibm.psd2.datamodel.aip.Transaction.DATE_FORMAT.format(new Date()));
+			txnDetails.setCompleted(new Date());
+			txnDetails.setPosted(new Date());
 
 		}
 

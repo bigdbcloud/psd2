@@ -18,7 +18,7 @@ public interface UserAccountService {
 
 	public BankAccountDetailsView getAccountInformation(String appUser, String bankId, String accountId);
 
-	public List<com.ibm.api.cashew.beans.Transaction> getTransactions(String appUser, String bankId, String accountId, String sortDirection,
+	public List<com.ibm.api.cashew.beans.ElasticTransaction> getTransactions(String appUser, String bankId, String accountId, String sortDirection,
 			String fromDate, String toDate, String sortBy, Integer offset, Integer limit);
 
 	public TxnRequestDetails createTransaction(TxnRequest txnReq, TxnParty payer, String txnType, String user);

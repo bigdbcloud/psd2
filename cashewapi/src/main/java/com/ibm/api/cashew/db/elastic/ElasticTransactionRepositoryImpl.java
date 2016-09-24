@@ -16,7 +16,7 @@ import org.springframework.data.elasticsearch.core.ElasticsearchOperations;
 import org.springframework.data.elasticsearch.core.ResultsExtractor;
 import org.springframework.data.elasticsearch.core.query.NativeSearchQueryBuilder;
 
-import com.ibm.api.cashew.beans.Transaction;
+import com.ibm.api.cashew.beans.ElasticTransaction;
 import com.ibm.api.cashew.beans.aggregation.AggregationRequest;
 import com.ibm.api.cashew.beans.aggregation.AggregationResponse;
 import com.ibm.api.cashew.beans.aggregation.BucketAggregationRequest;
@@ -88,7 +88,7 @@ public class ElasticTransactionRepositoryImpl implements ElasticTransactionCusto
 	}
 
 	@Override
-	public List<Transaction> getTransactions(String userId, String bankId, String accountId, String fromDate,
+	public List<ElasticTransaction> getTransactions(String userId, String bankId, String accountId, String fromDate,
 			String toDate) {
 			
 		QueryRequest qr = new QueryRequest();
@@ -114,7 +114,7 @@ public class ElasticTransactionRepositoryImpl implements ElasticTransactionCusto
 		NativeSearchQueryBuilder searchQuery = new NativeSearchQueryBuilder().withQuery(qb)
 				.withSearchType(SearchType.QUERY_THEN_FETCH).withIndices("transactions").withTypes("transaction");
 
-		return elasticTemplate.queryForList(searchQuery.build(),Transaction.class);
+		return elasticTemplate.queryForList(searchQuery.build(),ElasticTransaction.class);
 		
 	}
 }

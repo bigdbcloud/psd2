@@ -13,6 +13,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.util.CollectionUtils;
 import org.springframework.web.client.RestTemplate;
 
+import com.ibm.api.cashew.beans.ElasticTransaction;
+import com.ibm.api.cashew.beans.ElasticTxnDetails;
 import com.ibm.api.cashew.beans.SubscriptionChallengeAnswer;
 import com.ibm.api.cashew.beans.User;
 import com.ibm.api.cashew.beans.UserAccount;
@@ -23,6 +25,7 @@ import com.ibm.api.cashew.services.ibmbank.IBMUserAccountService;
 import com.ibm.psd2.datamodel.ChallengeAnswer;
 import com.ibm.psd2.datamodel.aip.BankAccountDetailsView;
 import com.ibm.psd2.datamodel.aip.Transaction;
+import com.ibm.psd2.datamodel.aip.TransactionDetails;
 import com.ibm.psd2.datamodel.pisp.TxnParty;
 import com.ibm.psd2.datamodel.pisp.TxnRequest;
 import com.ibm.psd2.datamodel.pisp.TxnRequestDetails;
@@ -32,7 +35,8 @@ import com.ibm.psd2.datamodel.subscription.TransactionRequestType;
 import com.ibm.psd2.utils.UUIDGenerator;
 
 @Service
-public class UserAccountServiceImpl implements UserAccountService {
+public class UserAccountServiceImpl implements UserAccountService
+{
 	private Logger logger = LogManager.getLogger(UserAccountServiceImpl.class);
 
 	@Autowired
@@ -60,24 +64,29 @@ public class UserAccountServiceImpl implements UserAccountService {
 	private UserService userService;
 
 	@Override
-	public SubscriptionRequest subscribe(String username, SubscriptionRequest subscriptionRequest) {
+	public SubscriptionRequest subscribe(String username, SubscriptionRequest subscriptionRequest)
+	{
 		SubscriptionRequest res = null;
 		logger.debug("subscribing to username = " + username);
-		try {
+		try
+		{
 
 			UserAccount ua = muar.findByAccountIdAndAccountBankId(
 					subscriptionRequest.getSubscriptionInfo().getAccountId(),
 					subscriptionRequest.getSubscriptionInfo().getBankId());
 
-			if (ua != null) {
+			if (ua != null)
+			{
 				throw new IllegalArgumentException("Account Already Subscribed");
 			}
 
-			if (subscriptionRequest.getSubscriptionInfo().getBankId().equals(ibmBank)) {
+			if (subscriptionRequest.getSubscriptionInfo().getBankId().equals(ibmBank))
+			{
 				res = ibmUserAccSvc.subscribe(subscriptionRequest);
 			}
 
-			if (subscriptionRequest.getSubscriptionInfo().getBankId().equals(barclaysBank)) {
+			if (subscriptionRequest.getSubscriptionInfo().getBankId().equals(barclaysBank))
+			{
 				res = barclaysService.subscribe(subscriptionRequest);
 			}
 
@@ -91,7 +100,8 @@ public class UserAccountServiceImpl implements UserAccountService {
 			ua.setTransactionRequestTypes(res.getSubscriptionInfo().getTransactionRequestTypes());
 			ua.setSubscriptionRequestChallengeId(res.getChallenge().getId());
 
-			if (res.getSubscriptionInfo() != null) {
+			if (res.getSubscriptionInfo() != null)
+			{
 				ua.setSubscriptionInfoStatus(res.getSubscriptionInfo().getStatus());
 			}
 
@@ -101,14 +111,17 @@ public class UserAccountServiceImpl implements UserAccountService {
 			badv.setId(res.getSubscriptionInfo().getAccountId());
 			ua.setAccount(badv);
 			muar.save(ua);
-		} catch (Exception e) {
+		}
+		catch (Exception e)
+		{
 			throw new RuntimeException(e);
 		}
 		return res;
 	}
 
 	@Override
-	public UserAccount answerSubscriptionRequestChallenge(SubscriptionChallengeAnswer sca) {
+	public UserAccount answerSubscriptionRequestChallenge(SubscriptionChallengeAnswer sca)
+	{
 		/**
 		 * first answer challenge of PSD2API /subscription/{id} once
 		 * subscription request completes. call the getAccountAPI to
@@ -116,27 +129,33 @@ public class UserAccountServiceImpl implements UserAccountService {
 		 * /banks/{bankId}/accounts/{accountId}/{viewId}/account
 		 */
 		UserAccount ua = null;
-		try {
+		try
+		{
 
 			ua = muar.findBySubscriptionRequestId(sca.getSubscriptionRequestId());
 			logger.debug("Found UserAccount = " + ua);
 
-			if (ua == null || !ua.getAppUsername().equals(sca.getAppUsername())) {
+			if (ua == null || !ua.getAppUsername().equals(sca.getAppUsername()))
+			{
 				throw new IllegalArgumentException("Invalid Subscription Challenge Answer Specified");
 			}
 
 			SubscriptionInfo si = null;
-			if (ua.getAccount().getBankId().equals(ibmBank)) {
+			if (ua.getAccount().getBankId().equals(ibmBank))
+			{
 				si = ibmUserAccSvc.answerSubscriptionRequestChallenge(sca);
 			}
 
-			if (si != null) {
+			if (si != null)
+			{
 
 				BankAccountDetailsView bdv = ibmUserAccSvc.getAccountInformation(ua);
-				if (ua.getAccount().getBankId().equals(ibmBank)) {
+				if (ua.getAccount().getBankId().equals(ibmBank))
+				{
 					bdv = ibmUserAccSvc.getAccountInformation(ua);
 				}
-				if (bdv != null) {
+				if (bdv != null)
+				{
 					logger.debug("parameters to useraccount are: " + sca.getAppUsername() + ", " + si.getAccountId()
 							+ ", " + si.getBankId() + ", " + si.getUsername());
 					ua = muar.findByAppUsernameAndAccountIdAndAccountBankIdAndAccountUsername(sca.getAppUsername(),
@@ -148,39 +167,50 @@ public class UserAccountServiceImpl implements UserAccountService {
 					muar.save(ua);
 				}
 			}
-		} catch (Exception e) {
+		}
+		catch (Exception e)
+		{
 			throw new RuntimeException(e);
 		}
 		return ua;
 	}
 
 	@Override
-	public BankAccountDetailsView getAccountInformation(String appUser, String bankId, String accountId) {
+	public BankAccountDetailsView getAccountInformation(String appUser, String bankId, String accountId)
+	{
 		UserAccount ua = muar.findByAppUsernameAndAccountIdAndAccountBankId(appUser, accountId, bankId);
 		logger.debug("Found UserAccount = " + ua);
 		BankAccountDetailsView bdv = null;
 		Map<String, BankAccountDetailsView> barclaysadv = null;
 
 		if (ua == null || ua.getSubscriptionInfoStatus() == null
-				|| !ua.getSubscriptionInfoStatus().equals(SubscriptionInfo.STATUS_ACTIVE)) {
+				|| !ua.getSubscriptionInfoStatus().equals(SubscriptionInfo.STATUS_ACTIVE))
+		{
 			throw new IllegalArgumentException("Account is not yet subscribed");
 		}
 
-		try {
-			if (ua.getAccount().getBankId().equals(ibmBank)) {
+		try
+		{
+			if (ua.getAccount().getBankId().equals(ibmBank))
+			{
 				bdv = ibmUserAccSvc.getAccountInformation(ua);
 			}
 
-			if (ua.getAccount().getBankId().equals(barclaysBank)) {
-				if (barclaysadv == null) {
+			if (ua.getAccount().getBankId().equals(barclaysBank))
+			{
+				if (barclaysadv == null)
+				{
 					barclaysadv = barclaysService.getAccountInformation(ua);
 				}
 
-				if (!CollectionUtils.isEmpty(barclaysadv)) {
+				if (!CollectionUtils.isEmpty(barclaysadv))
+				{
 					bdv = barclaysadv.get(ua.getAccount().getId());
 				}
 			}
-		} catch (Exception e) {
+		}
+		catch (Exception e)
+		{
 			throw new RuntimeException(e);
 		}
 		return bdv;
@@ -188,40 +218,51 @@ public class UserAccountServiceImpl implements UserAccountService {
 	}
 
 	@Override
-	public List<BankAccountDetailsView> getAllAccountInformation(String appUser) {
+	public List<BankAccountDetailsView> getAllAccountInformation(String appUser)
+	{
 		List<UserAccount> uas = muar.findByAppUsername(appUser);
 		logger.debug("Found UserAccount = " + uas);
 
 		List<BankAccountDetailsView> bdvs = null;
 		Map<String, BankAccountDetailsView> barclaysadv = null;
 
-		try {
-			if (uas != null) {
+		try
+		{
+			if (uas != null)
+			{
 
-				for (Iterator<UserAccount> iterator = uas.iterator(); iterator.hasNext();) {
+				for (Iterator<UserAccount> iterator = uas.iterator(); iterator.hasNext();)
+				{
 					UserAccount ua = iterator.next();
 
-					if (!SubscriptionInfo.STATUS_ACTIVE.equals(ua.getSubscriptionInfoStatus())) {
+					if (!SubscriptionInfo.STATUS_ACTIVE.equals(ua.getSubscriptionInfoStatus()))
+					{
 						continue;
 					}
 
 					BankAccountDetailsView badv = null;
-					if (ua.getAccount().getBankId().equals(ibmBank)) {
+					if (ua.getAccount().getBankId().equals(ibmBank))
+					{
 						badv = ibmUserAccSvc.getAccountInformation(ua);
 					}
 
-					if (ua.getAccount().getBankId().equals(barclaysBank)) {
-						if (barclaysadv == null) {
+					if (ua.getAccount().getBankId().equals(barclaysBank))
+					{
+						if (barclaysadv == null)
+						{
 							barclaysadv = barclaysService.getAccountInformation(ua);
 						}
 
-						if (!CollectionUtils.isEmpty(barclaysadv)) {
+						if (!CollectionUtils.isEmpty(barclaysadv))
+						{
 							badv = barclaysadv.get(ua.getAccount().getId());
 						}
 					}
 
-					if (badv != null) {
-						if (bdvs == null) {
+					if (badv != null)
+					{
+						if (bdvs == null)
+						{
 							bdvs = new ArrayList<>();
 						}
 						bdvs.add(badv);
@@ -229,39 +270,51 @@ public class UserAccountServiceImpl implements UserAccountService {
 
 				}
 			}
-		} catch (Exception e) {
+		}
+		catch (Exception e)
+		{
 			throw new RuntimeException(e);
 		}
 		return bdvs;
 	}
 
 	@Override
-	public List<com.ibm.api.cashew.beans.Transaction> getTransactions(String appUser, String bankId, String accountId,
-			String sortDirection, String fromDate, String toDate, String sortBy, Integer offset, Integer limit) {
+	public List<com.ibm.api.cashew.beans.ElasticTransaction> getTransactions(String appUser, String bankId,
+			String accountId, String sortDirection, String fromDate, String toDate, String sortBy, Integer offset,
+			Integer limit)
+	{
 
 		List<UserAccount> uas = muar.findByAppUsername(appUser);
 		List<Transaction> txns = new ArrayList<Transaction>();
 
-		if (uas != null) {
+		if (uas != null)
+		{
 
-			for (Iterator<UserAccount> iterator = uas.iterator(); iterator.hasNext();) {
+			for (Iterator<UserAccount> iterator = uas.iterator(); iterator.hasNext();)
+			{
 				UserAccount ua = iterator.next();
 
-				if (!SubscriptionInfo.STATUS_ACTIVE.equals(ua.getSubscriptionInfoStatus())) {
+				if (!SubscriptionInfo.STATUS_ACTIVE.equals(ua.getSubscriptionInfoStatus()))
+				{
 					continue;
 				}
 
-				try {
-					if (ua.getAccount().getBankId().equals(ibmBank)) {
+				try
+				{
+					if (ua.getAccount().getBankId().equals(ibmBank))
+					{
 						txns.addAll(ibmUserAccSvc.getTransactions(ua, sortDirection, fromDate, toDate, sortBy, offset,
 								limit));
 					}
 
-					if (ua.getAccount().getBankId().equals(barclaysBank)) {
+					if (ua.getAccount().getBankId().equals(barclaysBank))
+					{
 						txns.addAll(barclaysService.getTransactions(ua.getAccount().getId()));
 					}
 
-				} catch (Exception e) {
+				}
+				catch (Exception e)
+				{
 					throw new RuntimeException(e);
 				}
 
@@ -270,10 +323,12 @@ public class UserAccountServiceImpl implements UserAccountService {
 
 		// save data in mongo and elastic search
 
-		if (!CollectionUtils.isEmpty(txns)) {
+		if (!CollectionUtils.isEmpty(txns))
+		{
 
-			List<com.ibm.api.cashew.beans.Transaction> txnList = populateElasticTxnDetails(txns, appUser);
-			if (!CollectionUtils.isEmpty(txnList)) {
+			List<com.ibm.api.cashew.beans.ElasticTransaction> txnList = populateElasticTxnDetails(txns, appUser);
+			if (!CollectionUtils.isEmpty(txnList))
+			{
 				elasticTxnRepo.save(txnList);
 			}
 		}
@@ -282,7 +337,8 @@ public class UserAccountServiceImpl implements UserAccountService {
 	}
 
 	@Override
-	public TxnRequestDetails createTransaction(TxnRequest txnReq, TxnParty payer, String txnType, String user) {
+	public TxnRequestDetails createTransaction(TxnRequest txnReq, TxnParty payer, String txnType, String user)
+	{
 
 		UserAccount ua = muar.findByAppUsernameAndAccountIdAndAccountBankId(user, payer.getAccountId(),
 				payer.getBankId());
@@ -291,30 +347,35 @@ public class UserAccountServiceImpl implements UserAccountService {
 		TxnRequestDetails txnReqDetails = null;
 
 		if (ua == null || ua.getSubscriptionInfoStatus() == null
-				|| !ua.getSubscriptionInfoStatus().equals(SubscriptionInfo.STATUS_ACTIVE)) {
+				|| !ua.getSubscriptionInfoStatus().equals(SubscriptionInfo.STATUS_ACTIVE))
+		{
 			throw new IllegalArgumentException("Account is not yet subscribed");
 		}
 
-		try {
-			if (ua.getAccount().getBankId().equals(ibmBank)) {
+		try
+		{
+			if (ua.getAccount().getBankId().equals(ibmBank))
+			{
 				txnReqDetails = ibmUserAccSvc.createTransaction(txnReq, payer, txnType, ua);
 			}
-		} catch (Exception e) {
+		}
+		catch (Exception e)
+		{
 			throw new RuntimeException(e);
 		}
 
 		return txnReqDetails;
 	}
 
-	private List<com.ibm.api.cashew.beans.Transaction> populateElasticTxnDetails(List<Transaction> txnList,
-			String appUser) {
+	private List<ElasticTransaction> populateElasticTxnDetails(List<Transaction> txnList, String appUser)
+	{
 
-		List<com.ibm.api.cashew.beans.Transaction> elasticTxnList = new ArrayList<com.ibm.api.cashew.beans.Transaction>();
-		for (Transaction txn : txnList) {
-
-			if (elasticTxnRepo.findOne(txn.getId()) == null) {
-
-				com.ibm.api.cashew.beans.Transaction elasticTxn = new com.ibm.api.cashew.beans.Transaction();
+		List<com.ibm.api.cashew.beans.ElasticTransaction> elasticTxnList = new ArrayList<com.ibm.api.cashew.beans.ElasticTransaction>();
+		for (Transaction txn : txnList)
+		{
+			if (elasticTxnRepo.findOne(txn.getId()) == null)
+			{
+				com.ibm.api.cashew.beans.ElasticTransaction elasticTxn = new com.ibm.api.cashew.beans.ElasticTransaction();
 				elasticTxn.setId(txn.getId());
 
 				TxnParty from = new TxnParty();
@@ -324,26 +385,44 @@ public class UserAccountServiceImpl implements UserAccountService {
 
 				TxnParty to = new TxnParty();
 
-				if (txn.getOtherAccount() != null) {
+				if (txn.getOtherAccount() != null)
+				{
 					to.setAccountId(txn.getOtherAccount().getId());
-					if (txn.getOtherAccount().getBank() != null) {
+					if (txn.getOtherAccount().getBank() != null)
+					{
 						to.setBankId(txn.getOtherAccount().getBank().getName());
 					}
 				}
 				elasticTxn.setTo(to);
-
-				elasticTxn.setDetails(txn.getDetails());
+				
+				ElasticTxnDetails elasticTxnDetails = new ElasticTxnDetails();
+				elasticTxnDetails.setDescription(txn.getDetails().getDescription());
+				elasticTxnDetails.setType(txn.getDetails().getType());
+				elasticTxnDetails.setValue(txn.getDetails().getValue());
+				
+				elasticTxnDetails.setCompleted(Transaction.DATE_FORMAT.format(txn.getDetails().getCompleted()));
+				elasticTxnDetails.setPosted(Transaction.DATE_FORMAT.format(txn.getDetails().getPosted()));
+				elasticTxnDetails.setNewBalance(txn.getDetails().getNewBalance());
+				
+				elasticTxn.setDetails(elasticTxnDetails);
 
 				if (txn.getDetails() != null && txn.getDetails().getValue() != null
-						&& txn.getDetails().getType() != null) {
-					if (txn.getDetails().getType().equals(TransactionRequestType.TYPES.SELF.type())) {
-						elasticTxn.setTxnType(com.ibm.api.cashew.beans.Transaction.TXN_TYPE_ROTATE);
-					} else {
-						if (txn.getDetails().getValue().getAmount() < 0) {
+						&& txn.getDetails().getType() != null)
+				{
+					if (txn.getDetails().getType().equals(TransactionRequestType.TYPES.SELF.type()))
+					{
+						elasticTxn.setTxnType(com.ibm.api.cashew.beans.ElasticTransaction.TXN_TYPE_ROTATE);
+					}
+					else
+					{
+						if (txn.getDetails().getValue().getAmount() < 0)
+						{
 							// txn is a debit txn
-							elasticTxn.setTxnType(com.ibm.api.cashew.beans.Transaction.TXN_TYPE_DEBIT);
-						} else if (txn.getDetails().getValue().getAmount() > 0) {
-							elasticTxn.setTxnType(com.ibm.api.cashew.beans.Transaction.TXN_TYPE_CREDIT);
+							elasticTxn.setTxnType(com.ibm.api.cashew.beans.ElasticTransaction.TXN_TYPE_DEBIT);
+						}
+						else if (txn.getDetails().getValue().getAmount() > 0)
+						{
+							elasticTxn.setTxnType(com.ibm.api.cashew.beans.ElasticTransaction.TXN_TYPE_CREDIT);
 						}
 					}
 				}
@@ -359,9 +438,6 @@ public class UserAccountServiceImpl implements UserAccountService {
 		}
 
 		return elasticTxnList;
-
 	}
-
-	
 
 }

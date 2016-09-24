@@ -15,7 +15,7 @@ public interface PaymentsService
 	public TxnRequestDetails createTransactionRequest(String appUsername, String bankId, String accountId,
 			TxnRequest trb);
 
-	public com.ibm.api.cashew.beans.Transaction tagTransaction(String userId, String bankId, String accountId,
+	public com.ibm.api.cashew.beans.ElasticTransaction tagTransaction(String userId, String bankId, String accountId,
 			String txnId, String tag);
 
 	public List<CounterParty> getPayees(String appUsername, String bankId, String accountId) throws Exception;

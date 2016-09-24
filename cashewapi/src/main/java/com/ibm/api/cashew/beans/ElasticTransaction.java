@@ -8,60 +8,80 @@ import com.fasterxml.jackson.annotation.JsonInclude.Include;
 import com.ibm.psd2.datamodel.aip.TransactionDetails;
 import com.ibm.psd2.datamodel.pisp.TxnParty;
 
-
 @Document(indexName = "transactions", type = "transaction")
 @JsonInclude(value = Include.NON_EMPTY)
-public class Transaction {
-	
-	public static final String TXN_TYPE_CREDIT	= "credit";
-	public static final String TXN_TYPE_DEBIT	= "debit";
+public class ElasticTransaction
+{
+
+	public static final String TXN_TYPE_CREDIT = "credit";
+	public static final String TXN_TYPE_DEBIT = "debit";
 	public static final String TXN_TYPE_ROTATE = "rotate";
 
 	@Id
 	private String id;
 	private TxnParty from;
 	private TxnParty to;
-	private TransactionDetails details;
+	private ElasticTxnDetails details;
 	private User userInfo;
 	private String txnType;
-	
-	
-	public String getId() {
+
+	public String getId()
+	{
 		return id;
 	}
-	public void setId(String id) {
+
+	public void setId(String id)
+	{
 		this.id = id;
 	}
-	public TxnParty getFrom() {
+
+	public TxnParty getFrom()
+	{
 		return from;
 	}
-	public void setFrom(TxnParty from) {
+
+	public void setFrom(TxnParty from)
+	{
 		this.from = from;
 	}
-	public TxnParty getTo() {
+
+	public TxnParty getTo()
+	{
 		return to;
 	}
-	public void setTo(TxnParty to) {
+
+	public void setTo(TxnParty to)
+	{
 		this.to = to;
 	}
-	public TransactionDetails getDetails() {
-		return details;
-	}
-	public void setDetails(TransactionDetails details) {
-		this.details = details;
-	}
-	public User getUserInfo() {
+
+	public User getUserInfo()
+	{
 		return userInfo;
 	}
-	public void setUserInfo(User userInfo) {
+
+	public void setUserInfo(User userInfo)
+	{
 		this.userInfo = userInfo;
 	}
+
 	public String getTxnType()
 	{
 		return txnType;
 	}
+
 	public void setTxnType(String txnType)
 	{
 		this.txnType = txnType;
+	}
+
+	public ElasticTxnDetails getDetails()
+	{
+		return details;
+	}
+
+	public void setDetails(ElasticTxnDetails details)
+	{
+		this.details = details;
 	}
 }

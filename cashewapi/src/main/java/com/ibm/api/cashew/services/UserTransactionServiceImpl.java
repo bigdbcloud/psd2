@@ -7,7 +7,7 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.ibm.api.cashew.beans.Transaction;
+import com.ibm.api.cashew.beans.ElasticTransaction;
 import com.ibm.api.cashew.beans.aggregation.AggregationRequest;
 import com.ibm.api.cashew.beans.aggregation.AggregationResponse;
 import com.ibm.api.cashew.beans.aggregation.AggregationTypes;
@@ -63,7 +63,7 @@ public class UserTransactionServiceImpl implements UserTransactionService {
 			qr.addQueryCriteria(new FieldBean("from.accountId", accountId));
 		}
 
-		qr.addQueryCriteria(new FieldBean("txnType", Transaction.TXN_TYPE_DEBIT));
+		qr.addQueryCriteria(new FieldBean("txnType", ElasticTransaction.TXN_TYPE_DEBIT));
 
 		BucketAggregationRequest aggrBean = new BucketAggregationRequest();
 		aggrBean.setName("User avg expenses");
@@ -109,11 +109,11 @@ public class UserTransactionServiceImpl implements UserTransactionService {
 			qr.addQueryCriteria(new FieldBean("from.accountId", accountId));
 		}
 
-		if (Transaction.TXN_TYPE_CREDIT.equals(txnType)) {
-			qr.addQueryCriteria(new FieldBean("txnType", Transaction.TXN_TYPE_CREDIT));
+		if (ElasticTransaction.TXN_TYPE_CREDIT.equals(txnType)) {
+			qr.addQueryCriteria(new FieldBean("txnType", ElasticTransaction.TXN_TYPE_CREDIT));
 
 		} else{
-			qr.addQueryCriteria(new FieldBean("txnType", Transaction.TXN_TYPE_DEBIT));
+			qr.addQueryCriteria(new FieldBean("txnType", ElasticTransaction.TXN_TYPE_DEBIT));
 		}
 
 		BucketAggregationRequest aggrBean = new BucketAggregationRequest();
