@@ -100,6 +100,9 @@ public class PaymentsServiceImpl implements PaymentsService {
 			if (ua.getAccount().getBankId().equals(ibmBank)) {
 				txnDetails = ibmPaymentsService.createTransactionRequest(ua, trb, trb.getTransactionRequestType());
 			}
+			if (ua.getAccount().getBankId().equals(barclaysBank)) {
+				txnDetails = barclaysService.createTransactionRequest(ua, trb, trb.getTransactionRequestType());
+			}
 		} catch (Exception e) {
 			throw new RuntimeException(e);
 		}

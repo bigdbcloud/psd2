@@ -17,6 +17,7 @@ import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.ParameterizedTypeReference;
+import org.springframework.http.HttpEntity;
 import org.springframework.http.MediaType;
 import org.springframework.http.RequestEntity;
 import org.springframework.http.ResponseEntity;
@@ -28,7 +29,9 @@ import com.ibm.api.cashew.beans.UserAccount;
 import com.ibm.api.cashew.beans.barclays.Account;
 import com.ibm.api.cashew.beans.barclays.Customer;
 import com.ibm.api.cashew.beans.barclays.Payee;
+import com.ibm.api.cashew.beans.barclays.PaymentDescriptor;
 import com.ibm.api.cashew.beans.barclays.Transaction;
+import com.ibm.api.cashew.beans.barclays.TxnAmount;
 import com.ibm.api.cashew.utils.UUIDGenerator;
 import com.ibm.psd2.datamodel.Amount;
 import com.ibm.psd2.datamodel.Amount.CURRENCY_TYPE;
@@ -40,6 +43,8 @@ import com.ibm.psd2.datamodel.aip.TransactionBank;
 import com.ibm.psd2.datamodel.aip.TransactionDetails;
 import com.ibm.psd2.datamodel.pisp.CounterParty;
 import com.ibm.psd2.datamodel.pisp.TxnParty;
+import com.ibm.psd2.datamodel.pisp.TxnRequest;
+import com.ibm.psd2.datamodel.pisp.TxnRequestDetails;
 import com.ibm.psd2.datamodel.subscription.SubscriptionInfo;
 import com.ibm.psd2.datamodel.subscription.SubscriptionRequest;
 
@@ -348,5 +353,50 @@ public class BarclaysServiceImpl implements BarclaysService
 
 		return parties;
 	}
+	
+	@Override
+	public TxnRequestDetails createTransactionRequest(UserAccount ua, TxnRequest trb, String transactionRequestType) throws URISyntaxException {
+		
+		com.ibm.api.cashew.beans.barclays.TxnRequest txnRequest=populateTxnRequest(ua,trb,transactionRequestType);
+	    postTransaction(ua.getAccount().getId(),txnRequest);
+		
+		return null;
+	}
+
+	private void postTransaction(String accountId,com.ibm.api.cashew.beans.barclays.TxnRequest txnRequest) throws URISyntaxException {
+	
+		String url = acctServiceUrl + "/accounts/" + accountId + "/transactions";
+		
+		logger.debug("url = " + url);
+		HttpEntity<com.ibm.api.cashew.beans.barclays.TxnRequest> request = new HttpEntity<com.ibm.api.cashew.beans.barclays.TxnRequest>(txnRequest);
+		ResponseEntity<String> res=restTemplate.postForEntity(url, request,String.class);
+		
+		logger.debug("response code" + res.getStatusCode());
+
+		
+			
+		
+	}
+
+	private com.ibm.api.cashew.beans.barclays.TxnRequest populateTxnRequest(UserAccount ua, TxnRequest trb, String transactionRequestType) {
+	
+		com.ibm.api.cashew.beans.barclays.TxnRequest txnRequest=new com.ibm.api.cashew.beans.barclays.TxnRequest();
+		TxnAmount txnAmt =new TxnAmount();
+		txnAmt.setDirection("OUT");
+		txnAmt.setValue(Double.toString(trb.getValue().getAmount()));
+		txnRequest.setAmount(txnAmt);
+		
+		txnRequest.setDescription(trb.getDescription());
+		
+		PaymentDescriptor pymDesc =new PaymentDescriptor();
+		pymDesc.setId(trb.getTo().getAccountId());
+		pymDesc.setPaymentDescriptorType("MERCHANT");
+		txnRequest.setPaymentDescriptor(pymDesc);
+		txnRequest.setPaymentMethod("ONLINE_TRANSFER");
+		
+		return txnRequest;
+		
+	}
+
 
 }

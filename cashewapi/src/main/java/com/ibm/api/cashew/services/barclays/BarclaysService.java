@@ -5,9 +5,11 @@ import java.util.List;
 import java.util.Map;
 
 import com.ibm.api.cashew.beans.UserAccount;
+import com.ibm.api.cashew.beans.barclays.TxnRequest;
 import com.ibm.psd2.datamodel.aip.BankAccountDetailsView;
 import com.ibm.psd2.datamodel.aip.Transaction;
 import com.ibm.psd2.datamodel.pisp.CounterParty;
+import com.ibm.psd2.datamodel.pisp.TxnRequestDetails;
 import com.ibm.psd2.datamodel.subscription.SubscriptionRequest;
 
 public interface BarclaysService {
@@ -19,5 +21,8 @@ public interface BarclaysService {
 	Map<String, BankAccountDetailsView> getAccountInformation(UserAccount ua) throws URISyntaxException;
 
 	List<CounterParty> getPayees(UserAccount ua) throws URISyntaxException;
+
+	TxnRequestDetails createTransactionRequest(UserAccount ua, com.ibm.psd2.datamodel.pisp.TxnRequest trb,
+			String transactionRequestType) throws URISyntaxException;
 
 }
