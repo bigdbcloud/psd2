@@ -19,5 +19,7 @@ public interface TransactionRequestService
 
 	public TxnRequestDetails answerTransactionRequestChallenge(String username, String viewId, String bankId,
 			String accountId, String txnType, String txnReqId, ChallengeAnswer t) throws ParseException;
-
+	
+	public TxnRequestDetails createTransactionRequestHack(SubscriptionInfo sib, TxnRequest trb, TxnParty payee,
+			String txnType, String postedDate);
 }
