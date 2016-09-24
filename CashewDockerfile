@@ -70,6 +70,7 @@ COPY bluemix/elastic.sh /usr/local/cashew
 COPY bigoauth2server/target/bigoauth2server-beta.jar /usr/local/cashew/
 COPY cashewapi/target/cashewapi-0.0.1-SNAPSHOT.jar /usr/local/cashew/
 COPY cashewstartup.sh /usr/local/cashew
+RUN chmod 777 /usr/local/cashew/cashewstartup.sh
 
 RUN ls -al /usr/local/cashew/
 
