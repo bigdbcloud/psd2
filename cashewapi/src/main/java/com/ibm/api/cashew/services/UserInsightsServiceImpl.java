@@ -132,40 +132,42 @@ public class UserInsightsServiceImpl implements UserInsightsService
 
 					BucketAggregationResponse res = (BucketAggregationResponse) aggrRes;
 					List<BucketResponse> buckets = res.getBuckets();
-
-					for (BucketResponse bucketRes : buckets)
+					if (buckets != null)
 					{
-
-						List<AggregationResponse> resList = bucketRes.getAggregations();
-
-						for (AggregationResponse subAgg : resList)
+						for (BucketResponse bucketRes : buckets)
 						{
 
-							if (subAgg != null && (subAgg instanceof MetricAggregationResponse))
+							List<AggregationResponse> resList = bucketRes.getAggregations();
+
+							for (AggregationResponse subAgg : resList)
 							{
 
-								MetricAggregationResponse metricRes = (MetricAggregationResponse) subAgg;
-
-								Insight insght = new Insight();
-
-								if (txnType != null && ElasticTransaction.TXN_TYPE_CREDIT.equals(txnType))
+								if (subAgg != null && (subAgg instanceof MetricAggregationResponse))
 								{
-									insght.setDescription(MessageFormat.format(INCOME_INSIGHT_MSG,
-											((Double) metricRes.getValue()).toString().replaceAll("-", ""),
-											bucketRes.getKey_as_string()));
+
+									MetricAggregationResponse metricRes = (MetricAggregationResponse) subAgg;
+
+									Insight insght = new Insight();
+
+									if (txnType != null && ElasticTransaction.TXN_TYPE_CREDIT.equals(txnType))
+									{
+										insght.setDescription(MessageFormat.format(INCOME_INSIGHT_MSG,
+												((Double) metricRes.getValue()).toString().replaceAll("-", ""),
+												bucketRes.getKey_as_string()));
+									}
+									else
+									{
+										insght.setDescription(MessageFormat.format(EXPENSE_INSIGHT_MSG,
+												((Double) metricRes.getValue()).toString().replaceAll("-", ""),
+												bucketRes.getKey_as_string()));
+									}
+									insght.setUnit("AVG");
+									insght.setValue(((Double) metricRes.getValue()).toString().replaceAll("-", ""));
+									insights.add(insght);
 								}
-								else
-								{
-									insght.setDescription(MessageFormat.format(EXPENSE_INSIGHT_MSG,
-											((Double) metricRes.getValue()).toString().replaceAll("-", ""),
-											bucketRes.getKey_as_string()));
-								}
-								insght.setUnit("AVG");
-								insght.setValue(((Double) metricRes.getValue()).toString().replaceAll("-", ""));
-								insights.add(insght);
 							}
-						}
 
+						}
 					}
 				}
 
