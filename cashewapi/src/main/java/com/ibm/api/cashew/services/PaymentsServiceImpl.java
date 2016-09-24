@@ -14,6 +14,7 @@ import com.ibm.api.cashew.db.elastic.ElasticTransactionRepository;
 import com.ibm.api.cashew.db.mongo.MongoUserAccountsRepository;
 import com.ibm.api.cashew.services.barclays.BarclaysService;
 import com.ibm.api.cashew.services.ibmbank.IBMPaymentsService;
+import com.ibm.psd2.datamodel.ChallengeAnswer;
 import com.ibm.psd2.datamodel.aip.TransactionDetails;
 import com.ibm.psd2.datamodel.pisp.CounterParty;
 import com.ibm.psd2.datamodel.pisp.TxnRequest;
@@ -144,6 +145,33 @@ public class PaymentsServiceImpl implements PaymentsService {
 			throw new RuntimeException(e);
 		}
 		return payees;
+	}
+
+	@Override
+	public TxnRequestDetails answerTxnChallnge(String userId, String bankId, String accountId, String txnReqType,
+			String txnId, ChallengeAnswer ca) {
+		
+		UserAccount ua = muar.findByAppUsernameAndAccountIdAndAccountBankId(userId,accountId,bankId);
+		logger.debug("Found UserAccount = " + ua);
+
+		TxnRequestDetails txnReqDetails = null;
+
+		if (ua == null || ua.getSubscriptionInfoStatus() == null
+				|| !ua.getSubscriptionInfoStatus().equals(SubscriptionInfo.STATUS_ACTIVE)) {
+			throw new IllegalArgumentException("Account is not yet subscribed");
+		}
+
+		try {
+			if (ua.getAccount().getBankId().equals(ibmBank)) {
+				txnReqDetails = ibmPaymentsService.answerTxnChallenge(ua,txnReqType,txnId,ca);
+						
+			}
+		} catch (Exception e) {
+			throw new RuntimeException(e);
+		}
+
+		return txnReqDetails;
+		
 	}
 
 }

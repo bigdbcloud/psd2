@@ -20,6 +20,7 @@ import com.ibm.api.cashew.db.elastic.ElasticTransactionRepository;
 import com.ibm.api.cashew.db.mongo.MongoUserAccountsRepository;
 import com.ibm.api.cashew.services.barclays.BarclaysService;
 import com.ibm.api.cashew.services.ibmbank.IBMUserAccountService;
+import com.ibm.psd2.datamodel.ChallengeAnswer;
 import com.ibm.psd2.datamodel.aip.BankAccountDetailsView;
 import com.ibm.psd2.datamodel.aip.Transaction;
 import com.ibm.psd2.datamodel.pisp.TxnParty;
@@ -360,5 +361,7 @@ public class UserAccountServiceImpl implements UserAccountService {
 		return elasticTxnList;
 
 	}
+
+	
 
 }

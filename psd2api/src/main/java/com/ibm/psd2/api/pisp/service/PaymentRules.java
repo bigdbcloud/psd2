@@ -11,6 +11,7 @@ import com.ibm.psd2.datamodel.ChallengeAnswer;
 import com.ibm.psd2.datamodel.pisp.TxnCharge;
 import com.ibm.psd2.datamodel.pisp.TxnParty;
 import com.ibm.psd2.datamodel.pisp.TxnRequest;
+import com.ibm.psd2.datamodel.pisp.TxnRequestDetails;
 import com.ibm.psd2.datamodel.subscription.SubscriptionInfo;
 import com.ibm.psd2.datamodel.subscription.TransactionLimit;
 import com.ibm.psd2.datamodel.subscription.TransactionRequestType;
@@ -85,10 +86,10 @@ public class PaymentRules
 		return tcb;
 	}
 
-	public boolean validateTxnChallengeAnswer(ChallengeAnswer t, String user, String accountId, String bankId)
+	public boolean validateTxnChallengeAnswer(ChallengeAnswer t, TxnRequestDetails tdb, String user, String accountId, String bankId)
 	{
-		if (t.getAnswer() != null)
-		{
+		if(tdb.getChallenge().getAnswer().equals(t.getAnswer())){
+			
 			return true;
 		}
 		return false;

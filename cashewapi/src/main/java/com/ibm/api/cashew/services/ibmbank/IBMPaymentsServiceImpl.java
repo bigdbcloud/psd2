@@ -1,6 +1,7 @@
 package com.ibm.api.cashew.services.ibmbank;
 
 import java.net.URI;
+import java.net.URISyntaxException;
 import java.util.List;
 
 import org.apache.logging.log4j.LogManager;
@@ -14,6 +15,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
 import com.ibm.api.cashew.beans.UserAccount;
+import com.ibm.psd2.datamodel.ChallengeAnswer;
 import com.ibm.psd2.datamodel.pisp.CounterParty;
 import com.ibm.psd2.datamodel.pisp.TxnRequest;
 import com.ibm.psd2.datamodel.pisp.TxnRequestDetails;
@@ -73,6 +75,32 @@ public class IBMPaymentsServiceImpl implements IBMPaymentsService
 		List<CounterParty> cp = res.getBody();
 		return cp;
 		
+		
+	}
+
+	@Override
+	public TxnRequestDetails answerTxnChallenge(UserAccount ua, String txnReqType, String txnId, ChallengeAnswer ca) throws URISyntaxException {
+		
+		/*banks/{bankId}/accounts/{accountId}/{viewId}/transaction-request-types/{txnType}/transaction-requests/{txnReqId}/challenge*/
+		
+		TxnRequestDetails txnDetails = null;
+		String url = psd2Credentials.getPsd2Url() + "/banks/" + ua.getAccount().getBankId() + "/accounts/"
+				+ ua.getAccount().getId() + "/" + ua.getViewIds().get(0).getId() + "/transaction-request-types/"
+				+ txnReqType + "/transaction-requests/" + txnId + "/challenge";
+		
+		logger.debug("url = " + url);
+
+		URI uri = new URI(url);
+
+		RequestEntity<ChallengeAnswer> rea = RequestEntity.post(uri).accept(MediaType.APPLICATION_JSON)
+				.header("Authorization", psd2Credentials.getPSD2Authorization())
+				.header("user", ua.getAccount().getUsername()).body(ca);
+
+		ResponseEntity<TxnRequestDetails> res = restTemplate.exchange(rea, TxnRequestDetails.class);
+
+		txnDetails = res.getBody();
+		
+		return txnDetails;
 		
 	}
 

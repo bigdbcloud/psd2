@@ -4,7 +4,7 @@ export MOUNTPATH=/data/db
 
 adduser mongodb root
 
-chmod -R 777 $MOUNTPATH
+chmod -R 777 $/data/db
 chmod -R 777 /logs
 chmod -R 777 /data/configdb
 
