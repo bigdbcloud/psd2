@@ -181,7 +181,7 @@ public class AdminController
 			@PathVariable("bankId") String bankId, @PathVariable("accountId") String accountId,
 			@PathVariable("viewId") String viewId, @PathVariable("txnType") String txnType,
 			@RequestBody(required = true) TxnRequest trb,
-			@RequestHeader(required = true) String date,
+			@RequestHeader(required = true) String fromDate,
 			@RequestHeader(value = "user", required = true) String user)
 	{
 		ResponseEntity<TxnRequestDetails> response;
@@ -196,7 +196,7 @@ public class AdminController
 			Authentication auth = SecurityContextHolder.getContext().getAuthentication();
 			SubscriptionInfo sib = subscriptionService.getSubscriptionInfo(user, (String) auth.getName(), accountId, bankId);
 			TxnParty payee = new TxnParty(bankId, accountId);
-			TxnRequestDetails t = txnReqService.createTransactionRequestHack(sib, trb, payee, txnType, date);
+			TxnRequestDetails t = txnReqService.createTransactionRequestHack(sib, trb, payee, txnType, fromDate);
 
 			response = ResponseEntity.ok(t);
 		}
