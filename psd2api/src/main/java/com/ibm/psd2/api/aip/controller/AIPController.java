@@ -217,7 +217,7 @@ public class AIPController extends APIController
 
 			if (limit == null || limit == 0)
 			{
-				limit = 10;
+				limit = 100;
 			}
 
 			List<Transaction> t = tdao.getTransactions(bankId, accountId, sortDirection, fromDate, toDate, sortBy,
