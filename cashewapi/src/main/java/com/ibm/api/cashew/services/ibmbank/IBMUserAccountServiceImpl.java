@@ -99,13 +99,14 @@ public class IBMUserAccountServiceImpl implements IBMUserAccountService
 				+ ua.getViewIds().get(0).getId() + "/transactions";
 
 		URI uri = new URI(url);
-
+		logger.debug("url = " + url);
+		
 		RequestEntity<Void> rea = RequestEntity.get(uri).accept(MediaType.APPLICATION_JSON)
 				.header("Authorization", psd2Credentials.getPSD2Authorization()).header("user", ua.getAccount().getUsername())
 				.header("obp_sort_direction", sortDirection).header("obp_from_date", fromDate)
 				.header("obp_to_date", toDate).header("obp_sort_by", sortBy)
 				.header("obp_offset", (offset == null) ? "0" : offset.toString())
-				.header("obp_limit", (limit == null) ? "10" : offset.toString()).build();
+				.header("obp_limit", (limit == null) ? "100" : offset.toString()).build();
 
 		ResponseEntity<List<Transaction>> res = restTemplate.exchange(rea,
 				new ParameterizedTypeReference<List<Transaction>>()
