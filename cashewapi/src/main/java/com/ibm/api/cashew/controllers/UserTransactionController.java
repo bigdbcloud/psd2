@@ -38,7 +38,7 @@ public class UserTransactionController extends APIController {
 			@PathVariable(value = "userId") String userId,
 			@RequestParam(value = "bankId", required = false) String bankId,
 			@RequestParam(value = "accountId", required = false) String accountId,
-			@RequestParam(value = "txnType", required = true) String txnType,
+			@RequestParam(value = "txnType", required = false) String txnType,
 			@RequestHeader(value = "fromDate", required = false) String fromDate,
 			@RequestHeader(value = "toDate", required = false) String toDate)
 
