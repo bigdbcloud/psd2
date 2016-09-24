@@ -98,6 +98,8 @@ public class UserInsightsServiceImpl implements UserInsightsService {
 		aggrList.add(aggrBean);
 		qr.setAggregations(aggrList);
 		List<AggregationResponse> aggrResponse = elasticTxnRepo.getBucketAggregation(qr);
+		
+		logger.debug("Response = " + aggrResponse);
 
 		List<Insight> insights = null;
 
@@ -123,11 +125,11 @@ public class UserInsightsServiceImpl implements UserInsightsService {
 
 								Insight insght = new Insight();
 
-								insght.setDescription(MessageFormat.format(INSIGHT_MSG,bucketRes.getKey_as_string(),
-										((Double)metricRes.getValue()).toString().replaceAll("-","")));
+								insght.setDescription(MessageFormat.format(INSIGHT_MSG, bucketRes.getKey_as_string(),
+										((Double) metricRes.getValue()).toString().replaceAll("-", "")));
 
 								insght.setUnit("AVG");
-								insght.setValue(((Double)metricRes.getValue()).toString().replaceAll("-",""));
+								insght.setValue(((Double) metricRes.getValue()).toString().replaceAll("-", ""));
 								insights.add(insght);
 							}
 						}
@@ -138,7 +140,7 @@ public class UserInsightsServiceImpl implements UserInsightsService {
 			}
 		}
 
-		logger.debug("Response = " + aggrResponse);
+		
 
 		return insights;
 

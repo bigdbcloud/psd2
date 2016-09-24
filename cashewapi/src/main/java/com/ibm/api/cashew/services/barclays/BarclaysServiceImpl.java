@@ -71,8 +71,6 @@ public class BarclaysServiceImpl implements BarclaysService {
 		URI uri = new URI(url);
 
 		RequestEntity<Void> rea = RequestEntity.get(uri).accept(MediaType.APPLICATION_JSON).build();
-		Map<String, String> uriVariables = new HashMap<String, String>();
-		uriVariables.put("accountId", accountId);
 
 		ResponseEntity<List<Transaction>> txn = restTemplate.exchange(rea,
 				new ParameterizedTypeReference<List<Transaction>>() {
@@ -257,8 +255,6 @@ public class BarclaysServiceImpl implements BarclaysService {
 		URI uri = new URI(url);
 
 		RequestEntity<Void> rea = RequestEntity.get(uri).accept(MediaType.APPLICATION_JSON).build();
-		Map<String, String> uriVariables = new HashMap<String, String>();
-		uriVariables.put("accountId", accountId);
 
 		ResponseEntity<List<Payee>> txn = restTemplate.exchange(rea, new ParameterizedTypeReference<List<Payee>>() {
 		});
@@ -271,16 +267,16 @@ public class BarclaysServiceImpl implements BarclaysService {
 	public List<CounterParty> getPayees(UserAccount ua) throws URISyntaxException {
 
 		List<Payee> payeeList = getAccountPayees(ua.getAccount().getId());
-		
+
 		if (!CollectionUtils.isEmpty(payeeList)) {
-			List<CounterParty> payees = populatePayees(payeeList,ua);
+			List<CounterParty> payees = populatePayees(payeeList, ua);
 			return payees;
 		}
-		
+
 		return null;
 	}
 
-	private List<CounterParty> populatePayees(List<Payee> payeeList,UserAccount ua) {
+	private List<CounterParty> populatePayees(List<Payee> payeeList, UserAccount ua) {
 
 		List<CounterParty> parties = new ArrayList<CounterParty>();
 
@@ -291,8 +287,8 @@ public class BarclaysServiceImpl implements BarclaysService {
 				CounterParty cp = new CounterParty();
 				cp.setId(payee.getId());
 				cp.setKind(payee.getPaymentDescriptorType());
-				
-				TxnParty source = new TxnParty();	
+
+				TxnParty source = new TxnParty();
 				source.setAccountId(ua.getAccount().getId());
 				source.setBankId(ua.getAccount().getBankId());
 				cp.setSource(source);

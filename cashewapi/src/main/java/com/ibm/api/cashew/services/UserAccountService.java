@@ -4,6 +4,7 @@ import java.util.List;
 
 import com.ibm.api.cashew.beans.SubscriptionChallengeAnswer;
 import com.ibm.api.cashew.beans.UserAccount;
+import com.ibm.psd2.datamodel.ChallengeAnswer;
 import com.ibm.psd2.datamodel.aip.BankAccountDetailsView;
 import com.ibm.psd2.datamodel.pisp.TxnParty;
 import com.ibm.psd2.datamodel.pisp.TxnRequest;
@@ -23,5 +24,7 @@ public interface UserAccountService {
 	public TxnRequestDetails createTransaction(TxnRequest txnReq, TxnParty payer, String txnType, String user);
 
 	public List<BankAccountDetailsView> getAllAccountInformation(String appUser);
+
+	
 
 }

@@ -11,7 +11,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.oauth2.provider.OAuth2Authentication;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestHeader;
@@ -26,6 +25,7 @@ import com.ibm.api.cashew.beans.SubscriptionChallengeAnswer;
 import com.ibm.api.cashew.beans.UserAccount;
 import com.ibm.api.cashew.services.UserAccountService;
 import com.ibm.api.cashew.utils.Utils;
+import com.ibm.psd2.datamodel.ChallengeAnswer;
 import com.ibm.psd2.datamodel.aip.BankAccountDetailsView;
 import com.ibm.psd2.datamodel.pisp.TxnParty;
 import com.ibm.psd2.datamodel.pisp.TxnRequest;
@@ -176,5 +176,7 @@ public class UserAccountInformationController extends APIController {
 		return response;
 	}
 
+	
+	
 
 }

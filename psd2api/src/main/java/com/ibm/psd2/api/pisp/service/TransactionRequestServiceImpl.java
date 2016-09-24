@@ -1,17 +1,21 @@
 package com.ibm.psd2.api.pisp.service;
 
+import java.text.MessageFormat;
 import java.util.Date;
 import java.util.List;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 
 import com.ibm.psd2.api.aip.services.BankAccountDetailsService;
 import com.ibm.psd2.api.aip.services.TransactionStatementService;
 import com.ibm.psd2.api.pisp.db.MongoTxnRequestDetailsRepository;
+import com.ibm.psd2.api.twilio.message.service.MessageService;
+import com.ibm.psd2.api.user.service.UserService;
 import com.ibm.psd2.api.utils.Constants;
 import com.ibm.psd2.datamodel.Amount;
 import com.ibm.psd2.datamodel.Challenge;
@@ -25,11 +29,12 @@ import com.ibm.psd2.datamodel.pisp.TxnParty;
 import com.ibm.psd2.datamodel.pisp.TxnRequest;
 import com.ibm.psd2.datamodel.pisp.TxnRequestDetails;
 import com.ibm.psd2.datamodel.subscription.SubscriptionInfo;
+import com.ibm.psd2.datamodel.user.UserInfo;
 import com.ibm.psd2.utils.UUIDGenerator;
+import com.twilio.sdk.TwilioRestException;
 
 @Service
-public class TransactionRequestServiceImpl implements TransactionRequestService
-{
+public class TransactionRequestServiceImpl implements TransactionRequestService {
 	private final Logger logger = LogManager.getLogger(TransactionRequestServiceImpl.class);
 
 	@Autowired
@@ -44,14 +49,22 @@ public class TransactionRequestServiceImpl implements TransactionRequestService
 	@Autowired
 	private BankAccountDetailsService bds;
 
-	private void postTransactionToBeneficiary(TxnRequestDetails txnReq)
-	{
+	@Autowired
+	private MessageService messageService;
+
+	@Autowired
+	private UserService userService;
+
+	@Value("${bank.subscription.response.number}")
+	private String bankSubscribeRspnsNo;
+
+	private void postTransactionToBeneficiary(TxnRequestDetails txnReq) {
 		logger.info("Processing Beneficiary txnRequest: " + txnReq);
-		
-		BankAccountDetails to = bds.getBankAccountDetails(txnReq.getBody().getTo().getBankId(), txnReq.getBody().getTo().getAccountId());
+
+		BankAccountDetails to = bds.getBankAccountDetails(txnReq.getBody().getTo().getBankId(),
+				txnReq.getBody().getTo().getAccountId());
 		double newToBalance = 0;
-		if (to!= null)
-		{
+		if (to != null) {
 			newToBalance = to.getBalance().getAmount() + txnReq.getBody().getValue().getAmount();
 			to.getBalance().setAmount(newToBalance);
 			bds.updateBalance(to.getBankId(), to.getId(), newToBalance);
@@ -59,7 +72,7 @@ public class TransactionRequestServiceImpl implements TransactionRequestService
 			Transaction txn = new Transaction();
 
 			txn.setId(UUIDGenerator.generateUUID());
-			
+
 			TransactionDetails txnDetails = new TransactionDetails();
 			txnDetails.setCompleted(Transaction.DATE_FORMAT.format(new Date()));
 			txnDetails.setDescription(txnReq.getBody().getDescription());
@@ -69,7 +82,6 @@ public class TransactionRequestServiceImpl implements TransactionRequestService
 			txnDetails.setValue(txnReq.getBody().getValue());
 
 			txn.setDetails(txnDetails);
-			
 
 			TransactionAccount thisAcc = new TransactionAccount();
 
@@ -86,7 +98,7 @@ public class TransactionRequestServiceImpl implements TransactionRequestService
 			thisAcc.setSwiftBic(to.getSwiftBic());
 
 			txn.setThisAccount(thisAcc);
-			
+
 			TransactionAccount toAcc = new TransactionAccount();
 
 			toAcc.setId(txnReq.getFrom().getAccountId());
@@ -99,13 +111,12 @@ public class TransactionRequestServiceImpl implements TransactionRequestService
 			txn.setOtherAccount(toAcc);
 
 			logger.info("Saving Beneficiary Transaction = " + txn);
-			
+
 			tss.createTransaction(txn);
 		}
 	}
 
-	private void postTransactionToPayer(TxnRequestDetails txnReq)
-	{
+	private void postTransactionToPayer(TxnRequestDetails txnReq) {
 		logger.info("Processing Payer txnRequest: " + txnReq);
 
 		Transaction txn = new Transaction();
@@ -113,12 +124,12 @@ public class TransactionRequestServiceImpl implements TransactionRequestService
 		txn.setId(txnReq.getTransactionIds());
 		BankAccountDetails from = bds.getBankAccountDetails(txnReq.getFrom().getBankId(),
 				txnReq.getFrom().getAccountId());
-		
+
 		double newFromBalance = from.getBalance().getAmount() - txnReq.getBody().getValue().getAmount()
 				- txnReq.getCharge().getValue().getAmount();
-		
+
 		bds.updateBalance(from.getBankId(), from.getId(), newFromBalance);
-		
+
 		from.getBalance().setAmount(newFromBalance);
 
 		TransactionDetails txnDetails = new TransactionDetails();
@@ -128,7 +139,7 @@ public class TransactionRequestServiceImpl implements TransactionRequestService
 		txnDetails.setPosted(Transaction.DATE_FORMAT.format(new Date()));
 		txnDetails.setType(txnReq.getType());
 		Amount value = txnReq.getBody().getValue();
-		value.setAmount(value.getAmount()*(-1));
+		value.setAmount(value.getAmount() * (-1));
 		txnDetails.setValue(value);
 
 		txn.setDetails(txnDetails);
@@ -165,10 +176,8 @@ public class TransactionRequestServiceImpl implements TransactionRequestService
 
 	@Override
 	public TxnRequestDetails createTransactionRequest(SubscriptionInfo sib, TxnRequest trb, TxnParty payee,
-			String txnType)
-	{
-		if (!pr.isTransactionTypeAllowed(sib, txnType))
-		{
+			String txnType) {
+		if (!pr.isTransactionTypeAllowed(sib, txnType)) {
 			throw new IllegalArgumentException("Invalid Transaction Type Specified. Available Values are: "
 					+ StringUtils.collectionToCommaDelimitedString(sib.getTransactionRequestTypes()));
 		}
@@ -177,19 +186,17 @@ public class TransactionRequestServiceImpl implements TransactionRequestService
 		txnRequest.setBody(trb);
 		txnRequest.setType(txnType);
 
-		if (pr.checkLimit(trb, sib, txnType))
-		{
+		if (pr.checkLimit(trb, sib, txnType)) {
 			logger.info("Within Specified Limit. Hence Not Challenging the Request");
 			txnRequest.setChallenge(null);
 			txnRequest.setStatus(TxnRequestDetails.TXN_STATUS_PENDING);
-		}
-		else
-		{
+		} else {
 			logger.info("Amount Greater than specified limit. Hence creating a challenge");
 			Challenge challenge = new Challenge();
 			challenge.setId(UUIDGenerator.generateUUID());
 			challenge.setChallengeType(txnRequest.getType());
 			challenge.setAllowedAttempts(Constants.CHALLENGE_MAX_ATTEMPTS);
+			challenge.setAnswer(UUIDGenerator.randomAlphaNumeric(10));
 			txnRequest.setChallenge(challenge);
 			txnRequest.setStatus(TxnRequestDetails.TXN_STATUS_INITIATED);
 		}
@@ -203,30 +210,51 @@ public class TransactionRequestServiceImpl implements TransactionRequestService
 		TxnRequestDetails savedTxn = mtrdr.save(txnRequest);
 
 		// Hack to bypass Txn Processing
-		if (savedTxn.getStatus().equals(TxnRequestDetails.TXN_STATUS_PENDING))
-		{
+		if (savedTxn.getStatus().equals(TxnRequestDetails.TXN_STATUS_PENDING)) {
 			postTransactionToBeneficiary(savedTxn);
 			postTransactionToPayer(savedTxn);
 			savedTxn.setStatus(TxnRequestDetails.TXN_STATUS_COMPLETED);
 			savedTxn.setEndDate(TxnRequest.DATE_FORMAT.format(new Date()));
 		}
-		return mtrdr.save(savedTxn);
+		savedTxn = mtrdr.save(savedTxn);
+
+		// send subscription challenge answer to user registered Mobile No
+		if (savedTxn.getChallenge() != null) {
+			String userMobNo = null;
+			UserInfo userInfo = userService.getUserDetails(sib.getUsername());
+
+			if (userInfo != null) {
+				userMobNo = userInfo.getMobileNumber();
+			}
+
+			logger.debug("Sending challenge answer to user mobile no: {} ", userMobNo);
+
+			if (userMobNo != null) {
+				try {
+					messageService.sendMessage(bankSubscribeRspnsNo, userMobNo,
+							MessageFormat.format(Challenge.CHALLENGE_RESPONSE, savedTxn.getChallenge().getAnswer()));
+				} catch (TwilioRestException e) {
+					logger.error("Failed to send challenge answer for transaction request : {}", savedTxn.getId());
+				}
+			}
+		}
+		return savedTxn;
+
 	}
 
 	@Override
 	public TxnRequestDetails answerTransactionRequestChallenge(String username, String viewId, String bankId,
-			String accountId, String txnType, String txnReqId, ChallengeAnswer t)
-	{
-//		TxnRequestDetails tdb = mtrdr.findByFromAccountIdAndFromBankIdAndTypeAndIdAndChallengeId(accountId, bankId,
-//				txnType, txnReqId, t.getId());
+			String accountId, String txnType, String txnReqId, ChallengeAnswer t) {
+		// TxnRequestDetails tdb =
+		// mtrdr.findByFromAccountIdAndFromBankIdAndTypeAndIdAndChallengeId(accountId,
+		// bankId,
+		// txnType, txnReqId, t.getId());
 		TxnRequestDetails tdb = mtrdr.findOne(txnReqId);
-		if (tdb == null)
-		{
+		if (tdb == null) {
 			throw new IllegalArgumentException("Specified Transaction Not Found");
 		}
 
-		if (!pr.validateTxnChallengeAnswer(t, username, accountId, bankId))
-		{
+		if (!pr.validateTxnChallengeAnswer(t, tdb, username, accountId, bankId)) {
 			throw new IllegalArgumentException("Incorrect Transaction Request Challenge Answer Specified");
 		}
 
@@ -234,8 +262,7 @@ public class TransactionRequestServiceImpl implements TransactionRequestService
 		TxnRequestDetails savedTxn = mtrdr.save(tdb);
 
 		// Hack to bypass Txn Processing
-		if (savedTxn.getStatus().equals(TxnRequestDetails.TXN_STATUS_PENDING))
-		{
+		if (savedTxn.getStatus().equals(TxnRequestDetails.TXN_STATUS_PENDING)) {
 			postTransactionToBeneficiary(savedTxn);
 			postTransactionToPayer(savedTxn);
 			savedTxn.setStatus(TxnRequestDetails.TXN_STATUS_COMPLETED);
@@ -246,8 +273,7 @@ public class TransactionRequestServiceImpl implements TransactionRequestService
 
 	@Override
 	public List<TxnRequestDetails> getTransactionRequests(String username, String viewId, String accountId,
-			String bankId)
-	{
+			String bankId) {
 		return mtrdr.findByFromAccountIdAndFromBankId(accountId, bankId);
 	}
 }

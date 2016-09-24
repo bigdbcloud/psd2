@@ -27,9 +27,9 @@ public class UserTransactionServiceImpl implements UserTransactionService {
 
 	@Override
 	public List<AggregationResponse> getUserTxnDistribution(String userId, String bankId, String accountId,
-			String fromDate, String toDate) {
+			String txnType, String fromDate, String toDate) {
 
-		QueryRequest qr = buildQueryForTxnDistribution(userId, bankId, accountId, fromDate, toDate);
+		QueryRequest qr = buildQueryForTxnDistribution(userId, bankId, accountId, txnType, fromDate, toDate);
 		return elasticTxnRepo.getBucketAggregation(qr);
 
 	}
@@ -89,8 +89,8 @@ public class UserTransactionServiceImpl implements UserTransactionService {
 		return qr;
 	}
 
-	private QueryRequest buildQueryForTxnDistribution(String userId, String bankId, String accountId, String fromDate,
-			String toDate) {
+	private QueryRequest buildQueryForTxnDistribution(String userId, String bankId, String accountId, String txnType,
+			String fromDate, String toDate) {
 		QueryRequest qr = new QueryRequest();
 
 		qr.setFromDate(fromDate);
@@ -107,6 +107,13 @@ public class UserTransactionServiceImpl implements UserTransactionService {
 
 		if (accountId != null) {
 			qr.addQueryCriteria(new FieldBean("from.accountId", accountId));
+		}
+
+		if (Transaction.TXN_TYPE_CREDIT.equals(txnType)) {
+			qr.addQueryCriteria(new FieldBean("txnType", Transaction.TXN_TYPE_CREDIT));
+
+		} else{
+			qr.addQueryCriteria(new FieldBean("txnType", Transaction.TXN_TYPE_DEBIT));
 		}
 
 		BucketAggregationRequest aggrBean = new BucketAggregationRequest();

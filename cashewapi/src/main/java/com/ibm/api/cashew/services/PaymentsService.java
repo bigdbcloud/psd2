@@ -2,6 +2,7 @@ package com.ibm.api.cashew.services;
 
 import java.util.List;
 
+import com.ibm.psd2.datamodel.ChallengeAnswer;
 import com.ibm.psd2.datamodel.pisp.CounterParty;
 import com.ibm.psd2.datamodel.pisp.TxnRequest;
 import com.ibm.psd2.datamodel.pisp.TxnRequestDetails;
@@ -18,5 +19,8 @@ public interface PaymentsService
 			String txnId, String tag);
 
 	public List<CounterParty> getPayees(String appUsername, String bankId, String accountId) throws Exception;
+
+	public TxnRequestDetails answerTxnChallnge(String userId, String bankId, String accountId, String txnReqType,
+			String txnId, ChallengeAnswer ca);
 
 }
