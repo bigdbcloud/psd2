@@ -6,6 +6,6 @@ import com.ibm.api.cashew.beans.Insight;
 
 public interface UserInsightsService
 {
-	public List<Insight> getAvgSpendInAgeGroup(String userId);
+	public List<Insight> getAvgSpendInAgeGroup(String userId, String txnType);
 
 }
