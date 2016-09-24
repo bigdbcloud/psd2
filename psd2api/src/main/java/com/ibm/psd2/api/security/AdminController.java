@@ -181,7 +181,7 @@ public class AdminController
 			@PathVariable("bankId") String bankId, @PathVariable("accountId") String accountId,
 			@PathVariable("viewId") String viewId, @PathVariable("txnType") String txnType,
 			@RequestBody(required = true) TxnRequest trb,
-			@RequestHeader(required = true) String fromDate,
+			@RequestHeader(value = "fromDate", required = true) String fromDate,
 			@RequestHeader(value = "user", required = true) String user)
 	{
 		ResponseEntity<TxnRequestDetails> response;
