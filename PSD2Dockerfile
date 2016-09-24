@@ -24,6 +24,7 @@ COPY bigbankoauth2server/target/bigbankoauth2server-0.0.1-SNAPSHOT.jar /usr/loca
 COPY psd2api/target/psd2api-0.0.1-SNAPSHOT.jar /usr/local/psd2/
 
 COPY psd2startup.sh /usr/local/psd2
+RUN chmod 777 /usr/local/psd2/psd2startup.sh
 
 RUN ls -al /usr/local/psd2/
 
