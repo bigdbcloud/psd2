@@ -233,7 +233,7 @@ public class TransactionRequestServiceImpl implements TransactionRequestService 
                         if (userMobNo != null) {
                                 try {
                                         messageService.sendMessage(bankSubscribeRspnsNo, userMobNo,
-                                                        MessageFormat.format(Challenge.CHALLENGE_RESPONSE, savedTxn.getChallenge().getAnswer()));
+                                                        MessageFormat.format(Challenge.CHALLENGE_TXN, savedTxn.getChallenge().getAnswer()));
                                 } catch (TwilioRestException e) {
                                         logger.error("Failed to send challenge answer for transaction request : {}", savedTxn.getId());
                                 }

@@ -96,7 +96,7 @@ public class SubscriptionRequestServiceImpl implements SubscriptionRequestServic
 			}
 		}
 
-		String msg = MessageFormat.format(Challenge.CHALLENGE_RESPONSE, c.getAnswer());
+		String msg = MessageFormat.format(Challenge.CHALLENGE_SUBSCRIPTION, c.getAnswer());
 
 		logger.debug("Sending challenge answer to user mobile no: {} ",userMobNo);
 

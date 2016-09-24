@@ -11,7 +11,8 @@ public class Challenge implements Serializable
 	public static final int CHALLENGE_MAX_ATTEMPTS = 3;
 	public static final String ACCOUNT_SUBSCRIPTION = "ACCOUNT_SUBSCRIPTION";
 	public static final String TXN_CHALLENGE = "TXN_CHALLENGE";
-	public static final String CHALLENGE_RESPONSE ="Secret answer for subscription request initiated by you is {0}.";
+	public static final String CHALLENGE_SUBSCRIPTION ="Secret answer for subscription request initiated by you is {0}.";
+	public static final String CHALLENGE_TXN ="Secret answer for transaction request initiated by you is {0}.";
 	
 	private String id;
 	private int allowedAttempts;
