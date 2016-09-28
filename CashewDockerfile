@@ -67,7 +67,7 @@ RUN set -ex \
 COPY bluemix/config /usr/share/elasticsearch/config
 COPY bluemix/elastic.sh /usr/local/cashew
 
-COPY bigoauth2server/target/bigoauth2server-beta.jar /usr/local/cashew/
+COPY bigoauth2server/target/bigoauth2server-0.0.1-SNAPSHOT.jar /usr/local/cashew/
 COPY cashewapi/target/cashewapi-0.0.1-SNAPSHOT.jar /usr/local/cashew/
 COPY cashewstartup.sh /usr/local/cashew
 RUN chmod 777 /usr/local/cashew/cashewstartup.sh
@@ -79,8 +79,8 @@ RUN which mongod
 RUN adduser mongodb root
 #RUN adduser elasticsearch root
 
-EXPOSE 8084
-EXPOSE 8085
+EXPOSE 11113
+EXPOSE 11114
 EXPOSE 9200 9300
 EXPOSE 27017
 
