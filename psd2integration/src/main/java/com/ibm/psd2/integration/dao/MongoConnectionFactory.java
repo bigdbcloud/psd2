@@ -14,12 +14,12 @@ public class MongoConnectionFactory
 
 	private static MongoConnectionFactory mcf;
 	private MongoClient client = null;
-	
+
 	private MongoConnectionFactory()
 	{
-		
+
 	}
-	
+
 	public static synchronized MongoConnectionFactory getInstance()
 	{
 		if (mcf == null)
@@ -29,9 +29,9 @@ public class MongoConnectionFactory
 		return mcf;
 	}
 
-//	private String dbName = "messages";
-//
-	
+	// private String dbName = "messages";
+	//
+
 	private synchronized void createClient(ArgumentsContainer ac)
 	{
 		if (client == null)
@@ -47,7 +47,7 @@ public class MongoConnectionFactory
 		{
 			createClient(ac);
 		}
-		
+
 		return client.getDatabase(dbName);
 	}
 }

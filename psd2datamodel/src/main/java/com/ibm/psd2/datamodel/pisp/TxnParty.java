@@ -6,7 +6,7 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonInclude.Include;
 
 @JsonInclude(value = Include.NON_EMPTY)
-public class TxnParty implements Serializable
+public class TxnParty extends AbstractPISPEntity implements Serializable
 {
 	private String bankId;
 	private String accountId;
@@ -14,9 +14,9 @@ public class TxnParty implements Serializable
 
 	public TxnParty()
 	{
-		
+
 	}
-	
+
 	public TxnParty(String bank_id, String account_id)
 	{
 		this.bankId = bank_id;

@@ -63,8 +63,7 @@ public class CustomUserApprovalHandler extends ApprovalStoreUserApprovalHandler
 		// the decision
 		if (useApprovalStore)
 		{
-			authorizationRequest = super.checkForPreApproval(authorizationRequest,
-					userAuthentication);
+			authorizationRequest = super.checkForPreApproval(authorizationRequest, userAuthentication);
 			approved = authorizationRequest.isApproved();
 		}
 		else

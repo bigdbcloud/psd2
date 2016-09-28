@@ -8,7 +8,7 @@ public interface UserService
 {
 
 	public User findUserById(String userId);
-	
+
 	public User findUserByEmail(String email);
 
 	public List<User> findUsersByFreeText(String anyField);

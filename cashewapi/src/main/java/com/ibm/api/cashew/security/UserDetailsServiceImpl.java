@@ -17,7 +17,7 @@ import com.ibm.api.cashew.beans.User;
 import com.ibm.api.cashew.services.UserService;
 
 @Service
-public class UserDetailsServiceImpl  implements UserDetailsService
+public class UserDetailsServiceImpl implements UserDetailsService
 {
 	private final Logger logger = LogManager.getLogger(UserDetailsServiceImpl.class);
 
@@ -41,7 +41,7 @@ public class UserDetailsServiceImpl  implements UserDetailsService
 
 		List<GrantedAuthority> authorities = new ArrayList<>();
 		authorities.add(new SimpleGrantedAuthority("ROLE_USER"));
-		
+
 		return new org.springframework.security.core.userdetails.User(user.getUserId(), "N/A", authorities);
 	}
 }

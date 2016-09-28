@@ -11,16 +11,18 @@ import com.ibm.api.cashew.beans.TxnDetails;
 import com.ibm.api.cashew.beans.Voucher;
 import com.mongodb.WriteResult;
 
-public class MongoVoucherRepositoryImpl implements MongoVoucherCustomRepository {
+public class MongoVoucherRepositoryImpl implements MongoVoucherCustomRepository
+{
 
 	@Autowired
 	MongoTemplate mongoTemplate;
-	
+
 	@Override
-	public int updateVocher(Voucher vocher, TxnDetails redeemTo) {
-		
+	public int updateVocher(Voucher vocher, TxnDetails redeemTo)
+	{
+
 		WriteResult wr = mongoTemplate.updateFirst(query(where("code").is(vocher.getCode())),
-				update("isRedeemed",vocher.isRedeemed()).push("redeemedTo", redeemTo), Voucher.class);
+				update("isRedeemed", vocher.isRedeemed()).push("redeemedTo", redeemTo), Voucher.class);
 		return wr.hashCode();
 	}
 

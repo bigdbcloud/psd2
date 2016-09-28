@@ -12,12 +12,12 @@ public class ScriptBean
 	String scriptText;
 	String language;
 	private Map<String, Object> params;
-	
+
 	public ScriptBean()
 	{
-		
+
 	}
-	
+
 	public ScriptBean(String name, String scriptText, String language)
 	{
 		this.name = name;
@@ -55,11 +55,13 @@ public class ScriptBean
 		this.language = language;
 	}
 
-	public Map<String, Object> getParams() {
+	public Map<String, Object> getParams()
+	{
 		return params;
 	}
 
-	public void setParams(Map<String, Object> params) {
+	public void setParams(Map<String, Object> params)
+	{
 		this.params = params;
 	}
 

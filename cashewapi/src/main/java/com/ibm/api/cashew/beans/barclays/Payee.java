@@ -1,6 +1,7 @@
 package com.ibm.api.cashew.beans.barclays;
 
-public class Payee {
+public class Payee
+{
 	private String id;
 
 	private String paymentDescriptorType;
@@ -13,51 +14,63 @@ public class Payee {
 
 	private String accountNo;
 
-	public String getId() {
+	public String getId()
+	{
 		return id;
 	}
 
-	public void setId(String id) {
+	public void setId(String id)
+	{
 		this.id = id;
 	}
 
-	public String getPaymentDescriptorType() {
+	public String getPaymentDescriptorType()
+	{
 		return paymentDescriptorType;
 	}
 
-	public void setPaymentDescriptorType(String paymentDescriptorType) {
+	public void setPaymentDescriptorType(String paymentDescriptorType)
+	{
 		this.paymentDescriptorType = paymentDescriptorType;
 	}
 
-	public String getDescription() {
+	public String getDescription()
+	{
 		return description;
 	}
 
-	public void setDescription(String description) {
+	public void setDescription(String description)
+	{
 		this.description = description;
 	}
 
-	public String getName() {
+	public String getName()
+	{
 		return name;
 	}
 
-	public void setName(String name) {
+	public void setName(String name)
+	{
 		this.name = name;
 	}
 
-	public String getSortCode() {
+	public String getSortCode()
+	{
 		return sortCode;
 	}
 
-	public void setSortCode(String sortCode) {
+	public void setSortCode(String sortCode)
+	{
 		this.sortCode = sortCode;
 	}
 
-	public String getAccountNo() {
+	public String getAccountNo()
+	{
 		return accountNo;
 	}
 
-	public void setAccountNo(String accountNo) {
+	public void setAccountNo(String accountNo)
+	{
 		this.accountNo = accountNo;
 	}
 

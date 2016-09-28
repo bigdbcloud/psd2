@@ -22,7 +22,8 @@ import com.ibm.api.cashew.beans.aggregation.AggregationResponse;
 import com.ibm.api.cashew.services.UserTransactionService;
 
 @RestController
-public class UserTransactionController extends APIController {
+public class UserTransactionController extends APIController
+{
 
 	private final Logger logger = LogManager.getLogger(VoucherController.class);
 
@@ -47,7 +48,8 @@ public class UserTransactionController extends APIController {
 		APIResponse<List<AggregationResponse>> result = new APIResponse<>();
 		ResponseEntity<APIResponse<List<AggregationResponse>>> response;
 
-		try {
+		try
+		{
 
 			List<AggregationResponse> aggrResponse = userTxnService.getUserTxnDistribution(userId, bankId, accountId,
 					txnType, fromDate, toDate);
@@ -55,7 +57,9 @@ public class UserTransactionController extends APIController {
 			result.setResponse(aggrResponse);
 			response = ResponseEntity.ok(result);
 
-		} catch (Exception e) {
+		}
+		catch (Exception e)
+		{
 
 			logger.error(e.getMessage(), e);
 			response = handleException(e, version, result);
@@ -80,14 +84,17 @@ public class UserTransactionController extends APIController {
 		APIResponse<List<AggregationResponse>> result = new APIResponse<>();
 		ResponseEntity<APIResponse<List<AggregationResponse>>> response;
 
-		try {
+		try
+		{
 
 			List<AggregationResponse> aggrResponse = userTxnService.getUserTxnHistogram(userId, bankId, accountId,
 					fromDate, toDate);
 			result.setResponse(aggrResponse);
 			response = ResponseEntity.ok(result);
 
-		} catch (Exception e) {
+		}
+		catch (Exception e)
+		{
 
 			logger.error(e.getMessage(), e);
 			response = handleException(e, version, result);

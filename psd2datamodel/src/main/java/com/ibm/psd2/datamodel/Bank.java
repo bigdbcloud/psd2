@@ -18,48 +18,55 @@ public class Bank implements Serializable
 	String fullName;
 	String logo;
 	String website;
-	
+
 	public String getId()
 	{
 		return id;
 	}
+
 	public void setId(String id)
 	{
 		this.id = id;
 	}
+
 	public String getShortName()
 	{
 		return shortName;
 	}
+
 	public void setShortName(String short_name)
 	{
 		this.shortName = short_name;
 	}
+
 	public String getFullName()
 	{
 		return fullName;
 	}
+
 	public void setFullName(String full_name)
 	{
 		this.fullName = full_name;
 	}
+
 	public String getLogo()
 	{
 		return logo;
 	}
+
 	public void setLogo(String logo)
 	{
 		this.logo = logo;
 	}
+
 	public String getWebsite()
 	{
 		return website;
 	}
+
 	public void setWebsite(String website)
 	{
 		this.website = website;
 	}
-	
-	
-	
+
 }

@@ -22,8 +22,6 @@ import com.ibm.big.oauth2server.services.ClientService;
 import com.ibm.big.oauth2server.services.SocialLoginProviderService;
 import com.ibm.big.oauth2server.services.UserService;
 
-
-
 @RestController
 public class AuthServerController extends APIController
 {
@@ -34,13 +32,13 @@ public class AuthServerController extends APIController
 
 	@Autowired
 	ClientService clientService;
-	
+
 	@Autowired
 	SocialLoginProviderService socialLoginProviderService;
 
 	@Value("${version}")
 	private String version;
-	
+
 	@Value("${user.mobileNumber}")
 	private String twilioPhnNumber;
 
@@ -65,7 +63,8 @@ public class AuthServerController extends APIController
 			result.setResponse(res);
 			result.setVersion(version);
 			response = ResponseEntity.ok(result);
-		} catch (Exception e)
+		}
+		catch (Exception e)
 		{
 			response = handleException(e, version);
 		}
@@ -86,7 +85,8 @@ public class AuthServerController extends APIController
 			result.setResponse(c);
 			result.setVersion(version);
 			response = ResponseEntity.ok(result);
-		} catch (Exception e)
+		}
+		catch (Exception e)
 		{
 			response = handleException(e, version);
 		}
@@ -94,7 +94,8 @@ public class AuthServerController extends APIController
 	}
 
 	@RequestMapping(method = RequestMethod.PUT, value = "/provider", produces = MediaType.APPLICATION_JSON_VALUE)
-	public @ResponseBody ResponseEntity<APIResponse> addProvider(@RequestBody(required = true) SocialLoginProvider provider)
+	public @ResponseBody ResponseEntity<APIResponse> addProvider(
+			@RequestBody(required = true) SocialLoginProvider provider)
 	{
 		APIResponse result = null;
 		ResponseEntity<APIResponse> response;
@@ -107,7 +108,8 @@ public class AuthServerController extends APIController
 			result.setResponse(c);
 			result.setVersion(version);
 			response = ResponseEntity.ok(result);
-		} catch (Exception e)
+		}
+		catch (Exception e)
 		{
 			response = handleException(e, version);
 		}

@@ -36,7 +36,7 @@ public class IBMUserAccountServiceImpl implements IBMUserAccountService
 
 	@Autowired
 	RestTemplate restTemplate;
-	
+
 	@Autowired
 	IBMPSD2Credentials psd2Credentials;
 
@@ -75,14 +75,15 @@ public class IBMUserAccountServiceImpl implements IBMUserAccountService
 	public BankAccountDetailsView getAccountInformation(UserAccount ua) throws Exception
 	{
 		BankAccountDetailsView bdv = null;
-		String url = psd2Credentials.getPsd2Url() + "/banks/" + ua.getAccount().getBankId() + "/accounts/" + ua.getAccount().getId() + "/"
-				+ ua.getViewIds().get(0).getId() + "/account";
+		String url = psd2Credentials.getPsd2Url() + "/banks/" + ua.getAccount().getBankId() + "/accounts/"
+				+ ua.getAccount().getId() + "/" + ua.getViewIds().get(0).getId() + "/account";
 		logger.debug("url = " + url);
 
 		URI uri = new URI(url);
 
 		RequestEntity<Void> rea = RequestEntity.get(uri).accept(MediaType.APPLICATION_JSON)
-				.header("Authorization", psd2Credentials.getPSD2Authorization()).header("user", ua.getAccount().getUsername()).build();
+				.header("Authorization", psd2Credentials.getPSD2Authorization())
+				.header("user", ua.getAccount().getUsername()).build();
 
 		ResponseEntity<BankAccountDetailsView> res = restTemplate.exchange(rea, BankAccountDetailsView.class);
 		bdv = res.getBody();
@@ -95,16 +96,16 @@ public class IBMUserAccountServiceImpl implements IBMUserAccountService
 	{
 		List<Transaction> txns = null;
 
-		String url = psd2Credentials.getPsd2Url() + "/banks/" + ua.getAccount().getBankId() + "/accounts/" + ua.getAccount().getId() + "/"
-				+ ua.getViewIds().get(0).getId() + "/transactions";
+		String url = psd2Credentials.getPsd2Url() + "/banks/" + ua.getAccount().getBankId() + "/accounts/"
+				+ ua.getAccount().getId() + "/" + ua.getViewIds().get(0).getId() + "/transactions";
 
 		URI uri = new URI(url);
 		logger.debug("url = " + url);
-		
+
 		RequestEntity<Void> rea = RequestEntity.get(uri).accept(MediaType.APPLICATION_JSON)
-				.header("Authorization", psd2Credentials.getPSD2Authorization()).header("user", ua.getAccount().getUsername())
-				.header("obp_sort_direction", sortDirection).header("obp_from_date", fromDate)
-				.header("obp_to_date", toDate).header("obp_sort_by", sortBy)
+				.header("Authorization", psd2Credentials.getPSD2Authorization())
+				.header("user", ua.getAccount().getUsername()).header("obp_sort_direction", sortDirection)
+				.header("obp_from_date", fromDate).header("obp_to_date", toDate).header("obp_sort_by", sortBy)
 				.header("obp_offset", (offset == null) ? "0" : offset.toString())
 				.header("obp_limit", (limit == null) ? "100" : offset.toString()).build();
 
@@ -117,25 +118,26 @@ public class IBMUserAccountServiceImpl implements IBMUserAccountService
 	}
 
 	@Override
-	public TxnRequestDetails createTransaction(TxnRequest txnReq, TxnParty payer, String txnType, UserAccount ua) throws Exception
+	public TxnRequestDetails createTransaction(TxnRequest txnReq, TxnParty payer, String txnType, UserAccount ua)
+			throws Exception
 	{
 		TxnRequestDetails txnReqDetails = null;
-			String url = psd2Credentials.getPsd2Url()
-					+ "/banks/{bankId}/accounts/{accountId}/{viewId}/transaction-request-types/{txnType}/transaction-requests";
+		String url = psd2Credentials.getPsd2Url()
+				+ "/banks/{bankId}/accounts/{accountId}/{viewId}/transaction-request-types/{txnType}/transaction-requests";
 
-			MultiValueMap<String, String> headers = new LinkedMultiValueMap<String, String>();
-			headers.add("Authorization", psd2Credentials.getPSD2Authorization());
-			headers.add("Content-Type", "application/json");
-			headers.add("user", ua.getAccount().getUsername());
+		MultiValueMap<String, String> headers = new LinkedMultiValueMap<String, String>();
+		headers.add("Authorization", psd2Credentials.getPSD2Authorization());
+		headers.add("Content-Type", "application/json");
+		headers.add("user", ua.getAccount().getUsername());
 
-			HttpEntity<TxnRequest> request = new HttpEntity<TxnRequest>(txnReq, headers);
+		HttpEntity<TxnRequest> request = new HttpEntity<TxnRequest>(txnReq, headers);
 
-			Map<String, String> uriVariables = new HashMap<String, String>();
-			uriVariables.put("bankId", payer.getBankId());
-			uriVariables.put("accountId", payer.getAccountId());
-			uriVariables.put("viewId", ua.getViewIds().get(0).getId());
-			uriVariables.put("txnType", txnType);
-			txnReqDetails = restTemplate.postForObject(url, request, TxnRequestDetails.class, uriVariables);
+		Map<String, String> uriVariables = new HashMap<String, String>();
+		uriVariables.put("bankId", payer.getBankId());
+		uriVariables.put("accountId", payer.getAccountId());
+		uriVariables.put("viewId", ua.getViewIds().get(0).getId());
+		uriVariables.put("txnType", txnType);
+		txnReqDetails = restTemplate.postForObject(url, request, TxnRequestDetails.class, uriVariables);
 
 		return txnReqDetails;
 	}

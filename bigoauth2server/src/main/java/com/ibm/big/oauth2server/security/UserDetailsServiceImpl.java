@@ -18,7 +18,7 @@ import com.ibm.big.oauth2server.beans.User;
 import com.ibm.big.oauth2server.services.UserService;
 
 @Service
-public class UserDetailsServiceImpl  implements UserDetailsService
+public class UserDetailsServiceImpl implements UserDetailsService
 {
 	private final Logger logger = LogManager.getLogger(UserDetailsServiceImpl.class);
 
@@ -51,12 +51,12 @@ public class UserDetailsServiceImpl  implements UserDetailsService
 				authorities.add(new SimpleGrantedAuthority(role));
 			}
 		}
-		
-//		if (user.isSocial())
-//		{
-//			logger.info("Setting password to N/A since its a social login");
-//			user.setPwd("N/A");
-//		}
+
+		// if (user.isSocial())
+		// {
+		// logger.info("Setting password to N/A since its a social login");
+		// user.setPwd("N/A");
+		// }
 
 		return new org.springframework.security.core.userdetails.User(user.getUserId(), user.getPwd(), authorities);
 	}

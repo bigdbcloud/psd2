@@ -14,7 +14,8 @@ public class MetricAggregationRequest extends AggregationRequest
 		try
 		{
 			return mapper.writeValueAsString(this);
-		} catch (JsonProcessingException e)
+		}
+		catch (JsonProcessingException e)
 		{
 			e.printStackTrace();
 		}

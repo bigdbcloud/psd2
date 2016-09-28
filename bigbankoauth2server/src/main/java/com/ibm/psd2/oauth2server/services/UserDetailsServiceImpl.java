@@ -28,9 +28,9 @@ public class UserDetailsServiceImpl implements UserDetailsService
 	@Override
 	public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException
 	{
-		
+
 		UserInfo userInfo = null;
-		
+
 		try
 		{
 			userInfo = getUserInfo(username);
@@ -40,9 +40,10 @@ public class UserDetailsServiceImpl implements UserDetailsService
 			logger.error(e.getMessage(), e);
 			throw new UsernameNotFoundException(e.getMessage(), e);
 		}
-		
+
 		GrantedAuthority authority = new SimpleGrantedAuthority(userInfo.getRole());
-		UserDetails userDetails = (UserDetails)new User(userInfo.getUsername(), userInfo.getPassword(), Arrays.asList(authority));
+		UserDetails userDetails = (UserDetails) new User(userInfo.getUsername(), userInfo.getPassword(),
+				Arrays.asList(authority));
 
 		return userDetails;
 	}
@@ -51,18 +52,18 @@ public class UserDetailsServiceImpl implements UserDetailsService
 	{
 		return mur.findOne(username);
 	}
-	
+
 	public void createUserInfo(UserInfo u) throws Exception
 	{
 		BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
-		
+
 		if (mur.findOne(u.getUsername()) != null)
 		{
 			throw new IllegalArgumentException("User already exists: " + u.getUsername());
 		}
-		
+
 		u.setPassword(encoder.encode(u.getPassword()));
-		
+
 		mur.save(u);
 	}
 

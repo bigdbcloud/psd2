@@ -10,7 +10,7 @@ public class SimpleResponse implements Serializable
 {
 	public static final String CODE_SUCCESS = "success";
 	public static final String CODE_ERROR = "error";
-	
+
 	private String responseCode;
 	private String responseMessage;
 

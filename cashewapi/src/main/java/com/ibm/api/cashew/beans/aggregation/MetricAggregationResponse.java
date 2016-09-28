@@ -17,6 +17,5 @@ public class MetricAggregationResponse extends AggregationResponse
 	{
 		this.value = value;
 	}
-	
-	
+
 }

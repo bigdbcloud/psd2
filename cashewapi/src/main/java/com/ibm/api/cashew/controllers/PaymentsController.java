@@ -17,8 +17,6 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.ibm.api.cashew.beans.APIResponse;
-import com.ibm.api.cashew.beans.SubscriptionChallengeAnswer;
-import com.ibm.api.cashew.beans.UserAccount;
 import com.ibm.api.cashew.services.PaymentsService;
 import com.ibm.api.cashew.utils.Utils;
 import com.ibm.psd2.datamodel.ChallengeAnswer;
@@ -37,7 +35,7 @@ public class PaymentsController extends APIController
 
 	@Autowired
 	Utils utils;
-	
+
 	@Autowired
 	PaymentsService paymentService;
 
@@ -66,8 +64,7 @@ public class PaymentsController extends APIController
 	@RequestMapping(method = RequestMethod.GET, value = "/{userId}/{bankId}/{accountId}/payees", produces = MediaType.APPLICATION_JSON_VALUE)
 	@PreAuthorize("authentication.name == #userId")
 	public @ResponseBody ResponseEntity<APIResponse<List<CounterParty>>> getPayees(
-			@PathVariable("userId") String userId, 
-			@PathVariable("bankId") String bankId,
+			@PathVariable("userId") String userId, @PathVariable("bankId") String bankId,
 			@PathVariable("accountId") String accountId)
 	{
 		logger.debug("Getting Txn Request Types for user = " + userId);
@@ -90,8 +87,7 @@ public class PaymentsController extends APIController
 	@PreAuthorize("authentication.name == #userId")
 	public @ResponseBody ResponseEntity<APIResponse<TxnRequestDetails>> makePayment(
 			@PathVariable("userId") String userId, @PathVariable("bankId") String bankId,
-			@PathVariable("accountId") String accountId,
-			@RequestBody(required = true)TxnRequest txnRequest)
+			@PathVariable("accountId") String accountId, @RequestBody(required = true) TxnRequest txnRequest)
 	{
 		logger.debug("Getting Txn Request Types for user = " + userId);
 		APIResponse<TxnRequestDetails> result = null;
@@ -108,52 +104,57 @@ public class PaymentsController extends APIController
 		}
 		return response;
 	}
-	
 
 	@RequestMapping(method = RequestMethod.PATCH, value = "/{userId}/{bankId}/{accountId}/transaction/{txnId}/tag/{tag}", produces = MediaType.APPLICATION_JSON_VALUE)
 	@PreAuthorize("authentication.name == #userId")
-	public @ResponseBody ResponseEntity<APIResponse<com.ibm.api.cashew.beans.ElasticTransaction>> tagTransaction(@PathVariable("userId") String userId,
-			@PathVariable("bankId") String bankId, @PathVariable("accountId") String accountId,
-			@PathVariable("txnId") String txnId, @PathVariable("tag") String tag) {
+	public @ResponseBody ResponseEntity<APIResponse<com.ibm.api.cashew.beans.ElasticTransaction>> tagTransaction(
+			@PathVariable("userId") String userId, @PathVariable("bankId") String bankId,
+			@PathVariable("accountId") String accountId, @PathVariable("txnId") String txnId,
+			@PathVariable("tag") String tag)
+	{
 
 		APIResponse<com.ibm.api.cashew.beans.ElasticTransaction> result = null;
 		ResponseEntity<APIResponse<com.ibm.api.cashew.beans.ElasticTransaction>> response;
-		try {
+		try
+		{
 
-			com.ibm.api.cashew.beans.ElasticTransaction txn = paymentService.tagTransaction(userId, bankId, accountId, txnId, tag);
+			com.ibm.api.cashew.beans.ElasticTransaction txn = paymentService.tagTransaction(userId, bankId, accountId,
+					txnId, tag);
 
 			result = new APIResponse<>();
 			result.setResponse(txn);
 			response = ResponseEntity.ok(result);
 
-		} catch (Exception ex) {
+		}
+		catch (Exception ex)
+		{
 
 			logger.error(ex.getMessage(), ex);
 			response = handleException(ex, version, result);
 		}
 		return response;
 	}
-	
-	
+
 	@RequestMapping(method = RequestMethod.PATCH, value = "/{userId}/{bankId}/{accountId}/transaction/{txnReqType}/{txnId}/challenge", produces = MediaType.APPLICATION_JSON_VALUE)
 	@PreAuthorize("authentication.name == #userId")
 	public @ResponseBody ResponseEntity<APIResponse<TxnRequestDetails>> answerTransactionChallenge(
-			@PathVariable("userId") String userId, 
-			@PathVariable("bankId") String bankId,
-			@PathVariable("accountId") String accountId,
-			@PathVariable("txnReqType") String txnReqType,
-			@PathVariable("txnId") String txnId,			
-			@RequestBody(required = true) ChallengeAnswer ca) {
-		
-		logger.debug("answering Challenge for transaction: {}",txnId);
-		
+			@PathVariable("userId") String userId, @PathVariable("bankId") String bankId,
+			@PathVariable("accountId") String accountId, @PathVariable("txnReqType") String txnReqType,
+			@PathVariable("txnId") String txnId, @RequestBody(required = true) ChallengeAnswer ca)
+	{
+
+		logger.debug("answering Challenge for transaction: {}", txnId);
+
 		APIResponse<TxnRequestDetails> result = null;
 		ResponseEntity<APIResponse<TxnRequestDetails>> response;
-		try {
+		try
+		{
 			result = new APIResponse<>();
-			result.setResponse(paymentService.answerTxnChallnge(userId,bankId,accountId,txnReqType,txnId,ca));
+			result.setResponse(paymentService.answerTxnChallnge(userId, bankId, accountId, txnReqType, txnId, ca));
 			response = ResponseEntity.ok(result);
-		} catch (Exception e) {
+		}
+		catch (Exception e)
+		{
 			response = handleException(e, version, result);
 		}
 		return response;

@@ -26,12 +26,12 @@ public class ClientServiceImpl implements ClientService
 	@Override
 	public Client createClient(Client client)
 	{
-		
+
 		if (client == null || client.getName() == null)
 		{
 			throw new IllegalArgumentException("Invalid client passed. Client name is mandatory");
 		}
-		
+
 		String clientId = UUID.randomUUID().toString();
 		String clientSecret = UUID.randomUUID().toString();
 		BCryptPasswordEncoder bcpe = new BCryptPasswordEncoder();

@@ -14,13 +14,15 @@ import com.ibm.api.cashew.db.mongo.MongoReminderRepository;
 import com.ibm.api.cashew.utils.UUIDGenerator;
 
 @Service
-public class ReminderServiceImpl implements ReminderService {
+public class ReminderServiceImpl implements ReminderService
+{
 
 	@Autowired
 	private MongoReminderRepository mongoReminderRepo;
 
 	@Override
-	public Reminder createReminder(Reminder reminder) {
+	public Reminder createReminder(Reminder reminder)
+	{
 
 		validateReminder(reminder);
 
@@ -31,17 +33,20 @@ public class ReminderServiceImpl implements ReminderService {
 	}
 
 	@Override
-	public List<Reminder> getReminders(String userId, String fromDate, String toDate) {
+	public List<Reminder> getReminders(String userId, String fromDate, String toDate)
+	{
 
-		return mongoReminderRepo.getReminders(userId,fromDate,toDate);
+		return mongoReminderRepo.getReminders(userId, fromDate, toDate);
 	}
 
 	@Override
-	public void deleteReminder(String id) {
+	public void deleteReminder(String id)
+	{
 
 		Reminder reminder = mongoReminderRepo.findOne(id);
 
-		if (reminder == null) {
+		if (reminder == null)
+		{
 
 			throw new IllegalArgumentException("Invalid reminder Id");
 
@@ -50,16 +55,16 @@ public class ReminderServiceImpl implements ReminderService {
 
 	}
 
-	
-
 	@Override
-	public Reminder updateReminder(Reminder reminder) {
+	public Reminder updateReminder(Reminder reminder)
+	{
 
 		validateReminder(reminder);
 
 		Reminder reminderExist = mongoReminderRepo.findOne(reminder.getId());
 
-		if (reminderExist == null) {
+		if (reminderExist == null)
+		{
 
 			throw new IllegalArgumentException("Invalid reminder Id");
 
@@ -68,40 +73,48 @@ public class ReminderServiceImpl implements ReminderService {
 		return mongoReminderRepo.save(reminder);
 
 	}
-	
-	private void validateReminder(Reminder reminder) {
 
-		if (reminder == null) {
+	private void validateReminder(Reminder reminder)
+	{
+
+		if (reminder == null)
+		{
 
 			throw new IllegalArgumentException("Reminder details are required");
 		}
 
-		if (StringUtils.isBlank(reminder.getDescription())) {
+		if (StringUtils.isBlank(reminder.getDescription()))
+		{
 
 			throw new IllegalArgumentException("Reminder description cannot be blank");
 		}
 
-		if (StringUtils.isBlank(reminder.getReminderType())) {
+		if (StringUtils.isBlank(reminder.getReminderType()))
+		{
 
 			throw new IllegalArgumentException("Reminder type cannot be blank");
 		}
 
-		if (getReminderTypes().contains(reminder.getReminderType())) {
+		if (getReminderTypes().contains(reminder.getReminderType()))
+		{
 
 			throw new IllegalArgumentException("Invalid reminder type");
 		}
 
-		if (StringUtils.isBlank(reminder.getReminderDate())) {
+		if (StringUtils.isBlank(reminder.getReminderDate()))
+		{
 
 			throw new IllegalArgumentException("Reminder date is required");
 		}
 
 	}
 
-	private Set<String> getReminderTypes() {
+	private Set<String> getReminderTypes()
+	{
 
 		Set<String> remTypes = new HashSet<String>();
-		for (Reminder.Type remType : Reminder.Type.values()) {
+		for (Reminder.Type remType : Reminder.Type.values())
+		{
 
 			remTypes.add(remType.name());
 		}

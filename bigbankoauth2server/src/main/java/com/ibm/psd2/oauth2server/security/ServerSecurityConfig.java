@@ -74,8 +74,8 @@ public class ServerSecurityConfig extends WebSecurityConfigurerAdapter
 		http.authorizeRequests().antMatchers(HttpMethod.OPTIONS, "/oauth/**").permitAll();
 
 		http.authorizeRequests()
-				.antMatchers("/images/**", "/login.html", "/admin/**", "/login/**", "/webjars/**", "/oauth/check_token").permitAll()
-				.anyRequest().authenticated().and().exceptionHandling()
+				.antMatchers("/images/**", "/login.html", "/admin/**", "/login/**", "/webjars/**", "/oauth/check_token")
+				.permitAll().anyRequest().authenticated().and().exceptionHandling()
 				.authenticationEntryPoint(new LoginUrlAuthenticationEntryPoint("/login.html")).and().formLogin()
 				.loginPage("/login.html").loginProcessingUrl("/login/bigbankoauth2server").failureUrl("/login.html")
 				.and().logout().logoutSuccessUrl("/login.html").permitAll().and().csrf().disable();

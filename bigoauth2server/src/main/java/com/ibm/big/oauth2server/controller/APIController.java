@@ -9,7 +9,6 @@ import org.springframework.http.ResponseEntity;
 
 import com.ibm.big.oauth2server.beans.APIResponse;
 
-
 public abstract class APIController
 {
 	private final Logger logger = LogManager.getLogger(APIController.class);
@@ -31,8 +30,7 @@ public abstract class APIController
 		return response;
 	}
 
-	protected ResponseEntity<APIResponse> handleException(Throwable e, String version,
-			boolean badRequest)
+	protected ResponseEntity<APIResponse> handleException(Throwable e, String version, boolean badRequest)
 	{
 		ResponseEntity<APIResponse> response;
 		APIResponse result = null;
@@ -47,8 +45,7 @@ public abstract class APIController
 		result.setErrDetails(sw.toString());
 		result.setResponse(false);
 
-		response = (badRequest) ? ResponseEntity.badRequest().body(result)
-				: ResponseEntity.ok().body(result);
+		response = (badRequest) ? ResponseEntity.badRequest().body(result) : ResponseEntity.ok().body(result);
 		return response;
 	}
 

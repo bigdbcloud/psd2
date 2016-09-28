@@ -18,7 +18,7 @@ import com.ibm.psd2.oauth2server.db.MongoClientRepository;
 public class ClientDetailsServiceImpl implements ClientDetailsService
 {
 	private final Logger logger = LogManager.getLogger(ClientDetailsServiceImpl.class);
-	
+
 	@Autowired
 	private MongoClientRepository mcr;
 
@@ -37,12 +37,12 @@ public class ClientDetailsServiceImpl implements ClientDetailsService
 			logger.error(e.getMessage(), e);
 			throw new ClientRegistrationException(e.getMessage(), e);
 		}
-		
+
 		if (clientInfo == null)
 		{
 			throw new ClientRegistrationException("Client Not Found");
 		}
-		
+
 		if (clientInfo.isLocked())
 		{
 			throw new ClientRegistrationException("Client is locked");
@@ -58,12 +58,12 @@ public class ClientDetailsServiceImpl implements ClientDetailsService
 		bcd.setAuthorities(AuthorityUtils.commaSeparatedStringToAuthorityList(clientInfo.getAuthorities()));
 		return bcd;
 	}
-	
+
 	private ClientInfo getClientInfo(String clientId) throws Exception
 	{
 		return mcr.findOne(clientId);
-	}	
-	
+	}
+
 	public void createClient(ClientInfo c) throws Exception
 	{
 		c.setAccessTokenValidity(86400);

@@ -6,7 +6,6 @@ import org.springframework.http.ResponseEntity;
 
 import com.ibm.api.cashew.beans.APIResponse;
 
-
 public abstract class APIController
 {
 	private final Logger logger = LogManager.getLogger(APIController.class);

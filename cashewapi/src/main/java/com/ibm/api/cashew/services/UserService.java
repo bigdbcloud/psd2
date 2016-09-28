@@ -16,7 +16,7 @@ public interface UserService
 	public long changePhone(String userId, String phoneNumber) throws Exception;
 
 	public long changeEmail(String userId, String email);
-	
+
 	public long changeDOB(String userId, String dob);
 
 	public Set<Tag> getTags();

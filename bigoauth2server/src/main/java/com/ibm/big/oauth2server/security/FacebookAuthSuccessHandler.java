@@ -64,7 +64,8 @@ public class FacebookAuthSuccessHandler extends SavedRequestAwareAuthenticationS
 				 * This means we have found the user in our local repo
 				 */
 				authentication = buildNewAuth(oa, ud);
-			} catch (UsernameNotFoundException e)
+			}
+			catch (UsernameNotFoundException e)
 			{
 				/**
 				 * create user in the user repo
@@ -85,10 +86,10 @@ public class FacebookAuthSuccessHandler extends SavedRequestAwareAuthenticationS
 					Map<String, String> details = (Map<String, String>) oa.getUserAuthentication().getDetails();
 					user.setName(details.get("name"));
 				}
-				
-//				user.setSocial(true);
+
+				// user.setSocial(true);
 				userService.createUser(user);
-				
+
 				ud = userDetailsService.loadUserByUsername(userId);
 				authentication = buildNewAuth(oa, ud);
 			}
@@ -101,7 +102,7 @@ public class FacebookAuthSuccessHandler extends SavedRequestAwareAuthenticationS
 	{
 		UsernamePasswordAuthenticationToken upat = new UsernamePasswordAuthenticationToken(ud,
 				oa.getUserAuthentication().getCredentials());
-//		upat.setAuthenticated(true);
+		// upat.setAuthenticated(true);
 		upat.setDetails(oa.getUserAuthentication().getDetails());
 		OAuth2Request or = oa.getOAuth2Request();
 		Object details = oa.getDetails();

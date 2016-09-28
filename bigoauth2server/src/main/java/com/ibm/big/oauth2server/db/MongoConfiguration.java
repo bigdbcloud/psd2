@@ -27,7 +27,7 @@ public class MongoConfiguration extends AbstractMongoConfiguration
 	@Override
 	protected String getDatabaseName()
 	{
-		MongoClientURI mcuri= new MongoClientURI(uri);
+		MongoClientURI mcuri = new MongoClientURI(uri);
 		return mcuri.getDatabase();
 	}
 

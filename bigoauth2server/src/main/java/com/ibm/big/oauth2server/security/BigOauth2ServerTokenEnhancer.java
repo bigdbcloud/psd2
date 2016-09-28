@@ -28,10 +28,9 @@ public class BigOauth2ServerTokenEnhancer extends JwtAccessTokenConverter
 
 	@Autowired
 	SocialLoginProviderService slps;
-	
+
 	@Value("${bigoauth2server.provider.name}")
 	private String provider;
-
 
 	@Override
 	public OAuth2AccessToken enhance(OAuth2AccessToken accessToken, OAuth2Authentication authentication)
@@ -47,7 +46,8 @@ public class BigOauth2ServerTokenEnhancer extends JwtAccessTokenConverter
 			String strToken = mapper.writeValueAsString(accessToken);
 			logger.info("JSON of Authentication = " + strAuth);
 			logger.info("JSON of Token = " + strToken);
-		} catch (JsonProcessingException e)
+		}
+		catch (JsonProcessingException e)
 		{
 			logger.error(e.getMessage(), e);
 		}
@@ -79,7 +79,8 @@ public class BigOauth2ServerTokenEnhancer extends JwtAccessTokenConverter
 			{
 				customProps.put("provider", slp.getProvider());
 			}
-		} else if (authentication.getUserAuthentication() instanceof UsernamePasswordAuthenticationToken)
+		}
+		else if (authentication.getUserAuthentication() instanceof UsernamePasswordAuthenticationToken)
 		{
 			UsernamePasswordAuthenticationToken upat = (UsernamePasswordAuthenticationToken) authentication
 					.getUserAuthentication();

@@ -19,7 +19,8 @@ import com.ibm.api.cashew.beans.Voucher;
 import com.ibm.api.cashew.services.VoucherService;
 
 @RestController
-public class VoucherController extends APIController {
+public class VoucherController extends APIController
+{
 
 	private final Logger logger = LogManager.getLogger(VoucherController.class);
 
@@ -31,11 +32,13 @@ public class VoucherController extends APIController {
 
 	@RequestMapping(method = RequestMethod.POST, value = "/voucher", produces = MediaType.APPLICATION_JSON_VALUE)
 	public @ResponseBody ResponseEntity<APIResponse<Voucher>> createVoucher(
-			@RequestBody(required = true) Voucher vocher) {
+			@RequestBody(required = true) Voucher vocher)
+	{
 
 		APIResponse<Voucher> result = null;
 		ResponseEntity<APIResponse<Voucher>> response;
-		try {
+		try
+		{
 
 			OAuth2Authentication auth = (OAuth2Authentication) SecurityContextHolder.getContext().getAuthentication();
 			result = new APIResponse<>();
@@ -46,7 +49,9 @@ public class VoucherController extends APIController {
 			result.setResponse(vocherRes);
 			response = ResponseEntity.ok(result);
 
-		} catch (Exception e) {
+		}
+		catch (Exception e)
+		{
 			logger.error(e.getMessage(), e);
 			response = handleException(e, version, result);
 		}
@@ -54,18 +59,23 @@ public class VoucherController extends APIController {
 	}
 
 	@RequestMapping(method = RequestMethod.PATCH, value = "/voucher", produces = MediaType.APPLICATION_JSON_VALUE)
-	public @ResponseBody ResponseEntity<APIResponse<Voucher>> redeemVoucher(@RequestBody(required = true) Voucher voucher) {
+	public @ResponseBody ResponseEntity<APIResponse<Voucher>> redeemVoucher(
+			@RequestBody(required = true) Voucher voucher)
+	{
 
 		APIResponse<Voucher> result = null;
 		ResponseEntity<APIResponse<Voucher>> response;
-		try {
+		try
+		{
 
 			result = new APIResponse<>();
 			Voucher remRes = voucherService.redeemVocher(voucher);
 			result.setResponse(remRes);
 			response = ResponseEntity.ok(result);
 
-		} catch (Exception e) {
+		}
+		catch (Exception e)
+		{
 			logger.error(e.getMessage(), e);
 			response = handleException(e, version, result);
 		}

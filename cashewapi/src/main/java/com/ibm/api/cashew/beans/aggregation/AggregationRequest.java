@@ -10,7 +10,7 @@ public abstract class AggregationRequest
 	private String name;
 	private FieldBean field;
 	private ScriptBean script;
-	
+
 	public AggregationTypes getType()
 	{
 		return type;
@@ -74,10 +74,10 @@ public abstract class AggregationRequest
 		{
 			if (other.name != null)
 				return false;
-		} else if (!name.equals(other.name))
+		}
+		else if (!name.equals(other.name))
 			return false;
 		return true;
 	}
-	
-	
+
 }

@@ -19,15 +19,15 @@ public class UserController
 {
 	@Autowired
 	UserDetailsServiceImpl uds;
-	
+
 	@Autowired
 	ClientDetailsServiceImpl cds;
-	
+
 	@Value("${user.mobileNumber}")
 	private String twilioPhnNumber;
-	
-	@RequestMapping(method = RequestMethod.POST, value = "/admin/user", consumes=MediaType.APPLICATION_JSON_VALUE, produces=MediaType.ALL_VALUE)
-	public ResponseEntity<String> createUser(@RequestBody(required =true) UserInfo u)
+
+	@RequestMapping(method = RequestMethod.POST, value = "/admin/user", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.ALL_VALUE)
+	public ResponseEntity<String> createUser(@RequestBody(required = true) UserInfo u)
 	{
 		ResponseEntity<String> response;
 		try
@@ -42,8 +42,8 @@ public class UserController
 		}
 		return response;
 	}
-	
-	@RequestMapping(method = RequestMethod.POST, value = "/admin/client", consumes=MediaType.APPLICATION_JSON_VALUE, produces=MediaType.ALL_VALUE)
+
+	@RequestMapping(method = RequestMethod.POST, value = "/admin/client", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.ALL_VALUE)
 	public ResponseEntity<String> createClient(@RequestBody(required = true) ClientInfo c)
 	{
 		ResponseEntity<String> response;

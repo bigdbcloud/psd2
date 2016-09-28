@@ -8,7 +8,7 @@ public class StormStarter
 	{
 		System.out.println("Brewing Storm PSD2....");
 		JobSubmitterFactory jsf = JobSubmitterFactory.getInstance();
-		
+
 		JobSubmitter js = jsf.getJobSubmitter(ac);
 		js.submitJob();
 	}

@@ -25,7 +25,6 @@ import com.ibm.api.cashew.beans.SubscriptionChallengeAnswer;
 import com.ibm.api.cashew.beans.UserAccount;
 import com.ibm.api.cashew.services.UserAccountService;
 import com.ibm.api.cashew.utils.Utils;
-import com.ibm.psd2.datamodel.ChallengeAnswer;
 import com.ibm.psd2.datamodel.aip.BankAccountDetailsView;
 import com.ibm.psd2.datamodel.pisp.TxnParty;
 import com.ibm.psd2.datamodel.pisp.TxnRequest;
@@ -33,7 +32,8 @@ import com.ibm.psd2.datamodel.pisp.TxnRequestDetails;
 import com.ibm.psd2.datamodel.subscription.SubscriptionRequest;
 
 @RestController
-public class UserAccountInformationController extends APIController {
+public class UserAccountInformationController extends APIController
+{
 	private final Logger logger = LogManager.getLogger(UserAccountInformationController.class);
 
 	@Value("${version}")
@@ -49,17 +49,21 @@ public class UserAccountInformationController extends APIController {
 	@PreAuthorize("authentication.name == #userId")
 	public @ResponseBody ResponseEntity<APIResponse<SubscriptionRequest>> addBankAccountAndRequestSubscription(
 			@PathVariable("userId") String userId,
-			@RequestBody(required = true) SubscriptionRequest subscriptionRequest) {
+			@RequestBody(required = true) SubscriptionRequest subscriptionRequest)
+	{
 		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
 
 		logger.debug("Creating psd2 bank account for user = " + auth.getName());
 		APIResponse<SubscriptionRequest> result = null;
 		ResponseEntity<APIResponse<SubscriptionRequest>> response;
-		try {
+		try
+		{
 			result = new APIResponse<>();
 			result.setResponse(uss.subscribe(auth.getName(), subscriptionRequest));
 			response = ResponseEntity.ok(result);
-		} catch (Exception e) {
+		}
+		catch (Exception e)
+		{
 			response = handleException(e, version, result);
 		}
 		return response;
@@ -68,16 +72,20 @@ public class UserAccountInformationController extends APIController {
 	@RequestMapping(method = RequestMethod.PATCH, value = "/user/{userId}/account/subscription/challenge", produces = MediaType.APPLICATION_JSON_VALUE)
 	@PreAuthorize("authentication.name == #userId")
 	public @ResponseBody ResponseEntity<APIResponse<UserAccount>> answerSubscriptionChallenge(
-			@PathVariable("userId") String userId, @RequestBody(required = true) SubscriptionChallengeAnswer sca) {
+			@PathVariable("userId") String userId, @RequestBody(required = true) SubscriptionChallengeAnswer sca)
+	{
 		logger.debug("Answering Challenge for psd2 bank account for user = " + sca.getAppUsername());
 		APIResponse<UserAccount> result = null;
 		ResponseEntity<APIResponse<UserAccount>> response;
-		try {
+		try
+		{
 			result = new APIResponse<>();
 			sca.setAppUsername(userId);
 			result.setResponse(uss.answerSubscriptionRequestChallenge(sca));
 			response = ResponseEntity.ok(result);
-		} catch (Exception e) {
+		}
+		catch (Exception e)
+		{
 			response = handleException(e, version, result);
 		}
 		return response;
@@ -87,15 +95,19 @@ public class UserAccountInformationController extends APIController {
 	@PreAuthorize("authentication.name == #userId")
 	public @ResponseBody ResponseEntity<APIResponse<BankAccountDetailsView>> getAccountDetails(
 			@PathVariable("userId") String userId, @PathVariable("bankId") String bankId,
-			@PathVariable("accountId") String accountId) {
+			@PathVariable("accountId") String accountId)
+	{
 		logger.debug("Getting Account Details for user = " + userId);
 		APIResponse<BankAccountDetailsView> result = null;
 		ResponseEntity<APIResponse<BankAccountDetailsView>> response;
-		try {
+		try
+		{
 			result = new APIResponse<>();
 			result.setResponse(uss.getAccountInformation(userId, bankId, accountId));
 			response = ResponseEntity.ok(result);
-		} catch (Exception e) {
+		}
+		catch (Exception e)
+		{
 			response = handleException(e, version, result);
 		}
 		return response;
@@ -104,43 +116,49 @@ public class UserAccountInformationController extends APIController {
 	@RequestMapping(method = RequestMethod.GET, value = "/{userId}/accounts", produces = MediaType.APPLICATION_JSON_VALUE)
 	@PreAuthorize("authentication.name == #userId")
 	public @ResponseBody ResponseEntity<APIResponse<List<BankAccountDetailsView>>> getAllAccountDetails(
-			@PathVariable("userId") String userId) {
+			@PathVariable("userId") String userId)
+	{
 		logger.debug("Getting Account Details for user = " + userId);
 		APIResponse<List<BankAccountDetailsView>> result = null;
 		ResponseEntity<APIResponse<List<BankAccountDetailsView>>> response;
-		try {
+		try
+		{
 			result = new APIResponse<>();
 			result.setResponse(uss.getAllAccountInformation(userId));
 			response = ResponseEntity.ok(result);
-		} catch (Exception e) {
+		}
+		catch (Exception e)
+		{
 			response = handleException(e, version, result);
 		}
 		return response;
 	}
-	
-	
+
 	@RequestMapping(method = RequestMethod.GET, value = "/{userId}/transactions", produces = MediaType.APPLICATION_JSON_VALUE)
 	@PreAuthorize("authentication.name == #userId")
 	public @ResponseBody ResponseEntity<APIResponse<List<com.ibm.api.cashew.beans.ElasticTransaction>>> getTransactionStatement(
-			@RequestParam (value="bankId",required = false) String bankId,
-			@RequestParam (value="accountId",required = false) String accountId,
+			@RequestParam(value = "bankId", required = false) String bankId,
+			@RequestParam(value = "accountId", required = false) String accountId,
 			@RequestHeader(value = "obp_sort_direction", required = false) String sortDirection,
 			@RequestHeader(value = "obp_limit", required = false) Integer limit,
 			@RequestHeader(value = "obp_from_date", required = false) String fromDate,
 			@RequestHeader(value = "obp_to_date", required = false) String toDate,
 			@RequestHeader(value = "obp_sort_by", required = false) String sortBy,
-			@RequestHeader(value = "obp_offset", required = false) Integer offset, 
-			@PathVariable("userId") String userId) {
-		
-		
+			@RequestHeader(value = "obp_offset", required = false) Integer offset,
+			@PathVariable("userId") String userId)
+	{
+
 		APIResponse<List<com.ibm.api.cashew.beans.ElasticTransaction>> result = null;
 		ResponseEntity<APIResponse<List<com.ibm.api.cashew.beans.ElasticTransaction>>> response;
-		try {
+		try
+		{
 			result = new APIResponse<>();
 			result.setResponse(uss.getTransactions(userId, bankId, accountId, sortDirection, fromDate, toDate, sortBy,
 					offset, limit));
 			response = ResponseEntity.ok(result);
-		} catch (Exception e) {
+		}
+		catch (Exception e)
+		{
 			response = handleException(e, version, result);
 		}
 		return response;
@@ -151,14 +169,17 @@ public class UserAccountInformationController extends APIController {
 	public @ResponseBody ResponseEntity<APIResponse<TxnRequestDetails>> postTransaction(
 			@PathVariable("userId") String userId, @PathVariable("bankId") String bankId,
 			@PathVariable("accountId") String accountId, @PathVariable("txnType") String txnType,
-			@RequestBody(required = true) TxnRequest txnReq) {
+			@RequestBody(required = true) TxnRequest txnReq)
+	{
 
 		APIResponse<TxnRequestDetails> result = null;
 		ResponseEntity<APIResponse<TxnRequestDetails>> response;
 
-		try {
+		try
+		{
 			if (txnReq == null || txnReq.getTo() == null
-					|| (accountId.equals(txnReq.getTo().getAccountId()) && bankId.equals(txnReq.getTo().getBankId()))) {
+					|| (accountId.equals(txnReq.getTo().getAccountId()) && bankId.equals(txnReq.getTo().getBankId())))
+			{
 				throw new IllegalArgumentException("Invalid ElasticTransaction Request");
 			}
 
@@ -169,14 +190,13 @@ public class UserAccountInformationController extends APIController {
 			result.setResponse(t);
 			response = ResponseEntity.ok(result);
 
-		} catch (Exception e) {
+		}
+		catch (Exception e)
+		{
 			logger.error(e.getMessage(), e);
 			response = handleException(e, version, result);
 		}
 		return response;
 	}
-
-	
-	
 
 }

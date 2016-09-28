@@ -25,13 +25,13 @@ public class UserAccount implements Serializable
 	private String appUsername;
 
 	BankAccountDetailsView account;
-	
+
 	String subscriptionRequestId;
 	String subscriptionRequestStatus;
 	String subscriptionRequestChallengeId;
-	
+
 	String subscriptionInfoStatus;
-	
+
 	private List<TransactionRequestType> transactionRequestTypes;
 	private List<TransactionLimit> limits;
 	private ArrayList<ViewId> viewIds;
@@ -66,7 +66,6 @@ public class UserAccount implements Serializable
 		this.account = account;
 	}
 
-	
 	public String getSubscriptionRequestId()
 	{
 		return subscriptionRequestId;
@@ -126,7 +125,7 @@ public class UserAccount implements Serializable
 	{
 		this.viewIds = viewIds;
 	}
-	
+
 	public String getSubscriptionRequestChallengeId()
 	{
 		return subscriptionRequestChallengeId;
@@ -143,7 +142,8 @@ public class UserAccount implements Serializable
 		try
 		{
 			return mapper.writeValueAsString(this);
-		} catch (JsonProcessingException e)
+		}
+		catch (JsonProcessingException e)
 		{
 			e.printStackTrace();
 		}

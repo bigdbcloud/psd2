@@ -12,44 +12,52 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 
 @Document(collection = "transactions")
 @JsonInclude(value = Include.NON_EMPTY)
-public class Transaction {
-	
+public class Transaction
+{
+
 	public static final SimpleDateFormat DATE_FORMAT = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSZ");
-		
+
 	@Id
 	private String id;
 	private TransactionAccount thisAccount;
 	private TransactionAccount otherAccount;
 	private TransactionDetails details;
-	
+
 	public String getId()
 	{
 		return id;
 	}
+
 	public void setId(String id)
 	{
 		this.id = id;
 	}
+
 	public TransactionAccount getThisAccount()
 	{
 		return thisAccount;
 	}
+
 	public void setThisAccount(TransactionAccount this_account)
 	{
 		this.thisAccount = this_account;
 	}
+
 	public TransactionAccount getOtherAccount()
 	{
 		return otherAccount;
 	}
+
 	public void setOtherAccount(TransactionAccount other_account)
 	{
 		this.otherAccount = other_account;
 	}
+
 	public TransactionDetails getDetails()
 	{
 		return details;
 	}
+
 	public void setDetails(TransactionDetails details)
 	{
 		this.details = details;
@@ -61,7 +69,8 @@ public class Transaction {
 		try
 		{
 			return mapper.writeValueAsString(this);
-		} catch (JsonProcessingException e)
+		}
+		catch (JsonProcessingException e)
 		{
 			e.printStackTrace();
 		}

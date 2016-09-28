@@ -17,12 +17,12 @@ public class MongoConfig
 		MongoClientURI mcu = new MongoClientURI("mongodb://172.30.46.38:27017/psd2api");
 		return new SimpleMongoDbFactory(mcu);
 	}
-	
+
 	@Bean
 	public MongoTemplate mongoTemplate() throws Exception
 	{
 		MongoTemplate mongoTemplate = new MongoTemplate(mongoDbFactory());
 		return mongoTemplate;
-	}	
-	
+	}
+
 }

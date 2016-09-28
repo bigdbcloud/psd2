@@ -24,7 +24,8 @@ import com.ibm.api.cashew.beans.Reminder;
 import com.ibm.api.cashew.services.ReminderService;
 
 @RestController
-public class ReminderController extends APIController {
+public class ReminderController extends APIController
+{
 
 	private final Logger logger = LogManager.getLogger(ReminderController.class);
 
@@ -34,19 +35,21 @@ public class ReminderController extends APIController {
 	@Autowired
 	private ReminderService reminderService;
 
-	
 	@RequestMapping(method = RequestMethod.PUT, value = "/reminder", produces = MediaType.APPLICATION_JSON_VALUE)
 	public @ResponseBody ResponseEntity<APIResponse<Reminder>> createReminder(
-			@RequestBody(required = true) Reminder reminder) {
+			@RequestBody(required = true) Reminder reminder)
+	{
 
 		APIResponse<Reminder> result = null;
 		ResponseEntity<APIResponse<Reminder>> response;
-		try {
+		try
+		{
 
 			OAuth2Authentication auth = (OAuth2Authentication) SecurityContextHolder.getContext().getAuthentication();
 			result = new APIResponse<>();
 
-			if (StringUtils.isBlank(reminder.getCreatedBy())) {
+			if (StringUtils.isBlank(reminder.getCreatedBy()))
+			{
 				reminder.setCreatedBy(auth.getName());
 			}
 
@@ -54,7 +57,9 @@ public class ReminderController extends APIController {
 			result.setResponse(remRes);
 			response = ResponseEntity.ok(result);
 
-		} catch (Exception e) {
+		}
+		catch (Exception e)
+		{
 			logger.error(e.getMessage(), e);
 			response = handleException(e, version, result);
 		}
@@ -63,18 +68,22 @@ public class ReminderController extends APIController {
 
 	@RequestMapping(method = RequestMethod.PATCH, value = "/reminder", produces = MediaType.APPLICATION_JSON_VALUE)
 	public @ResponseBody ResponseEntity<APIResponse<Reminder>> updateReminder(
-			@RequestBody(required = true) Reminder reminder) {
+			@RequestBody(required = true) Reminder reminder)
+	{
 
 		APIResponse<Reminder> result = null;
 		ResponseEntity<APIResponse<Reminder>> response;
-		try {
+		try
+		{
 
 			result = new APIResponse<>();
 			Reminder remRes = reminderService.updateReminder(reminder);
 			result.setResponse(remRes);
 			response = ResponseEntity.ok(result);
 
-		} catch (Exception e) {
+		}
+		catch (Exception e)
+		{
 			logger.error(e.getMessage(), e);
 			response = handleException(e, version, result);
 		}
@@ -82,17 +91,21 @@ public class ReminderController extends APIController {
 	}
 
 	@RequestMapping(method = RequestMethod.DELETE, value = "/reminder/{reminderId}", produces = MediaType.APPLICATION_JSON_VALUE)
-	public @ResponseBody ResponseEntity<APIResponse<Reminder>> deleteReminder(@PathVariable String reminderId) {
+	public @ResponseBody ResponseEntity<APIResponse<Reminder>> deleteReminder(@PathVariable String reminderId)
+	{
 
 		APIResponse<Reminder> result = null;
 		ResponseEntity<APIResponse<Reminder>> response;
-		try {
+		try
+		{
 
 			result = new APIResponse<>();
 			reminderService.deleteReminder(reminderId);
 			response = ResponseEntity.ok(result);
 
-		} catch (Exception e) {
+		}
+		catch (Exception e)
+		{
 			logger.error(e.getMessage(), e);
 			response = handleException(e, version, result);
 		}
@@ -101,21 +114,24 @@ public class ReminderController extends APIController {
 
 	@RequestMapping(method = RequestMethod.GET, value = "/reminder", produces = MediaType.APPLICATION_JSON_VALUE)
 	public @ResponseBody ResponseEntity<APIResponse<List<Reminder>>> getReminders(
-			@RequestHeader(required = false) String fromDate,
-			@RequestHeader(required = false) String toDate) {
+			@RequestHeader(required = false) String fromDate, @RequestHeader(required = false) String toDate)
+	{
 
 		APIResponse<List<Reminder>> result = null;
 		ResponseEntity<APIResponse<List<Reminder>>> response;
-		try {
+		try
+		{
 
 			OAuth2Authentication auth = (OAuth2Authentication) SecurityContextHolder.getContext().getAuthentication();
 			result = new APIResponse<>();
-			
-			List<Reminder> remList=reminderService.getReminders(auth.getName(), fromDate, toDate);
+
+			List<Reminder> remList = reminderService.getReminders(auth.getName(), fromDate, toDate);
 			result.setResponse(remList);
 			response = ResponseEntity.ok(result);
 
-		} catch (Exception e) {
+		}
+		catch (Exception e)
+		{
 			logger.error(e.getMessage(), e);
 			response = handleException(e, version, result);
 		}

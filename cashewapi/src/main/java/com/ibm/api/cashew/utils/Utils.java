@@ -14,16 +14,15 @@ import java.util.StringTokenizer;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
-import com.ibm.api.cashew.beans.Tag;
 import com.ibm.api.cashew.beans.Voucher;
 
 @Component
 public class Utils
 {
 	public final SimpleDateFormat DATE_FORMAT = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSZ");
-	
+
 	private Set<String> tagSet;
-	
+
 	@Value("${default.tags}")
 	private String tags;
 
@@ -60,9 +59,9 @@ public class Utils
 		String authHeader = "Basic " + new String(encodedAuth);
 		return authHeader;
 	}
-	
 
-	public String getVocherCode() {
+	public String getVocherCode()
+	{
 
 		char[] chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789".toCharArray();
 		Random rnd = new Random();
@@ -73,7 +72,8 @@ public class Utils
 		return sb.toString();
 	}
 
-	public String getVocherExpDate() {
+	public String getVocherExpDate()
+	{
 
 		Calendar c = Calendar.getInstance();
 		c.setTime(new Date());
@@ -81,21 +81,22 @@ public class Utils
 		return Voucher.DATE_FORMAT.format(c.getTime());
 
 	}
-	
-	public Set<String> getTags(){
-	
+
+	public Set<String> getTags()
+	{
+
 		if (tagSet == null)
 		{
 			StringTokenizer st = new StringTokenizer(tags, ",");
 			tagSet = new HashSet<>();
 			while (st.hasMoreTokens())
 			{
-				String tag = st.nextToken();				
+				String tag = st.nextToken();
 				tagSet.add(tag);
 			}
 		}
 		return tagSet;
 
 	}
-	
+
 }

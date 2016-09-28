@@ -12,30 +12,35 @@ public class TransactionBank implements Serializable
 {
 	String nationalIdentifier;
 	String name;
+
 	public String getNationalIdentifier()
 	{
 		return nationalIdentifier;
 	}
+
 	public void setNationalIdentifier(String national_identifier)
 	{
 		this.nationalIdentifier = national_identifier;
 	}
+
 	public String getName()
 	{
 		return name;
 	}
+
 	public void setName(String name)
 	{
 		this.name = name;
 	}
-	
+
 	public String toString()
 	{
 		ObjectMapper mapper = new ObjectMapper();
 		try
 		{
 			return mapper.writeValueAsString(this);
-		} catch (JsonProcessingException e)
+		}
+		catch (JsonProcessingException e)
 		{
 			e.printStackTrace();
 		}

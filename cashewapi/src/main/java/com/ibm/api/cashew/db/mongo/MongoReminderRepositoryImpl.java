@@ -14,23 +14,28 @@ import org.springframework.data.mongodb.core.query.Query;
 
 import com.ibm.api.cashew.beans.Reminder;
 
-public class MongoReminderRepositoryImpl implements MongoReminderCustomRepository {
+public class MongoReminderRepositoryImpl implements MongoReminderCustomRepository
+{
 
 	@Autowired
 	private MongoTemplate mongoTemplate;
 
 	@Override
-	public List<Reminder> getReminders(String userId, String fromDate, String toDate) {
+	public List<Reminder> getReminders(String userId, String fromDate, String toDate)
+	{
 
 		Sort sort = new Sort(Sort.Direction.ASC, "reminderDate");
 
 		CriteriaDefinition cd = null;
 
-		if (fromDate == null || toDate == null) {
+		if (fromDate == null || toDate == null)
+		{
 
 			fromDate = Reminder.DATE_FORMAT.format(new Date());
 			cd = where("createdBy").is(userId).and("reminderDate").gte(fromDate);
-		} else {
+		}
+		else
+		{
 
 			cd = where("createdBy").is(userId).and("reminderDate").lte(toDate).gte(fromDate);
 		}

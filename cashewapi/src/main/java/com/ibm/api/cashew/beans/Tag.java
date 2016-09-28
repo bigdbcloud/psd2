@@ -1,29 +1,34 @@
 package com.ibm.api.cashew.beans;
 
-public class Tag {
-	
+public class Tag
+{
+
 	private String name;
 	private String spentLimit;
 
-	public String getName() {
+	public String getName()
+	{
 		return name;
 	}
 
-	public void setName(String name) {
+	public void setName(String name)
+	{
 		this.name = name;
 	}
 
-	
-	public String getSpentLimit() {
+	public String getSpentLimit()
+	{
 		return spentLimit;
 	}
 
-	public void setSpentLimit(String spentLimit) {
+	public void setSpentLimit(String spentLimit)
+	{
 		this.spentLimit = spentLimit;
 	}
 
 	@Override
-	public int hashCode() {
+	public int hashCode()
+	{
 		final int prime = 31;
 		int result = 1;
 		result = prime * result + ((name == null) ? 0 : name.hashCode());
@@ -31,7 +36,8 @@ public class Tag {
 	}
 
 	@Override
-	public boolean equals(Object obj) {
+	public boolean equals(Object obj)
+	{
 		if (this == obj)
 			return true;
 		if (obj == null)
@@ -39,10 +45,12 @@ public class Tag {
 		if (getClass() != obj.getClass())
 			return false;
 		Tag other = (Tag) obj;
-		if (name == null) {
+		if (name == null)
+		{
 			if (other.name != null)
 				return false;
-		} else if (!name.equals(other.name))
+		}
+		else if (!name.equals(other.name))
 			return false;
 		return true;
 	}

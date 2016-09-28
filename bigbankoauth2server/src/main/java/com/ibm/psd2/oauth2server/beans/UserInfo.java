@@ -112,18 +112,19 @@ public class UserInfo implements Serializable
 			return false;
 		return true;
 	}
-	
+
 	public String toString()
 	{
 		ObjectMapper mapper = new ObjectMapper();
 		try
 		{
 			return mapper.writeValueAsString(this);
-		} catch (JsonProcessingException e)
+		}
+		catch (JsonProcessingException e)
 		{
 			e.printStackTrace();
 		}
 		return "";
 	}
-	
+
 }

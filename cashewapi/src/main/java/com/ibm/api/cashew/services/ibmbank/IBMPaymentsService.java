@@ -15,6 +15,7 @@ public interface IBMPaymentsService
 
 	public List<CounterParty> getPayees(UserAccount ua) throws Exception;
 
-	public TxnRequestDetails answerTxnChallenge(UserAccount ua, String txnReqType, String txnId, ChallengeAnswer ca) throws URISyntaxException;
+	public TxnRequestDetails answerTxnChallenge(UserAccount ua, String txnReqType, String txnId, ChallengeAnswer ca)
+			throws URISyntaxException;
 
 }

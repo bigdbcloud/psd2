@@ -51,7 +51,7 @@ public class IBMPaymentsServiceImpl implements IBMPaymentsService
 		txnDetails = res.getBody();
 		return txnDetails;
 	}
-	
+
 	@Override
 	public List<CounterParty> getPayees(UserAccount ua) throws Exception
 	{
@@ -61,33 +61,38 @@ public class IBMPaymentsServiceImpl implements IBMPaymentsService
 		String url = psd2Credentials.getPsd2Url() + "/banks/" + ua.getAccount().getBankId() + "/accounts/"
 				+ ua.getAccount().getId() + "/" + ua.getViewIds().get(0).getId() + "/counter-parties";
 		logger.debug("url = " + url);
-		
+
 		URI uri = new URI(url);
-		
+
 		RequestEntity<Void> rea = RequestEntity.get(uri).accept(MediaType.APPLICATION_JSON)
 				.header("Authorization", psd2Credentials.getPSD2Authorization())
 				.header("user", ua.getAccount().getUsername()).build();
 
-		ResponseEntity<List<CounterParty>> res = restTemplate.exchange(rea, new ParameterizedTypeReference<List<CounterParty>>()
-		{
-		});
+		ResponseEntity<List<CounterParty>> res = restTemplate.exchange(rea,
+				new ParameterizedTypeReference<List<CounterParty>>()
+				{
+				});
 
 		List<CounterParty> cp = res.getBody();
 		return cp;
-		
-		
+
 	}
 
 	@Override
-	public TxnRequestDetails answerTxnChallenge(UserAccount ua, String txnReqType, String txnId, ChallengeAnswer ca) throws URISyntaxException {
-		
-		/*banks/{bankId}/accounts/{accountId}/{viewId}/transaction-request-types/{txnType}/transaction-requests/{txnReqId}/challenge*/
-		
+	public TxnRequestDetails answerTxnChallenge(UserAccount ua, String txnReqType, String txnId, ChallengeAnswer ca)
+			throws URISyntaxException
+	{
+
+		/*
+		 * banks/{bankId}/accounts/{accountId}/{viewId}/transaction-request-
+		 * types/{txnType}/transaction-requests/{txnReqId}/challenge
+		 */
+
 		TxnRequestDetails txnDetails = null;
 		String url = psd2Credentials.getPsd2Url() + "/banks/" + ua.getAccount().getBankId() + "/accounts/"
 				+ ua.getAccount().getId() + "/" + ua.getViewIds().get(0).getId() + "/transaction-request-types/"
 				+ txnReqType + "/transaction-requests/" + txnId + "/challenge";
-		
+
 		logger.debug("url = " + url);
 
 		URI uri = new URI(url);
@@ -99,9 +104,9 @@ public class IBMPaymentsServiceImpl implements IBMPaymentsService
 		ResponseEntity<TxnRequestDetails> res = restTemplate.exchange(rea, TxnRequestDetails.class);
 
 		txnDetails = res.getBody();
-		
+
 		return txnDetails;
-		
+
 	}
 
 }

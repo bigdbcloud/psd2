@@ -6,6 +6,7 @@ import com.ibm.api.cashew.beans.Goal;
 
 public interface GoalService
 {
-	public Goal saveGoal(Goal goal );
+	public Goal saveGoal(Goal goal);
+
 	public List<Goal> getGoals(String username);
 }

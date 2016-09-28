@@ -9,34 +9,32 @@ import com.fasterxml.jackson.annotation.JsonInclude.Include;
 public class Amount implements Serializable
 {
 	/*
-		"value":{
-			"currency":"EUR",
-			"amount":"100.53"
-			},
-	*/
+	 * "value":{ "currency":"EUR", "amount":"100.53" },
+	 */
 
-	public static enum CURRENCY_TYPE{
-		EUR,GBP		
+	public static enum CURRENCY_TYPE
+	{
+		EUR, GBP
 	}
-	
+
 	private String currency;
 	private double amount;
-	
+
 	public String getCurrency()
 	{
 		return currency;
 	}
-	
+
 	public void setCurrency(String currency)
 	{
 		this.currency = currency;
 	}
-	
+
 	public double getAmount()
 	{
 		return amount;
 	}
-	
+
 	public void setAmount(double amount)
 	{
 		this.amount = amount;

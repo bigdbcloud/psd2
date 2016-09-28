@@ -31,7 +31,8 @@ public class ClientDetailsServiceImpl implements ClientDetailsService
 		try
 		{
 			client = clientService.findById(clientId);
-		} catch (Exception e)
+		}
+		catch (Exception e)
 		{
 			logger.error(e.getMessage(), e);
 			throw new ClientRegistrationException(e.getMessage(), e);
@@ -54,7 +55,8 @@ public class ClientDetailsServiceImpl implements ClientDetailsService
 			String[] authorities = new String[client.getAuthorities().size()];
 			authorities = client.getAuthorities().toArray(authorities);
 			bcd.setAuthorities(AuthorityUtils.createAuthorityList(authorities));
-		} else
+		}
+		else
 		{
 			bcd.setAuthorities(AuthorityUtils.commaSeparatedStringToAuthorityList("ROLE_USER"));
 		}

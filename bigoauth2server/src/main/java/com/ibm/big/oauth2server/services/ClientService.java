@@ -6,6 +6,6 @@ public interface ClientService
 {
 
 	public Client findById(String id);
-	
+
 	public Client createClient(Client client);
 }

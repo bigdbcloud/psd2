@@ -18,10 +18,10 @@ public class QueryRequest
 	String fromDate;
 	String toDate;
 	List<AggregationRequest> aggregations;
-	
+
 	Integer page;
 	Integer limit;
-	
+
 	public String getDateField()
 	{
 		return dateField;
@@ -90,7 +90,6 @@ public class QueryRequest
 		aggregations.add(aggregationRequest);
 	}
 
-	
 	public List<AggregationRequest> getAggregations()
 	{
 		return aggregations;
@@ -127,7 +126,8 @@ public class QueryRequest
 		try
 		{
 			return mapper.writeValueAsString(this);
-		} catch (JsonProcessingException e)
+		}
+		catch (JsonProcessingException e)
 		{
 			e.printStackTrace();
 		}

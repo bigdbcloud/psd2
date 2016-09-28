@@ -28,7 +28,7 @@ public class KafkaMessageProducer
 	@Autowired
 	private MongoKafkaPropertiesRepository mkpr;
 
-	private synchronized KafkaProducer<String, String> getProducer() throws Exception
+	private synchronized KafkaProducer<String, String> getProducer()
 	{
 		long loadInterval = Calendar.getInstance().getTimeInMillis() - lastLoadTime;
 		if (producer == null || lastLoadTime == 0 || loadInterval > reloadTime)
@@ -43,7 +43,7 @@ public class KafkaMessageProducer
 		return producer;
 	}
 
-	public void publishMessage(String topic, String key, String value) throws Exception
+	public void publishMessage(String topic, String key, String value)
 	{
 		logger.info("Sending Kafka Message on topic: " + topic + " with key: " + key + " message: " + value);
 		getProducer().send(new ProducerRecord<String, String>(topic, key, value));

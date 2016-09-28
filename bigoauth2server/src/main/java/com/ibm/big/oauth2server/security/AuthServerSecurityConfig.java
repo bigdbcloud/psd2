@@ -23,10 +23,10 @@ public class AuthServerSecurityConfig extends AuthorizationServerConfigurerAdapt
 {
 	@Value("${bigoauth2server.oauth2.signingKey}")
 	private String tokenSigningKey;
-	
+
 	@Autowired
 	ClientDetailsServiceImpl cds;
-	
+
 	@Bean
 	public BigOauth2ServerTokenEnhancer accessTokenConverter()
 	{
@@ -40,7 +40,7 @@ public class AuthServerSecurityConfig extends AuthorizationServerConfigurerAdapt
 	{
 		return new JwtTokenStore(accessTokenConverter());
 	}
-	
+
 	@Override
 	public void configure(AuthorizationServerSecurityConfigurer oauthServer) throws Exception
 	{
@@ -60,7 +60,7 @@ public class AuthServerSecurityConfig extends AuthorizationServerConfigurerAdapt
 		InMemoryAuthorizationCodeServices imacs = new InMemoryAuthorizationCodeServices();
 		return imacs;
 	}
-	
+
 	@Bean
 	@Primary
 	public DefaultTokenServices tokenServices()
@@ -79,23 +79,22 @@ public class AuthServerSecurityConfig extends AuthorizationServerConfigurerAdapt
 	public void configure(ClientDetailsServiceConfigurer clients) throws Exception
 	{
 		clients.withClientDetails(cds);
-//		 clients.inMemory().withClient("codertalk").secret("password01")
-//		 .authorizedGrantTypes("authorization_code", "refresh_token")
-//		 .authorities("ROLE_TRUSTED_CLIENT", "ROLE_USER")
-//		 .scopes("codertalkapp").accessTokenValiditySeconds(3600)
-//		 .refreshTokenValiditySeconds(86400);
+		// clients.inMemory().withClient("codertalk").secret("password01")
+		// .authorizedGrantTypes("authorization_code", "refresh_token")
+		// .authorities("ROLE_TRUSTED_CLIENT", "ROLE_USER")
+		// .scopes("codertalkapp").accessTokenValiditySeconds(3600)
+		// .refreshTokenValiditySeconds(86400);
 	}
 
 	@Override
 	public void configure(AuthorizationServerEndpointsConfigurer endpoints) throws Exception
 	{
-		endpoints.tokenServices(tokenServices())
-			.approvalStore(approvalStore())
-			.authorizationCodeServices(authorizationCodeServices());
+		endpoints.tokenServices(tokenServices()).approvalStore(approvalStore())
+				.authorizationCodeServices(authorizationCodeServices());
 
-//		endpoints.tokenStore(tokenStore()).accessTokenConverter(accessTokenConverter()).approvalStore(approvalStore())
-//			.authorizationCodeServices(authorizationCodeServices());
-//				.authenticationManager(authenticationManager).userDetailsService(uds)
-//				.userApprovalHandler(userApprovalHandler()).authorizationCodeServices(authorizationCodeServices());
+		// endpoints.tokenStore(tokenStore()).accessTokenConverter(accessTokenConverter()).approvalStore(approvalStore())
+		// .authorizationCodeServices(authorizationCodeServices());
+		// .authenticationManager(authenticationManager).userDetailsService(uds)
+		// .userApprovalHandler(userApprovalHandler()).authorizationCodeServices(authorizationCodeServices());
 	}
 }

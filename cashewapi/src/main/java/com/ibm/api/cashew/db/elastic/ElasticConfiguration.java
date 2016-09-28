@@ -1,4 +1,5 @@
 package com.ibm.api.cashew.db.elastic;
+
 import java.net.InetAddress;
 
 import org.apache.logging.log4j.LogManager;
@@ -33,14 +34,14 @@ public class ElasticConfiguration
 		TransportClient client = null;
 		try
 		{
-			Settings settings = Settings.settingsBuilder()
-			        .put("client.transport.ping_timeout","60s").build();
-			
+			Settings settings = Settings.settingsBuilder().put("client.transport.ping_timeout", "60s").build();
+
 			logger.debug("Elastic props are: host = " + host + " , port = " + port);
 
 			client = TransportClient.builder().settings(settings).build()
 					.addTransportAddress(new InetSocketTransportAddress(InetAddress.getByName(host), port));
-		} catch (Exception e)
+		}
+		catch (Exception e)
 		{
 			logger.error(e.getMessage(), e);
 		}
@@ -53,4 +54,3 @@ public class ElasticConfiguration
 		return new ElasticsearchTemplate(client());
 	}
 }
-

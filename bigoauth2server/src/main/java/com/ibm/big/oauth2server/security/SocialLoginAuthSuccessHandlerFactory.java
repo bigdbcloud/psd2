@@ -5,13 +5,12 @@ import org.springframework.stereotype.Component;
 
 import com.ibm.big.oauth2server.services.UserService;
 
-
 @Component
 public class SocialLoginAuthSuccessHandlerFactory
 {
 	@Autowired
 	UserDetailsServiceImpl uds;
-	
+
 	@Autowired
 	UserService userService;
 
@@ -23,7 +22,8 @@ public class SocialLoginAuthSuccessHandlerFactory
 			slash.setUserDetailsService(uds);
 			slash.setUserService(userService);
 			return slash;
-		} else
+		}
+		else
 		{
 			throw new UnsupportedOperationException("Other providers are not yet supported");
 		}

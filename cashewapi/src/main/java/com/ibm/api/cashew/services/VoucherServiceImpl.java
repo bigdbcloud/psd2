@@ -18,7 +18,8 @@ import com.ibm.psd2.datamodel.pisp.TxnRequest;
 import com.ibm.psd2.datamodel.subscription.TransactionRequestType;
 
 @Service
-public class VoucherServiceImpl implements VoucherService {
+public class VoucherServiceImpl implements VoucherService
+{
 
 	@Autowired
 	private MongoVoucherRepository mongoVoucherRepos;
@@ -39,12 +40,14 @@ public class VoucherServiceImpl implements VoucherService {
 	private String centrlAcctUser;
 
 	@Override
-	public Voucher createVocher(Voucher vocher) {
+	public Voucher createVocher(Voucher vocher)
+	{
 
 		validateCreateVocher(vocher);
 
 		TxnParty txnTo = new TxnParty(centralBank, centralAcct);
-		for (TxnDetails txnDetail : vocher.getAcctFrom()) {
+		for (TxnDetails txnDetail : vocher.getAcctFrom())
+		{
 
 			TxnRequest txnRequest = new TxnRequest();
 			txnRequest.setTo(txnTo);
@@ -65,9 +68,11 @@ public class VoucherServiceImpl implements VoucherService {
 	}
 
 	@Override
-	public Voucher redeemVocher(Voucher vocher) {
+	public Voucher redeemVocher(Voucher vocher)
+	{
 
-		if (StringUtils.isBlank(vocher.getCode())) {
+		if (StringUtils.isBlank(vocher.getCode()))
+		{
 			throw new IllegalArgumentException("Voucher code is required");
 		}
 
@@ -77,7 +82,8 @@ public class VoucherServiceImpl implements VoucherService {
 		double amtRedeemed = getAmountRedeemed(vocher, existngVocher);
 		double amtLeft = existngVocher.getAmount().getAmount() - amtRedeemed;
 
-		for (TxnDetails txnReq : vocher.getRedeemedTo()) {
+		for (TxnDetails txnReq : vocher.getRedeemedTo())
+		{
 
 			TxnParty txnTo = new TxnParty(txnReq.getBankId(), txnReq.getAccountId());
 			TxnRequest txnRequest = new TxnRequest();
@@ -90,7 +96,8 @@ public class VoucherServiceImpl implements VoucherService {
 
 			amtLeft = amtLeft - txnReq.getValue().getAmount();
 
-			if (amtLeft == 0) {
+			if (amtLeft == 0)
+			{
 				vocher.setRedeemed(true);
 			}
 
@@ -101,67 +108,83 @@ public class VoucherServiceImpl implements VoucherService {
 		return mongoVoucherRepos.findOne(vocher.getCode());
 	}
 
-	private void validateCreateVocher(Voucher vocher) {
+	private void validateCreateVocher(Voucher vocher)
+	{
 
-		if (vocher == null) {
+		if (vocher == null)
+		{
 			throw new IllegalArgumentException("Invalid Voucher request");
 		}
 
-		if (vocher.getAcctFrom() == null || CollectionUtils.isEmpty(vocher.getAcctFrom())) {
+		if (vocher.getAcctFrom() == null || CollectionUtils.isEmpty(vocher.getAcctFrom()))
+		{
 			throw new IllegalArgumentException("Account details is required to create Voucher");
 		}
 
 		if (vocher.getAmount() == null || vocher.getAmount().getAmount() == 0
-				|| StringUtils.isBlank(vocher.getAmount().getCurrency())) {
+				|| StringUtils.isBlank(vocher.getAmount().getCurrency()))
+		{
 			throw new IllegalArgumentException("Voucher amount should be specified");
 		}
 
 		double totalAmt = 0.00;
 
-		for (TxnDetails txDetails : vocher.getAcctFrom()) {
+		for (TxnDetails txDetails : vocher.getAcctFrom())
+		{
 
 			if (txDetails.getValue().getCurrency() == null
-					|| !txDetails.getValue().getCurrency().equals(vocher.getAmount().getCurrency())) {
+					|| !txDetails.getValue().getCurrency().equals(vocher.getAmount().getCurrency()))
+			{
 				throw new IllegalArgumentException("Invalid currency specified for vocher amount");
 			}
 
-			if (txDetails != null && txDetails.getValue().getAmount() != 0) {
+			if (txDetails != null && txDetails.getValue().getAmount() != 0)
+			{
 				totalAmt = totalAmt + txDetails.getValue().getAmount();
 			}
 		}
 
-		if (totalAmt > vocher.getAmount().getAmount() || totalAmt < vocher.getAmount().getAmount()) {
+		if (totalAmt > vocher.getAmount().getAmount() || totalAmt < vocher.getAmount().getAmount())
+		{
 
 			throw new IllegalArgumentException("Amount distribution for vocher creation is incorrect");
 		}
 
 	}
 
-	private void validateRedeemVocher(Voucher vocher, Voucher existingVocher) {
+	private void validateRedeemVocher(Voucher vocher, Voucher existingVocher)
+	{
 
-		if (CollectionUtils.isEmpty(vocher.getRedeemedTo())) {
+		if (CollectionUtils.isEmpty(vocher.getRedeemedTo()))
+		{
 
 			throw new IllegalArgumentException("Account details required to redeem vocher");
 		}
 
-		if (existingVocher == null) {
+		if (existingVocher == null)
+		{
 			throw new IllegalArgumentException("Invalid vocher code");
 		}
 
-		if (existingVocher.isRedeemed()) {
+		if (existingVocher.isRedeemed())
+		{
 			throw new IllegalArgumentException("Voucher amount is already redeemed");
 		}
 
 		Date expiryDate;
 
-		try {
+		try
+		{
 			expiryDate = Voucher.DATE_FORMAT.parse(existingVocher.getExpiryDate());
-		} catch (ParseException e) {
+		}
+		catch (ParseException e)
+		{
 
 			throw new IllegalArgumentException("Invalid vocher expiry date");
 		}
 
-		if (expiryDate.before(new Date())) {
+		if (expiryDate.before(new Date()))
+		{
 			throw new IllegalArgumentException("Voucher has expired");
 		}
 
@@ -171,27 +194,33 @@ public class VoucherServiceImpl implements VoucherService {
 
 		amtLeft = existingVocher.getAmount().getAmount() - amtRedeemed;
 
-		for (TxnDetails txDetails : vocher.getRedeemedTo()) {
+		for (TxnDetails txDetails : vocher.getRedeemedTo())
+		{
 			if (txDetails.getValue().getCurrency() == null
-					|| !txDetails.getValue().getCurrency().equals(existingVocher.getAmount().getCurrency())) {
+					|| !txDetails.getValue().getCurrency().equals(existingVocher.getAmount().getCurrency()))
+			{
 
 				throw new IllegalArgumentException("Invalid currency specified for redeem amount");
 			}
 		}
 
-		if (amtToRedeem > amtLeft) {
+		if (amtToRedeem > amtLeft)
+		{
 			throw new IllegalArgumentException("Amount to be redeemed is greater than vocher balance");
 		}
 
 	}
 
-	private double getAmountToRedeem(Voucher vocher, Voucher existingVocher) {
+	private double getAmountToRedeem(Voucher vocher, Voucher existingVocher)
+	{
 
 		double amtToRedeem = 0.00;
 
-		for (TxnDetails txDetails : vocher.getRedeemedTo()) {
+		for (TxnDetails txDetails : vocher.getRedeemedTo())
+		{
 
-			if (txDetails != null && txDetails.getValue() != null && txDetails.getValue().getAmount() != 0) {
+			if (txDetails != null && txDetails.getValue() != null && txDetails.getValue().getAmount() != 0)
+			{
 				amtToRedeem = amtToRedeem + txDetails.getValue().getAmount();
 			}
 		}
@@ -199,13 +228,17 @@ public class VoucherServiceImpl implements VoucherService {
 		return amtToRedeem;
 	}
 
-	private double getAmountRedeemed(Voucher vocher, Voucher existingVocher) {
+	private double getAmountRedeemed(Voucher vocher, Voucher existingVocher)
+	{
 
 		double amtRedeemed = 0.00;
-		if (!CollectionUtils.isEmpty(existingVocher.getRedeemedTo())) {
+		if (!CollectionUtils.isEmpty(existingVocher.getRedeemedTo()))
+		{
 
-			for (TxnDetails txDetails : existingVocher.getRedeemedTo()) {
-				if (txDetails != null && txDetails.getValue().getAmount() != 0) {
+			for (TxnDetails txDetails : existingVocher.getRedeemedTo())
+			{
+				if (txDetails != null && txDetails.getValue().getAmount() != 0)
+				{
 					amtRedeemed = amtRedeemed + txDetails.getValue().getAmount();
 				}
 			}

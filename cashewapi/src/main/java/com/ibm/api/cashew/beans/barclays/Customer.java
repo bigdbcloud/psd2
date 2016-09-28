@@ -2,7 +2,8 @@ package com.ibm.api.cashew.beans.barclays;
 
 import java.util.List;
 
-public class Customer {
+public class Customer
+{
 
 	private String dateOfBirth;
 
@@ -26,96 +27,119 @@ public class Customer {
 
 	private String middleNames;
 
-	public String getDateOfBirth() {
+	public String getDateOfBirth()
+	{
 		return dateOfBirth;
 	}
 
-	public void setDateOfBirth(String dateOfBirth) {
+	public void setDateOfBirth(String dateOfBirth)
+	{
 		this.dateOfBirth = dateOfBirth;
 	}
 
-	public String getId() {
+	public String getId()
+	{
 		return id;
 	}
 
-	public void setId(String id) {
+	public void setId(String id)
+	{
 		this.id = id;
 	}
 
-	public String getLastName() {
+	public String getLastName()
+	{
 		return lastName;
 	}
 
-	public void setLastName(String lastName) {
+	public void setLastName(String lastName)
+	{
 		this.lastName = lastName;
 	}
 
-	public String getTitle() {
+	public String getTitle()
+	{
 		return title;
 	}
 
-	public void setTitle(String title) {
+	public void setTitle(String title)
+	{
 		this.title = title;
 	}
 
-	public String getIsNewToBank() {
+	public String getIsNewToBank()
+	{
 		return isNewToBank;
 	}
 
-	public void setIsNewToBank(String isNewToBank) {
+	public void setIsNewToBank(String isNewToBank)
+	{
 		this.isNewToBank = isNewToBank;
 	}
 
-	public String getNationalityCode() {
+	public String getNationalityCode()
+	{
 		return nationalityCode;
 	}
 
-	public void setNationalityCode(String nationalityCode) {
+	public void setNationalityCode(String nationalityCode)
+	{
 		this.nationalityCode = nationalityCode;
 	}
 
-	public Address getAddress() {
+	public Address getAddress()
+	{
 		return address;
 	}
 
-	public void setAddress(Address address) {
+	public void setAddress(Address address)
+	{
 		this.address = address;
 	}
 
-	public String getFirstName() {
+	public String getFirstName()
+	{
 		return firstName;
 	}
 
-	public void setFirstName(String firstName) {
+	public void setFirstName(String firstName)
+	{
 		this.firstName = firstName;
 	}
 
-	public String getMobileNo() {
+	public String getMobileNo()
+	{
 		return mobileNo;
 	}
 
-	public void setMobileNo(String mobileNo) {
+	public void setMobileNo(String mobileNo)
+	{
 		this.mobileNo = mobileNo;
 	}
 
-	public String getMiddleNames() {
+	public String getMiddleNames()
+	{
 		return middleNames;
 	}
 
-	public void setMiddleNames(String middleNames) {
+	public void setMiddleNames(String middleNames)
+	{
 		this.middleNames = middleNames;
 	}
 
-	public List<Account> getAccountList() {
+	public List<Account> getAccountList()
+	{
 		return accountList;
 	}
 
-	public void setAccountList(List<Account> accountList) {
+	public void setAccountList(List<Account> accountList)
+	{
 		this.accountList = accountList;
 	}
 
 	@Override
-	public String toString() {
+	public String toString()
+	{
 		return "Customer [dateOfBirth=" + dateOfBirth + ", id=" + id + ", lastName=" + lastName + ", title=" + title
 				+ ", accountList=" + accountList + ", isNewToBank=" + isNewToBank + ", nationalityCode="
 				+ nationalityCode + ", address=" + address + ", firstName=" + firstName + ", mobileNo=" + mobileNo

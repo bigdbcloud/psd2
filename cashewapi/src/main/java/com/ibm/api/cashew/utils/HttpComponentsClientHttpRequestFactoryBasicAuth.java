@@ -16,7 +16,7 @@ public class HttpComponentsClientHttpRequestFactoryBasicAuth extends HttpCompone
 {
 	String psd2Host;
 	String psd2Port;
-	
+
 	public HttpComponentsClientHttpRequestFactoryBasicAuth(String host, String port)
 	{
 		super();
@@ -33,7 +33,7 @@ public class HttpComponentsClientHttpRequestFactoryBasicAuth extends HttpCompone
 			BasicScheme basicAuth = new BasicScheme();
 			HttpHost httpHost = new HttpHost(uri.getHost(), uri.getPort());
 			authCache.put(httpHost, basicAuth);
-			
+
 			BasicHttpContext localContext = new BasicHttpContext();
 			localContext.setAttribute(HttpClientContext.AUTH_CACHE, authCache);
 			return localContext;

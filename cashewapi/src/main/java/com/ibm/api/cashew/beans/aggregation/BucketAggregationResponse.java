@@ -35,13 +35,17 @@ public class BucketAggregationResponse extends AggregationResponse
 			buckets.add(bucket);
 		}
 	}
-	
+
 	@Override
-	public String toString() {
+	public String toString()
+	{
 		ObjectMapper mapper = new ObjectMapper();
-		try {
+		try
+		{
 			return mapper.writeValueAsString(this);
-		} catch (JsonProcessingException e) {
+		}
+		catch (JsonProcessingException e)
+		{
 			e.printStackTrace();
 		}
 		return "";

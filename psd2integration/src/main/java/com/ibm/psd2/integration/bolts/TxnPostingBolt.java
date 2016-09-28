@@ -32,8 +32,8 @@ public class TxnPostingBolt extends BaseRichBolt
 	private ArgumentsContainer ac;
 
 	private OutputCollector _collector = null;
-//	private MongoDao txnDao;
-	
+	// private MongoDao txnDao;
+
 	MongoOperations mongoOperation = null;
 
 	public TxnPostingBolt(ArgumentsContainer ac)
@@ -48,7 +48,7 @@ public class TxnPostingBolt extends BaseRichBolt
 		_collector = collector;
 
 		ApplicationContext ctx = new AnnotationConfigApplicationContext(MongoConfig.class);
-		mongoOperation = (MongoOperations)ctx.getBean("mongoTemplate");
+		mongoOperation = (MongoOperations) ctx.getBean("mongoTemplate");
 	}
 
 	@Override
@@ -59,55 +59,55 @@ public class TxnPostingBolt extends BaseRichBolt
 		try
 		{
 			String sourceAccount = (String) input.getValueByField("source");
-			String txnRequest = (String)input.getValueByField("txn");
+			String txnRequest = (String) input.getValueByField("txn");
 			logger.warn("Processing Txn Request = " + txnRequest);
-			
+
 			BankAccountDetails from = mapper.readValue(sourceAccount, BankAccountDetails.class);
 			TxnRequestDetails txnRequestDetails = mapper.readValue(txnRequest, TxnRequestDetails.class);
 
 			Transaction txn = new Transaction();
-			
+
 			txn.setId(txnRequestDetails.getTransactionIds());
-			
+
 			TransactionDetails txnDetails = new TransactionDetails();
-			txnDetails.setCompleted(txnRequestDetails.getEndDate());
+			txnDetails.setCompleted(Transaction.DATE_FORMAT.parse(txnRequestDetails.getEndDate()));
 			txnDetails.setDescription(txnRequestDetails.getBody().getDescription());
 			txnDetails.setNewBalance(from.getBalance());
-			txnDetails.setPosted(txnRequestDetails.getEndDate());
+			txnDetails.setPosted(Transaction.DATE_FORMAT.parse(txnRequestDetails.getEndDate()));
 			txnDetails.setType(txnRequestDetails.getType());
 			txnDetails.setValue(txnRequestDetails.getBody().getValue());
-			
+
 			txn.setDetails(txnDetails);
-			
+
 			TransactionAccount thisAcc = new TransactionAccount();
 			thisAcc.setId(from.getId());
-			
+
 			TransactionBank tbb = new TransactionBank();
 			tbb.setName(from.getBankId());
 			tbb.setNationalIdentifier(from.getBankId());
 			thisAcc.setBank(tbb);
-			
+
 			thisAcc.setHolders(from.getOwners());
 			thisAcc.setIban(from.getIban());
 			thisAcc.setNumber(from.getNumber());
 			thisAcc.setSwiftBic(from.getSwiftBic());
-			
+
 			txn.setThisAccount(thisAcc);
-			
+
 			TransactionAccount toAcc = new TransactionAccount();
 			toAcc.setId(txnRequestDetails.getBody().getTo().getAccountId());
-			
+
 			TransactionBank tbb1 = new TransactionBank();
 			tbb1.setNationalIdentifier(txnRequestDetails.getBody().getTo().getBankId());
 			tbb1.setName(txnRequestDetails.getBody().getTo().getBankId());
 			toAcc.setBank(tbb1);
-			
+
 			txn.setOtherAccount(toAcc);
-			
+
 			logger.warn("Saving Transaction = " + txn);
-			
+
 			mongoOperation.save(txn);
-			
+
 			_collector.ack(input);
 		}
 		catch (Exception e)

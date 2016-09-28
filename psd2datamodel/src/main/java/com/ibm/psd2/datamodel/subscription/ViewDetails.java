@@ -13,37 +13,55 @@ public class ViewDetails implements Serializable
 	private String description;
 	private boolean isPublic;
 	private String alias;
-	
-	public String getId() {
+
+	public String getId()
+	{
 		return id;
 	}
-	public void setId(String id) {
+
+	public void setId(String id)
+	{
 		this.id = id;
 	}
-	public String getShort_name() {
+
+	public String getShort_name()
+	{
 		return short_name;
 	}
-	public void setShort_name(String short_name) {
+
+	public void setShort_name(String short_name)
+	{
 		this.short_name = short_name;
 	}
-	public String getDescription() {
+
+	public String getDescription()
+	{
 		return description;
 	}
-	public void setDescription(String description) {
+
+	public void setDescription(String description)
+	{
 		this.description = description;
 	}
-	public boolean isPublic() {
+
+	public boolean isPublic()
+	{
 		return isPublic;
 	}
-	public void setPublic(boolean is_public) {
+
+	public void setPublic(boolean is_public)
+	{
 		this.isPublic = is_public;
 	}
-	public String getAlias() {
+
+	public String getAlias()
+	{
 		return alias;
 	}
-	public void setAlias(String alias) {
+
+	public void setAlias(String alias)
+	{
 		this.alias = alias;
 	}
-	
-	
+
 }

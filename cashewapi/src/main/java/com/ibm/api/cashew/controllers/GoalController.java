@@ -18,7 +18,6 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.ibm.api.cashew.beans.APIResponse;
 import com.ibm.api.cashew.beans.Goal;
-import com.ibm.api.cashew.beans.User;
 import com.ibm.api.cashew.services.GoalService;
 
 @RestController

@@ -16,14 +16,14 @@ import com.ibm.psd2.datamodel.Challenge;
 @JsonInclude(value = Include.NON_EMPTY)
 public class SubscriptionRequest implements Serializable
 {
-	
+
 	public static final String STATUS_INITIATED = "INITIATED";
 	public static final String STATUS_SUBSCRIBED = "SUBSCRIBED";
 	public static final String STATUS_REJECTED = "REJECTED";
-	
+
 	@Id
 	private String id;
-	
+
 	private SubscriptionInfo subscriptionInfo;
 	private Date creationDate;
 	private Date updatedDate;
@@ -103,11 +103,12 @@ public class SubscriptionRequest implements Serializable
 		{
 			if (other.id != null)
 				return false;
-		} else if (!id.equals(other.id))
+		}
+		else if (!id.equals(other.id))
 			return false;
 		return true;
 	}
-	
+
 	public Date getUpdatedDate()
 	{
 		return updatedDate;
@@ -124,7 +125,8 @@ public class SubscriptionRequest implements Serializable
 		try
 		{
 			return mapper.writeValueAsString(this);
-		} catch (JsonProcessingException e)
+		}
+		catch (JsonProcessingException e)
 		{
 			e.printStackTrace();
 		}

@@ -5,14 +5,14 @@ import java.util.List;
 import java.util.Map;
 
 import com.ibm.api.cashew.beans.UserAccount;
-import com.ibm.api.cashew.beans.barclays.TxnRequest;
 import com.ibm.psd2.datamodel.aip.BankAccountDetailsView;
 import com.ibm.psd2.datamodel.aip.Transaction;
 import com.ibm.psd2.datamodel.pisp.CounterParty;
 import com.ibm.psd2.datamodel.pisp.TxnRequestDetails;
 import com.ibm.psd2.datamodel.subscription.SubscriptionRequest;
 
-public interface BarclaysService {
+public interface BarclaysService
+{
 
 	List<Transaction> getTransactions(String accountId) throws URISyntaxException;
 

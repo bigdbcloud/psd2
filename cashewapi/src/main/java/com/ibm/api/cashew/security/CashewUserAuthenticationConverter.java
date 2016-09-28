@@ -94,14 +94,15 @@ public class CashewUserAuthenticationConverter implements UserAuthenticationConv
 				user = userDetailsService.loadUserByUsername((String) map.get(USERNAME));
 				authorities = user.getAuthorities();
 				principal = user;
-			} catch (UsernameNotFoundException e)
+			}
+			catch (UsernameNotFoundException e)
 			{
 				logger.warn(e.getMessage());
-				
+
 				String name = (String) map.get("userName");
-//				String userId = (String) map.get("userId");
+				// String userId = (String) map.get("userId");
 				String providerClientId = (String) map.get("clientId");
-				String provider = (String)map.get("provider");
+				String provider = (String) map.get("provider");
 
 				User u = new User();
 				u.setUserId((String) map.get(USERNAME));
@@ -109,9 +110,9 @@ public class CashewUserAuthenticationConverter implements UserAuthenticationConv
 				u.setAuthProviderClientId(providerClientId);
 				u.setEmail(null);
 				u.setName(name);
-//				ArrayList<String> roles = new ArrayList<>();
-//				roles.add("ROLE_USER");
-//				u.setRoles(roles);
+				// ArrayList<String> roles = new ArrayList<>();
+				// roles.add("ROLE_USER");
+				// u.setRoles(roles);
 				logger.debug("creating user = " + u);
 
 				userService.createUser(u);

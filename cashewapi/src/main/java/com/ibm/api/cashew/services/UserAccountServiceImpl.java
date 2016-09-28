@@ -22,10 +22,8 @@ import com.ibm.api.cashew.db.elastic.ElasticTransactionRepository;
 import com.ibm.api.cashew.db.mongo.MongoUserAccountsRepository;
 import com.ibm.api.cashew.services.barclays.BarclaysService;
 import com.ibm.api.cashew.services.ibmbank.IBMUserAccountService;
-import com.ibm.psd2.datamodel.ChallengeAnswer;
 import com.ibm.psd2.datamodel.aip.BankAccountDetailsView;
 import com.ibm.psd2.datamodel.aip.Transaction;
-import com.ibm.psd2.datamodel.aip.TransactionDetails;
 import com.ibm.psd2.datamodel.pisp.TxnParty;
 import com.ibm.psd2.datamodel.pisp.TxnRequest;
 import com.ibm.psd2.datamodel.pisp.TxnRequestDetails;
@@ -394,16 +392,16 @@ public class UserAccountServiceImpl implements UserAccountService
 					}
 				}
 				elasticTxn.setTo(to);
-				
+
 				ElasticTxnDetails elasticTxnDetails = new ElasticTxnDetails();
 				elasticTxnDetails.setDescription(txn.getDetails().getDescription());
 				elasticTxnDetails.setType(txn.getDetails().getType());
 				elasticTxnDetails.setValue(txn.getDetails().getValue());
-				
+
 				elasticTxnDetails.setCompleted(Transaction.DATE_FORMAT.format(txn.getDetails().getCompleted()));
 				elasticTxnDetails.setPosted(Transaction.DATE_FORMAT.format(txn.getDetails().getPosted()));
 				elasticTxnDetails.setNewBalance(txn.getDetails().getNewBalance());
-				
+
 				elasticTxn.setDetails(elasticTxnDetails);
 
 				if (txn.getDetails() != null && txn.getDetails().getValue() != null

@@ -1,6 +1,7 @@
 package com.ibm.api.cashew.beans.barclays;
 
-public class Card {
+public class Card
+{
 	private String customerId;
 
 	private String expiryDate;
@@ -15,64 +16,79 @@ public class Card {
 
 	private String cardNumber;
 
-	public String getCustomerId() {
+	public String getCustomerId()
+	{
 		return customerId;
 	}
 
-	public void setCustomerId(String customerId) {
+	public void setCustomerId(String customerId)
+	{
 		this.customerId = customerId;
 	}
 
-	public String getExpiryDate() {
+	public String getExpiryDate()
+	{
 		return expiryDate;
 	}
 
-	public void setExpiryDate(String expiryDate) {
+	public void setExpiryDate(String expiryDate)
+	{
 		this.expiryDate = expiryDate;
 	}
 
-	public String getCurrentBalance() {
+	public String getCurrentBalance()
+	{
 		return currentBalance;
 	}
 
-	public void setCurrentBalance(String currentBalance) {
+	public void setCurrentBalance(String currentBalance)
+	{
 		this.currentBalance = currentBalance;
 	}
 
-	public String getMaxSpend() {
+	public String getMaxSpend()
+	{
 		return maxSpend;
 	}
 
-	public void setMaxSpend(String maxSpend) {
+	public void setMaxSpend(String maxSpend)
+	{
 		this.maxSpend = maxSpend;
 	}
 
-	public String getType() {
+	public String getType()
+	{
 		return type;
 	}
 
-	public void setType(String type) {
+	public void setType(String type)
+	{
 		this.type = type;
 	}
 
-	public String getDisplayName() {
+	public String getDisplayName()
+	{
 		return displayName;
 	}
 
-	public void setDisplayName(String displayName) {
+	public void setDisplayName(String displayName)
+	{
 		this.displayName = displayName;
 	}
 
-	public String getCardNumber() {
+	public String getCardNumber()
+	{
 		return cardNumber;
 	}
 
-	public void setCardNumber(String cardNumber) {
+	public void setCardNumber(String cardNumber)
+	{
 		this.cardNumber = cardNumber;
 	}
 
 	@Override
-	public String toString() {
+	public String toString()
+	{
 		return "Card [customerId=" + customerId + ", expiryDate=" + expiryDate + ", currentBalance=" + currentBalance
 				+ ", maxSpend=" + maxSpend + ", type=" + type + ", displayName=" + displayName + ", cardNumber="
 				+ cardNumber + "]";

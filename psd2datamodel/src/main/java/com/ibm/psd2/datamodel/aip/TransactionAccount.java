@@ -18,7 +18,7 @@ public class TransactionAccount implements Serializable
 	String iban;
 	String swiftBic;
 	TransactionBank bank;
-	
+
 	public void addHolders(BankAccountOwner b)
 	{
 		if (holders == null)
@@ -27,7 +27,7 @@ public class TransactionAccount implements Serializable
 		}
 		holders.add(b);
 	}
-	
+
 	public String getId()
 	{
 		return id;
@@ -53,81 +53,63 @@ public class TransactionAccount implements Serializable
 		return number;
 	}
 
-
-
 	public void setNumber(String number)
 	{
 		this.number = number;
 	}
-
-
 
 	public String getKind()
 	{
 		return kind;
 	}
 
-
-
 	public void setKind(String kind)
 	{
 		this.kind = kind;
 	}
-
-
 
 	public String getIban()
 	{
 		return iban;
 	}
 
-
-
 	public void setIban(String iban)
 	{
 		this.iban = iban;
 	}
-
-
 
 	public String getSwiftBic()
 	{
 		return swiftBic;
 	}
 
-
-
 	public void setSwiftBic(String swift_bic)
 	{
 		this.swiftBic = swift_bic;
 	}
-
-
 
 	public TransactionBank getBank()
 	{
 		return bank;
 	}
 
-
-
 	public void setBank(TransactionBank bank)
 	{
 		this.bank = bank;
 	}
-	
+
 	public String toString()
 	{
 		ObjectMapper mapper = new ObjectMapper();
 		try
 		{
 			return mapper.writeValueAsString(this);
-		} catch (JsonProcessingException e)
+		}
+		catch (JsonProcessingException e)
 		{
 			e.printStackTrace();
 		}
 		return "";
 	}
-
 
 }

@@ -4,7 +4,6 @@ import java.util.List;
 
 import com.ibm.big.oauth2server.beans.User;
 
-
 public interface MongoUserRepositoryCustom
 {
 	public long updateUserLock(String userId, boolean locked);

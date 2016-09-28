@@ -7,7 +7,7 @@ import java.util.Date;
 public class Utils
 {
 	public static final SimpleDateFormat DATE_FORMAT = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSZ");
-	
+
 	public static double getAgeInYears(String dob)
 	{
 		if (dob == null)
@@ -25,12 +25,12 @@ public class Utils
 		{
 			throw new IllegalArgumentException(e);
 		}
-		
+
 		if (ddob.getTime() > currentDate.getTime())
 		{
 			throw new IllegalArgumentException("Date of Birth can't be greater than today's date");
 		}
-		
-		return (currentDate.getTime() - ddob.getTime())/(1000*60*60*24*12);
+
+		return (currentDate.getTime() - ddob.getTime()) / (1000 * 60 * 60 * 24 * 12);
 	}
 }

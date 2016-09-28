@@ -156,7 +156,7 @@ public class BankAccountDetailsView implements Serializable
 		}
 		return (BankAccountOverview) v.visit(this);
 	}
-	
+
 	public BankAccountDetailsView getBankAccountDetails(String viewId)
 	{
 		Visitor v = visitors.get(BankAccountDetailsView.class.getName() + ":" + viewId);
@@ -175,7 +175,8 @@ public class BankAccountDetailsView implements Serializable
 		try
 		{
 			return mapper.writeValueAsString(this);
-		} catch (JsonProcessingException e)
+		}
+		catch (JsonProcessingException e)
 		{
 			e.printStackTrace();
 		}

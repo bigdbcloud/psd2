@@ -46,16 +46,8 @@ public class PISPController extends APIController
 	@Autowired
 	TransactionStatementService tdao;
 
-	@Autowired
-	KafkaMessageProducer kmp;
-
 	@Value("${version}")
 	String version;
-
-	@Value("${psd2api.integration.kakfa.topic}")
-	String topic;
-
-	private boolean useKafka = false;
 
 	@PreAuthorize("hasPermission(#user + '.' + #bankId + '.' + #accountId + '.' + #viewId + '.' + #txnType, 'createTransactionRequest')")
 	@RequestMapping(method = RequestMethod.POST, value = "banks/{bankId}/accounts/{accountId}/{viewId}/transaction-request-types/{txnType}/transaction-requests", produces = MediaType.APPLICATION_JSON_VALUE)
@@ -78,11 +70,6 @@ public class PISPController extends APIController
 			SubscriptionInfo sib = subscriptionService.getSubscriptionInfo(user, (String) auth.getName(), accountId, bankId);
 			TxnParty payee = new TxnParty(bankId, accountId);
 			TxnRequestDetails t = txnReqService.createTransactionRequest(sib, trb, payee, txnType);
-
-			if (useKafka && t != null && TxnRequestDetails.TXN_STATUS_PENDING.equalsIgnoreCase(t.getStatus()))
-			{
-				kmp.publishMessage(topic, t.getId(), t.toString());
-			}
 
 			response = ResponseEntity.ok(t);
 		}
@@ -107,11 +94,6 @@ public class PISPController extends APIController
 		{
 			TxnRequestDetails tdb = txnReqService.answerTransactionRequestChallenge(user,
 					viewId, bankId, accountId, txnType, txnReqId, t);
-
-			if (useKafka && tdb != null && TxnRequestDetails.TXN_STATUS_PENDING.equalsIgnoreCase(tdb.getStatus()))
-			{
-				kmp.publishMessage(topic, tdb.getId(), tdb.toString());
-			}
 
 			response = ResponseEntity.ok(tdb);
 		}

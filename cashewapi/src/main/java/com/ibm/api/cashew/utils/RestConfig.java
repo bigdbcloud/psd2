@@ -32,7 +32,7 @@ public class RestConfig
 		HttpComponentsClientHttpRequestFactory httpComponentsClientHttpRequestFactory = new HttpComponentsClientHttpRequestFactory();
 		httpComponentsClientHttpRequestFactory.setConnectTimeout(readTimeout);
 		httpComponentsClientHttpRequestFactory.setReadTimeout(connectionTimeout);
-		
+
 		return httpComponentsClientHttpRequestFactory;
 	}
 }

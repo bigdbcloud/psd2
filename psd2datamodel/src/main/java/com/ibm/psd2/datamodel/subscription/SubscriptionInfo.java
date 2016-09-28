@@ -142,7 +142,8 @@ public class SubscriptionInfo implements Serializable
 		try
 		{
 			return mapper.writeValueAsString(this);
-		} catch (Exception e)
+		}
+		catch (Exception e)
 		{
 			e.printStackTrace();
 		}

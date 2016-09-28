@@ -38,7 +38,7 @@ public class ServerSecurityConfig extends WebSecurityConfigurerAdapter
 
 	@Autowired
 	UserDetailsServiceImpl uds;
-	
+
 	@Autowired
 	SocialLoginAuthSuccessHandlerFactory slashFactory;
 
@@ -55,13 +55,13 @@ public class ServerSecurityConfig extends WebSecurityConfigurerAdapter
 	{
 		return new ClientResources();
 	}
-	
+
 	@Bean
 	public BCryptPasswordEncoder bCryptPasswordEncoder()
 	{
 		return new BCryptPasswordEncoder();
 	}
-	
+
 	@Bean
 	public WebMvcConfigurer corsConfigurer()
 	{
@@ -75,7 +75,7 @@ public class ServerSecurityConfig extends WebSecurityConfigurerAdapter
 						"GET", "PUT", "POST", "PATCH");
 			}
 		};
-	}	
+	}
 
 	@Bean
 	public FilterRegistrationBean oauth2ClientFilterRegistration(OAuth2ClientContextFilter filter)
@@ -95,7 +95,7 @@ public class ServerSecurityConfig extends WebSecurityConfigurerAdapter
 				client.getClient().getClientId());
 		uits.setRestTemplate(template);
 		filter.setTokenServices(uits);
-//		filter.setAuthenticationSuccessHandler(slashFactory.getAuthenticationSuccessHandler(provider));
+		// filter.setAuthenticationSuccessHandler(slashFactory.getAuthenticationSuccessHandler(provider));
 		return filter;
 	}
 
@@ -104,12 +104,11 @@ public class ServerSecurityConfig extends WebSecurityConfigurerAdapter
 		CompositeFilter filter = new CompositeFilter();
 		List<Filter> filters = new ArrayList<>();
 		filters.add(ssoFilter(facebook(), "/login/facebook", "facebook"));
-//		filters.add(ssoFilter(google(), "/login/google", "google"));
+		// filters.add(ssoFilter(google(), "/login/google", "google"));
 		filter.setFilters(filters);
 		return filter;
 	}
 
-	
 	@Override
 	protected void configure(AuthenticationManagerBuilder auth) throws Exception
 	{
@@ -124,12 +123,12 @@ public class ServerSecurityConfig extends WebSecurityConfigurerAdapter
 		http.authorizeRequests().antMatchers(HttpMethod.PUT, "/client").permitAll();
 		http.authorizeRequests().antMatchers(HttpMethod.PUT, "/provider").permitAll();
 		http.authorizeRequests()
-				.antMatchers("/images/**", "/login*.html", "/login/**", "/webjars/**", "/oauth/check_token")
-				.permitAll().anyRequest().authenticated()
-				.and().exceptionHandling().authenticationEntryPoint(new LoginUrlAuthenticationEntryPoint("/login.html"))
-				.and().formLogin().loginPage("/login.html").loginProcessingUrl("/login/bigoauth2server").failureUrl("/login.html")
-				.and().logout().logoutSuccessUrl("/login.html").permitAll()
-				.and().addFilterBefore(ssoFilter(), BasicAuthenticationFilter.class)
-				.csrf().disable(); //csrfTokenRepository(new CookieCsrfTokenRepository());
+				.antMatchers("/images/**", "/login*.html", "/login/**", "/webjars/**", "/oauth/check_token").permitAll()
+				.anyRequest().authenticated().and().exceptionHandling()
+				.authenticationEntryPoint(new LoginUrlAuthenticationEntryPoint("/login.html")).and().formLogin()
+				.loginPage("/login.html").loginProcessingUrl("/login/bigoauth2server").failureUrl("/login.html").and()
+				.logout().logoutSuccessUrl("/login.html").permitAll().and()
+				.addFilterBefore(ssoFilter(), BasicAuthenticationFilter.class).csrf().disable(); // csrfTokenRepository(new
+																									// CookieCsrfTokenRepository());
 	}
 }

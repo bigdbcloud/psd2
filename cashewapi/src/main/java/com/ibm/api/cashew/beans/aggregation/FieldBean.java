@@ -8,12 +8,12 @@ public class FieldBean
 {
 	String name;
 	Object value;
-	
+
 	public FieldBean()
 	{
-		
+
 	}
-	
+
 	public FieldBean(String name, Object value)
 	{
 		this.name = name;
@@ -63,10 +63,10 @@ public class FieldBean
 		{
 			if (other.name != null)
 				return false;
-		} else if (!name.equals(other.name))
+		}
+		else if (!name.equals(other.name))
 			return false;
 		return true;
 	}
 
-	
 }

@@ -17,5 +17,5 @@ public class UserServiceImpl implements UserService
 	{
 		return muir.findOne(username);
 	}
-	
+
 }

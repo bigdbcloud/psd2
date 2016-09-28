@@ -12,23 +12,25 @@ public class TransactionLimit implements Serializable
 
 	private TransactionRequestType transactionRequestType;
 	private Amount amount;
-	
+
 	public TransactionRequestType getTransactionRequestType()
 	{
 		return transactionRequestType;
 	}
+
 	public void setTransactionRequestType(TransactionRequestType transaction_request_type)
 	{
 		this.transactionRequestType = transaction_request_type;
 	}
+
 	public Amount getAmount()
 	{
 		return amount;
 	}
+
 	public void setAmount(Amount amount)
 	{
 		this.amount = amount;
 	}
-	
-	
+
 }

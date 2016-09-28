@@ -69,30 +69,31 @@ public class ResourceServerSecurityConfig extends ResourceServerConfigurerAdapte
 						"GET", "PUT", "POST", "PATCH", "DELETE");
 			}
 		};
-	}	
-	
-	
-//	@Bean
-//	public FilterRegistrationBean corsFilter()
-//	{
-//		UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
-//		CorsConfiguration config = new CorsConfiguration();
-//		config.setAllowCredentials(true);
-//		config.addAllowedOrigin("*");
-//		config.addAllowedHeader("*");
-//		config.addAllowedMethod("OPTIONS");
-//		config.addAllowedMethod("HEAD");
-//		config.addAllowedMethod("GET");
-//		config.addAllowedMethod("PUT");
-//		config.addAllowedMethod("POST");
-//		config.addAllowedMethod("DELETE");
-//		config.addAllowedMethod("PATCH");
-//		source.registerCorsConfiguration("/**", config);
-//
-//		FilterRegistrationBean bean = new FilterRegistrationBean(new CorsFilter(source));
-//		bean.setOrder(-100);
-//		return bean;
-//	}
+	}
+
+	// @Bean
+	// public FilterRegistrationBean corsFilter()
+	// {
+	// UrlBasedCorsConfigurationSource source = new
+	// UrlBasedCorsConfigurationSource();
+	// CorsConfiguration config = new CorsConfiguration();
+	// config.setAllowCredentials(true);
+	// config.addAllowedOrigin("*");
+	// config.addAllowedHeader("*");
+	// config.addAllowedMethod("OPTIONS");
+	// config.addAllowedMethod("HEAD");
+	// config.addAllowedMethod("GET");
+	// config.addAllowedMethod("PUT");
+	// config.addAllowedMethod("POST");
+	// config.addAllowedMethod("DELETE");
+	// config.addAllowedMethod("PATCH");
+	// source.registerCorsConfiguration("/**", config);
+	//
+	// FilterRegistrationBean bean = new FilterRegistrationBean(new
+	// CorsFilter(source));
+	// bean.setOrder(-100);
+	// return bean;
+	// }
 
 	@Bean
 	public ResourceServerTokenServices resourceServerTokenServices()

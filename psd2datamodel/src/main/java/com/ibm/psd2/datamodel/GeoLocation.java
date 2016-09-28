@@ -12,8 +12,8 @@ package com.ibm.psd2.datamodel;
  * </p>
  * 
  * <p>
- * This code was originally published at <a
- * href="http://JanMatuschek.de/LatitudeLongitudeBoundingCoordinates#Java">
+ * This code was originally published at
+ * <a href="http://JanMatuschek.de/LatitudeLongitudeBoundingCoordinates#Java">
  * http://JanMatuschek.de/LatitudeLongitudeBoundingCoordinates#Java</a>.
  * </p>
  * 
@@ -49,8 +49,8 @@ public class GeoLocation
 	private void checkBounds()
 	{
 
-		if (latitudeInRadians < MIN_LAT || latitudeInRadians > MAX_LAT
-				|| longitudeInRadians < MIN_LON || longitudeInRadians > MAX_LON)
+		if (latitudeInRadians < MIN_LAT || latitudeInRadians > MAX_LAT || longitudeInRadians < MIN_LON
+				|| longitudeInRadians > MAX_LON)
 			throw new IllegalArgumentException("Invalid Coordinates");
 	}
 

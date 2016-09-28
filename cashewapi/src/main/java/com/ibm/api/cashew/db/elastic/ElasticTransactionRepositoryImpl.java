@@ -25,7 +25,6 @@ import com.ibm.api.cashew.beans.aggregation.FieldBean;
 import com.ibm.api.cashew.beans.aggregation.QueryRequest;
 import com.ibm.api.cashew.utils.ElasticSearchAggregationHelper;
 
-
 public class ElasticTransactionRepositoryImpl implements ElasticTransactionCustomRepository
 {
 
@@ -89,32 +88,36 @@ public class ElasticTransactionRepositoryImpl implements ElasticTransactionCusto
 
 	@Override
 	public List<ElasticTransaction> getTransactions(String userId, String bankId, String accountId, String fromDate,
-			String toDate) {
-			
+			String toDate)
+	{
+
 		QueryRequest qr = new QueryRequest();
 
 		qr.setFromDate(fromDate);
 		qr.setToDate(toDate);
 		qr.setDateField("details.completed");
 
-		if (userId != null) {
+		if (userId != null)
+		{
 			qr.addQueryCriteria(new FieldBean("userInfo.userId", userId));
 		}
-	
-		if (bankId != null) {
+
+		if (bankId != null)
+		{
 			qr.addQueryCriteria(new FieldBean("from.bankId", bankId));
 		}
 
-		if (accountId != null) {
+		if (accountId != null)
+		{
 			qr.addQueryCriteria(new FieldBean("from.accountId", accountId));
 		}
-		
+
 		QueryBuilder qb = ElasticSearchAggregationHelper.buildQuery(qr);
-		
+
 		NativeSearchQueryBuilder searchQuery = new NativeSearchQueryBuilder().withQuery(qb)
 				.withSearchType(SearchType.QUERY_THEN_FETCH).withIndices("transactions").withTypes("transaction");
 
-		return elasticTemplate.queryForList(searchQuery.build(),ElasticTransaction.class);
-		
+		return elasticTemplate.queryForList(searchQuery.build(), ElasticTransaction.class);
+
 	}
 }

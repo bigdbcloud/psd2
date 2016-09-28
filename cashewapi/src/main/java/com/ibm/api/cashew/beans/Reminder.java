@@ -12,7 +12,8 @@ import com.ibm.psd2.datamodel.pisp.TxnParty;
 
 @Document(collection = "reminders")
 @JsonInclude(value = Include.NON_EMPTY)
-public class Reminder {
+public class Reminder
+{
 
 	public static final SimpleDateFormat DATE_FORMAT = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSZ");
 
@@ -45,83 +46,103 @@ public class Reminder {
 	private TxnParty to;
 	private Amount amount;
 
-	public String getId() {
+	public String getId()
+	{
 		return id;
 	}
 
-	public void setId(String id) {
+	public void setId(String id)
+	{
 		this.id = id;
 	}
 
-	public String getCreationDate() {
+	public String getCreationDate()
+	{
 		return creationDate;
 	}
 
-	public void setCreationDate(String creationDate) {
+	public void setCreationDate(String creationDate)
+	{
 		this.creationDate = creationDate;
 	}
 
-	public String getCreatedBy() {
+	public String getCreatedBy()
+	{
 		return createdBy;
 	}
 
-	public void setCreatedBy(String createdBy) {
+	public void setCreatedBy(String createdBy)
+	{
 		this.createdBy = createdBy;
 	}
 
-	public String getReminderDate() {
+	public String getReminderDate()
+	{
 		return reminderDate;
 	}
 
-	public void setReminderDate(String reminderDate) {
+	public void setReminderDate(String reminderDate)
+	{
 		this.reminderDate = reminderDate;
 	}
 
-	public String getDescription() {
+	public String getDescription()
+	{
 		return description;
 	}
 
-	public void setDescription(String description) {
+	public void setDescription(String description)
+	{
 		this.description = description;
 	}
 
-	public String getReminderType() {
+	public String getReminderType()
+	{
 		return reminderType;
 	}
 
-	public void setReminderType(String reminderType) {
+	public void setReminderType(String reminderType)
+	{
 		this.reminderType = reminderType;
 	}
 
-	public TxnParty getFrom() {
+	public TxnParty getFrom()
+	{
 		return from;
 	}
 
-	public void setFrom(TxnParty from) {
+	public void setFrom(TxnParty from)
+	{
 		this.from = from;
 	}
 
-	public TxnParty getTo() {
+	public TxnParty getTo()
+	{
 		return to;
 	}
 
-	public void setTo(TxnParty to) {
+	public void setTo(TxnParty to)
+	{
 		this.to = to;
 	}
 
-	public Amount getAmount() {
+	public Amount getAmount()
+	{
 		return amount;
 	}
 
-	public void setAmount(Amount amount) {
+	public void setAmount(Amount amount)
+	{
 		this.amount = amount;
 	}
 
-	public int getFrequency() {
+	public int getFrequency()
+	{
 		return frequency;
 	}
 
-	public void setFrequency(int frequency) {
+	public void setFrequency(int frequency)
+	{
 		this.frequency = frequency;
 	}
 

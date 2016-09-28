@@ -1,6 +1,7 @@
 package com.ibm.api.cashew.beans.barclays;
 
-public class Account {
+public class Account
+{
 	private String id;
 
 	private String customerId;
@@ -17,72 +18,89 @@ public class Account {
 
 	private String accountNo;
 
-	public String getId() {
+	public String getId()
+	{
 		return id;
 	}
 
-	public void setId(String id) {
+	public void setId(String id)
+	{
 		this.id = id;
 	}
 
-	public String getCustomerId() {
+	public String getCustomerId()
+	{
 		return customerId;
 	}
 
-	public void setCustomerId(String customerId) {
+	public void setCustomerId(String customerId)
+	{
 		this.customerId = customerId;
 	}
 
-	public String getNickName() {
+	public String getNickName()
+	{
 		return nickName;
 	}
 
-	public void setNickName(String nickName) {
+	public void setNickName(String nickName)
+	{
 		this.nickName = nickName;
 	}
 
-	public String getDescription() {
+	public String getDescription()
+	{
 		return description;
 	}
 
-	public void setDescription(String description) {
+	public void setDescription(String description)
+	{
 		this.description = description;
 	}
 
-	public String getSortCode() {
+	public String getSortCode()
+	{
 		return sortCode;
 	}
 
-	public void setSortCode(String sortCode) {
+	public void setSortCode(String sortCode)
+	{
 		this.sortCode = sortCode;
 	}
 
-	public String getAccountType() {
+	public String getAccountType()
+	{
 		return accountType;
 	}
 
-	public void setAccountType(String accountType) {
+	public void setAccountType(String accountType)
+	{
 		this.accountType = accountType;
 	}
 
-	public String getCurrentBalance() {
+	public String getCurrentBalance()
+	{
 		return currentBalance;
 	}
 
-	public void setCurrentBalance(String currentBalance) {
+	public void setCurrentBalance(String currentBalance)
+	{
 		this.currentBalance = currentBalance;
 	}
 
-	public String getAccountNo() {
+	public String getAccountNo()
+	{
 		return accountNo;
 	}
 
-	public void setAccountNo(String accountNo) {
+	public void setAccountNo(String accountNo)
+	{
 		this.accountNo = accountNo;
 	}
 
 	@Override
-	public String toString() {
+	public String toString()
+	{
 		return "Account [id=" + id + ", customerId=" + customerId + ", nickName=" + nickName + ", description="
 				+ description + ", sortCode=" + sortCode + ", accountType=" + accountType + ", currentBalance="
 				+ currentBalance + ", accountNo=" + accountNo + "]";

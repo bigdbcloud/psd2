@@ -130,7 +130,7 @@ public class UserServiceImpl implements UserService
 		{
 			throw new IllegalArgumentException("Password can't be null or empty");
 		}
-		
+
 		if (user.getAuthProviderClientId() == null || user.getAuthProviderClientId().isEmpty())
 		{
 			throw new IllegalArgumentException("Client Id can't be null");

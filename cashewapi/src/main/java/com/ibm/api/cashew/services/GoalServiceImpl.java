@@ -26,6 +26,4 @@ public class GoalServiceImpl implements GoalService
 		return goalRepo.findByUsername(username);
 	}
 
-	
-	
 }

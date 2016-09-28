@@ -17,7 +17,8 @@ import com.ibm.api.cashew.beans.Tag;
 import com.ibm.api.cashew.beans.User;
 import com.mongodb.WriteResult;
 
-public class MongoUserRepositoryImpl implements MongoUserRepositoryCustom {
+public class MongoUserRepositoryImpl implements MongoUserRepositoryCustom
+{
 
 	private static final Logger logger = LogManager.getLogger(MongoUserRepositoryImpl.class);
 
@@ -25,7 +26,8 @@ public class MongoUserRepositoryImpl implements MongoUserRepositoryCustom {
 	MongoTemplate mongoTemplate;
 
 	@Override
-	public long updateUserLock(String userId, boolean locked) {
+	public long updateUserLock(String userId, boolean locked)
+	{
 		logger.debug("updating lock status of user = " + userId + " to locked = " + locked);
 		WriteResult wr = mongoTemplate.updateFirst(query(where("userId").is(userId)),
 				update("locked", locked).set("updateddate", new Date()), User.class);
@@ -34,7 +36,8 @@ public class MongoUserRepositoryImpl implements MongoUserRepositoryCustom {
 	}
 
 	@Override
-	public long updatePhone(String userId, String phone) {
+	public long updatePhone(String userId, String phone)
+	{
 		logger.debug("updating phone of user = " + userId);
 		WriteResult wr = mongoTemplate.updateFirst(query(where("userId").is(userId)), update("mobileNumber", phone),
 				User.class);
@@ -43,7 +46,8 @@ public class MongoUserRepositoryImpl implements MongoUserRepositoryCustom {
 	}
 
 	@Override
-	public long updateEmail(String userId, String email) {
+	public long updateEmail(String userId, String email)
+	{
 		logger.debug("updating email of user = " + userId);
 		WriteResult wr = mongoTemplate.updateFirst(query(where("userId").is(userId)), update("email", email),
 				User.class);
@@ -52,7 +56,8 @@ public class MongoUserRepositoryImpl implements MongoUserRepositoryCustom {
 	}
 
 	@Override
-	public long updateDOB(String userId, String dob) {
+	public long updateDOB(String userId, String dob)
+	{
 		logger.debug("updating email of user = " + userId);
 		WriteResult wr = mongoTemplate.updateFirst(query(where("userId").is(userId)), update("dateOfBirth", dob),
 				User.class);
@@ -61,13 +66,14 @@ public class MongoUserRepositoryImpl implements MongoUserRepositoryCustom {
 	}
 
 	@Override
-	public long addTag(Set<Tag> tags, String userId) {
+	public long addTag(Set<Tag> tags, String userId)
+	{
 
 		Update up = new Update();
-		WriteResult wr = mongoTemplate.updateFirst(query(where("userId").is(userId)), up.pushAll("tags",tags.toArray()),User.class);
+		WriteResult wr = mongoTemplate.updateFirst(query(where("userId").is(userId)),
+				up.pushAll("tags", tags.toArray()), User.class);
 
 		return wr.hashCode();
 	}
 
-	
 }
