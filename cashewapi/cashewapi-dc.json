@@ -81,7 +81,7 @@
                                 "image": "172.30.42.135:5000/test/cashewapi:latest",
                                 "ports": [
                                     {
-                                        "containerPort": 8085,
+                                        "containerPort": 11114,
                                         "protocol": "TCP"
                                     }
                                 ],
@@ -140,10 +140,10 @@
             "spec": {
                 "ports": [
                     {
-                        "name": "8085-tcp",
+                        "name": "11114-tcp",
                         "protocol": "TCP",
-                        "port": 8085,
-                        "targetPort": 8085
+                        "port": 11114,
+                        "targetPort": 11114
                     }
                 ],
                 "selector": {

@@ -5,5 +5,5 @@ export BIGOAUTH2SERVER_MONGO_SVC_URL
 
 echo $BIGOAUTH2SERVER_MONGO_SVC_URL
 
-java -jar target/oauth2server-beta.jar > sys.log &
+java -jar target/bigoauth2server-0.0.1-SNAPSHOT.jar > sys.log &
 

@@ -81,7 +81,7 @@
                                 "image": "172.30.42.135:5000/test/psd2api:latest",
                                 "ports": [
                                     {
-                                        "containerPort": 8082,
+                                        "containerPort": 11112,
                                         "protocol": "TCP"
                                     }
                                 ],
@@ -132,10 +132,10 @@
             "spec": {
                 "ports": [
                     {
-                        "name": "8082-tcp",
+                        "name": "11112-tcp",
                         "protocol": "TCP",
-                        "port": 8082,
-                        "targetPort": 8082
+                        "port": 11112,
+                        "targetPort": 11112
                     }
                 ],
                 "selector": {
