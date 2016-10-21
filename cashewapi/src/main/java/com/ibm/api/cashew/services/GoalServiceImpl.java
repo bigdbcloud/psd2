@@ -23,6 +23,7 @@ public class GoalServiceImpl implements GoalService
 	@Override
 	public List<Goal> getGoals(String username)
 	{
+		
 		return goalRepo.findByUsername(username);
 	}
 
