@@ -36,6 +36,7 @@ public class ElasticConfiguration
 		{
 			Settings settings = Settings.settingsBuilder().put("client.transport.ping_timeout", "60s").build();
 
+			System.out.println("Elastic props are: host = " + host + " , port = " + port);
 			logger.debug("Elastic props are: host = " + host + " , port = " + port);
 
 			client = TransportClient.builder().settings(settings).build()

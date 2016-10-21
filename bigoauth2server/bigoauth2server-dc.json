@@ -7,11 +7,11 @@
             "kind": "DeploymentConfig",
             "apiVersion": "v1",
             "metadata": {
-                "name": "cashewapi",
+                "name": "bigoauth2server",
                 "namespace": "test",
                 "creationTimestamp": null,
                 "labels": {
-                    "app": "cashewapi"
+                    "app": "bigoauth2server"
                 },
                 "annotations": {
                     "openshift.io/generated-by": "OpenShiftNewApp"
@@ -38,12 +38,12 @@
                         "imageChangeParams": {
                             "automatic": true,
                             "containerNames": [
-                                "cashewapi"
+                                "bigoauth2server"
                             ],
                             "from": {
                                 "kind": "ImageStreamTag",
                                 "namespace": "test",
-                                "name": "cashewapi:latest"
+                                "name": "bigoauth2server:latest"
                             }
                         }
                     }
@@ -51,62 +51,50 @@
                 "replicas": 1,
                 "test": false,
                 "selector": {
-                    "app": "cashewapi",
-                    "deploymentconfig": "cashewapi"
+                    "app": "bigoauth2server",
+                    "deploymentconfig": "bigoauth2server"
                 },
                 "template": {
                     "metadata": {
                         "creationTimestamp": null,
                         "labels": {
-                            "app": "cashewapi",
-                            "deploymentconfig": "cashewapi"
+                            "app": "bigoauth2server",
+                            "deploymentconfig": "bigoauth2server"
                         },
                         "annotations": {
-                            "openshift.io/container.cashewapi.image.entrypoint": "[\"/bin/sh\",\"-c\",\"java -jar cashewapi-0.0.1-SNAPSHOT.jar \\u003e /logs/cashewapi.system.out.log\"]",
+                            "openshift.io/container.bigoauth2server.image.entrypoint": "[\"/bin/sh\",\"-c\",\"java -jar bigoauth2server-0.0.1-SNAPSHOT.jar \\u003e /logs/bigoauth2server.system.out.log\"]",
                             "openshift.io/generated-by": "OpenShiftNewApp"
                         }
                     },
                     "spec": {
                         "volumes": [
                             {
-                                "name": "cashewapi-volume-1",
+                                "name": "bigoauth2server-volume-1",
                                 "hostPath": {
-                                    "path": "/var/local/openshift/logs/cashewapi"
+                                    "path": "/var/local/openshift/logs/bigoauth2server"
                                 }
                             }
                         ],
                         "containers": [
                             {
-                                "name": "cashewapi",
-                                "image": "172.30.42.135:5000/test/cashewapi:latest",
+                                "name": "bigoauth2server",
+                                "image": "172.30.42.135:5000/test/bigoauth2server:latest",
                                 "ports": [
                                     {
-                                        "containerPort": 11114,
+                                        "containerPort": 11113,
                                         "protocol": "TCP"
                                     }
                                 ],
                                 "env": [
                                     {
-                                        "name": "CASHEW_MONGO_SVC_URI",
-                                        "value": "mongodb://172.30.46.38:27017/cashew"
-                                    },
-                                    {
-                                        "name": "ES_HOST",
-                                        "value": "172.30.191.48"
-                                    },
-                                    {
-                                        "name": "ES_PORT",
-                                        "value": "9300"
-                                    },
-                                    {
-                                        "name": "PSD2_URL",
-                                        "value": "http://172.30.18.27:11112/psd2api"
+                                        "name": "BIGOAUTH2SERVER_MONGO_SVC_URL",
+                                        "value": "mongodb://172.30.46.38:27017/bigoauth2server"
                                     }
                                 ],
                                 "resources": {},
                                 "volumeMounts": [
                                     {
-                                        "name": "cashewapi-volume-1",
+                                        "name": "bigoauth2server-volume-1",
                                         "mountPath": "/logs"
                                     }
                                 ],
@@ -127,11 +115,11 @@
             "kind": "Service",
             "apiVersion": "v1",
             "metadata": {
-                "name": "cashewapi",
+                "name": "bigoauth2server",
                 "namespace": "test",
                 "creationTimestamp": null,
                 "labels": {
-                    "app": "cashewapi"
+                    "app": "bigoauth2server"
                 },
                 "annotations": {
                     "openshift.io/generated-by": "OpenShiftNewApp"
@@ -140,15 +128,15 @@
             "spec": {
                 "ports": [
                     {
-                        "name": "11114-tcp",
+                        "name": "11113-tcp",
                         "protocol": "TCP",
-                        "port": 11114,
-                        "targetPort": 11114
+                        "port": 11113,
+                        "targetPort": 11113
                     }
                 ],
                 "selector": {
-                    "app": "cashewapi",
-                    "deploymentconfig": "cashewapi"
+                    "app": "bigoauth2server",
+                    "deploymentconfig": "bigoauth2server"
                 },
                 "type": "ClusterIP",
                 "sessionAffinity": "None"
