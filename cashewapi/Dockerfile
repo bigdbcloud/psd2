@@ -4,4 +4,5 @@ VOLUME /logs
 EXPOSE 11114
 WORKDIR /usr/local/cashewapi
 COPY ./target/cashewapi-0.0.1-SNAPSHOT.jar /usr/local/cashewapi/
+RUN ls -al /usr/local/cashewapi
 ENTRYPOINT java -jar cashewapi-0.0.1-SNAPSHOT.jar > /logs/cashewapi.system.out.log
