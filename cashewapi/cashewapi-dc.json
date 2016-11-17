@@ -100,7 +100,7 @@
                                     },
                                     {
                                         "name": "PSD2_URL",
-                                        "value": "http://172.30.18.27:11112/psd2api"
+                                        "value": "http://172.30.55.84:11112/psd2api"
                                     }
                                 ],
                                 "resources": {},

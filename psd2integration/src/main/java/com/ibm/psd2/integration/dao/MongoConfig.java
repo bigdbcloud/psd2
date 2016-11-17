@@ -14,7 +14,7 @@ public class MongoConfig
 	@Bean
 	public MongoDbFactory mongoDbFactory() throws Exception
 	{
-		MongoClientURI mcu = new MongoClientURI("mongodb://172.30.46.38:27017/psd2api");
+		MongoClientURI mcu = new MongoClientURI("mongodb://172.30.46.38:27017/psd2apirise");
 		return new SimpleMongoDbFactory(mcu);
 	}
 

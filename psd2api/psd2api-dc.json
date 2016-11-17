@@ -92,7 +92,7 @@
                                     },
                                     {
                                         "name": "USE_KAFKA",
-                                        "value": "false"
+                                        "value": "true"
                                     }
                                 ],
                                 "resources": {},
