@@ -21,7 +21,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.ibm.psd2.api.APIController;
 import com.ibm.psd2.api.aip.services.TransactionStatementService;
-import com.ibm.psd2.api.integration.KafkaMessageProducer;
+import com.ibm.psd2.api.integration.kafka.KafkaMessageProducer;
 import com.ibm.psd2.api.pisp.service.TransactionRequestService;
 import com.ibm.psd2.api.subscription.service.SubscriptionService;
 import com.ibm.psd2.datamodel.ChallengeAnswer;

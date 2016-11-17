@@ -3,10 +3,10 @@
 	<modelVersion>4.0.0</modelVersion>
 
 	<groupId>com.ibm.api.psd2</groupId>
-	<artifactId>psd2integration</artifactId>
+	<artifactId>psd2storm</artifactId>
 	<packaging>jar</packaging>
 
-	<name>psd2integration</name>
+	<name>psd2storm</name>
 	<url>http://maven.apache.org</url>
 
 	<properties>
@@ -42,7 +42,7 @@
 
 		<dependency>
 			<groupId>com.ibm.api.psd2</groupId>
-			<artifactId>psd2commons</artifactId>
+			<artifactId>psd2datamodel</artifactId>
 			<version>${psd2.version}</version>
 		</dependency>
 

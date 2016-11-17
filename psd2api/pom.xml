@@ -66,6 +66,11 @@
 			<version>${version}</version>
 		</dependency>
 		<dependency>
+			<groupId>com.ibm.api.psd2</groupId>
+			<artifactId>psd2apiiintegration</artifactId>
+			<version>${version}</version>
+		</dependency>
+		<dependency>
 			<groupId>org.webjars</groupId>
 			<artifactId>angularjs</artifactId>
 			<version>1.4.3</version>
@@ -131,11 +136,5 @@
 			</plugin>
 		</plugins>
 	</build>
-	<!-- <repositories> <repository> <id>spring-snapshots</id> <url>http://repo.spring.io/snapshot</url> 
-		<snapshots> <enabled>true</enabled> </snapshots> </repository> <repository> 
-		<id>spring-milestones</id> <url>http://repo.spring.io/milestone</url> </repository> 
-		</repositories> <pluginRepositories> <pluginRepository> <id>spring-snapshots</id> 
-		<url>http://repo.spring.io/snapshot</url> </pluginRepository> <pluginRepository> 
-		<id>spring-milestones</id> <url>http://repo.spring.io/milestone</url> </pluginRepository> 
-		</pluginRepositories> -->
+
 </project>

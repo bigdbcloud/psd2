@@ -12,7 +12,6 @@ public class Constants
 	public static final String TXN_DATE_FORMAT = "yyyy-MM-dd'T'HH:mm:ss.SSSZ";
 	public static final String ERRMSG_NOT_SUBSCRIBED = "Not Subscribed";
 	public static final SimpleDateFormat DATE_FORMAT = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSZ");
-	public static final String APP_CONFIG_KAFKA_PROPERTIES = "kafka-properties";
 
 	private Constants()
 	{

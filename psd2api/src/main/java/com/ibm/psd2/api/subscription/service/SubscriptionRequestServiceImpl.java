@@ -11,8 +11,8 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import com.ibm.psd2.api.aip.services.BankAccountDetailsService;
+import com.ibm.psd2.api.integration.kafka.twilio.MessageService;
 import com.ibm.psd2.api.subscription.db.MongoSubscriptionRequestRepository;
-import com.ibm.psd2.api.twilio.message.service.MessageService;
 import com.ibm.psd2.api.user.service.UserService;
 import com.ibm.psd2.datamodel.Challenge;
 import com.ibm.psd2.datamodel.ChallengeAnswer;
